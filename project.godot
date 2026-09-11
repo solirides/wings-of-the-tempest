@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Wings of the Tempest"
+run/main_scene="uid://bb71fih2omdc8"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="uid://bj3hijlfqx172"
 
