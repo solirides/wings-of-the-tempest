@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bb71fih2omdc8"]
+
+[ext_resource type="PackedScene" uid="uid://d3mpcfi2m2o0v" path="res://modules/camera/camera.tscn" id="1_7n1yb"]
+
+[node name="World" type="Node2D" unique_id=770158313]
+
+[node name="Camera" parent="." unique_id=1488927985 instance=ExtResource("1_7n1yb")]

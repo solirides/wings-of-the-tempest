@@ -1,0 +1,53 @@
+# Godot 4.2+ specific ignores
+~*.dll
+
+# Godot 4+ specific ignores
+.godot/
+.nomedia
+
+# Godot-specific ignores
+.import/
+export.cfg
+export_credentials.cfg
+*.tmp
+
+# Imported translations (automatically generated from CSV files)
+*.translation
+
+# Mono-specific ignores
+.mono/
+data_*/
+mono_crash.*.json
+
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+.history/
+
+
+# Linux
+*~
+.directory
+
+# macOS
+.DS_Store
+__MACOSX
+Godot.app
+
+# Windows
+# https://github.com/github/gitignore/blob/main/Global/Windows.gitignore
+[Tt]humbs.db
+[Tt]humbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+*.generated.props
