@@ -1,7 +1,49 @@
 [gd_scene format=3 uid="uid://bb71fih2omdc8"]
 
 [ext_resource type="PackedScene" uid="uid://d3mpcfi2m2o0v" path="res://modules/camera/camera.tscn" id="1_7n1yb"]
+[ext_resource type="Script" uid="uid://4kq8akwlf2yl" path="res://scenes/level_1/level_1.gd" id="1_ghvtn"]
+[ext_resource type="PackedScene" uid="uid://p7nyl4088ndh" path="res://modules/flock/flock.tscn" id="2_jr17i"]
+[ext_resource type="Material" uid="uid://dto6fxhv5ubub" path="res://assets/materials/placeholder_checker.tres" id="3_janvk"]
+[ext_resource type="Material" uid="uid://du74kmr3sjb4l" path="res://assets/materials/placeholder_checker_2.tres" id="4_igcjm"]
 
-[node name="World" type="Node2D" unique_id=770158313]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sd20g"]
+sky_top_color = Color(0.6394856, 0.76958525, 0.81879675, 1)
+sky_horizon_color = Color(0.9099479, 0.9124562, 0.91746753, 1)
+
+[sub_resource type="Sky" id="Sky_f24ow"]
+sky_material = SubResource("ProceduralSkyMaterial_sd20g")
+
+[sub_resource type="Environment" id="Environment_6lmcw"]
+background_mode = 2
+sky = SubResource("Sky_f24ow")
+tonemap_mode = 2
+
+[node name="World" type="Node3D" unique_id=1809984319]
+script = ExtResource("1_ghvtn")
+
+[node name="Flock" parent="." unique_id=1876045196 instance=ExtResource("2_jr17i")]
 
 [node name="Camera" parent="." unique_id=1488927985 instance=ExtResource("1_7n1yb")]
+transform = Transform3D(0.4756242, -0.80044615, 0.3647843, 0, 0.41469318, 0.90996134, -0.87964857, -0.4327996, 0.19723813, 4.999996, 11, 2.999998)
+fov = 60.0
+
+[node name="Ground" type="CSGBox3D" parent="." unique_id=1501656876]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+size = Vector3(10, 1, 10)
+material = ExtResource("3_janvk")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=159571048]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2, 0)
+material = ExtResource("4_igcjm")
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="." unique_id=254400654]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -2)
+material = ExtResource("4_igcjm")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=641059559]
+environment = SubResource("Environment_6lmcw")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=157938174]
+transform = Transform3D(1, 0, 0, 0, 0.30214062, 0.9532634, 0, -0.9532634, 0.30214062, 0, 9, 0)
+light_color = Color(0.9989719, 0.9289781, 0.74482167, 1)
+shadow_enabled = true

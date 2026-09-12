@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://p7nyl4088ndh"]
+
+[ext_resource type="PackedScene" uid="uid://b75l7d72jd864" path="res://modules/flock/player_bird/player_bird.tscn" id="1_j01q8"]
+
+[node name="Flock" type="Node3D" unique_id=1876045196]
+
+[node name="PlayerBird" parent="." unique_id=1616575475 instance=ExtResource("1_j01q8")]
