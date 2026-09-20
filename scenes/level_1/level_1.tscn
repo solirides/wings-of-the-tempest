@@ -21,7 +21,8 @@ tonemap_mode = 2
 [node name="World" type="Node3D" unique_id=1809984319]
 script = ExtResource("1_ghvtn")
 
-[node name="Flock" parent="." unique_id=1876045196 instance=ExtResource("2_jr17i")]
+[node name="Flock" parent="." unique_id=1876045196 node_paths=PackedStringArray("camera") instance=ExtResource("2_jr17i")]
+camera = NodePath("../Camera")
 
 [node name="Camera" parent="." unique_id=1488927985 instance=ExtResource("1_7n1yb")]
 transform = Transform3D(0.4756242, -0.80044615, 0.3647843, 0, 0.41469318, 0.90996134, -0.87964857, -0.4327996, 0.19723813, 4.999996, 11, 2.999998)
@@ -45,5 +46,7 @@ environment = SubResource("Environment_6lmcw")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=157938174]
 transform = Transform3D(1, 0, 0, 0, 0.30214062, 0.9532634, 0, -0.9532634, 0.30214062, 0, 9, 0)
+visible = false
 light_color = Color(0.9989719, 0.9289781, 0.74482167, 1)
+light_energy = 0.5
 shadow_enabled = true
