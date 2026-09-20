@@ -24,6 +24,10 @@ Global="*uid://s4e2h1vwcrfw"
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[dotnet]
+
+project/assembly_name="Wings of the Tempest"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
