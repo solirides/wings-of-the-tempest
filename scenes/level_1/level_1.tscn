@@ -5,6 +5,13 @@
 [ext_resource type="PackedScene" uid="uid://p7nyl4088ndh" path="res://modules/flock/flock.tscn" id="2_jr17i"]
 [ext_resource type="Material" uid="uid://dto6fxhv5ubub" path="res://assets/materials/placeholder_checker.tres" id="3_janvk"]
 [ext_resource type="Material" uid="uid://du74kmr3sjb4l" path="res://assets/materials/placeholder_checker_2.tres" id="4_igcjm"]
+[ext_resource type="PackedScene" uid="uid://bs7ktmgwcj1dc" path="res://modules/enemy/hunter.tscn" id="4_opn7a"]
+[ext_resource type="Shader" uid="uid://ca2i5qj33kbir" path="res://assets/materials/water.gdshader" id="6_nubdk"]
+[ext_resource type="PackedScene" uid="uid://geh1ds7gqhgf" path="res://modules/hud/hud.tscn" id="7_fxajv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
+render_priority = 0
+shader = ExtResource("6_nubdk")
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sd20g"]
 sky_top_color = Color(0.6394856, 0.76958525, 0.81879675, 1)
@@ -24,9 +31,13 @@ script = ExtResource("1_ghvtn")
 [node name="Flock" parent="." unique_id=1876045196 node_paths=PackedStringArray("camera") instance=ExtResource("2_jr17i")]
 camera = NodePath("../Camera")
 
-[node name="Camera" parent="." unique_id=1488927985 instance=ExtResource("1_7n1yb")]
+[node name="Camera" parent="." unique_id=1488927985 node_paths=PackedStringArray("flock") instance=ExtResource("1_7n1yb")]
 transform = Transform3D(0.4756242, -0.80044615, 0.3647843, 0, 0.41469318, 0.90996134, -0.87964857, -0.4327996, 0.19723813, 4.999996, 11, 2.999998)
 fov = 60.0
+flock = NodePath("../Flock")
+
+[node name="Hunter" parent="." unique_id=15738273 instance=ExtResource("4_opn7a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, 0)
 
 [node name="Ground" type="CSGBox3D" parent="." unique_id=1501656876]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
@@ -36,6 +47,11 @@ material = ExtResource("3_janvk")
 [node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=159571048]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2, 0)
 material = ExtResource("4_igcjm")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="." unique_id=1785480577]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0, 1.5)
+size = Vector3(2, 1, 2)
+material = SubResource("ShaderMaterial_0ebjn")
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="." unique_id=254400654]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -2)
@@ -50,3 +66,5 @@ visible = false
 light_color = Color(0.9989719, 0.9289781, 0.74482167, 1)
 light_energy = 0.5
 shadow_enabled = true
+
+[node name="Hud" parent="." unique_id=781835399 instance=ExtResource("7_fxajv")]

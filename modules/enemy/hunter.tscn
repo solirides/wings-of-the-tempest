@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://bs7ktmgwcj1dc"]
+
+[ext_resource type="Script" uid="uid://bsseu8drws2ui" path="res://modules/enemy/hunter.gd" id="1_fdf45"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sd20g"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4j22q"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_typg0"]
+albedo_color = Color(1, 0.36078432, 0.3372549, 1)
+metallic = 1.0
+roughness = 0.5
+normal_enabled = true
+normal_texture = SubResource("NoiseTexture2D_4j22q")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_f24ow"]
+
+[node name="Hunter" type="RigidBody3D" unique_id=15738273]
+freeze = true
+script = ExtResource("1_fdf45")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1670098023]
+mesh = SubResource("CylinderMesh_sd20g")
+surface_material_override/0 = SubResource("StandardMaterial3D_typg0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=143805037]
+shape = SubResource("CylinderShape3D_f24ow")

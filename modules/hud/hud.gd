@@ -1,10 +1,5 @@
-extends Node
+extends Control
 
-
-var score:int = 0
-
-var flock: Node
-var camera: Node
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

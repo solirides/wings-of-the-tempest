@@ -12,6 +12,8 @@ var boid_scene = preload("res://modules/flock/player_bird/player_bird.tscn")
 @export var camera: Camera3D
 
 func _ready() -> void:
+	Global.flock = self
+	
 	# keeps the mouse within the game window
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 	
@@ -53,3 +55,13 @@ func get_mouse_world_position(camera: Camera3D) -> Vector3:
 	
 	var t = (flock_y - ray_origin.y) / ray_direction.y
 	return ray_origin + ray_direction * t
+
+func get_center_of_mass(nodes: Array = boids) -> Vector3:
+	if nodes.is_empty():
+		return Vector3.ZERO
+	
+	var total_position := Vector3.ZERO
+	for n in nodes:
+		total_position += n.global_position
+		
+	return total_position / float(nodes.size())

@@ -72,9 +72,10 @@ func cohesion(neighbors : Array) -> Vector3 :
 	
 	return coh_force
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	#seeing whose arround who
-	var boids : Array = get_tree().get_nodes_in_group("boids")
+	#var boids : Array = get_tree().get_nodes_in_group("boids")
+	var boids: Array[Boid] = flock.boids
 	var neighbors : Array = []
 	
 	for other in boids:
@@ -99,17 +100,17 @@ func _process(delta: float) -> void:
 	var cohesion_force : Vector3 = cohesion(neighbors) * cohesion_weight
 	
 	
-	#CEO of BOID pathing
-	var boid_Direction = (cursor_force + seperation_force + alignment_force + cohesion_force+ repel_force).normalized()
+	#CEO of BOID pathing 🔥
+	var boid_direction = (cursor_force + seperation_force + alignment_force + cohesion_force + repel_force).normalized()
 	
 	#print("I'm changing directions")
 	
 	#movement/"looking"
 	# added lerp/slerp to get rid of some jitter
-	boid_Direction.y = 0
-	if boid_Direction.length_squared() > 0.001:
-		boid_Direction = boid_Direction.normalized()
-		vel = vel.lerp(boid_Direction, steering_smoothness * delta)
+	boid_direction.y = 0
+	if boid_direction.length_squared() > 0.001:
+		boid_direction = boid_direction.normalized()
+		vel = vel.lerp(boid_direction, steering_smoothness * delta)
 		vel.y = 0
 		vel = vel.normalized()
 	
@@ -120,3 +121,7 @@ func _process(delta: float) -> void:
 	if vel.length_squared() > 0.001:
 		var target_rotation = Transform3D().looking_at(vel, Vector3.UP).basis
 		global_transform.basis = global_transform.basis.slerp(target_rotation, rotation_smoothness * delta)
+
+func remove_boid():
+	flock.boids.erase(self)
+	queue_free()
