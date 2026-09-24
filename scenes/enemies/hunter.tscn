@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://r2i5ufxdudpc"]
+
+[ext_resource type="Script" uid="uid://4etiissoi0ux" path="res://scenes/enemies/hunter.gd" id="1_vu6l5"]
+[ext_resource type="PackedScene" uid="uid://dfnojmsp7p67" path="res://scenes/enemies/bullet.tscn" id="2_07510"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6olrb"]
+
+[node name="Hunter" type="Node3D" unique_id=2124715634]
+script = ExtResource("1_vu6l5")
+bullet_scene = ExtResource("2_07510")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1382166599]
+mesh = SubResource("CylinderMesh_6olrb")
+
+[node name="FireCoolDown" type="Timer" parent="." unique_id=1160237616]
+
+[node name="ArrowSpawn" type="Marker3D" parent="." unique_id=871525859]

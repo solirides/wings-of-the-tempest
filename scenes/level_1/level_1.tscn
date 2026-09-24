@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://p7nyl4088ndh" path="res://modules/flock/flock.tscn" id="2_jr17i"]
 [ext_resource type="Material" uid="uid://dto6fxhv5ubub" path="res://assets/materials/placeholder_checker.tres" id="3_janvk"]
 [ext_resource type="Material" uid="uid://du74kmr3sjb4l" path="res://assets/materials/placeholder_checker_2.tres" id="4_igcjm"]
+[ext_resource type="PackedScene" uid="uid://r2i5ufxdudpc" path="res://scenes/enemies/hunter.tscn" id="6_nubdk"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sd20g"]
 sky_top_color = Color(0.6394856, 0.76958525, 0.81879675, 1)
@@ -22,6 +23,8 @@ tonemap_mode = 2
 script = ExtResource("1_ghvtn")
 
 [node name="Flock" parent="." unique_id=1876045196 instance=ExtResource("2_jr17i")]
+
+[node name="PlayerBird" parent="Flock" index="0" unique_id=1616575475 groups=["boids"]]
 
 [node name="Camera" parent="." unique_id=1488927985 instance=ExtResource("1_7n1yb")]
 transform = Transform3D(0.4756242, -0.80044615, 0.3647843, 0, 0.41469318, 0.90996134, -0.87964857, -0.4327996, 0.19723813, 4.999996, 11, 2.999998)
@@ -47,3 +50,8 @@ environment = SubResource("Environment_6lmcw")
 transform = Transform3D(1, 0, 0, 0, 0.30214062, 0.9532634, 0, -0.9532634, 0.30214062, 0, 9, 0)
 light_color = Color(0.9989719, 0.9289781, 0.74482167, 1)
 shadow_enabled = true
+
+[node name="Hunter" parent="." unique_id=2124715634 instance=ExtResource("6_nubdk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
+
+[editable path="Flock"]
