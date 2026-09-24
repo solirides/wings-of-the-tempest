@@ -1,6 +1,8 @@
 extends Node3D
 class_name Flock
 
+signal hunger_changed
+
 @export var num_boids: int = 10
 @export var spawn_radius: float = 10.0
 @onready var cursor: MeshInstance3D = $MeshInstance3D2
@@ -9,7 +11,13 @@ var boids: Array[Boid] = []
 var mouse_target : Vector3
 var boid_scene = preload("res://modules/flock/player_bird/player_bird.tscn")
 
+# Camera
 @export var camera: Camera3D
+
+# Hunger
+@export var max_hunger: float = 100.0
+@export var current_hunger: float = max_hunger
+@export var starve_rate: float = 1.0
 
 func _ready() -> void:
 	Global.flock = self
@@ -42,6 +50,14 @@ func _process(delta: float) -> void:
 		
 	mouse_target = get_mouse_world_position(camera)
 	cursor.global_position = mouse_target
+	
+	if current_hunger > 0:
+		current_hunger = max(current_hunger - starve_rate * delta, 0.0)
+		hunger_changed.emit(current_hunger)
+
+func eat(value: float) -> void:
+	current_hunger = min(current_hunger + value, max_hunger)
+	hunger_changed.emit(current_hunger)
 	
 func get_mouse_world_position(camera: Camera3D) -> Vector3:
 	var mouse_pos := get_viewport().get_mouse_position()

@@ -8,6 +8,9 @@
 [ext_resource type="PackedScene" uid="uid://bs7ktmgwcj1dc" path="res://modules/enemy/hunter.tscn" id="4_opn7a"]
 [ext_resource type="Shader" uid="uid://ca2i5qj33kbir" path="res://assets/materials/water.gdshader" id="6_nubdk"]
 [ext_resource type="PackedScene" uid="uid://geh1ds7gqhgf" path="res://modules/hud/hud.tscn" id="7_fxajv"]
+[ext_resource type="Texture2D" uid="uid://cw2nmsb2q5ynn" path="res://assets/textures/UI/healthbarUnder.png" id="9_bmd0r"]
+[ext_resource type="Texture2D" uid="uid://d0cvmckaqaoa7" path="res://assets/textures/UI/healthbarProgress.png" id="10_0lhw3"]
+[ext_resource type="Script" uid="uid://cft7y487jvu6" path="res://modules/global/global.gd" id="11_0lhw3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
 render_priority = 0
@@ -29,7 +32,10 @@ tonemap_mode = 2
 script = ExtResource("1_ghvtn")
 
 [node name="Flock" parent="." unique_id=1876045196 node_paths=PackedStringArray("camera") instance=ExtResource("2_jr17i")]
+unique_name_in_owner = true
 camera = NodePath("../Camera")
+current_hunger = 100.0
+starve_rate = 10.0
 
 [node name="Camera" parent="." unique_id=1488927985 node_paths=PackedStringArray("flock") instance=ExtResource("1_7n1yb")]
 transform = Transform3D(0.4756242, -0.80044615, 0.3647843, 0, 0.41469318, 0.90996134, -0.87964857, -0.4327996, 0.19723813, 4.999996, 11, 2.999998)
@@ -67,4 +73,18 @@ light_color = Color(0.9989719, 0.9289781, 0.74482167, 1)
 light_energy = 0.5
 shadow_enabled = true
 
-[node name="Hud" parent="." unique_id=781835399 instance=ExtResource("7_fxajv")]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1513656914]
+
+[node name="Hud" parent="CanvasLayer" unique_id=781835399 instance=ExtResource("7_fxajv")]
+unique_name_in_owner = true
+
+[node name="HungerBar" type="TextureProgressBar" parent="CanvasLayer" unique_id=21988418]
+unique_name_in_owner = true
+offset_right = 64.0
+offset_bottom = 10.0
+value = 100.0
+texture_under = ExtResource("9_bmd0r")
+texture_progress = ExtResource("10_0lhw3")
+
+[node name="Global" type="Node3D" parent="." unique_id=764044567]
+script = ExtResource("11_0lhw3")
