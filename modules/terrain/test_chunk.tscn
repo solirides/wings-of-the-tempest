@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://dmehpm17b8ihr"]
+
+[ext_resource type="Script" uid="uid://cayssc263iskf" path="res://modules/terrain/chunk.gd" id="1_jewke"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jewke"]
+sky_top_color = Color(0.6394856, 0.76958525, 0.81879675, 1)
+sky_horizon_color = Color(0.9099479, 0.9124562, 0.91746753, 1)
+
+[sub_resource type="Sky" id="Sky_f24ow"]
+sky_material = SubResource("ProceduralSkyMaterial_jewke")
+
+[sub_resource type="Environment" id="Environment_yqyt3"]
+background_mode = 2
+sky = SubResource("Sky_f24ow")
+tonemap_mode = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_37psj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vevjg"]
+albedo_color = Color(1, 0.49803922, 0.49803922, 1)
+
+[node name="Chunk" type="Node3D" unique_id=851411050]
+script = ExtResource("1_jewke")
+metadata/_custom_type_script = "uid://cayssc263iskf"
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=210316971]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=636382993]
+environment = SubResource("Environment_yqyt3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=230045581]
+mesh = SubResource("BoxMesh_37psj")
+surface_material_override/0 = SubResource("StandardMaterial3D_vevjg")

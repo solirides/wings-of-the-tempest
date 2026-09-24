@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="ChunkDefinition" format=3 uid="uid://bg42i47u31q65"]
+
+[ext_resource type="Script" uid="uid://s2ajhhyko07f" path="res://modules/terrain/chunk_definition.gd" id="1_2kgbf"]
+
+[resource]
+script = ExtResource("1_2kgbf")
+size = Vector2i(16, 16)
+metadata/_custom_type_script = "uid://s2ajhhyko07f"

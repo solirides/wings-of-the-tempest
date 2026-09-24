@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="ChunkLibrary" format=3 uid="uid://cnhauj7okt3ps"]
+
+[ext_resource type="Script" uid="uid://druojap16exs5" path="res://modules/terrain/decision tree/chunk_dec_tree_leaf.gd" id="1_6pfcn"]
+[ext_resource type="Script" uid="uid://wmxobr7xkoe0" path="res://modules/terrain/chunk_library.gd" id="2_6pfcn"]
+[ext_resource type="Script" uid="uid://bs34yubkm0w8i" path="res://modules/terrain/decision tree/chunk_dec_tree_if_periodic.gd" id="2_nngoa"]
+
+[sub_resource type="Resource" id="Resource_6pfcn"]
+script = ExtResource("1_6pfcn")
+metadata/_custom_type_script = "uid://druojap16exs5"
+
+[sub_resource type="Resource" id="Resource_e4hpr"]
+script = ExtResource("1_6pfcn")
+metadata/_custom_type_script = "uid://druojap16exs5"
+
+[sub_resource type="Resource" id="Resource_yt4kk"]
+script = ExtResource("2_nngoa")
+period = 5
+phase = 4
+succeed = SubResource("Resource_e4hpr")
+fail = SubResource("Resource_6pfcn")
+metadata/_custom_type_script = "uid://bs34yubkm0w8i"
+
+[resource]
+script = ExtResource("2_6pfcn")
+chunk_size = Vector2i(16, 16)
+child = SubResource("Resource_yt4kk")
+metadata/_custom_type_script = "uid://wmxobr7xkoe0"
