@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://0vkdd2i01g77"]
+
+[ext_resource type="Shader" uid="uid://cbhdy3j8wsibv" path="res://assets/materials/wind_trail_shader.tres" id="1_fpwb5"]
+[ext_resource type="Material" uid="uid://dlt7l1ak5marx" path="res://assets/materials/wind_trail_material.tres" id="1_ytn5a"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fpwb5"]
+inherit_velocity_ratio = 1.0
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+
+[sub_resource type="Curve" id="Curve_gu2oc"]
+_data = [Vector2(0, 0), 0.0, 1.1385543, 0, 0, Vector2(0.63703704, 0.49397588), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.8332696, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_ytn5a"]
+material = ExtResource("1_ytn5a")
+curve = SubResource("Curve_gu2oc")
+
+[sub_resource type="Gradient" id="Gradient_qwh5g"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_wca6c"]
+noise_type = 2
+frequency = 0.0124
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wumdr"]
+noise = SubResource("FastNoiseLite_wca6c")
+color_ramp = SubResource("Gradient_qwh5g")
+seamless = true
+
+[sub_resource type="Gradient" id="Gradient_hpuu2"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3ueux"]
+gradient = SubResource("Gradient_hpuu2")
+
+[sub_resource type="Gradient" id="Gradient_ytn5a"]
+offsets = PackedFloat32Array(0, 0.2970297, 0.48019803, 0.65841585)
+colors = PackedColorArray(0.023481622, 0.15519845, 0.34598672, 0, 0.12433488, 0.33981055, 0.5248494, 0.68235296, 0.33333334, 0.64705884, 0.654902, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gu2oc"]
+gradient = SubResource("Gradient_ytn5a")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a3eua"]
+render_priority = 0
+shader = ExtResource("1_fpwb5")
+shader_parameter/speed = Vector2(0, 0)
+shader_parameter/base_texture = SubResource("NoiseTexture2D_wumdr")
+shader_parameter/bounds = SubResource("GradientTexture1D_3ueux")
+shader_parameter/color_gradient = SubResource("GradientTexture1D_gu2oc")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6lmcw"]
+top_radius = 2.435
+bottom_radius = 0.115
+height = 7.806
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ytn5a"]
+sky_top_color = Color(0.6394856, 0.76958525, 0.81879675, 1)
+sky_horizon_color = Color(0.9099479, 0.9124562, 0.91746753, 1)
+
+[sub_resource type="Sky" id="Sky_f24ow"]
+sky_material = SubResource("ProceduralSkyMaterial_ytn5a")
+
+[sub_resource type="Environment" id="Environment_hpuu2"]
+background_mode = 2
+sky = SubResource("Sky_f24ow")
+tonemap_mode = 2
+
+[node name="VisualTesting" type="Node3D" unique_id=1424071881]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=379601455]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.22064, 0)
+amount = 1
+trail_enabled = true
+process_material = SubResource("ParticleProcessMaterial_fpwb5")
+draw_pass_1 = SubResource("TubeTrailMesh_ytn5a")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1645070766]
+material_override = SubResource("ShaderMaterial_a3eua")
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_6lmcw")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=797206361]
+environment = SubResource("Environment_hpuu2")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=676740221]
+transform = Transform3D(1, 0, 0, 0, 0.30214062, 0.9532634, 0, -0.9532634, 0.30214062, 0, 9, 0)
+light_color = Color(0.9989719, 0.9289781, 0.74482167, 1)
+light_energy = 0.5
+shadow_enabled = true

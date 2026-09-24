@@ -17,12 +17,12 @@ shader = ExtResource("6_nubdk")
 sky_top_color = Color(0.6394856, 0.76958525, 0.81879675, 1)
 sky_horizon_color = Color(0.9099479, 0.9124562, 0.91746753, 1)
 
-[sub_resource type="Sky" id="Sky_f24ow"]
+[sub_resource type="Sky" id="Sky_opn7a"]
 sky_material = SubResource("ProceduralSkyMaterial_sd20g")
 
 [sub_resource type="Environment" id="Environment_6lmcw"]
 background_mode = 2
-sky = SubResource("Sky_f24ow")
+sky = SubResource("Sky_opn7a")
 tonemap_mode = 2
 
 [node name="World" type="Node3D" unique_id=1809984319]
