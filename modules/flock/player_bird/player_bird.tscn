@@ -1,10 +1,28 @@
 [gd_scene format=3 uid="uid://b75l7d72jd864"]
 
-[node name="PlayerBird" type="CSGTorus3D" unique_id=1269352694]
+[ext_resource type="Script" uid="uid://b12pbyggfvd45" path="res://modules/flock/player_bird/boid.gd" id="1_25rpd"]
 
-[node name="Label3D" type="Label3D" parent="." unique_id=779942714]
-billboard = 1
-no_depth_test = true
-text = "bird"
-font_size = 100
-outline_size = 20
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_25nu7"]
+radius = 0.3
+height = 1.0
+
+[sub_resource type="PrismMesh" id="PrismMesh_ftwdc"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ppj06"]
+radius = 0.4
+height = 1.2
+
+[node name="PlayerBird" type="CharacterBody3D" unique_id=1778213726]
+script = ExtResource("1_25rpd")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=801781277]
+transform = Transform3D(-3.4577672e-09, -0.0791045, 0.99686635, 1, -4.371139e-08, -2.220446e-16, 4.3574413e-08, 0.99686635, 0.0791045, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_25nu7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D" unique_id=838218058]
+transform = Transform3D(-0.3, 2.6226832e-08, 0, -2.6226836e-08, -0.3, 0, 0, 0, 0.3, -2.1257568e-08, -0.4863164, -0.00988926)
+mesh = SubResource("PrismMesh_ftwdc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1304606213]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_ppj06")

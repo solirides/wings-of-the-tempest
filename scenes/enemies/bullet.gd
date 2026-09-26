@@ -1,8 +1,8 @@
 extends Area3D # Controls bullet.tscn
 
 # Adjustable flight settings
-@export var flight_time: float = 1.5
-@export var arc_height: float = 2.0
+@export var flight_time: float = 0.8
+@export var arc_height: float = 0.5
 
 # Tracks the bullet's flight from launch to landing
 var start_pos: Vector3

@@ -5,7 +5,11 @@
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_6olrb"]
 
+[sub_resource type="BoxMesh" id="BoxMesh_6olrb"]
+size = Vector3(0.1, 0.1, 2)
+
 [node name="Hunter" type="Node3D" unique_id=2124715634]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -1)
 script = ExtResource("1_vu6l5")
 bullet_scene = ExtResource("2_07510")
 
@@ -15,3 +19,6 @@ mesh = SubResource("CylinderMesh_6olrb")
 [node name="FireCoolDown" type="Timer" parent="." unique_id=1160237616]
 
 [node name="ArrowSpawn" type="Marker3D" parent="." unique_id=871525859]
+
+[node name="AimIndicator" type="MeshInstance3D" parent="." unique_id=1214064264]
+mesh = SubResource("BoxMesh_6olrb")

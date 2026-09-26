@@ -2,7 +2,7 @@ extends Node3D # Controls hunter.tscn
 # Constant variables with set data types 
 @export var detection_range: float = 15.0 
 @export var windup_time: float = 0.8
-@export var fire_cooldown: float = 2.5
+@export var fire_cooldown: float = 4.0
 @export var bullet_scene: PackedScene
 
 # Gets the arrowspawn and firecooldown once at the start 

@@ -22,9 +22,8 @@ tonemap_mode = 2
 [node name="World" type="Node3D" unique_id=1809984319]
 script = ExtResource("1_ghvtn")
 
-[node name="Flock" parent="." unique_id=1876045196 instance=ExtResource("2_jr17i")]
-
-[node name="PlayerBird" parent="Flock" index="0" unique_id=1616575475 groups=["boids"]]
+[node name="Flock" parent="." unique_id=1876045196 node_paths=PackedStringArray("camera") instance=ExtResource("2_jr17i")]
+camera = NodePath("../Camera")
 
 [node name="Camera" parent="." unique_id=1488927985 instance=ExtResource("1_7n1yb")]
 transform = Transform3D(0.4756242, -0.80044615, 0.3647843, 0, 0.41469318, 0.90996134, -0.87964857, -0.4327996, 0.19723813, 4.999996, 11, 2.999998)
