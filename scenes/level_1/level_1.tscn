@@ -6,6 +6,7 @@
 [ext_resource type="Material" uid="uid://dto6fxhv5ubub" path="res://assets/materials/placeholder_checker.tres" id="3_janvk"]
 [ext_resource type="Material" uid="uid://du74kmr3sjb4l" path="res://assets/materials/placeholder_checker_2.tres" id="4_igcjm"]
 [ext_resource type="PackedScene" uid="uid://r2i5ufxdudpc" path="res://scenes/enemies/hunter.tscn" id="6_nubdk"]
+[ext_resource type="PackedScene" uid="uid://bphsnhj7h6a70" path="res://scenes/enemies/hawk.tscn" id="7_fxajv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sd20g"]
 sky_top_color = Color(0.6394856, 0.76958525, 0.81879675, 1)
@@ -52,5 +53,9 @@ shadow_enabled = true
 
 [node name="Hunter" parent="." unique_id=2124715634 instance=ExtResource("6_nubdk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
+
+[node name="Hawk" parent="." unique_id=1431889848 instance=ExtResource("7_fxajv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+circle_radius = 2.0
 
 [editable path="Flock"]

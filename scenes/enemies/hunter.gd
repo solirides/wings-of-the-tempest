@@ -58,13 +58,11 @@ func start_windup() -> void:
 	cooldown_timer.start()
 
 func fire_bullet() -> void:
-	# If there is no target do nothing 
 	if not target or not bullet_scene:
 		return
-
 	var bullet = bullet_scene.instantiate()
 	get_tree().current_scene.add_child(bullet)
-	bullet.launch(arrow_spawn.global_position, target.global_position)
+	bullet.launch(arrow_spawn.global_position, target.global_position, target)
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
