@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dp2pii0qjqgy2" path="res://modules/storm_wall/storm_wall_2.tscn" id="4_gu2oc"]
 [ext_resource type="ArrayMesh" uid="uid://cjucgvg0qjxq4" path="res://assets/models/wind_impact_particle.obj" id="5_r77gp"]
 [ext_resource type="Material" uid="uid://bwk34dp17uyri" path="res://assets/materials/wind_impact_material.tres" id="5_ufnct"]
+[ext_resource type="Material" uid="uid://dto6fxhv5ubub" path="res://assets/materials/placeholder_checker.tres" id="7_dipdn"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fpwb5"]
 inherit_velocity_ratio = 1.0
@@ -43,6 +44,32 @@ sky_material = SubResource("ProceduralSkyMaterial_ytn5a")
 background_mode = 2
 sky = SubResource("Sky_f24ow")
 tonemap_mode = 2
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+glow_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.02
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_typg0"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_sd20g"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_typg0")
+seamless = true
+as_normal_map = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f24ow"]
+albedo_color = Color(0.54614246, 0.564908, 0.30943576, 1)
+roughness = 0.55
+normal_enabled = true
+normal_texture = SubResource("NoiseTexture2D_sd20g")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_6lmcw"]
+material = SubResource("StandardMaterial3D_f24ow")
+size = Vector2(30, 40)
 
 [sub_resource type="Curve" id="Curve_vd6ox"]
 _data = [Vector2(0, 0.21764714), 0.0, 0.0, 0, 0, Vector2(0.5942029, 0.66470593), 0.0, 0.0, 0, 0]
@@ -85,7 +112,7 @@ process_material = SubResource("ParticleProcessMaterial_fpwb5")
 draw_pass_1 = SubResource("TubeTrailMesh_ytn5a")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1645070766]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -9.7564335)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.240463, 0, -9.7564335)
 material_override = ExtResource("2_ytn5a")
 cast_shadow = 0
 mesh = SubResource("CylinderMesh_6lmcw")
@@ -95,12 +122,14 @@ environment = SubResource("Environment_hpuu2")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=676740221]
 transform = Transform3D(1, 0, 0, 0, 0.30214062, 0.9532634, 0, -0.9532634, 0.30214062, 0, 9, 0)
+visible = false
 light_color = Color(0.9989719, 0.9289781, 0.74482167, 1)
 light_energy = 0.5
 shadow_enabled = true
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=2114486206]
-visible = false
+[node name="Ground" type="MeshInstance3D" parent="." unique_id=2114486206]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.8342648, 0)
+mesh = SubResource("PlaneMesh_6lmcw")
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="." unique_id=722878311]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, -1.8283868e-07, -4.1828613)
@@ -116,7 +145,8 @@ strength = 8.0
 radius = 50.0
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1388319539]
-transform = Transform3D(0.77993816, -0.46099558, 0.42329612, 0, 0.6763468, 0.73658335, -0.62585664, -0.5744895, 0.5275087, 16.756004, 21.425167, 16.851913)
+transform = Transform3D(-0.9799086, 0.11824523, -0.16061565, 0.00328365, 0.8147583, 0.57979155, 0.19942051, 0.5676153, -0.79877687, -4.107521, 14.266959, -22.59141)
+fov = 60.0
 
 [node name="storm_wall" parent="." unique_id=291485413 instance=ExtResource("3_hpuu2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11.671848)
@@ -125,9 +155,30 @@ visible = false
 [node name="storm_wall_2" parent="." unique_id=479115584 instance=ExtResource("4_gu2oc")]
 
 [node name="WindImpact" type="GPUParticles3D" parent="." unique_id=1093885442]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.1320934, -17.445847)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8286476, 5.0549793, -13.401718)
 material_override = ExtResource("5_ufnct")
 cast_shadow = 0
 lifetime = 0.5
 process_material = SubResource("ParticleProcessMaterial_6lmcw")
 draw_pass_1 = ExtResource("5_r77gp")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1610242543]
+transform = Transform3D(-0.9771377, 0, -0.21260759, -0.071245715, 0.94218105, 0.327443, 0.20031485, 0.3351043, -0.9206406, 0, 0.9984369, -15.348744)
+light_color = Color(0.99999994, 0.19223255, 0.21325946, 1)
+light_energy = 16.0
+shadow_enabled = true
+spot_range = 29.145817
+spot_angle = 34.21227
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="." unique_id=1927440746]
+transform = Transform3D(-0.7265901, 0.17588316, -0.66417754, 0.34962875, 0.92680997, -0.1370515, 0.5914613, -0.33179578, -0.7349049, -9.768785, -2.9593744, -10.474534)
+light_color = Color(0, 0.5872371, 0.9091947, 1)
+light_energy = 200.0
+shadow_enabled = true
+spot_range = 29.145817
+spot_angle = 23.718204
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=619402837]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5101175, -1.8776855, -8.921692)
+size = Vector3(6.1811523, 4.755371, 1)
+material = ExtResource("7_dipdn")

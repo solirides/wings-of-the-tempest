@@ -11,4 +11,4 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	mesh.rotate(Vector3(1,0,0), 1 * delta)
-	print(mesh.global_rotation)
+	#print(mesh.global_rotation)

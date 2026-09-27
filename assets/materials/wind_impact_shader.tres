@@ -18,7 +18,6 @@ function = 1
 
 [resource]
 modes/cull = 2
-flags/unshaded = true
 preview_params/base_texture = "Object(NoiseTexture2D,\"resource_local_to_scene\":false,\"resource_name\":\"\",\"width\":512,\"height\":512,\"generate_mipmaps\":true,\"noise\":Object(FastNoiseLite,\"resource_local_to_scene\":false,\"resource_name\":\"\",\"noise_type\":1,\"seed\":0,\"frequency\":0.01,\"offset\":Vector3(0, 0, 0),\"fractal_type\":1,\"fractal_octaves\":5,\"fractal_lacunarity\":2.0,\"fractal_gain\":0.5,\"fractal_weighted_strength\":0.0,\"fractal_ping_pong_strength\":2.0,\"cellular_distance_function\":0,\"cellular_jitter\":1.0,\"cellular_return_type\":1,\"domain_warp_enabled\":false,\"domain_warp_type\":0,\"domain_warp_amplitude\":30.0,\"domain_warp_frequency\":0.05,\"domain_warp_fractal_type\":1,\"domain_warp_fractal_octaves\":5,\"domain_warp_fractal_lacunarity\":6.0,\"domain_warp_fractal_gain\":0.5,\"script\":null)
 ,\"color_ramp\":Object(Gradient,\"resource_local_to_scene\":false,\"resource_name\":\"\",\"interpolation_mode\":0,\"interpolation_color_space\":0,\"offsets\":PackedFloat32Array(0.50390625, 0.6171875),\"colors\":PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1),\"script\":null)
 ,\"seamless\":true,\"invert\":false,\"in_3d_space\":false,\"as_normal_map\":false,\"normalize\":true,\"seamless_blend_skirt\":0.1,\"bump_strength\":8.0,\"script\":null)
