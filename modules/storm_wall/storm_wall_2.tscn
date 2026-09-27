@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://dp2pii0qjqgy2"]
+
+[ext_resource type="PackedScene" uid="uid://durrssryevobq" path="res://assets/models/storm_wall_2.glb" id="1_ypd5o"]
+[ext_resource type="Script" uid="uid://c7ixjqfxcbwvv" path="res://modules/storm_wall/storm_wall.gd" id="2_6rcnd"]
+[ext_resource type="Material" uid="uid://c2tigyl6qdson" path="res://assets/materials/storm_wall_material.tres" id="2_y6m3k"]
+
+[node name="storm_wall_2" unique_id=479115584 node_paths=PackedStringArray("mesh") instance=ExtResource("1_ypd5o")]
+script = ExtResource("2_6rcnd")
+mesh = NodePath("Cylinder_003")
+
+[node name="Cylinder_003" parent="." index="0" unique_id=1076286554]
+surface_material_override/0 = ExtResource("2_y6m3k")
