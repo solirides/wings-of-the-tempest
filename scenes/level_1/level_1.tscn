@@ -35,7 +35,6 @@ script = ExtResource("1_ghvtn")
 unique_name_in_owner = true
 camera = NodePath("../Camera")
 current_hunger = 100.0
-starve_rate = 10.0
 
 [node name="Camera" parent="." unique_id=1488927985 node_paths=PackedStringArray("flock") instance=ExtResource("1_7n1yb")]
 transform = Transform3D(0.4756242, -0.80044615, 0.3647843, 0, 0.41469318, 0.90996134, -0.87964857, -0.4327996, 0.19723813, 4.999996, 11, 2.999998)
