@@ -6,13 +6,16 @@ texture_type = 1
 texture_repeat = 1
 
 [sub_resource type="VisualShaderNodeClamp" id="VisualShaderNodeClamp_a3eua"]
+output_port_for_preview = 0
+default_input_values = [0, 0.0, 1, 0.01, 2, 1.0]
 
 [sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_3ueux"]
+output_port_for_preview = 0
 default_input_values = [0, 0.0, 1, 1.0]
 operator = 7
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_a3eua"]
-output_port_for_preview = 0
+output_port_for_preview = 1
 expanded_output_ports = [0]
 source = 5
 
@@ -27,7 +30,7 @@ texture_type = 1
 texture_repeat = 1
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_5melb"]
-output_port_for_preview = 0
+output_port_for_preview = 1
 expanded_output_ports = [0]
 source = 5
 
@@ -56,7 +59,16 @@ source = 5
 
 [resource]
 modes/cull = 2
-flags/unshaded = true
+preview_params/base_texture = "Object(NoiseTexture2D,\"resource_local_to_scene\":false,\"resource_name\":\"\",\"width\":512,\"height\":512,\"generate_mipmaps\":true,\"noise\":Object(FastNoiseLite,\"resource_local_to_scene\":false,\"resource_name\":\"\",\"noise_type\":2,\"seed\":0,\"frequency\":0.0301,\"offset\":Vector3(0, 0, 0),\"fractal_type\":1,\"fractal_octaves\":2,\"fractal_lacunarity\":2.0,\"fractal_gain\":0.5,\"fractal_weighted_strength\":0.0,\"fractal_ping_pong_strength\":2.0,\"cellular_distance_function\":0,\"cellular_jitter\":1.0,\"cellular_return_type\":1,\"domain_warp_enabled\":false,\"domain_warp_type\":0,\"domain_warp_amplitude\":30.0,\"domain_warp_frequency\":0.05,\"domain_warp_fractal_type\":1,\"domain_warp_fractal_octaves\":5,\"domain_warp_fractal_lacunarity\":6.0,\"domain_warp_fractal_gain\":0.5,\"script\":null)
+,\"color_ramp\":Object(Gradient,\"resource_local_to_scene\":false,\"resource_name\":\"\",\"interpolation_mode\":0,\"interpolation_color_space\":0,\"offsets\":PackedFloat32Array(0, 1),\"colors\":PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1),\"script\":null)
+,\"seamless\":true,\"invert\":false,\"in_3d_space\":false,\"as_normal_map\":false,\"normalize\":true,\"seamless_blend_skirt\":0.1,\"bump_strength\":8.0,\"script\":null)
+"
+preview_params/speed = "Vector2(-0.15, 0.07)"
+preview_params/bounds = "Object(GradientTexture2D,\"resource_local_to_scene\":false,\"resource_name\":\"\",\"gradient\":Object(Gradient,\"resource_local_to_scene\":false,\"resource_name\":\"\",\"interpolation_mode\":1,\"interpolation_color_space\":0,\"offsets\":PackedFloat32Array(0, 1),\"colors\":PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1),\"script\":null)
+,\"width\":64,\"height\":64,\"use_hdr\":false,\"fill\":0,\"fill_from\":Vector2(0, 1),\"fill_to\":Vector2(0, 0.5),\"repeat\":0,\"script\":null)
+"
+preview_params/color_gradient = "Object(GradientTexture1D,\"resource_local_to_scene\":false,\"resource_name\":\"\",\"gradient\":Resource(\"uid://cyq35reid12dd\", \"res://assets/materials/storm_wall_gradient.tres\"),\"width\":256,\"use_hdr\":false,\"script\":null)
+"
 nodes/vertex/0/position = Vector2(280, 186.66667)
 nodes/fragment/0/position = Vector2(1786.6666, 133.33333)
 nodes/fragment/2/node = SubResource("VisualShaderNodeTexture2DParameter_3ueux")
@@ -76,13 +88,13 @@ nodes/fragment/8/position = Vector2(-266.66666, 226.66667)
 nodes/fragment/9/node = SubResource("VisualShaderNodeTexture_cjotj")
 nodes/fragment/9/position = Vector2(1440, 386.66666)
 nodes/fragment/10/node = SubResource("VisualShaderNodeTexture2DParameter_5melb")
-nodes/fragment/10/position = Vector2(1160, 893.3333)
+nodes/fragment/10/position = Vector2(973.3333, 693.3333)
 nodes/fragment/11/node = SubResource("VisualShaderNodeClamp_a3eua")
 nodes/fragment/11/position = Vector2(1080, 320)
 nodes/fragment/12/node = SubResource("VisualShaderNodeFloatOp_3ueux")
 nodes/fragment/12/position = Vector2(786.6667, 360)
 nodes/fragment/13/node = SubResource("VisualShaderNodeTexture_a3eua")
-nodes/fragment/13/position = Vector2(480, 626.6667)
+nodes/fragment/13/position = Vector2(373.33334, 640)
 nodes/fragment/14/node = SubResource("VisualShaderNodeTexture2DParameter_cjotj")
-nodes/fragment/14/position = Vector2(26.666666, 853.3333)
+nodes/fragment/14/position = Vector2(-173.33333, 933.3333)
 nodes/fragment/connections = PackedInt32Array(2, 0, 3, 2, 6, 0, 7, 0, 5, 0, 7, 1, 7, 0, 8, 2, 8, 0, 3, 0, 10, 0, 9, 2, 9, 4, 0, 1, 9, 0, 0, 0, 11, 0, 9, 0, 3, 1, 12, 0, 12, 0, 11, 0, 14, 0, 13, 2, 13, 1, 12, 1)
