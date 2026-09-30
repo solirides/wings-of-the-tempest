@@ -1,0 +1,41 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://c2tigyl6qdson"]
+
+[ext_resource type="Shader" uid="uid://cbhdy3j8wsibv" path="res://assets/materials/storm_wall_shader.tres" id="1_x8u01"]
+
+[sub_resource type="Gradient" id="Gradient_7lisk"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_bmqeh"]
+noise_type = 2
+seed = 1
+frequency = 0.0089
+fractal_octaves = 4
+fractal_lacunarity = 1.75
+fractal_gain = 0.45
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tkkfd"]
+noise = SubResource("FastNoiseLite_bmqeh")
+color_ramp = SubResource("Gradient_7lisk")
+seamless = true
+
+[sub_resource type="Gradient" id="Gradient_yedqo"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ojyai"]
+gradient = SubResource("Gradient_yedqo")
+
+[sub_resource type="Gradient" id="Gradient_x8u01"]
+offsets = PackedFloat32Array(0.036188178, 0.10735826, 0.13389626, 0.18335344, 0.42943305, 0.5536791)
+colors = PackedColorArray(0.1465236, 0.16770509, 0.1862773, 0, 0.2753178, 0.33481154, 0.389344, 0.68235296, 0.25490198, 0.4392157, 0.5294118, 1, 0.41828808, 0.55937177, 0.64423764, 1, 0.7166809, 0.79344773, 0.8785782, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7lisk"]
+gradient = SubResource("Gradient_x8u01")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_x8u01")
+shader_parameter/speed = Vector2(-0.15, 0.07)
+shader_parameter/base_texture = SubResource("NoiseTexture2D_tkkfd")
+shader_parameter/bounds = SubResource("GradientTexture1D_ojyai")
+shader_parameter/color_gradient = SubResource("GradientTexture1D_7lisk")

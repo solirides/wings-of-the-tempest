@@ -1,0 +1,133 @@
+[gd_scene format=3 uid="uid://0vkdd2i01g77"]
+
+[ext_resource type="Material" uid="uid://dlt7l1ak5marx" path="res://assets/materials/wind_trail_material.tres" id="1_ytn5a"]
+[ext_resource type="Material" uid="uid://c2tigyl6qdson" path="res://assets/materials/storm_wall_material.tres" id="2_ytn5a"]
+[ext_resource type="PackedScene" uid="uid://cdmpa3pleltgx" path="res://modules/storm_wall/storm_wall.tscn" id="3_hpuu2"]
+[ext_resource type="PackedScene" uid="uid://dp2pii0qjqgy2" path="res://modules/storm_wall/storm_wall_2.tscn" id="4_gu2oc"]
+[ext_resource type="ArrayMesh" uid="uid://cjucgvg0qjxq4" path="res://assets/models/wind_impact_particle.obj" id="5_r77gp"]
+[ext_resource type="Material" uid="uid://bwk34dp17uyri" path="res://assets/materials/wind_impact_material.tres" id="5_ufnct"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fpwb5"]
+inherit_velocity_ratio = 1.0
+spread = 15.0
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, 0, 0)
+turbulence_enabled = true
+turbulence_noise_strength = 0.01
+turbulence_influence_min = 0.010000001
+turbulence_influence_max = 0.060000002
+
+[sub_resource type="Curve" id="Curve_gu2oc"]
+_data = [Vector2(0, 0), 0.0, 1.1385543, 0, 0, Vector2(0.63703704, 0.49397588), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.8332696, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_ytn5a"]
+material = ExtResource("1_ytn5a")
+sections = 6
+curve = SubResource("Curve_gu2oc")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6lmcw"]
+top_radius = 2.435
+bottom_radius = 0.115
+height = 7.806
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ytn5a"]
+sky_top_color = Color(0.6394856, 0.76958525, 0.81879675, 1)
+sky_horizon_color = Color(0.9099479, 0.9124562, 0.91746753, 1)
+
+[sub_resource type="Sky" id="Sky_f24ow"]
+sky_material = SubResource("ProceduralSkyMaterial_ytn5a")
+
+[sub_resource type="Environment" id="Environment_hpuu2"]
+background_mode = 2
+sky = SubResource("Sky_f24ow")
+tonemap_mode = 2
+
+[sub_resource type="Curve" id="Curve_vd6ox"]
+_data = [Vector2(0, 0.21764714), 0.0, 0.0, 0, 0, Vector2(0.5942029, 0.66470593), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ufnct"]
+texture_mode = 1
+curve = SubResource("Curve_vd6ox")
+
+[sub_resource type="Gradient" id="Gradient_dipdn"]
+offsets = PackedFloat32Array(0.025210084, 0.25210086, 0.84033614)
+colors = PackedColorArray(0.19546562, 0.40467104, 0.654092, 1, 0.5202958, 0.72045916, 0.854057, 1, 0.8460439, 0.84604394, 0.8460439, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_dipdn"]
+gradient = SubResource("Gradient_dipdn")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6lmcw"]
+particle_flag_rotate_y = true
+angle_min = -179.99998
+angle_max = 180.00002
+direction = Vector3(0, 1, 0)
+spread = 50.0
+initial_velocity_max = 5.0
+angular_velocity_min = 287.99997
+angular_velocity_max = 345.59998
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_dipdn")
+alpha_curve = SubResource("CurveTexture_ufnct")
+
+[node name="VisualTesting" type="Node3D" unique_id=1424071881]
+
+[node name="WindTrails" type="GPUParticles3D" parent="." unique_id=379601455]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.22064, 0)
+cast_shadow = 0
+amount = 4
+lifetime = 3.0
+trail_enabled = true
+trail_lifetime = 0.4
+process_material = SubResource("ParticleProcessMaterial_fpwb5")
+draw_pass_1 = SubResource("TubeTrailMesh_ytn5a")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1645070766]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -9.7564335)
+material_override = ExtResource("2_ytn5a")
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_6lmcw")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=797206361]
+environment = SubResource("Environment_hpuu2")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=676740221]
+transform = Transform3D(1, 0, 0, 0, 0.30214062, 0.9532634, 0, -0.9532634, 0.30214062, 0, 9, 0)
+light_color = Color(0.9989719, 0.9289781, 0.74482167, 1)
+light_energy = 0.5
+shadow_enabled = true
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=2114486206]
+visible = false
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="." unique_id=722878311]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, -1.8283868e-07, -4.1828613)
+visible = false
+material_override = ExtResource("2_ytn5a")
+radius = 2.1831055
+height = 10.365723
+sides = 16
+
+[node name="GPUParticlesAttractorSphere3D" type="GPUParticlesAttractorSphere3D" parent="." unique_id=139848050]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.492632, 10.340721, -10.694149)
+strength = 8.0
+radius = 50.0
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1388319539]
+transform = Transform3D(0.77993816, -0.46099558, 0.42329612, 0, 0.6763468, 0.73658335, -0.62585664, -0.5744895, 0.5275087, 16.756004, 21.425167, 16.851913)
+
+[node name="storm_wall" parent="." unique_id=291485413 instance=ExtResource("3_hpuu2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11.671848)
+visible = false
+
+[node name="storm_wall_2" parent="." unique_id=479115584 instance=ExtResource("4_gu2oc")]
+
+[node name="WindImpact" type="GPUParticles3D" parent="." unique_id=1093885442]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.1320934, -17.445847)
+material_override = ExtResource("5_ufnct")
+cast_shadow = 0
+lifetime = 0.5
+process_material = SubResource("ParticleProcessMaterial_6lmcw")
+draw_pass_1 = ExtResource("5_r77gp")
