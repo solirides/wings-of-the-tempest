@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://cw2nmsb2q5ynn" path="res://assets/textures/UI/healthbarUnder.png" id="9_bmd0r"]
 [ext_resource type="Texture2D" uid="uid://d0cvmckaqaoa7" path="res://assets/textures/UI/healthbarProgress.png" id="10_0lhw3"]
 [ext_resource type="Script" uid="uid://cft7y487jvu6" path="res://modules/global/global.gd" id="11_0lhw3"]
+[ext_resource type="Script" uid="uid://dmevrx7885wp8" path="res://scenes/level_1/level_1.gd" id="5_fro4eg"]
+
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
 render_priority = 0
@@ -39,6 +41,7 @@ script = ExtResource("1_ghvtn")
 unique_name_in_owner = true
 camera = NodePath("../Camera")
 current_hunger = 100.0
+starve_rate = ExtResource("5_fro4eg")
 
 [node name="Camera" parent="." unique_id=1488927985 node_paths=PackedStringArray("flock") instance=ExtResource("1_7n1yb")]
 transform = Transform3D(0.4756242, -0.80044615, 0.3647843, 0, 0.41469318, 0.90996134, -0.87964857, -0.4327996, 0.19723813, 4.999996, 11, 2.999998)
