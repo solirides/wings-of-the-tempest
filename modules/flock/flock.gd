@@ -18,8 +18,8 @@ var boid_scene = preload("res://modules/flock/player_bird/player_bird.tscn")
 # Hunger
 @export var max_hunger: float = 100.0
 @export var current_hunger: float = max_hunger
-@export var starve_rate: float = 2
-@export var starve_death_interval: float = 15
+@export var starve_rate: float = 2.0
+@export var starve_death_interval: float = 15.0
 @export var speed_penalty_interval: float = 0.1
 
 
@@ -59,48 +59,37 @@ func _process(delta: float) -> void:
 	if !boids.is_empty():
 		for boid in boids:
 			if boid.speed > boid.default_speed:
-				boid.speed -= speed_penalty_interval * delta;
+				boid.speed = max(boid.default_speed, boid.speed - speed_penalty_interval * delta)
 		
 		#in essence both of these if statements are decreasing the hunger
 		if current_hunger > 0:
-			#print(delta, " vs ", (delta / (1 / starve_rate)))
-			#i have learned godot is weird and so if i multiply
-			#delta by ANY float variable it just gives 10 * delta,
-			#but i can bypass this by dividing delta by 1/starve_rate
-			current_hunger = max(current_hunger - (delta / (1 / starve_rate)), 0.0)
-			
+			current_hunger = max(0.0, current_hunger - starve_rate * delta)
+			print(current_hunger)
 			#this code block inflicts speed penalties below 50 hunger
 			if current_hunger < 50.0:
 				for boid in boids:
-					boid.speed = max(0.0, boid.speed - speed_penalty_interval * delta);
+					boid.speed = max(0.0, boid.speed - speed_penalty_interval * delta)
 			
-			if current_hunger == 0.0:
-				print("WARNING: Starving!")
 			hunger_changed.emit(current_hunger)
-			print("hunger: ", current_hunger)
 		else:
-			current_hunger = min(current_hunger - (delta / (1 / starve_rate)), 0.0)
-			hunger_changed.emit(current_hunger)
-			print("starving: ", current_hunger)
-			
 			#there is no speed penalty because you already ran out of hunger
+			current_hunger = min(0.0, current_hunger - starve_rate * delta)
+			hunger_changed.emit(current_hunger)
 			
 			#this if-statement will kill birds of starvation periodically
 			if current_hunger < -starve_death_interval:
 				print("starved")
-				current_hunger = 0.0;
+				current_hunger = 0.0
 				boids[0].remove_boid() #this line can be assumed 
-				# to not trigger a bad memory access erroor because
+				# to not trigger a bad memory access error because
 				# the entire hunger update system depends on a boid existing
-				
-			
 
 func eat(value: float) -> void:
 	if (current_hunger < 0.0):
-		current_hunger = 0.0;
+		current_hunger = 0.0
 
 	for boid in boids:
-		boid.speed += value * speed_penalty_interval;
+		boid.speed += value * speed_penalty_interval
 		#this line does imply that you can get a speed boost
 		#beyond your default speed value, but that will
 		#be corrected in the _process function

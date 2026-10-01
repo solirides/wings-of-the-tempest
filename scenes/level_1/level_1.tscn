@@ -28,6 +28,10 @@ background_mode = 2
 sky = SubResource("Sky_f24ow")
 tonemap_mode = 2
 
+[sub_resource type="BoxMesh" id="BoxMesh_20vgf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_20vgf"]
+
 [node name="World" type="Node3D" unique_id=1809984319]
 script = ExtResource("1_ghvtn")
 
@@ -35,6 +39,7 @@ script = ExtResource("1_ghvtn")
 unique_name_in_owner = true
 camera = NodePath("../Camera")
 current_hunger = 100.0
+starve_rate = 12.0
 
 [node name="Camera" parent="." unique_id=1488927985 node_paths=PackedStringArray("flock") instance=ExtResource("1_7n1yb")]
 transform = Transform3D(0.4756242, -0.80044615, 0.3647843, 0, 0.41469318, 0.90996134, -0.87964857, -0.4327996, 0.19723813, 4.999996, 11, 2.999998)
@@ -87,3 +92,12 @@ texture_progress = ExtResource("10_0lhw3")
 
 [node name="Global" type="Node3D" parent="." unique_id=764044567]
 script = ExtResource("11_0lhw3")
+
+[node name="Food" type="MeshInstance3D" parent="." unique_id=1931180051]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.047875047, 3.0217152)
+mesh = SubResource("BoxMesh_20vgf")
+
+[node name="Area3D" type="Area3D" parent="Food" unique_id=195071495]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Food/Area3D" unique_id=1793042356]
+shape = SubResource("BoxShape3D_20vgf")
