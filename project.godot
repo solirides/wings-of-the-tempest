@@ -25,6 +25,13 @@ window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
 [dotnet]
+<<<<<<< Updated upstream
+=======
+
+project/assembly_name="Wings of the Tempest"
+
+[global_group]
+>>>>>>> Stashed changes
 
 project/assembly_name="Wings of the Tempest"
 
