@@ -12,6 +12,19 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
 render_priority = 0
 shader = ExtResource("6_nubdk")
+shader_parameter/color = Color(0.048, 0.191, 0.379, 1)
+shader_parameter/roughness = 0.1
+shader_parameter/metallic = 1.0
+shader_parameter/timescale = 0.6
+shader_parameter/speed = Vector2(0.1, 0.1)
+shader_parameter/alpha = 0.6
+shader_parameter/depth_scale = 40.0
+shader_parameter/foam_width = 0.5
+shader_parameter/foam_bias = 0.5
+shader_parameter/foam_color = Color(1, 1, 1, 1)
+shader_parameter/wave_a = Vector4(1, 0, 0.25, 8)
+shader_parameter/wave_b = Vector4(1, 1, 0.15, 4)
+shader_parameter/wave_c = Vector4(0, 1, 0.1, 1.4)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sd20g"]
 sky_top_color = Color(0.6394856, 0.76958525, 0.81879675, 1)
@@ -50,6 +63,7 @@ material = ExtResource("4_igcjm")
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="." unique_id=1785480577]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0, 1.5)
+visible = false
 size = Vector3(2, 1, 2)
 material = SubResource("ShaderMaterial_0ebjn")
 
