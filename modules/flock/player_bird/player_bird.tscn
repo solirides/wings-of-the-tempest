@@ -13,7 +13,11 @@ radius = 0.4
 height = 1.2
 
 [node name="PlayerBird" type="CharacterBody3D" unique_id=1778213726 groups=["boids"]]
+motion_mode = 1
 script = ExtResource("1_25rpd")
+seperate_weight = 4.0
+steering_smoothness = 20.0
+steering_mode = 1
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=801781277]
 transform = Transform3D(-3.4577672e-09, -0.0791045, 0.99686635, 1, -4.371139e-08, -2.220446e-16, 4.3574413e-08, 0.99686635, 0.0791045, 0, 0, 0)

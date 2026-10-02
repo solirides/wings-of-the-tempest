@@ -2,6 +2,7 @@ extends CharacterBody3D
 class_name Boid
 const default_speed : float = 5.0
 @export var speed : float = 15
+@export var min_speed : float = 2
 @export var perception_range : float = 8
 @export var personal_space : float = 4
 
@@ -31,6 +32,19 @@ var flock: Flock
 var vel : Vector3 = Vector3.ZERO
 @export var steering_smoothness: float = 8.0
 @export var rotation_smoothness: float = 8.0
+
+@export var steering_mode:STEERING_MODE = STEERING_MODE.LERP
+@export var rotation_mode:ROTATION_MODE = ROTATION_MODE.LERP
+
+enum STEERING_MODE {
+	LERP,
+	STEERING_FORCE
+}
+
+enum ROTATION_MODE {
+	NONE,
+	LERP
+}
 
 #TS makes the boids spin in a random direction so that they don't look so robotic.............. while in the stupid fucking split up mode.
 var spin_direction: float = 1.0 if randf() > 0.5 else -1.0 
@@ -240,20 +254,47 @@ func _physics_process(delta: float) -> void:
 	
 	#movement/"looking"
 	# added lerp/slerp to get rid of some jitter
-	boid_direction.y = 0
-	if boid_direction.length_squared() > 0.001:
-		boid_direction = boid_direction.normalized()
-		vel = vel.lerp(boid_direction, steering_smoothness * delta)
-		vel.y = 0
-		vel = vel.normalized()
+	match steering_mode:
+		STEERING_MODE.LERP:
+			boid_direction.y = 0
+			if boid_direction.length_squared() > 0.001:
+				boid_direction = boid_direction.normalized()
+				vel = vel.lerp(boid_direction, steering_smoothness * delta)
+				vel.y = 0
+				vel = vel.normalized()
+			
+			velocity = vel * speed
+		
+		STEERING_MODE.STEERING_FORCE:
+			boid_direction.y = 0
+			if boid_direction.length_squared() > 0.001:
+				boid_direction = boid_direction.normalized()
+			var desired_velocity = boid_direction * speed
+			var steering = desired_velocity - velocity
+			steering.y = 0
+			steering = steering.limit_length(delta * steering_smoothness)
+			
+			velocity += steering
+			velocity = velocity.limit_length(speed)
+			# why is there no limit_length for minimum length???
+			if velocity.length() < min_speed:
+				velocity = velocity.normalized() * min_speed
+			
+			vel = velocity.normalized()
 	
-	velocity = vel * speed
 	move_and_slide()
-	#global_position += vel * speed * delta
 	
-	if vel.length_squared() > 0.001:
-		var target_rotation = Transform3D().looking_at(vel, Vector3.UP).basis
-		global_transform.basis = global_transform.basis.slerp(target_rotation, rotation_smoothness * delta)
+	# rotate node for display
+	match rotation_mode:
+		ROTATION_MODE.LERP:
+			if vel.length_squared() > 0.001:
+				var target_rotation = Transform3D().looking_at(vel, Vector3.UP).basis
+				global_transform.basis = global_transform.basis.slerp(target_rotation, rotation_smoothness * delta)
+		ROTATION_MODE.NONE:
+			# no interpolation
+			if velocity.length_squared() > 0.001:
+				var target_pos = global_position + velocity
+				look_at(target_pos, Vector3.UP)
 
 func remove_boid():
 	flock.boids.erase(self)
