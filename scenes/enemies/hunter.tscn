@@ -5,6 +5,9 @@
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_6olrb"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_07510"]
+albedo_color = Color(1, 0.36766997, 0.361507, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_6olrb"]
 size = Vector3(0.1, 0.1, 2)
 
@@ -12,9 +15,11 @@ size = Vector3(0.1, 0.1, 2)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -1)
 script = ExtResource("1_vu6l5")
 bullet_scene = ExtResource("2_07510")
+attack_speed = 4.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1382166599]
 mesh = SubResource("CylinderMesh_6olrb")
+surface_material_override/0 = SubResource("StandardMaterial3D_07510")
 
 [node name="FireCoolDown" type="Timer" parent="." unique_id=1160237616]
 

@@ -1,6 +1,10 @@
 extends Node3D
 class_name Enemy
 
+# This class is extended by specific enemy scripts
+# and contains shared things like health, attack handling, etc
+# Try to keep this class modular and extensible
+
 @export var health = 10
 @export var attack_damage = 1
 # Time in seconds between attacks
@@ -25,7 +29,7 @@ func try_attack():
 
 func attack(target: Node3D):
 	attack_ready = false
-	# call the attack behavior defined in the subclass
+	# call the attack behavior defined by the subclass inheriting this class
 	attack_function(target)
 	
 	# handle cooldown
@@ -33,7 +37,7 @@ func attack(target: Node3D):
 	attack_ready = true
 
 func attack_function(_target: Node3D):
-	# override this function
+	# override this function in the subclass
 	pass
 
 func take_damage(amount: int):

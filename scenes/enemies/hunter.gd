@@ -1,8 +1,8 @@
 extends Enemy # Controls hunter.tscn 
 # Constant variables with set data types 
-@export var detection_range: float = 15.0 
+#@export var detection_range: float = 15.0 
 @export var windup_time: float = 0.8
-@export var fire_cooldown: float = 4.0
+#@export var fire_cooldown: float = 4.0
 @export var bullet_scene: PackedScene
 
 # Gets the arrowspawn and firecooldown once at the start 
@@ -29,12 +29,13 @@ func _physics_process(delta: float) -> void:
 		var target = find_nearest_boid()
 		if target:
 			look_at(target.global_position, Vector3.UP)
+			# call the attack handler defined in the Enemy class
 			attack(target)
 		
 func find_nearest_boid() -> Node3D: 
 	var boids = get_tree().get_nodes_in_group("boids")
 	var nearest: Node3D = null
-	var nearest_dist := detection_range
+	var nearest_dist = track_range
 
 	for boid in boids:
 		# Updates to the nearest boid

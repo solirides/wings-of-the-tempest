@@ -154,7 +154,7 @@ strength = 8.0
 radius = 50.0
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1388319539]
-transform = Transform3D(-0.9799086, 0.11824523, -0.16061565, 0.00328365, 0.8147583, 0.57979155, 0.19942051, 0.5676153, -0.79877687, -4.107521, 14.266959, -22.59141)
+transform = Transform3D(-0.98027116, 0.1314877, -0.14757857, 0, 0.7466382, 0.66523033, 0.1976574, 0.6521061, -0.73190784, -4.107521, 14.266959, -22.59141)
 fov = 60.0
 
 [node name="storm_wall" parent="." unique_id=291485413 instance=ExtResource("3_hpuu2")]

@@ -8,10 +8,7 @@
 [ext_resource type="Shader" uid="uid://ca2i5qj33kbir" path="res://assets/materials/water.gdshader" id="6_nubdk"]
 [ext_resource type="PackedScene" uid="uid://geh1ds7gqhgf" path="res://modules/hud/hud.tscn" id="7_fxajv"]
 [ext_resource type="PackedScene" uid="uid://r2i5ufxdudpc" path="res://scenes/enemies/hunter.tscn" id="8_yhntr"]
-[ext_resource type="Texture2D" uid="uid://cw2nmsb2q5ynn" path="res://assets/textures/UI/healthbarUnder.png" id="9_bmd0r"]
 [ext_resource type="PackedScene" uid="uid://bphsnhj7h6a70" path="res://scenes/enemies/hawk.tscn" id="9_yhawk"]
-[ext_resource type="Texture2D" uid="uid://d0cvmckaqaoa7" path="res://assets/textures/UI/healthbarProgress.png" id="10_0lhw3"]
-[ext_resource type="Script" uid="uid://cft7y487jvu6" path="res://modules/global/global.gd" id="11_0lhw3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
 render_priority = 0
@@ -88,8 +85,6 @@ light_color = Color(0.9989719, 0.9289781, 0.74482167, 1)
 light_energy = 0.5
 shadow_enabled = true
 
-[node name="Hud" parent="." unique_id=781835399 instance=ExtResource("7_fxajv")]
-
 [node name="ArrowHunter" parent="." unique_id=2124715634 instance=ExtResource("8_yhntr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
 
@@ -101,17 +96,6 @@ circle_radius = 2.0
 
 [node name="Hud" parent="CanvasLayer" unique_id=719202679 instance=ExtResource("7_fxajv")]
 unique_name_in_owner = true
-
-[node name="HungerBar" type="TextureProgressBar" parent="CanvasLayer" unique_id=21988418]
-unique_name_in_owner = true
-offset_right = 64.0
-offset_bottom = 10.0
-value = 100.0
-texture_under = ExtResource("9_bmd0r")
-texture_progress = ExtResource("10_0lhw3")
-
-[node name="Global" type="Node3D" parent="." unique_id=764044567]
-script = ExtResource("11_0lhw3")
 
 [node name="Food" type="MeshInstance3D" parent="." unique_id=1931180051]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.047875047, 3.0217152)

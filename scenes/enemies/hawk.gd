@@ -41,4 +41,5 @@ func _physics_process(delta: float) -> void:
 func attack_function(target: Node3D):
 	# override function from Enemy class
 	if target.is_in_group("boids"):
+		#print("kill target")
 		target.remove_boid()

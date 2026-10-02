@@ -4,8 +4,14 @@
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_6olrb"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ewcdy"]
+albedo_color = Color(0.88581675, 0.7032674, 7.70092e-07, 1)
+
 [node name="Hawk" type="Node3D" unique_id=1431889848]
 script = ExtResource("1_kvbro")
+attack_speed = 0.5
+attack_range = 1.5
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2134505601]
 mesh = SubResource("CapsuleMesh_6olrb")
+surface_material_override/0 = SubResource("StandardMaterial3D_ewcdy")

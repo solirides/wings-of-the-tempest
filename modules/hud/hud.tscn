@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://geh1ds7gqhgf"]
 
 [ext_resource type="Script" uid="uid://c6u25dpraqrqn" path="res://modules/hud/hud.gd" id="1_lqyyi"]
+[ext_resource type="Texture2D" uid="uid://cw2nmsb2q5ynn" path="res://assets/textures/UI/healthbarUnder.png" id="2_sunxf"]
+[ext_resource type="Texture2D" uid="uid://d0cvmckaqaoa7" path="res://assets/textures/UI/healthbarProgress.png" id="3_v6k41"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6lmcw"]
 font_size = 24
@@ -22,3 +24,12 @@ offset_right = 116.0
 offset_bottom = 58.0
 text = "test 123"
 label_settings = SubResource("LabelSettings_6lmcw")
+
+[node name="HungerBar" type="TextureProgressBar" parent="." unique_id=166203044]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 10.0
+value = 100.0
+texture_under = ExtResource("2_sunxf")
+texture_progress = ExtResource("3_v6k41")
