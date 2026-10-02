@@ -30,6 +30,13 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
+# Getter functions for health, one retrieves the exact health and the other
+# retrieves the percent of the max health the flock is currently at
+func get_health() -> float:
+	return health
+func get_health_percent() -> float:
+	return health / MAX_HEALTH
+	
 
 # Two different damage functions are defined here, one subtracts health directly and one subtracts a percentage
 # of the maximum health	
