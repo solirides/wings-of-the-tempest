@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bwk34dp17uyri"]
+
+[ext_resource type="Shader" uid="uid://bthkg8x1dswd1" path="res://assets/materials/wind_impact_shader.tres" id="1_a2ivi"]
+[ext_resource type="Texture2D" uid="uid://bm1pduab7k807" path="res://assets/textures/T_FirePanningCyl45.png" id="2_7fm72"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_a2ivi")
+shader_parameter/base_texture = ExtResource("2_7fm72")
