@@ -24,10 +24,15 @@ var zoom : float = 64
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Global.camera = self
+	# call Global.check_ready_nodes() once this ready function is finished
+	connect("ready", Global.check_ready_nodes)
+	
+	#Global.camera = self
 	if projection == Camera3D.PROJECTION_ORTHOGONAL:
 		zoom = size
 	else:
 		zoom = position.y
+	
 
 #this input statment is temporary/for debug only. I imagine that how far the camera is zoomed out will be based on how many boids are on screen.
 func _unhandled_input(event: InputEvent) -> void:

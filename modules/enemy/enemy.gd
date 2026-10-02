@@ -12,6 +12,8 @@ class_name Enemy
 @export var attack_range = 3.0
 @export var track_range = 15.0
 
+@export var movement_speed = 3.0
+
 var attack_ready = true
 
 func _physics_process(_delta: float) -> void:

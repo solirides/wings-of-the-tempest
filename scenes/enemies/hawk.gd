@@ -6,6 +6,8 @@ extends Enemy
 # How fast the hawk moves around the circle, in radians per second
 @export var circle_speed: float = 1.0
 
+@export var enable_own_movement: bool = true
+
 # How close a boid has to get before the hawk attacks it
 #@export var attack_radius: float = 1.5
 
@@ -25,15 +27,16 @@ func _ready() -> void:
 			#boid.remove_boid()
 
 func _physics_process(delta: float) -> void:
-	# Advance along the circle
-	angle += circle_speed * delta
-	var offset := Vector3(cos(angle), 0.0, sin(angle)) * circle_radius
-	global_position = center + offset
-	
-	# Face the direction of travel (tangent to the circle)
-	var tangent := Vector3(-sin(angle), 0.0, cos(angle))
-	if tangent.length_squared() > 0.001:
-		look_at(global_position + tangent, Vector3.UP)
+	if enable_own_movement:
+		# Advance along the circle
+		angle += circle_speed * delta
+		var offset := Vector3(cos(angle), 0.0, sin(angle)) * circle_radius
+		global_position = center + offset
+		
+		# Face the direction of travel (tangent to the circle)
+		var tangent := Vector3(-sin(angle), 0.0, cos(angle))
+		if tangent.length_squared() > 0.001:
+			look_at(global_position + tangent, Vector3.UP)
 	
 	# handle attack
 	super._physics_process(delta)

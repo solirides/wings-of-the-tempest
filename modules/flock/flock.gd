@@ -84,6 +84,8 @@ var boid_scene = preload("res://modules/flock/player_bird/player_bird.tscn")
 
 func _ready() -> void:
 	Global.flock = self
+	# call Global.check_ready_nodes() once this ready function is finished
+	connect("ready", Global.check_ready_nodes)
 	
 	# keeps the mouse within the game window
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED
@@ -103,6 +105,7 @@ func _ready() -> void:
 		)
 
 		boids.append(new_boid)
+	
 
 
 func _process(delta: float) -> void:

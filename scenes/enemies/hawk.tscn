@@ -9,6 +9,7 @@ albedo_color = Color(0.88581675, 0.7032674, 7.70092e-07, 1)
 
 [node name="Hawk" type="Node3D" unique_id=1431889848]
 script = ExtResource("1_kvbro")
+enable_own_movement = false
 attack_speed = 0.5
 attack_range = 1.5
 

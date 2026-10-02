@@ -8,6 +8,7 @@
 [ext_resource type="Shader" uid="uid://ca2i5qj33kbir" path="res://assets/materials/water.gdshader" id="6_nubdk"]
 [ext_resource type="PackedScene" uid="uid://geh1ds7gqhgf" path="res://modules/hud/hud.tscn" id="7_fxajv"]
 [ext_resource type="PackedScene" uid="uid://r2i5ufxdudpc" path="res://scenes/enemies/hunter.tscn" id="8_yhntr"]
+[ext_resource type="Script" uid="uid://ci1rc3kcvxd16" path="res://scenes/level_1/HawkPath.gd" id="9_bmd0r"]
 [ext_resource type="PackedScene" uid="uid://bphsnhj7h6a70" path="res://scenes/enemies/hawk.tscn" id="9_yhawk"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
@@ -42,6 +43,14 @@ tonemap_mode = 2
 [sub_resource type="BoxMesh" id="BoxMesh_20vgf"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_20vgf"]
+
+[sub_resource type="Curve3D" id="Curve3D_0lhw3"]
+closed = true
+_data = {
+"points": PackedVector3Array(-4.420115, 0.23208141, 0.39346075, 4.420115, -0.23208141, -0.39346075, 2.5361738, 1.1239662, -3.4386292, -1.4113073, -0.36213326, -3.9345083, 1.4113073, 0.36213326, 3.9345083, -3.1757917, 0.7053063, 5.897953, -0.664196, 0.4974475, 2.260326, 0.664196, -0.4974475, -2.260326, 3.0909443, 0.90376997, 7.7184176, -3.6899366, 0.11292839, 4.4196024, 3.6899366, -0.11292839, -4.4196024, -5, 0, -2, -1.1541133, 0.26840484, -1.6318893, 1.1541133, -0.26840484, 1.6318893, 6.956512, 1.3813896, 6.563387, 2.80064, 2.028172, 1.6206484, -2.80064, -2.028172, -1.6206484, 2.1635695, 1.914836, 10.783627, -2, 0, 6, 2, 0, -6, -7.153063, 0.47987807, 3.7731752),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 7
 
 [node name="World" type="Node3D" unique_id=1809984319]
 script = ExtResource("1_ghvtn")
@@ -88,10 +97,6 @@ shadow_enabled = true
 [node name="ArrowHunter" parent="." unique_id=2124715634 instance=ExtResource("8_yhntr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
 
-[node name="Hawk" parent="." unique_id=1431889848 instance=ExtResource("9_yhawk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
-circle_radius = 2.0
-
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1513656914]
 
 [node name="Hud" parent="CanvasLayer" unique_id=719202679 instance=ExtResource("7_fxajv")]
@@ -105,5 +110,16 @@ mesh = SubResource("BoxMesh_20vgf")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Food/Area3D" unique_id=1793042356]
 shape = SubResource("BoxShape3D_20vgf")
+
+[node name="HawkPath" type="Path3D" parent="." unique_id=1051712067]
+curve = SubResource("Curve3D_0lhw3")
+script = ExtResource("9_bmd0r")
+
+[node name="PathFollow3D" type="PathFollow3D" parent="HawkPath" unique_id=1229860171]
+transform = Transform3D(0.08866343, 0.052021038, -0.99468523, -1.8626028e-09, 0.9986194, 0.052226678, 0.99603885, -0.0046307044, 0.08854294, 2.5361738, 1.1239662, -3.4386292)
+
+[node name="Hawk" parent="HawkPath/PathFollow3D" unique_id=1431889848 instance=ExtResource("9_yhawk")]
+transform = Transform3D(1.0000112, 0, 0, 0, 1.0000126, 0, 0, 0, 1.0000138, 0, 0, 0)
+circle_radius = 2.0
 
 [editable path="Flock"]

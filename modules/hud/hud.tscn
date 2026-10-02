@@ -27,9 +27,13 @@ label_settings = SubResource("LabelSettings_6lmcw")
 
 [node name="HungerBar" type="TextureProgressBar" parent="." unique_id=166203044]
 unique_name_in_owner = true
+texture_filter = 1
 layout_mode = 0
-offset_right = 64.0
-offset_bottom = 10.0
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 140.0
+offset_bottom = 28.0
 value = 100.0
+nine_patch_stretch = true
 texture_under = ExtResource("2_sunxf")
 texture_progress = ExtResource("3_v6k41")
