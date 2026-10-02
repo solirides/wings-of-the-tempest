@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://bc2y7dtel685w"]
+
+[ext_resource type="Script" uid="uid://dg0xe67iuelve" path="res://Boids/player_input.gd" id="1_hlabe"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_odlsx"]
+albedo_color = Color(0, 0.34117648, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_r6c0r"]
+height = 0.1
+
+[node name="CharacterBody3D" type="CharacterBody3D" unique_id=1005396910 groups=["boid_movement"]]
+script = ExtResource("1_hlabe")
+
+[node name="Pivot" type="Node3D" parent="." unique_id=1522091993]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pivot" unique_id=1218682325]
+material_override = SubResource("StandardMaterial3D_odlsx")
+mesh = SubResource("CylinderMesh_r6c0r")

@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://c2tendoe3t67p"]
+
+[ext_resource type="Script" uid="uid://cs6rdynti0j7v" path="res://Boids/boid_actions.gd" id="1_nlncj"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hjb8m"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lfxu0"]
+top_radius = 0.0
+
+[node name="bURD" type="Node3D" unique_id=1430255454 groups=["boid_movement"]]
+script = ExtResource("1_nlncj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=608257887]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_hjb8m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1806449796]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, -0.1)
+mesh = SubResource("CylinderMesh_lfxu0")

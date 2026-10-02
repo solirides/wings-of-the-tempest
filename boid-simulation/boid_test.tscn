@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://csvtlc2mqmw8v"]
+
+[ext_resource type="PackedScene" uid="uid://bc2y7dtel685w" path="res://Boids/Player.tscn" id="1_e716j"]
+[ext_resource type="Script" uid="uid://dthunc6i24qir" path="res://boid_spawner.gd" id="2_lwg4v"]
+[ext_resource type="PackedScene" uid="uid://c2tendoe3t67p" path="res://Boids/boid.tscn" id="3_qounw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lfxu0"]
+size = Vector3(30, 1, 30)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hjb8m"]
+albedo_color = Color(0.25882354, 0.34901962, 0.06666667, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lfxu0"]
+size = Vector3(30, 61, 30)
+
+[sub_resource type="SphereMesh" id="SphereMesh_odlsx"]
+
+[node name="BoidTest" type="Node2D" unique_id=1467357831]
+
+[node name="Cursor camera" type="XRCamera3D" parent="." unique_id=2077543252]
+transform = Transform3D(0.7431448, -0.4731468, 0.4731468, 0, 0.7071068, 0.7071068, -0.6691306, -0.5254828, 0.5254828, 13.75, 12, 13.25)
+
+[node name="Cursor" parent="." unique_id=1005396910 node_paths=PackedStringArray("cam") instance=ExtResource("1_e716j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+cam = NodePath("../Cursor camera")
+
+[node name="jankAssShadowMaker" type="DirectionalLight3D" parent="Cursor" unique_id=257879467]
+transform = Transform3D(0.9848078, -0.1736482, -7.590404e-09, 0, -4.3711392e-08, 1, -0.1736482, -0.9848078, -4.3047315e-08, 0, 10, 0)
+shadow_enabled = true
+
+[node name="ground" type="StaticBody3D" parent="." unique_id=1400665712]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ground" unique_id=1729380204]
+shape = SubResource("BoxShape3D_lfxu0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ground" unique_id=1233172066]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -30, 0)
+material_override = SubResource("StandardMaterial3D_hjb8m")
+mesh = SubResource("BoxMesh_lfxu0")
+
+[node name="Boid_spawner" type="Node3D" parent="." unique_id=733614589]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+script = ExtResource("2_lwg4v")
+boid = ExtResource("3_qounw")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1930676022]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5398855, 5, 4.7525253)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1555041774]
+mesh = SubResource("SphereMesh_odlsx")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=78827255]

@@ -21,7 +21,6 @@ var health = MAX_HEALTH
 # but feel free to add more. Just make sure to invoke it only from the check_status() function in this script
 signal health_reached_zero
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
@@ -66,6 +65,3 @@ func check_status() -> void:
 		health_reached_zero.emit()
 	elif (health >= MAX_HEALTH):
 		health = MAX_HEALTH
-		
-	
-	
