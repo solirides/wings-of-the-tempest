@@ -1,0 +1,214 @@
+[gd_scene format=3 uid="uid://0vkdd2i01g77"]
+
+[ext_resource type="Material" uid="uid://dlt7l1ak5marx" path="res://assets/materials/wind_trail_material.tres" id="1_ytn5a"]
+[ext_resource type="Material" uid="uid://c2tigyl6qdson" path="res://assets/materials/storm_wall_material.tres" id="2_ytn5a"]
+[ext_resource type="PackedScene" uid="uid://cdmpa3pleltgx" path="res://modules/storm_wall/storm_wall.tscn" id="3_hpuu2"]
+[ext_resource type="PackedScene" uid="uid://dp2pii0qjqgy2" path="res://modules/storm_wall/storm_wall_2.tscn" id="4_gu2oc"]
+[ext_resource type="ArrayMesh" uid="uid://cjucgvg0qjxq4" path="res://assets/models/wind_impact_particle.obj" id="5_r77gp"]
+[ext_resource type="Material" uid="uid://bwk34dp17uyri" path="res://assets/materials/wind_impact_material.tres" id="5_ufnct"]
+[ext_resource type="Material" uid="uid://dto6fxhv5ubub" path="res://assets/materials/placeholder_checker.tres" id="7_dipdn"]
+[ext_resource type="Material" uid="uid://d67yd0hsnls0" path="res://assets/materials/test.tres" id="8_es51g"]
+[ext_resource type="Material" uid="uid://m83xmteamd1e" path="res://assets/materials/water_material.tres" id="8_ohm3u"]
+[ext_resource type="Material" uid="uid://du74kmr3sjb4l" path="res://assets/materials/placeholder_checker_2.tres" id="9_ohm3u"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fpwb5"]
+inherit_velocity_ratio = 1.0
+spread = 15.0
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, 0, 0)
+turbulence_enabled = true
+turbulence_noise_strength = 0.01
+turbulence_influence_min = 0.010000001
+turbulence_influence_max = 0.060000002
+
+[sub_resource type="Curve" id="Curve_gu2oc"]
+_data = [Vector2(0, 0), 0.0, 1.1385543, 0, 0, Vector2(0.63703704, 0.49397588), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.8332696, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_ytn5a"]
+material = ExtResource("1_ytn5a")
+sections = 6
+curve = SubResource("Curve_gu2oc")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6lmcw"]
+top_radius = 2.435
+bottom_radius = 0.115
+height = 7.806
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ytn5a"]
+sky_top_color = Color(0.6394856, 0.76958525, 0.81879675, 1)
+sky_horizon_color = Color(0.9099479, 0.9124562, 0.91746753, 1)
+
+[sub_resource type="Sky" id="Sky_f24ow"]
+sky_material = SubResource("ProceduralSkyMaterial_ytn5a")
+
+[sub_resource type="Environment" id="Environment_hpuu2"]
+background_mode = 2
+sky = SubResource("Sky_f24ow")
+tonemap_mode = 2
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+glow_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.02
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_typg0"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_sd20g"]
+width = 1024
+height = 1024
+noise = SubResource("FastNoiseLite_typg0")
+seamless = true
+as_normal_map = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f24ow"]
+albedo_color = Color(0.54614246, 0.564908, 0.30943576, 1)
+roughness = 0.55
+normal_enabled = true
+normal_texture = SubResource("NoiseTexture2D_sd20g")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_6lmcw"]
+material = SubResource("StandardMaterial3D_f24ow")
+size = Vector2(30, 40)
+
+[sub_resource type="Curve" id="Curve_vd6ox"]
+_data = [Vector2(0, 0.21764714), 0.0, 0.0, 0, 0, Vector2(0.5942029, 0.66470593), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ufnct"]
+texture_mode = 1
+curve = SubResource("Curve_vd6ox")
+
+[sub_resource type="Gradient" id="Gradient_dipdn"]
+offsets = PackedFloat32Array(0.025210084, 0.25210086, 0.84033614)
+colors = PackedColorArray(0.19546562, 0.40467104, 0.654092, 1, 0.5202958, 0.72045916, 0.854057, 1, 0.8460439, 0.84604394, 0.8460439, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_dipdn"]
+gradient = SubResource("Gradient_dipdn")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6lmcw"]
+particle_flag_rotate_y = true
+angle_min = -179.99998
+angle_max = 180.00002
+direction = Vector3(0, 1, 0)
+spread = 50.0
+initial_velocity_max = 5.0
+angular_velocity_min = 287.99997
+angular_velocity_max = 345.59998
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_dipdn")
+alpha_curve = SubResource("CurveTexture_ufnct")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_f24ow"]
+material = ExtResource("8_ohm3u")
+size = Vector2(8, 8)
+subdivide_width = 20
+subdivide_depth = 20
+
+[node name="VisualTesting" type="Node3D" unique_id=1424071881]
+
+[node name="WindTrails" type="GPUParticles3D" parent="." unique_id=379601455]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.22064, 0)
+cast_shadow = 0
+amount = 4
+lifetime = 3.0
+trail_enabled = true
+trail_lifetime = 0.4
+process_material = SubResource("ParticleProcessMaterial_fpwb5")
+draw_pass_1 = SubResource("TubeTrailMesh_ytn5a")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1645070766]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.240463, 0, -9.7564335)
+material_override = ExtResource("2_ytn5a")
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_6lmcw")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=797206361]
+environment = SubResource("Environment_hpuu2")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=676740221]
+transform = Transform3D(1, 0, 0, 0, 0.30214062, 0.9532634, 0, -0.9532634, 0.30214062, 0, 9, 0)
+visible = false
+light_color = Color(0.9989719, 0.9289781, 0.74482167, 1)
+light_energy = 0.5
+shadow_enabled = true
+
+[node name="Ground" type="MeshInstance3D" parent="." unique_id=2114486206]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.8342648, 0)
+mesh = SubResource("PlaneMesh_6lmcw")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="." unique_id=722878311]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, -1.8283868e-07, -4.1828613)
+visible = false
+material_override = ExtResource("2_ytn5a")
+radius = 2.1831055
+height = 10.365723
+sides = 16
+
+[node name="GPUParticlesAttractorSphere3D" type="GPUParticlesAttractorSphere3D" parent="." unique_id=139848050]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.492632, 10.340721, -10.694149)
+strength = 8.0
+radius = 50.0
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1388319539]
+transform = Transform3D(-0.9799086, 0.11824523, -0.16061565, 0.00328365, 0.8147583, 0.57979155, 0.19942051, 0.5676153, -0.79877687, -4.107521, 14.266959, -22.59141)
+fov = 60.0
+
+[node name="storm_wall" parent="." unique_id=291485413 instance=ExtResource("3_hpuu2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11.671848)
+visible = false
+
+[node name="storm_wall_2" parent="." unique_id=479115584 instance=ExtResource("4_gu2oc")]
+
+[node name="WindImpact" type="GPUParticles3D" parent="." unique_id=1093885442]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8286476, 5.0549793, -13.401718)
+material_override = ExtResource("5_ufnct")
+cast_shadow = 0
+lifetime = 0.5
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_6lmcw")
+draw_pass_1 = ExtResource("5_r77gp")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1610242543]
+transform = Transform3D(-0.9771377, 0, -0.21260759, -0.071245715, 0.94218105, 0.327443, 0.20031485, 0.3351043, -0.9206406, 0, 0.9984369, -15.348744)
+light_color = Color(0.99999994, 0.19223255, 0.21325946, 1)
+light_energy = 16.0
+shadow_enabled = true
+spot_range = 29.145817
+spot_angle = 34.21227
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="." unique_id=1927440746]
+transform = Transform3D(-0.7265901, 0.17588316, -0.66417754, 0.34962875, 0.92680997, -0.1370515, 0.5914613, -0.33179578, -0.7349049, -9.768785, -2.9593744, -10.474534)
+light_color = Color(0, 0.5872371, 0.9091947, 1)
+light_energy = 200.0
+shadow_enabled = true
+spot_range = 29.145817
+spot_angle = 23.718204
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=619402837]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5101175, -1.8776855, -8.921692)
+size = Vector3(6.1811523, 4.755371, 1)
+material = ExtResource("7_dipdn")
+
+[node name="Water" type="CSGBox3D" parent="." unique_id=1725305145]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, -3, -11.5)
+visible = false
+size = Vector3(4, 1, 4)
+material = ExtResource("8_es51g")
+
+[node name="Box" type="CSGBox3D" parent="." unique_id=1038309548]
+transform = Transform3D(0.43301266, -0.75, -0.5, 0.86602545, 0.49999997, 0, 0.24999999, -0.43301272, 0.8660254, -5.5, -2, -11)
+size = Vector3(2, 1, 1)
+material = ExtResource("9_ohm3u")
+
+[node name="Box2" type="CSGBox3D" parent="." unique_id=734954313]
+transform = Transform3D(-0.53349376, -0.80801266, -0.25, 0.39457455, 0.023683548, -0.9185586, 0.74812794, -0.5886889, 0.30618617, -7.5, -2, -11)
+size = Vector3(2, 1, 1)
+material = ExtResource("7_dipdn")
+
+[node name="Water2" type="MeshInstance3D" parent="." unique_id=1183953395]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -2, -11)
+mesh = SubResource("PlaneMesh_f24ow")

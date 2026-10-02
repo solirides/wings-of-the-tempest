@@ -1,9 +1,11 @@
 extends Camera3D
 
 
-<<<<<<< Updated upstream
+@export var flock: Node3D
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	Global.camera = self
 	pass # Replace with function body.
 =======
 @export var flock: Node3D
@@ -33,7 +35,6 @@ func _ready() -> void:
 		zoom = size
 	else:
 		zoom = position.y
->>>>>>> Stashed changes
 
 #this input statment is temporary/for debug only. I imagine that how far the camera is zoomed out will be based on how many boids are on screen.
 func _unhandled_input(event: InputEvent) -> void:
@@ -45,9 +46,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-<<<<<<< Updated upstream
-	pass
-=======
 	_cam_zoom(delta)
 	_cam_movement(delta)
 
@@ -102,4 +100,6 @@ func _cam_zoom(delta: float) -> void :
 		#position.z = lerp(position.z, zoom, 10.0 * delta)
 		
 		#how tf?
->>>>>>> Stashed changes
+=======
+	#print(flock.get_center_of_mass())
+	

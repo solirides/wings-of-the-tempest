@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://dfnojmsp7p67"]
+
+[ext_resource type="Script" uid="uid://b55ur2ltrwn7p" path="res://scenes/enemies/bullet.gd" id="1_hl25f"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_6olrb"]
+
+[node name="Bullet" type="Area3D" unique_id=660157548]
+script = ExtResource("1_hl25f")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1295787968]
+mesh = SubResource("SphereMesh_6olrb")

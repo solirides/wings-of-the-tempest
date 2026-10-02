@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bphsnhj7h6a70"]
+
+[ext_resource type="Script" uid="uid://kcxhpt2bsugs" path="res://scenes/enemies/hawk.gd" id="1_kvbro"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_6olrb"]
+
+[node name="Hawk" type="Node3D" unique_id=1431889848]
+script = ExtResource("1_kvbro")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2134505601]
+mesh = SubResource("CapsuleMesh_6olrb")

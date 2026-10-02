@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dlt7l1ak5marx"]
+
+[resource]
+transparency = 1
+shading_mode = 0
+use_particle_trails = true
