@@ -1,44 +1,42 @@
-extends Node
+extends Node3D
 class_name Enemy
 
 @export var health = 10
 @export var attack_damage = 1
-@export var attack_speed = 400 #for testing
+# Time in seconds between attacks
+@export var attack_speed = 1.0
+@export var attack_range = 3.0
+@export var track_range = 15.0
+
 var attack_ready = true
-@export var attack_range = 3
-var cooldown_timer: SceneTreeTimer
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if attack_ready:
-		for n in Global.flock.boids:
-			if n.global_position.distance_to(self.global_position) <= attack_range:
-				attack(n)
-				break
+		try_attack()
+
+func try_attack():
+	# default behavior: attacks the first boid it finds in range.
+	# subclasses can override this
+	for n in Global.flock.boids:
+		if n.global_position.distance_to(self.global_position) <= attack_range:
+			attack(n)
+			break
+
 
 func attack(target: Node3D):
-	print("enemy attack")
 	attack_ready = false
-	cooldown_timer = get_tree().create_timer(attack_speed)
-	cooldown_timer.timeout.connect(recover_attack)
+	# call the attack behavior defined in the subclass
 	attack_function(target)
-
-func recover_attack():
+	
+	# handle cooldown
+	await get_tree().create_timer(attack_speed).timeout
 	attack_ready = true
 
-func attack_function(target: Node3D):
+func attack_function(_target: Node3D):
 	# override this function
-	print("calling empty attack function")
+	pass
 
 func take_damage(amount: int):
 	health -= amount
 	if health <= 0:
-		print("dead")
 		queue_free()
