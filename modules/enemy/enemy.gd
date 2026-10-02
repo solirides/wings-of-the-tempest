@@ -3,7 +3,7 @@ class_name Enemy
 
 @export var health = 10
 @export var attack_damage = 1
-@export var attack_speed = 4
+@export var attack_speed = 400 #for testing
 var attack_ready = true
 @export var attack_range = 3
 var cooldown_timer: SceneTreeTimer

@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://d67yd0hsnls0"]
+
+[ext_resource type="Shader" uid="uid://cdrdakg1qg40m" path="res://scenes/visual_testing/test.gdshader" id="1_j5fdm"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_j5fdm")
+shader_parameter/depth_factor = 80.0
