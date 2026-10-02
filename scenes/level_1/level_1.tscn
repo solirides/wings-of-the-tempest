@@ -9,12 +9,10 @@
 [ext_resource type="Shader" uid="uid://ca2i5qj33kbir" path="res://assets/materials/water.gdshader" id="6_nubdk"]
 [ext_resource type="PackedScene" uid="uid://geh1ds7gqhgf" path="res://modules/hud/hud.tscn" id="7_fxajv"]
 [ext_resource type="PackedScene" uid="uid://r2i5ufxdudpc" path="res://scenes/enemies/hunter.tscn" id="8_yhntr"]
-[ext_resource type="PackedScene" uid="uid://bphsnhj7h6a70" path="res://scenes/enemies/hawk.tscn" id="9_yhawk"]
 [ext_resource type="Texture2D" uid="uid://cw2nmsb2q5ynn" path="res://assets/textures/UI/healthbarUnder.png" id="9_bmd0r"]
+[ext_resource type="PackedScene" uid="uid://bphsnhj7h6a70" path="res://scenes/enemies/hawk.tscn" id="9_yhawk"]
 [ext_resource type="Texture2D" uid="uid://d0cvmckaqaoa7" path="res://assets/textures/UI/healthbarProgress.png" id="10_0lhw3"]
 [ext_resource type="Script" uid="uid://cft7y487jvu6" path="res://modules/global/global.gd" id="11_0lhw3"]
-[ext_resource type="Script" uid="uid://dmevrx7885wp8" path="res://scenes/level_1/level_1.gd" id="5_fro4eg"]
-
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
 render_priority = 0
@@ -54,9 +52,8 @@ script = ExtResource("1_ghvtn")
 
 [node name="Flock" parent="." unique_id=1876045196 node_paths=PackedStringArray("camera") instance=ExtResource("2_jr17i")]
 unique_name_in_owner = true
+num_boids = 32
 camera = NodePath("../Camera")
-current_hunger = 100.0
-starve_rate = ExtResource("5_fro4eg")
 
 [node name="Camera" parent="." unique_id=1488927985 node_paths=PackedStringArray("flock") instance=ExtResource("1_7n1yb")]
 transform = Transform3D(0.4756242, -0.80044615, 0.3647843, 0, 0.41469318, 0.90996134, -0.87964857, -0.4327996, 0.19723813, 4.999996, 11, 2.999998)
@@ -104,10 +101,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 circle_radius = 2.0
 
-[editable path="Flock"]
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1513656914]
 
-[node name="Hud" parent="CanvasLayer" unique_id=781835399 instance=ExtResource("7_fxajv")]
+[node name="Hud" parent="CanvasLayer" unique_id=719202679 instance=ExtResource("7_fxajv")]
 unique_name_in_owner = true
 
 [node name="HungerBar" type="TextureProgressBar" parent="CanvasLayer" unique_id=21988418]
@@ -129,3 +125,5 @@ mesh = SubResource("BoxMesh_20vgf")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Food/Area3D" unique_id=1793042356]
 shape = SubResource("BoxShape3D_20vgf")
+
+[editable path="Flock"]
