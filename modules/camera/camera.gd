@@ -5,6 +5,7 @@ extends Camera3D
 #THX, https://gameidea.org/2024/12/13/how-to-make-an-rts-camera-system-in-godot/ I stole your shit
 @export var edge_margin : float = 50
 @export var cam_speed : float = 20
+@export var accel_speed : float = 8
 #@export_range(0, 1000) cam_zoom : float = 1
 @export_range(0, 1000) var cam_zoom : float = 1
 @export_range(0, 1000, 0.1) var zoom_speed: float = 4
@@ -15,7 +16,8 @@ extends Camera3D
 #@onready var camera = $Elevation/Camera3D
 #exporting sum shit for the BOID behavior.
 @export var cam_is_moving: bool = false
-@export var move_direction: Vector3 = Vector3.ZERO
+var move_direction: Vector3 = Vector3.ZERO
+var camera_velocity: Vector3 = Vector3.ZERO
 
 
 var last_mouse_pos: Vector2
@@ -69,20 +71,24 @@ func _cam_movement(delta: float) -> void :
 		move_dir.z = -1.0  #Down or fackward
 		#print("I should be moving")
 	
+	
+	var forward = -global_transform.basis.z
+	var right = global_transform.basis.x
+	forward.y = 0
+	right.y = 0
+	forward = forward.normalized()
+	right = right.normalized()
+	
+	move_direction = (right * move_dir.x + forward * move_dir.z).normalized()
+	
+	camera_velocity = lerp(camera_velocity, move_direction, delta * accel_speed)
+	
+	global_position += camera_velocity * cam_speed * delta
+	
 	if move_dir != Vector3.ZERO :
 		cam_is_moving = true
-		var forward = -global_transform.basis.z
-		var right = global_transform.basis.x
-		forward.y = 0
-		right.y = 0
-		forward = forward.normalized()
-		right = right.normalized()
-		
-		
-		move_direction = (right * move_dir.x + forward * move_dir.z).normalized()
-		
-		global_position += move_direction * cam_speed * delta
-	else :
+	
+	else:
 		cam_is_moving = false
 		move_direction = Vector3.ZERO
 
