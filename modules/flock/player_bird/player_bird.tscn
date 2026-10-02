@@ -2,11 +2,20 @@
 
 [ext_resource type="Script" uid="uid://b12pbyggfvd45" path="res://modules/flock/player_bird/boid.gd" id="1_25rpd"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bmd0r"]
+albedo_color = Color(1.540184e-06, 0.7125109, 0.7370215, 1)
+
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_25nu7"]
+material = SubResource("StandardMaterial3D_bmd0r")
 radius = 0.3
 height = 1.0
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_25rpd"]
+albedo_color = Color(0.891643, 0.71356356, 0, 1)
+roughness = 0.25
+
 [sub_resource type="PrismMesh" id="PrismMesh_ftwdc"]
+material = SubResource("StandardMaterial3D_25rpd")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ppj06"]
 radius = 0.4

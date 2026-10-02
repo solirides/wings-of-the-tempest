@@ -4,3 +4,5 @@
 
 [node name="Camera" type="Camera3D" unique_id=506319422]
 script = ExtResource("1_pf27r")
+
+[node name="Node3D" type="Node3D" parent="." unique_id=1823544482]

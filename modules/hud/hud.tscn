@@ -3,9 +3,26 @@
 [ext_resource type="Script" uid="uid://c6u25dpraqrqn" path="res://modules/hud/hud.gd" id="1_lqyyi"]
 [ext_resource type="Texture2D" uid="uid://cw2nmsb2q5ynn" path="res://assets/textures/UI/healthbarUnder.png" id="2_sunxf"]
 [ext_resource type="Texture2D" uid="uid://d0cvmckaqaoa7" path="res://assets/textures/UI/healthbarProgress.png" id="3_v6k41"]
+[ext_resource type="Script" uid="uid://cxboty7yf78n1" path="res://modules/hud/level_end_screen.gd" id="4_v6k41"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6lmcw"]
 font_size = 24
+
+[sub_resource type="SystemFont" id="SystemFont_sd20g"]
+font_names = PackedStringArray("Noto Sans", "Roboto", "Sans-Serif")
+font_weight = 300
+
+[sub_resource type="LabelSettings" id="LabelSettings_f24ow"]
+font = SubResource("SystemFont_sd20g")
+font_size = 70
+
+[sub_resource type="SystemFont" id="SystemFont_sunxf"]
+font_names = PackedStringArray("Noto Sans", "Roboto", "Sans-Serif")
+font_weight = 300
+
+[sub_resource type="LabelSettings" id="LabelSettings_v6k41"]
+font = SubResource("SystemFont_sunxf")
+font_size = 30
 
 [node name="Hud" type="Control" unique_id=781835399]
 layout_mode = 3
@@ -37,3 +54,41 @@ value = 100.0
 nine_patch_stretch = true
 texture_under = ExtResource("2_sunxf")
 texture_progress = ExtResource("3_v6k41")
+
+[node name="LevelEndScreen" type="ColorRect" parent="." unique_id=7232756]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.18837145, 0.18837145, 0.18837145, 0.558)
+script = ExtResource("4_v6k41")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LevelEndScreen" unique_id=147339816]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -219.5
+offset_top = -48.0
+offset_right = 219.5
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="LevelEndScreen/VBoxContainer" unique_id=518905686]
+layout_mode = 2
+text = "Level Cleared!"
+label_settings = SubResource("LabelSettings_f24ow")
+horizontal_alignment = 1
+
+[node name="Stats" type="Label" parent="LevelEndScreen/VBoxContainer" unique_id=1273775322]
+layout_mode = 2
+text = "summary:
++x birds
+something something
+123123"
+label_settings = SubResource("LabelSettings_v6k41")

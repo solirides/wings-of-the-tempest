@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://r2i5ufxdudpc" path="res://scenes/enemies/hunter.tscn" id="8_yhntr"]
 [ext_resource type="Script" uid="uid://ci1rc3kcvxd16" path="res://scenes/level_1/HawkPath.gd" id="9_bmd0r"]
 [ext_resource type="PackedScene" uid="uid://bphsnhj7h6a70" path="res://scenes/enemies/hawk.tscn" id="9_yhawk"]
+[ext_resource type="Script" uid="uid://ddomg1qhruqyf" path="res://scenes/level_1/goal.gd" id="11_0lhw3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
 render_priority = 0
@@ -52,8 +53,19 @@ _data = {
 }
 point_count = 7
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_6lmcw"]
+size = Vector3(7, 5, 5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6lmcw"]
+albedo_color = Color(0.59106696, 0.8964245, 0.3219582, 1)
+
 [node name="World" type="Node3D" unique_id=1809984319]
 script = ExtResource("1_ghvtn")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1513656914]
+
+[node name="Hud" parent="CanvasLayer" unique_id=719202679 instance=ExtResource("7_fxajv")]
+unique_name_in_owner = true
 
 [node name="Flock" parent="." unique_id=1876045196 node_paths=PackedStringArray("camera") instance=ExtResource("2_jr17i")]
 unique_name_in_owner = true
@@ -67,7 +79,7 @@ flock = NodePath("../Flock")
 
 [node name="Ground" type="CSGBox3D" parent="." unique_id=1501656876]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
-size = Vector3(10, 1, 10)
+size = Vector3(40, 1, 40)
 material = ExtResource("3_janvk")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=159571048]
@@ -89,18 +101,12 @@ environment = SubResource("Environment_6lmcw")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=157938174]
 transform = Transform3D(1, 0, 0, 0, 0.30214062, 0.9532634, 0, -0.9532634, 0.30214062, 0, 9, 0)
-visible = false
 light_color = Color(0.9989719, 0.9289781, 0.74482167, 1)
 light_energy = 0.5
 shadow_enabled = true
 
 [node name="ArrowHunter" parent="." unique_id=2124715634 instance=ExtResource("8_yhntr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
-
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1513656914]
-
-[node name="Hud" parent="CanvasLayer" unique_id=719202679 instance=ExtResource("7_fxajv")]
-unique_name_in_owner = true
 
 [node name="Food" type="MeshInstance3D" parent="." unique_id=1931180051]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.047875047, 3.0217152)
@@ -121,5 +127,26 @@ transform = Transform3D(0.08866343, 0.052021038, -0.99468523, -1.8626028e-09, 0.
 [node name="Hawk" parent="HawkPath/PathFollow3D" unique_id=1431889848 instance=ExtResource("9_yhawk")]
 transform = Transform3D(1.0000112, 0, 0, 0, 1.0000126, 0, 0, 0, 1.0000138, 0, 0, 0)
 circle_radius = 2.0
+
+[node name="Goal" type="Area3D" parent="." unique_id=1024715884]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -63)
+script = ExtResource("11_0lhw3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Goal" unique_id=183862571]
+shape = SubResource("BoxShape3D_6lmcw")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Goal" unique_id=1737226008]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+size = Vector3(7, 1, 5)
+material = SubResource("StandardMaterial3D_6lmcw")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=638787787]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -18)
+billboard = 1
+text = "Go this way to the goal!"
+font_size = 250
+outline_size = 80
+
+[connection signal="body_entered" from="Goal" to="Goal" method="_on_body_entered"]
 
 [editable path="Flock"]

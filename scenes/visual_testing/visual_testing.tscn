@@ -104,7 +104,7 @@ alpha_curve = SubResource("CurveTexture_ufnct")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_f24ow"]
 material = ExtResource("8_ohm3u")
-size = Vector2(8, 8)
+size = Vector2(7.8, 7.8)
 subdivide_width = 20
 subdivide_depth = 20
 
@@ -212,3 +212,19 @@ material = ExtResource("7_dipdn")
 [node name="Water2" type="MeshInstance3D" parent="." unique_id=1183953395]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -2, -11)
 mesh = SubResource("PlaneMesh_f24ow")
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="." unique_id=21497397]
+operation = 2
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CSGCombiner3D" unique_id=1758551947]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -4, -11)
+size = Vector3(8, 5, 8)
+material = ExtResource("7_dipdn")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="CSGCombiner3D" unique_id=1280238683]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -0.875, -11)
+operation = 2
+radius = 3.5
+height = 3.75
+sides = 20
+material = ExtResource("7_dipdn")

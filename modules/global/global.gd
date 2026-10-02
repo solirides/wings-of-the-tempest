@@ -10,6 +10,7 @@ var score:int = 0
 var flock: Node
 var camera: Node
 var hud: Node
+var world: Node
 
 # Emitted when the flock, camera, and hud variables have all been set
 # Each main node sets their respective variable to themself in their ready function
@@ -23,6 +24,7 @@ var ready_emitted = false
 func _ready() -> void:
 	print("Global node ready")
 	print("This is the root node of the Global scene: " + str(Global))
+	get_tree().connect("scene_changed", _on_scene_changed)
 
 #func connect_node(node: Node, variable):
 	#if node:
@@ -35,7 +37,7 @@ func _process(delta: float) -> void:
 
 func check_ready_nodes():
 	var ready = true
-	for n in [flock, camera, hud]:
+	for n in [flock, camera, hud, world]:
 		if n == null:
 			print("Global checking for main nodes.")
 			ready = false
@@ -43,3 +45,9 @@ func check_ready_nodes():
 		print("All main nodes are ready")
 		main_nodes_ready.emit()
 		ready_emitted = true
+	
+
+
+func _on_scene_changed():
+	ready_emitted = false
+	
