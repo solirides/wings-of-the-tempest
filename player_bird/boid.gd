@@ -229,11 +229,8 @@ func _physics_process(delta: float) -> void:
 		repel_force = repel() * repel_weight
 		#when the camera is not moving, boids in large groups should start spinning in place.
 		var boid_subflock_spin_force : Vector3 = spinning(local_center(neighbors), neighbors) * spin_weight
-		#the alignment force is better now.
 		var spin_alignment = alignment_force * 0.2
 		
-		if (cam_is_moving == true) :
-			boid_subflock_spin_force = Vector3.ZERO
 		
 		boid_direction = (seperation_force + spin_alignment + repel_force + cohesion_force + flee_force + stay_on_screen_force + camera_force + boid_subflock_spin_force).normalized()
 

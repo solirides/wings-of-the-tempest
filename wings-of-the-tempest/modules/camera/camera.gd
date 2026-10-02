@@ -2,13 +2,6 @@ extends Camera3D
 
 
 @export var flock: Node3D
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	Global.camera = self
-	pass # Replace with function body.
-=======
-@export var flock: Node3D
 #THX, https://gameidea.org/2024/12/13/how-to-make-an-rts-camera-system-in-godot/ I stole your shit
 @export var edge_margin : float = 50
 @export var cam_speed : float = 20
@@ -100,6 +93,3 @@ func _cam_zoom(delta: float) -> void :
 		#position.z = lerp(position.z, zoom, 10.0 * delta)
 		
 		#how tf?
-=======
-	#print(flock.get_center_of_mass())
-	

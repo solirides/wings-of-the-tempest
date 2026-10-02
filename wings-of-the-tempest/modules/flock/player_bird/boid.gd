@@ -9,15 +9,15 @@ class_name Boid
 @export var alignment_weight : float = 1
 @export var cohesion_weight : float = 1
 @export var goal_weight : float = 1.2
-@export var stay_on_screen_weight : float = 2
-@export var cam_moving_weight : float = 1.2
+@export var stay_on_screen_weight : float = 999
+@export var cam_moving_weight : float = 2.5
 
 
 @export var repel_radius: float = 5.0
 @export var repel_weight: float = 5.0
 
 #coward shit
-@export var flee_weight: float = 2.1
+@export var flee_weight: float = 4.5
 @export var is_fleeing: bool = false
 @export var flee_timer: float = 0.0
 @export var flee_duration: float = 3 #3 seconds
@@ -56,35 +56,12 @@ func STAY_ON_SCREEN() -> Vector3 :
 	var margin := 100.0
 	var boid_pos = cam.unproject_position(global_position)
 	
-	#This is messy as hell, I'm sorry. But the old way I used to do it made them clump up like CRAZY
-	var off_left = boid_pos.x < margin
-	var off_right = boid_pos.x > window_size.x - margin
-	var off_top = boid_pos.y < margin
-	var off_bottom = boid_pos.y > window_size.y - margin
+	if (boid_pos.x < margin or boid_pos.x > window_size.x - margin or boid_pos.y < margin or boid_pos.y > window_size.y - margin):
+		var center_world = cam.project_position(window_size * 0.5, cam.global_position.distance_to(global_position))
+		center_world.y = 0
+		force = global_position.direction_to(center_world).normalized()
 	
-	if not (off_left or off_right or off_top or off_bottom):
-		return Vector3.ZERO
-
-	var cam_right = cam.global_transform.basis.x
-	cam_right.y = 0
-	cam_right = cam_right.normalized()
-	
-	var cam_forward = -cam.global_transform.basis.z
-	cam_forward.y = 0
-	cam_forward = cam_forward.normalized()
-
-	if off_left:
-		force += cam_right * ((margin - boid_pos.x) / margin)
-	elif off_right:
-		force -= cam_right * ((boid_pos.x - (window_size.x - margin)) / margin)
-
-	if off_top:
-		force -= cam_forward * ((margin - boid_pos.y) / margin)
-	elif off_bottom:
-		force += cam_forward * ((boid_pos.y - (window_size.y - margin)) / margin)
-
-	force.y = 0
-	return force.normalized()
+	return force
 
 #I see, I'm going to change this so that if they get within this repel radius, they call the "flee" function, which forces the boid to fly a set distance 180 
 func repel() -> Vector3:
@@ -209,9 +186,10 @@ func _physics_process(delta: float) -> void:
 		flee_force = _flee(delta) * flee_weight
 	
 	else :
-		#heading towards the cursor
 		cursor_force = global_position.direction_to(flock.mouse_target) * goal_weight
 	
+	#heading towards the cursor
+	cursor_force = global_position.direction_to(flock.mouse_target) * goal_weight
 	#seperation force
 	var seperation_force : Vector3 = seperation(neighbors) * seperate_weight
 	#alignment force
@@ -228,14 +206,12 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("repel"):
 		repel_force = repel() * repel_weight
 		#when the camera is not moving, boids in large groups should start spinning in place.
-		var boid_subflock_spin_force : Vector3 = spinning(local_center(neighbors), neighbors) * spin_weight
-		#the alignment force is better now.
+		var boid_subflock_spin_force : Vector3 = Vector3.ZERO
+		if (cam_is_moving == false) :
+			boid_subflock_spin_force = spinning(local_center(neighbors), neighbors) * spin_weight
 		var spin_alignment = alignment_force * 0.2
 		
-		if (cam_is_moving == true) :
-			boid_subflock_spin_force = Vector3.ZERO
-		
-		boid_direction = (seperation_force + spin_alignment + repel_force + cohesion_force + flee_force + stay_on_screen_force + camera_force + boid_subflock_spin_force).normalized()
+		boid_direction = (seperation_force + spin_alignment + cohesion_force + repel_force + flee_force + stay_on_screen_force + camera_force + boid_subflock_spin_force).normalized()
 
 	#THIS IS THE START OF THE BOID FOLLOWING THE CURSOR BEHAVIOR!
 	else :
@@ -262,3 +238,4 @@ func remove_boid():
 	flock.boids.erase(self)
 	queue_free()
 	
+#split up capability. I.G. when the mouse is repelling them they group up and spin in their own groups. These groups will head towards the direction the camera is moving if the person is still in split up mode.
