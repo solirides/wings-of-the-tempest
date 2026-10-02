@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://db4oyrihkt3uk"]
+
+[ext_resource type="Script" uid="uid://b8koq6ro1hq30" path="res://modules/flock/death_particles.gd" id="1_h44xv"]
+
+[sub_resource type="Curve" id="Curve_h44xv"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_h44xv"]
+curve = SubResource("Curve_h44xv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6lmcw"]
+emission_shape = 1
+emission_sphere_radius = 1.0
+spread = 180.0
+initial_velocity_min = 2.0
+initial_velocity_max = 6.0
+gravity = Vector3(0, 0, 0)
+damping_min = 0.3
+damping_max = 2.0
+scale_curve = SubResource("CurveTexture_h44xv")
+turbulence_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sd20g"]
+shading_mode = 0
+albedo_color = Color(0.9983396, 0.59728736, 0.36792228, 1)
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_f24ow"]
+material = SubResource("StandardMaterial3D_sd20g")
+size = Vector2(0.5, 0.5)
+
+[node name="DeathParticles" type="GPUParticles3D" unique_id=1258173646]
+amount = 15
+lifetime = 0.8
+explosiveness = 0.86
+process_material = SubResource("ParticleProcessMaterial_6lmcw")
+draw_pass_1 = SubResource("QuadMesh_f24ow")
+script = ExtResource("1_h44xv")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

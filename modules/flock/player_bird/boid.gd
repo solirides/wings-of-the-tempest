@@ -56,6 +56,9 @@ var cam_is_moving: bool:
 var move_direction: Vector3:
 	get: return Global.camera.move_direction if (Global.camera and is_instance_valid(Global.camera)) else Vector3.ZERO
 
+var death_particles = preload("res://modules/flock/death_particles.tscn")
+var death_queued = false
+
 func _ready() -> void:
 	flock = get_parent() as Flock
 	add_to_group("boids")
@@ -194,6 +197,10 @@ func spinning(center: Vector3, neighbors: Array) -> Vector3:
 
 #This is WHERE THE MAGIC BEGINS, NO MORE CALCULATING BORING ASS VECTOR SHITS!!!!!!!!!
 func _physics_process(delta: float) -> void:
+	if !death_queued:
+		boid_movement(delta)
+
+func boid_movement(delta: float):
 	#seeing whose arround who
 	#var boids : Array = get_tree().get_nodes_in_group("boids")
 	
@@ -237,6 +244,7 @@ func _physics_process(delta: float) -> void:
 	
 	#CEO of BOID pathing 🔥
 	var boid_direction : Vector3 = Vector3.ZERO
+	boid_direction = (seperation_force + cohesion_force + repel_force + flee_force + stay_on_screen_force)
 	
 	#When the cursor is in spread out/repel mode the boids have slightly modified behaviors
 	if Input.is_action_pressed("repel"):
@@ -246,11 +254,12 @@ func _physics_process(delta: float) -> void:
 		var spin_alignment = alignment_force * 0.2
 		
 		
-		boid_direction = (seperation_force + spin_alignment + repel_force + cohesion_force + flee_force + stay_on_screen_force + camera_force + boid_subflock_spin_force).normalized()
+		boid_direction += spin_alignment + camera_force + boid_subflock_spin_force
 
 	#THIS IS THE START OF THE BOID FOLLOWING THE CURSOR BEHAVIOR!
 	else :
-		boid_direction = (cursor_force + seperation_force + alignment_force + cohesion_force + repel_force + flee_force + stay_on_screen_force).normalized()
+		boid_direction += cursor_force + alignment_force
+	boid_direction = boid_direction.normalized()
 	
 	#movement/"looking"
 	# added lerp/slerp to get rid of some jitter
@@ -296,7 +305,20 @@ func _physics_process(delta: float) -> void:
 				var target_pos = global_position + velocity
 				look_at(target_pos, Vector3.UP)
 
-func remove_boid():
+func remove_boid(death_animation: bool = true):
+	# prevent this function from running multiple times
+	if death_queued:
+		return
+	death_queued = true
 	flock.boids.erase(self)
-	queue_free()
+	if death_animation:
+		var instance = death_particles.instantiate()
+		#get_tree().root.add_child(instance)
+		add_child(instance)
+		instance.global_position = self.global_position
+		instance.start_animation()
+		
+		var tween = get_tree().create_tween()
+		tween.tween_property(self, "scale", Vector3.ZERO, 1.0)
+		tween.tween_callback(queue_free)
 	
