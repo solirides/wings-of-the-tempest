@@ -1,6 +1,8 @@
 extends CharacterBody3D
 class_name Boid
 
+
+const default_speed : float = 5.0
 @export var speed : float = 5
 @export var perception_range : float = 8
 @export var personal_space : float = 4
