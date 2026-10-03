@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://bphsnhj7h6a70" path="res://scenes/enemies/hawk.tscn" id="9_yhawk"]
 [ext_resource type="Texture2D" uid="uid://d0cvmckaqaoa7" path="res://assets/textures/UI/healthbarProgress.png" id="10_0lhw3"]
 [ext_resource type="Script" uid="uid://cft7y487jvu6" path="res://modules/global/global.gd" id="11_0lhw3"]
+[ext_resource type="PackedScene" uid="uid://clde8ul6amsi2" path="res://modules/food/food.tscn" id="14_3fps6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
 render_priority = 0
@@ -42,10 +43,6 @@ sky_material = SubResource("ProceduralSkyMaterial_sd20g")
 background_mode = 2
 sky = SubResource("Sky_opn7a")
 tonemap_mode = 2
-
-[sub_resource type="BoxMesh" id="BoxMesh_20vgf"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_20vgf"]
 
 [node name="World" type="Node3D" unique_id=1809984319]
 script = ExtResource("1_ghvtn")
@@ -117,13 +114,7 @@ texture_progress = ExtResource("10_0lhw3")
 [node name="Global" type="Node3D" parent="." unique_id=764044567]
 script = ExtResource("11_0lhw3")
 
-[node name="Food" type="MeshInstance3D" parent="." unique_id=1931180051]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.047875047, 3.0217152)
-mesh = SubResource("BoxMesh_20vgf")
-
-[node name="Area3D" type="Area3D" parent="Food" unique_id=195071495]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Food/Area3D" unique_id=1793042356]
-shape = SubResource("BoxShape3D_20vgf")
+[node name="Food" parent="." unique_id=211283116 instance=ExtResource("14_3fps6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8812196, 0, 3.0964298)
 
 [editable path="Flock"]

@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://clde8ul6amsi2"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_pe8da"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pe8da"]
+
+[node name="Food" type="Node3D" unique_id=211283116]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1118875091]
+mesh = SubResource("BoxMesh_pe8da")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=2051834308]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1342137062]
+shape = SubResource("BoxShape3D_pe8da")
