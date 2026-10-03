@@ -63,6 +63,7 @@ albedo_color = Color(0.59106696, 0.8964245, 0.3219582, 1)
 script = ExtResource("1_ghvtn")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1513656914]
+layer = 10
 
 [node name="Hud" parent="CanvasLayer" unique_id=719202679 instance=ExtResource("7_fxajv")]
 unique_name_in_owner = true
@@ -73,7 +74,7 @@ num_boids = 32
 camera = NodePath("../Camera")
 
 [node name="Camera" parent="." unique_id=1488927985 node_paths=PackedStringArray("flock") instance=ExtResource("1_7n1yb")]
-transform = Transform3D(0.4756242, -0.80044615, 0.3647843, 0, 0.41469318, 0.90996134, -0.87964857, -0.4327996, 0.19723813, 4.999996, 11, 2.999998)
+transform = Transform3D(0.47715876, -0.7996896, 0.36443946, 0, 0.41469318, 0.9099613, -0.87881714, -0.434196, 0.19787449, 4.999996, 11, 2.999998)
 fov = 60.0
 flock = NodePath("../Flock")
 

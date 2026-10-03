@@ -1,5 +1,8 @@
 extends Camera3D
 
+# Press F to toggle free cam=
+# Press esc to toggle mouse capture mode (code is in Global)
+#
 
 @export var flock: Node3D
 #THX, https://gameidea.org/2024/12/13/how-to-make-an-rts-camera-system-in-godot/ I stole your shit
@@ -15,9 +18,15 @@ extends Camera3D
 
 #@onready var camera = $Elevation/Camera3D
 #exporting sum shit for the BOID behavior.
-@export var cam_is_moving: bool = false
+
+@export var enable_post_processing: bool = true
+var cam_is_moving: bool = false
 var move_direction: Vector3 = Vector3.ZERO
 var camera_velocity: Vector3 = Vector3.ZERO
+@export var mouse_sensitivity: float = 0.1
+
+var free_cam_mode: bool = false
+var free_cam_transform: Transform3D = Transform3D.IDENTITY
 
 
 var last_mouse_pos: Vector2
@@ -35,6 +44,18 @@ func _ready() -> void:
 	else:
 		zoom = position.y
 	
+	$Shaders.visible = enable_post_processing
+	
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("free_cam"):
+		toggle_free_cam()
+	if free_cam_mode == true and event is InputEventMouseMotion:
+		# yaw
+		self.global_rotation.y += deg_to_rad(-event.screen_relative.x * mouse_sensitivity)
+		# pitch
+		self.global_rotation.x +=deg_to_rad(-event.screen_relative.y * mouse_sensitivity)
+		self.rotation.x = clamp(self.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 
 #this input statment is temporary/for debug only. I imagine that how far the camera is zoomed out will be based on how many boids are on screen.
 func _unhandled_input(event: InputEvent) -> void:
@@ -46,8 +67,20 @@ func _unhandled_input(event: InputEvent) -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	_cam_zoom(delta)
-	_cam_movement(delta)
+	if free_cam_mode:
+		_free_cam_movement(delta)
+	else:
+		_cam_zoom(delta)
+		_cam_movement(delta)
+
+func _free_cam_movement(delta: float) -> void:
+	var input_vec = Input.get_vector("free_cam_left","free_cam_right","free_cam_forward","free_cam_backward")
+	var direction = global_transform.basis * Vector3(input_vec.x, 0, input_vec.y)
+	direction = direction.normalized()
+	var velocity = direction * cam_speed * delta
+	
+	global_position += velocity
+	
 
 #this feels jank as shit.... sorry. My tutorials way of doing cam movement didn't work.
 func _cam_movement(delta: float) -> void :
@@ -104,3 +137,21 @@ func _cam_zoom(delta: float) -> void :
 		#position.z = lerp(position.z, zoom, 10.0 * delta)
 		
 		#how tf?
+
+
+func toggle_free_cam(state: bool = !free_cam_mode):
+	if free_cam_mode == state:
+		# return if already in this state
+		return
+	free_cam_mode = state
+	if free_cam_mode:
+		# save the current transform of the camera
+		free_cam_transform = global_transform
+		# remove any roll from the camera
+		global_rotation.z = 0
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	else:
+		# load the transform of the camera before entering free cam
+		global_transform = free_cam_transform
+		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
+	
