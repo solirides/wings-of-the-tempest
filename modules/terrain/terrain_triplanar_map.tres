@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bt5nph1wxgig7"]
+
+[ext_resource type="Shader" uid="uid://cksgq8lklok5u" path="res://modules/terrain/terrain_triplanar_map.gdshader" id="1_ks7cj"]
+[ext_resource type="Texture2D" uid="uid://dwdtdb2543c08" path="res://modules/terrain/test_terrain.png" id="2_owuit"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_ks7cj")
+shader_parameter/tex = ExtResource("2_owuit")
+shader_parameter/tex_region = Vector4(0, 0, 1, 1)
+shader_parameter/tex_scale = Vector2(2, 2)
