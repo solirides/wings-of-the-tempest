@@ -17,9 +17,9 @@ uniform float alpha:hint_range(0.0, 1.0, 0.01) = 0.6;
 
 uniform float depth_scale = 40;
 // width of foam gradient
-uniform float foam_width = 0.5;
+uniform float foam_width = 0.4;
 // width of additional solid foam at the water boundry
-uniform float foam_bias = 0.5;
+uniform float foam_bias = 0.1;
 uniform vec3 foam_color : source_color = vec3(1.0);
 
 // waves
@@ -91,8 +91,12 @@ void fragment() {
 	//float random_foam = 0.3 * sin(12.0*world_pos.x + TIME*4.0);
 	//float random_foam = 10.0 * calculate_gerstner(world_pos, TIME, vec4(1,0,1,1)).x;
 	float foam_linear_factor = clamp(1.0 - (depth_diff / foam_width) + foam_bias, 0.0, 1.0);
-	float foam_mix_factor = clamp(1.0 * foam_linear_factor, 0, 1);
-	//foam_factor *= texture(foam_texture, UV).x;
+	// map values to be between -1 and 1
+	foam_linear_factor = foam_linear_factor*2.0 - 1.0;
+	float foam_texture_factor = 1.0*texture(foam_texture, UV).x;
+	//float foam_mix_factor = clamp(1.0 * foam_linear_factor, 0, 1);
+	float foam_mix_factor = floor(clamp(foam_linear_factor + foam_texture_factor, 0, 1));
+	
 	
 	vec3 water_color = vec3(linear_depth / depth_scale);
 	ALBEDO = mix(water_color, foam_color, foam_mix_factor);

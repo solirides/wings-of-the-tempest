@@ -3,6 +3,10 @@ class_name Chunk
 
 var mesh_instance: MeshInstance3D;
 
+## Set material used by the chunk's terrain mesh
+func set_terrain_material( material: Material ) -> void:
+	mesh_instance.material_override = material;
+
 ## Create terrain for this chunk based on a 3D grid of scalar voxel data
 func create_terrain( scalar_field: Array3D ) -> void:
 	mesh_instance.mesh = MarchingCube.generate_mesh( MarchingCube.generate_vertices( scalar_field, 0.0 ) );

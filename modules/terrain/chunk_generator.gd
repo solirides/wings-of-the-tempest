@@ -17,6 +17,7 @@ func create_chunk( state: ChunkGenState ) -> void:
 	#Create chunk in world
 	var chunk: = Chunk.new();
 	add_child( chunk );
+	chunk.set_terrain_material( library.terrain_material );
 	chunk.position.x = state.chunk_index * chunk_def.size.x;
 	
 	#Generate chunk using data from definition

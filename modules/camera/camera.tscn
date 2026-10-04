@@ -1,8 +1,52 @@
 [gd_scene format=3 uid="uid://d3mpcfi2m2o0v"]
 
 [ext_resource type="Script" uid="uid://djuyymnymg6xj" path="res://modules/camera/camera.gd" id="1_pf27r"]
+[ext_resource type="Shader" uid="uid://dopya06kwga34" path="res://modules/camera/posterize.gdshader" id="2_ogeh7"]
+[ext_resource type="Script" uid="uid://cifv7bgmpaick" path="res://modules/camera/shake.gd" id="2_otekq"]
+
+[sub_resource type="Gradient" id="Gradient_ogeh7"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.09540636, 0.20141342, 0.5226537, 0.66784453, 0.88834953, 0.9514563)
+colors = PackedColorArray(0, 0, 0, 1, 0.15472144, 0.11526593, 0.2713771, 1, 0.2968707, 0.21842113, 0.24608299, 1, 0.662099, 0.4816453, 0.40586513, 1, 0.921172, 0.78721327, 0.71008134, 1, 0.96987456, 0.9290176, 0.8126371, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ogeh7"]
+gradient = SubResource("Gradient_ogeh7")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6lmcw"]
+shader = ExtResource("2_ogeh7")
+shader_parameter/gradient = SubResource("GradientTexture1D_ogeh7")
+shader_parameter/use_gradient = false
+shader_parameter/steps = 12
+shader_parameter/gamma = 1.0
 
 [node name="Camera" type="Camera3D" unique_id=506319422]
+transform = Transform3D(0.47715876, -0.7996896, 0.36443955, 0, 0.41469327, 0.9099613, -0.87881714, -0.434196, 0.19787452, 0, 0, 0)
 script = ExtResource("1_pf27r")
 
-[node name="Node3D" type="Node3D" parent="." unique_id=1823544482]
+[node name="Shake" type="Node3D" parent="." unique_id=1823544482]
+script = ExtResource("2_otekq")
+
+[node name="Duration" type="Timer" parent="Shake" unique_id=45643122]
+one_shot = true
+
+[node name="Frequency" type="Timer" parent="Shake" unique_id=1192257166]
+
+[node name="Shaders" type="Control" parent="." unique_id=1328386959]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PosterizeShader" type="ColorRect" parent="Shaders" unique_id=1648680280]
+material = SubResource("ShaderMaterial_6lmcw")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="timeout" from="Shake/Duration" to="Shake" method="_on_duration_timeout"]
+[connection signal="timeout" from="Shake/Frequency" to="Shake" method="_on_frequency_timeout"]
