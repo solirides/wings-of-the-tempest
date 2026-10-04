@@ -250,7 +250,10 @@ func boid_movement(delta: float):
 	if Input.is_action_pressed("repel"):
 		repel_force = repel() * repel_weight
 		#when the camera is not moving, boids in large groups should start spinning in place.
-		var boid_subflock_spin_force : Vector3 = spinning(local_center(neighbors), neighbors) * spin_weight
+		var boid_subflock_spin_force : Vector3 = Vector3.ZERO
+		
+		if cam_is_moving == false :
+			boid_subflock_spin_force = spinning(local_center(neighbors), neighbors) * spin_weight
 		var spin_alignment = alignment_force * 0.2
 		
 		
