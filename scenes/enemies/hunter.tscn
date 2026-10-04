@@ -26,4 +26,5 @@ surface_material_override/0 = SubResource("StandardMaterial3D_07510")
 [node name="ArrowSpawn" type="Marker3D" parent="." unique_id=871525859]
 
 [node name="AimIndicator" type="MeshInstance3D" parent="." unique_id=1214064264]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 mesh = SubResource("BoxMesh_6olrb")
