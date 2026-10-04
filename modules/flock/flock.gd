@@ -103,6 +103,7 @@ func _ready() -> void:
 		)
 
 		boids.append(new_boid)
+		new_boid.boid_died.connect(_on_boid_death)
 	
 
 
@@ -173,3 +174,7 @@ func get_center_of_mass(nodes: Array = boids) -> Vector3:
 		total_position += n.global_position
 		
 	return total_position / float(nodes.size())
+
+func _on_boid_death(boid: Node, pos: Vector3):
+	# the boid gets deleted in like one frame so idk if this var is useful
+	Global.camera.shake.shake()

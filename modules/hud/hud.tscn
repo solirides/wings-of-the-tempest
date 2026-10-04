@@ -5,12 +5,18 @@
 [ext_resource type="Texture2D" uid="uid://d0cvmckaqaoa7" path="res://assets/textures/UI/healthbarProgress.png" id="3_v6k41"]
 [ext_resource type="Script" uid="uid://cxboty7yf78n1" path="res://modules/hud/level_end_screen.gd" id="4_v6k41"]
 
+[sub_resource type="SystemFont" id="SystemFont_0lhw3"]
+font_names = PackedStringArray("Noto Sans", "Open Sans", "Cantarell")
+font_weight = 300
+
 [sub_resource type="LabelSettings" id="LabelSettings_6lmcw"]
+font = SubResource("SystemFont_0lhw3")
 font_size = 24
 
 [sub_resource type="SystemFont" id="SystemFont_sd20g"]
 font_names = PackedStringArray("Noto Sans", "Roboto", "Sans-Serif")
 font_weight = 300
+subpixel_positioning = 0
 
 [sub_resource type="LabelSettings" id="LabelSettings_f24ow"]
 font = SubResource("SystemFont_sd20g")
@@ -19,6 +25,7 @@ font_size = 70
 [sub_resource type="SystemFont" id="SystemFont_sunxf"]
 font_names = PackedStringArray("Noto Sans", "Roboto", "Sans-Serif")
 font_weight = 300
+subpixel_positioning = 0
 
 [sub_resource type="LabelSettings" id="LabelSettings_v6k41"]
 font = SubResource("SystemFont_sunxf")
@@ -39,7 +46,9 @@ offset_left = 24.0
 offset_top = 24.0
 offset_right = 116.0
 offset_bottom = 58.0
-text = "test 123"
+text = "Toggle post processing: T
+Free cam: F
+Zoom: mouse wheel"
 label_settings = SubResource("LabelSettings_6lmcw")
 
 [node name="HungerBar" type="TextureProgressBar" parent="." unique_id=166203044]

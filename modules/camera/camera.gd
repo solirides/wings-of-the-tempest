@@ -32,6 +32,8 @@ var free_cam_transform: Transform3D = Transform3D.IDENTITY
 var last_mouse_pos: Vector2
 var zoom : float = 64
 
+@onready var shake = $Shake
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Global.camera = self
@@ -56,6 +58,11 @@ func _input(event: InputEvent) -> void:
 		# pitch
 		self.global_rotation.x +=deg_to_rad(-event.screen_relative.y * mouse_sensitivity)
 		self.rotation.x = clamp(self.rotation.x, deg_to_rad(-90), deg_to_rad(90))
+	if event.is_action_pressed("post_processing"):
+		enable_post_processing = !enable_post_processing
+		$Shaders.visible = enable_post_processing
+		shake.shake()
+	
 
 #this input statment is temporary/for debug only. I imagine that how far the camera is zoomed out will be based on how many boids are on screen.
 func _unhandled_input(event: InputEvent) -> void:

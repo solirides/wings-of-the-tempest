@@ -59,6 +59,8 @@ var move_direction: Vector3:
 var death_particles = preload("res://modules/flock/death_particles.tscn")
 var death_queued = false
 
+signal boid_died(boid: Node, pos: Vector3)
+
 func _ready() -> void:
 	flock = get_parent() as Flock
 	add_to_group("boids")
@@ -321,4 +323,6 @@ func remove_boid(death_animation: bool = true):
 		var tween = get_tree().create_tween()
 		tween.tween_property(self, "scale", Vector3.ZERO, 1.0)
 		tween.tween_callback(queue_free)
+	
+	boid_died.emit(self, global_position)
 	

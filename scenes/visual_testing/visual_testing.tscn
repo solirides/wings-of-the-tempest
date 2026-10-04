@@ -233,3 +233,4 @@ material = ExtResource("7_dipdn")
 
 [node name="Camera" parent="." unique_id=506319422 instance=ExtResource("11_3c6gx")]
 current = true
+enable_post_processing = false
