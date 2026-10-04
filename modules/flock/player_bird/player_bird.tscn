@@ -12,6 +12,8 @@ height = 1.0
 radius = 0.4
 height = 1.2
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pe8da"]
+
 [node name="PlayerBird" type="CharacterBody3D" unique_id=1778213726]
 script = ExtResource("1_25rpd")
 
@@ -26,3 +28,11 @@ mesh = SubResource("PrismMesh_ftwdc")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1304606213]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_ppj06")
+
+[node name="FoodDetector" type="Area3D" parent="." unique_id=32339795]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FoodDetector" unique_id=1542248502]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_pe8da")

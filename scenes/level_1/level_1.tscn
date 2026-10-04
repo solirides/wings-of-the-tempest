@@ -92,9 +92,11 @@ shadow_enabled = true
 [node name="Hud" parent="." unique_id=781835399 instance=ExtResource("7_fxajv")]
 
 [node name="ArrowHunter" parent="." unique_id=2124715634 instance=ExtResource("8_yhntr")]
+process_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
 
 [node name="Hawk" parent="." unique_id=1431889848 instance=ExtResource("9_yhawk")]
+process_mode = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 circle_radius = 2.0
 
@@ -111,10 +113,12 @@ value = 100.0
 texture_under = ExtResource("9_bmd0r")
 texture_progress = ExtResource("10_0lhw3")
 
-[node name="Global" type="Node3D" parent="." unique_id=764044567]
+[node name="Global" type="Node3D" parent="." unique_id=764044567 node_paths=PackedStringArray("flock")]
 script = ExtResource("11_0lhw3")
+flock = NodePath("../Flock")
 
 [node name="Food" parent="." unique_id=211283116 instance=ExtResource("14_3fps6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8812196, 0, 3.0964298)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.603071, 0, 3.6460552)
+hunger_value = 20.0
 
 [editable path="Flock"]

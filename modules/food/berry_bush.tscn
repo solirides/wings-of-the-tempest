@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cvnr2vnn86n7r"]
+
+[ext_resource type="PackedScene" uid="uid://clde8ul6amsi2" path="res://modules/food/food.tscn" id="1_o3td5"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_1uvjm"]
+
+[node name="BerryBush" unique_id=211283116 instance=ExtResource("1_o3td5")]
+hunger_value = 15.0
+
+[node name="MeshInstance3D" parent="." index="0" unique_id=1118875091]
+mesh = SubResource("SphereMesh_1uvjm")

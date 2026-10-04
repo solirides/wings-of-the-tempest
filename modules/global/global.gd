@@ -1,7 +1,7 @@
 extends Node
 
 var score: int = 0
-@onready var flock: Flock = $Flock
+@export var flock: Flock
 var camera: Node
 
 # How to use health system
@@ -104,6 +104,7 @@ func heal(health_healed : float) -> void:
 	health += health_healed;
 	check_status()
 
+@warning_ignore("shadowed_variable")
 func heal_percent(heal_percent: float) -> void:
 	if (heal_percent < 0 || heal_percent > 1):
 		print("Invalid health argument")

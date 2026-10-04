@@ -41,6 +41,10 @@ escape={
 ]
 }
 
+[layer_names]
+
+3d_render/layer_2="Food"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

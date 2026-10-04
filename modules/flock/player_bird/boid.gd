@@ -1,17 +1,17 @@
 extends CharacterBody3D
 class_name Boid
+
 const default_speed : float = 5.0
 @export var speed : float = 15
 @export var perception_range : float = 8
 @export var personal_space : float = 4
 
-@export var seperate_weight : float = 2
-@export var alignment_weight : float = 1
-@export var cohesion_weight : float = 1
+@export var seperate_weight : float = 2.0
+@export var alignment_weight : float = 1.0
+@export var cohesion_weight : float = 1.0
 @export var goal_weight : float = 1.2
-@export var stay_on_screen_weight : float = 2
+@export var stay_on_screen_weight : float = 2.0
 @export var cam_moving_weight : float = 1.2
-
 
 @export var repel_radius: float = 5.0
 @export var repel_weight: float = 5.0
@@ -20,17 +20,20 @@ const default_speed : float = 5.0
 @export var flee_weight: float = 2.1
 @export var is_fleeing: bool = false
 @export var flee_timer: float = 0.0
-@export var flee_duration: float = 3 #3 seconds
+@export var flee_duration: float = 3.0 #3 seconds
 @export var flee_direction: Vector3 = Vector3.ZERO
 
 #split up sub group stuff
-@export var spin_weight : float = 1
-@export var minimum_group_size : float = 5
+@export var spin_weight : float = 1.0
+@export var minimum_group_size : float = 5.0
 
 var flock: Flock
 var vel : Vector3 = Vector3.ZERO
 @export var steering_smoothness: float = 8.0
 @export var rotation_smoothness: float = 8.0
+
+# Food collection
+@onready var food_detector: Area3D = $FoodDetector
 
 #TS makes the boids spin in a random direction so that they don't look so robotic.............. while in the stupid fucking split up mode.
 var spin_direction: float = 1.0 if randf() > 0.5 else -1.0 
@@ -45,6 +48,16 @@ var move_direction: Vector3:
 func _ready() -> void:
 	flock = get_parent() as Flock
 	add_to_group("boids")
+	food_detector.area_entered.connect(_on_food_detector_area_entered)
+	
+func _on_food_detector_area_entered(area: Area3D) -> void:
+	# Area3D is a child of the Food root node
+	var food: Node3D = area.get_parent()
+	# this stops several boids from eating the same food in one physics frame
+	if not food.is_in_group("food") or food.is_queued_for_deletion():
+		return
+	Global.eat(food.hunger_value)
+	food.queue_free()
 
 func STAY_ON_SCREEN() -> Vector3 :
 	
