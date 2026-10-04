@@ -44,6 +44,7 @@ escape={
 [layer_names]
 
 3d_render/layer_2="Food"
+3d_physics/layer_2="Food"
 
 [physics]
 

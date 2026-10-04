@@ -13,7 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://bphsnhj7h6a70" path="res://scenes/enemies/hawk.tscn" id="9_yhawk"]
 [ext_resource type="Texture2D" uid="uid://d0cvmckaqaoa7" path="res://assets/textures/UI/healthbarProgress.png" id="10_0lhw3"]
 [ext_resource type="Script" uid="uid://cft7y487jvu6" path="res://modules/global/global.gd" id="11_0lhw3"]
-[ext_resource type="PackedScene" uid="uid://clde8ul6amsi2" path="res://modules/food/food.tscn" id="14_3fps6"]
+[ext_resource type="PackedScene" uid="uid://cvnr2vnn86n7r" path="res://modules/food/berry_bush.tscn" id="14_3fps6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
 render_priority = 0
@@ -117,8 +117,8 @@ texture_progress = ExtResource("10_0lhw3")
 script = ExtResource("11_0lhw3")
 flock = NodePath("../Flock")
 
-[node name="Food" parent="." unique_id=211283116 instance=ExtResource("14_3fps6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.603071, 0, 3.6460552)
-hunger_value = 20.0
+[node name="Food" parent="." unique_id=304086442 instance=ExtResource("14_3fps6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.298784, -0.48376462, 3.6817813)
+hunger_value = 15.0
 
 [editable path="Flock"]
