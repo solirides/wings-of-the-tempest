@@ -86,10 +86,8 @@ func _ready() -> void:
 	Global.flock = self
 	# call Global.check_ready_nodes() once this ready function is finished
 	connect("ready", Global.check_ready_nodes)
-	
-	# keeps the mouse within the game window
-	Input.mouse_mode = Input.MOUSE_MODE_CONFINED
-	
+
+
 	for i in range(num_boids):
 		var new_boid: Boid = boid_scene.instantiate()
 
@@ -109,11 +107,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	# hold esc to let mouse go beyond the game window
-	Input.mouse_mode = Input.MOUSE_MODE_CONFINED
-	if Input.is_action_pressed("escape"):
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		
+	
 	mouse_target = get_mouse_world_position(camera)
 	cursor.global_position = mouse_target
 	

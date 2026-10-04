@@ -25,6 +25,7 @@ func _ready() -> void:
 	print("Global node ready")
 	print("This is the root node of the Global scene: " + str(Global))
 	get_tree().connect("scene_changed", _on_scene_changed)
+	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 
 #func connect_node(node: Node, variable):
 	#if node:
@@ -50,4 +51,20 @@ func check_ready_nodes():
 
 func _on_scene_changed():
 	ready_emitted = false
+	
+
+func _input(event: InputEvent) -> void:
+	# press esc to cycle through mouse capture modes
+	#Input.mouse_mode = Input.MOUSE_MODE_CONFINED
+	if event.is_action_pressed("escape"):
+		print("fdggdf")
+		match Input.mouse_mode:
+			Input.MOUSE_MODE_CONFINED:
+				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+			Input.MOUSE_MODE_VISIBLE:
+				Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
+			_:
+				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+			#Input.MOUSE_MODE_CAPTURED:
+				#Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 	

@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://cufxowsrrv1sf"]
+
+[ext_resource type="PackedScene" uid="uid://bppuqglniuy13" path="res://assets/models/bird.glb" id="1_66ihq"]
+
+[node name="bird" unique_id=704641589 instance=ExtResource("1_66ihq")]
+
+[node name="Skeleton3D" parent="Armature" parent_id_path=PackedInt32Array(1266185434) index="0" unique_id=1109886148]
+bones/0/position = Vector3(0, -0.0036013508, -0.026502907)
+bones/0/rotation = Quaternion(0.70705545, 0, 0, 0.70715827)
+bones/1/rotation = Quaternion(-0.06529332, 0, 0, 0.9978662)
+bones/2/rotation = Quaternion(0.081669934, 7.127388e-07, -5.987797e-08, 0.9966595)
+bones/3/rotation = Quaternion(0.122487046, -7.0986414e-07, 8.760877e-08, 0.9924702)
+bones/4/rotation = Quaternion(0.9998644, -4.1351437e-17, 1.4386856e-19, 0.016469333)
+bones/5/rotation = Quaternion(-0.12885268, 5.969505e-18, -1.17533895e-17, 0.9916638)
+bones/6/rotation = Quaternion(0.65336823, 0.6595798, 0.260601, 0.2648613)
+bones/7/rotation = Quaternion(-0.20925951, 0.10765221, 0.36707342, 0.8999326)
+bones/8/rotation = Quaternion(-0.65336823, 0.6595798, 0.2606011, -0.26486135)
+bones/9/rotation = Quaternion(-0.2092596, -0.107652225, -0.3670734, 0.8999326)
