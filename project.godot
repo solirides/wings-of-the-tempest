@@ -83,6 +83,10 @@ debug_1={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_2="food"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

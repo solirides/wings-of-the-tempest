@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://geh1ds7gqhgf" path="res://modules/hud/hud.tscn" id="7_fxajv"]
 [ext_resource type="PackedScene" uid="uid://r2i5ufxdudpc" path="res://scenes/enemies/hunter.tscn" id="8_yhntr"]
 [ext_resource type="Script" uid="uid://ci1rc3kcvxd16" path="res://scenes/level_1/HawkPath.gd" id="9_bmd0r"]
+[ext_resource type="PackedScene" uid="uid://pyfvd0t0gpm3" path="res://modules/food/food.tscn" id="9_do3hi"]
 [ext_resource type="PackedScene" uid="uid://bphsnhj7h6a70" path="res://scenes/enemies/hawk.tscn" id="9_yhawk"]
 [ext_resource type="Script" uid="uid://ddomg1qhruqyf" path="res://scenes/level_1/goal.gd" id="11_0lhw3"]
 
@@ -40,10 +41,6 @@ sky_material = SubResource("ProceduralSkyMaterial_sd20g")
 background_mode = 2
 sky = SubResource("Sky_opn7a")
 tonemap_mode = 2
-
-[sub_resource type="BoxMesh" id="BoxMesh_20vgf"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_20vgf"]
 
 [sub_resource type="Curve3D" id="Curve3D_0lhw3"]
 closed = true
@@ -109,14 +106,8 @@ shadow_enabled = true
 [node name="ArrowHunter" parent="." unique_id=2124715634 instance=ExtResource("8_yhntr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
 
-[node name="Food" type="MeshInstance3D" parent="." unique_id=1931180051]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.047875047, 3.0217152)
-mesh = SubResource("BoxMesh_20vgf")
-
-[node name="Area3D" type="Area3D" parent="Food" unique_id=195071495]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Food/Area3D" unique_id=1793042356]
-shape = SubResource("BoxShape3D_20vgf")
+[node name="Food" parent="." unique_id=149562037 instance=ExtResource("9_do3hi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2989235, -0.52907073, 8.328536)
 
 [node name="HawkPath" type="Path3D" parent="." unique_id=1051712067]
 curve = SubResource("Curve3D_0lhw3")

@@ -23,6 +23,9 @@ material = SubResource("StandardMaterial3D_25rpd")
 radius = 0.4
 height = 1.2
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_pe8da"]
+size = Vector3(1, 1, 1.6539917)
+
 [node name="PlayerBird" type="CharacterBody3D" unique_id=1778213726 groups=["boids"]]
 motion_mode = 1
 script = ExtResource("1_25rpd")
@@ -46,3 +49,11 @@ shape = SubResource("CapsuleShape3D_ppj06")
 [node name="bird" parent="." unique_id=704641589 instance=ExtResource("2_7mqqf")]
 transform = Transform3D(-1.5, 0, -1.3113416e-07, 0, 1.5, 0, 1.3113416e-07, 0, -1.5, 0, 0, 0)
 script = ExtResource("3_lqu4f")
+
+[node name="FoodDetector" type="Area3D" parent="." unique_id=1302198398]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FoodDetector" unique_id=175697622]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.29537964)
+shape = SubResource("BoxShape3D_pe8da")

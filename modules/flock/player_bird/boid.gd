@@ -35,6 +35,7 @@ var vel : Vector3 = Vector3.ZERO
 
 @export var steering_mode:STEERING_MODE = STEERING_MODE.LERP
 @export var rotation_mode:ROTATION_MODE = ROTATION_MODE.LERP
+@onready var food_detector: Area3D = $FoodDetector
 
 enum STEERING_MODE {
 	LERP,
@@ -64,6 +65,16 @@ signal boid_died(boid: Node, pos: Vector3)
 func _ready() -> void:
 	flock = get_parent() as Flock
 	add_to_group("boids")
+	food_detector.area_entered.connect(_on_food_detector_area_entered)
+	
+func _on_food_detector_area_entered(area: Area3D) -> void:
+	# Area3D is a child of the Food root node
+	var food: Food = area.get_parent()
+	# this stops several boids from eating the same food in one physics frame
+	if not food is Food or food.is_queued_for_deletion():
+		return
+	flock.eat(food.hunger_value)
+	food.queue_free()
 
 func STAY_ON_SCREEN() -> Vector3 :
 	

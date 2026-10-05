@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://pyfvd0t0gpm3"]
+
+[ext_resource type="PackedScene" uid="uid://s1tbrwtifmt6" path="res://assets/models/berry_bush.glb" id="1_0i3ij"]
+[ext_resource type="Script" uid="uid://bl5edptlns2fq" path="res://modules/food/food.gd" id="2_food"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_pe8da"]
+
+[node name="Food" type="Node3D" unique_id=1034074546 groups=["food"]]
+script = ExtResource("2_food")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=750892129]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.8755361, 0)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=951090618]
+shape = SubResource("SphereShape3D_pe8da")
+
+[node name="berry_bush" parent="." unique_id=1894621743 instance=ExtResource("1_0i3ij")]
