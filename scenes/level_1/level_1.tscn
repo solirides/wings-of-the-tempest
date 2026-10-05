@@ -12,6 +12,8 @@
 [ext_resource type="PackedScene" uid="uid://pyfvd0t0gpm3" path="res://modules/food/food.tscn" id="9_do3hi"]
 [ext_resource type="PackedScene" uid="uid://bphsnhj7h6a70" path="res://scenes/enemies/hawk.tscn" id="9_yhawk"]
 [ext_resource type="Script" uid="uid://ddomg1qhruqyf" path="res://scenes/level_1/goal.gd" id="11_0lhw3"]
+[ext_resource type="PackedScene" uid="uid://b3o6tsxlufhca" path="res://modules/wind_zone/wind_zone.tscn" id="13_665yd"]
+[ext_resource type="PackedScene" uid="uid://bhhy738m44d75" path="res://modules/wind_trails/wind_trails.tscn" id="14_3fps6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
 render_priority = 0
@@ -138,6 +140,25 @@ billboard = 1
 text = "Go this way to the goal!"
 font_size = 250
 outline_size = 80
+
+[node name="Label3D" type="Label3D" parent="Label3D" unique_id=111634029]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 44)
+billboard = 1
+text = "Wind Zone!"
+font_size = 250
+outline_size = 80
+
+[node name="WindZone" parent="." unique_id=2060379650 instance=ExtResource("13_665yd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 26)
+wind_direction = Vector3(1, 0, 0)
+
+[node name="WindTrails" parent="WindZone" unique_id=1253582775 instance=ExtResource("14_3fps6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, 0)
+
+[node name="GPUParticlesAttractorSphere3D" type="GPUParticlesAttractorSphere3D" parent="WindZone" unique_id=1407966167]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 0)
+strength = 10.0
+radius = 30.0
 
 [connection signal="body_entered" from="Goal" to="Goal" method="_on_body_entered"]
 

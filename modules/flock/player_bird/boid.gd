@@ -1,8 +1,9 @@
-extends CharacterBody3D
+extends RigidBody3D
 class_name Boid
 const default_speed : float = 5.0
 @export var speed : float = 15
 @export var min_speed : float = 2
+@export var speed_scale_exp: float = 1.0
 @export var perception_range : float = 8
 @export var personal_space : float = 4
 
@@ -277,6 +278,7 @@ func boid_movement(delta: float):
 		boid_direction += cursor_force + alignment_force
 	boid_direction = boid_direction.normalized()
 	
+	var velocity_to_add = Vector3.ZERO
 	#movement/"looking"
 	# added lerp/slerp to get rid of some jitter
 	match steering_mode:
@@ -288,26 +290,33 @@ func boid_movement(delta: float):
 				vel.y = 0
 				vel = vel.normalized()
 			
-			velocity = vel * speed
-		
+			linear_velocity = vel * speed
+			#velocity_to_add = vel * speed
+			#apply_central_force((velocity_to_add - linear_velocity) * mass)
 		STEERING_MODE.STEERING_FORCE:
 			boid_direction.y = 0
 			if boid_direction.length_squared() > 0.001:
 				boid_direction = boid_direction.normalized()
 			var desired_velocity = boid_direction * speed
-			var steering = desired_velocity - velocity
+			var steering = desired_velocity - linear_velocity
+			var speed_scaled = pow(steering.length() / desired_velocity.length(), speed_scale_exp) * desired_velocity.length()
+			steering = steering.normalized() * speed_scaled
 			steering.y = 0
-			steering = steering.limit_length(delta * steering_smoothness)
+			#steering.normalized() * speed
 			
-			velocity += steering
-			velocity = velocity.limit_length(speed)
+			#steering = steering.limit_length(delta * steering_smoothness)
+			
+			#velocity_to_add += steering
+			#velocity_to_add = velocity_to_add.limit_length(speed)
+			steering = steering.limit_length(speed)
 			# why is there no limit_length for minimum length???
-			if velocity.length() < min_speed:
-				velocity = velocity.normalized() * min_speed
+			if linear_velocity.length() < min_speed:
+				steering = steering.normalized() * min_speed
 			
-			vel = velocity.normalized()
+			vel = steering.normalized()
+			apply_central_force(steering * mass)
 	
-	move_and_slide()
+	#move_and_slide()
 	
 	# rotate node for display
 	match rotation_mode:
@@ -317,8 +326,8 @@ func boid_movement(delta: float):
 				global_transform.basis = global_transform.basis.slerp(target_rotation, rotation_smoothness * delta)
 		ROTATION_MODE.NONE:
 			# no interpolation
-			if velocity.length_squared() > 0.001:
-				var target_pos = global_position + velocity
+			if linear_velocity.length_squared() > 0.001:
+				var target_pos = global_position + linear_velocity
 				look_at(target_pos, Vector3.UP)
 
 func remove_boid(death_animation: bool = true):

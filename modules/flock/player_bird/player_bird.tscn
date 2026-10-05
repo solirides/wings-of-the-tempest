@@ -26,11 +26,16 @@ height = 1.2
 [sub_resource type="BoxShape3D" id="BoxShape3D_pe8da"]
 size = Vector3(1, 1, 1.6539917)
 
-[node name="PlayerBird" type="CharacterBody3D" unique_id=1778213726 groups=["boids"]]
-motion_mode = 1
+[node name="PlayerBird" type="RigidBody3D" unique_id=1004426464 groups=["boids"]]
+axis_lock_linear_y = true
+linear_damp = 0.5
 script = ExtResource("1_25rpd")
+speed = 20.0
+min_speed = 5.0
+speed_scale_exp = 0.3
 seperate_weight = 4.0
 steering_smoothness = 20.0
+rotation_smoothness = 4.0
 steering_mode = 1
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=801781277]
