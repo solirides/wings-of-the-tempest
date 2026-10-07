@@ -30,7 +30,7 @@ func shake(duration = 0.3, amplitude = 0.5, frequency = 24, level = 0):
 		frequency_timer.wait_time = 1.0 / float(frequency)
 		frequency_timer.start()
 		
-		print("shake")
+		#print("shake")
 
 func screenshake():
 	var random = Vector2()
@@ -56,9 +56,9 @@ func _on_tween_finished():
 
 func _on_frequency_timeout() -> void:
 	screenshake()
-	print("frequency")
+	#print("frequency")
 
 func _on_duration_timeout() -> void:
 	frequency_timer.stop()
 	reset()
-	print("shake stop")
+	#print("shake stop")

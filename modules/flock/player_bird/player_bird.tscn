@@ -35,7 +35,6 @@ min_speed = 5.0
 speed_scale_exp = 0.3
 seperate_weight = 4.0
 steering_smoothness = 20.0
-rotation_smoothness = 4.0
 steering_mode = 1
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=801781277]

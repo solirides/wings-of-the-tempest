@@ -30,12 +30,12 @@ const default_speed : float = 5.0
 @export var minimum_group_size : float = 5
 
 var flock: Flock
-var vel : Vector3 = Vector3.ZERO
+#var vel : Vector3 = Vector3.ZERO
 @export var steering_smoothness: float = 8.0
 @export var rotation_smoothness: float = 8.0
 
 @export var steering_mode:STEERING_MODE = STEERING_MODE.LERP
-@export var rotation_mode:ROTATION_MODE = ROTATION_MODE.LERP
+@export var rotation_mode:ROTATION_MODE = ROTATION_MODE.LERP_TO_VELOCITY
 @onready var food_detector: Area3D = $FoodDetector
 
 enum STEERING_MODE {
@@ -44,8 +44,9 @@ enum STEERING_MODE {
 }
 
 enum ROTATION_MODE {
-	NONE,
-	LERP
+	SNAP_TO_VELOCITY,
+	LERP_TO_VELOCITY,
+	LERP_TO_GOAL
 }
 
 #TS makes the boids spin in a random direction so that they don't look so robotic.............. while in the stupid fucking split up mode.
@@ -164,7 +165,7 @@ func alignment(neighbors : Array) -> Vector3 :
 		return ali_force
 		
 	for boid in neighbors :
-		ali_force += boid.vel
+		ali_force += boid.linear_velocity
 	
 	ali_force = (ali_force / neighbors.size()).normalized()
 	
@@ -257,6 +258,7 @@ func boid_movement(delta: float):
 	var stay_on_screen_force : Vector3 = STAY_ON_SCREEN() * stay_on_screen_weight
 	
 	#CEO of BOID pathing 🔥
+	# boid_direction is the combined target direction of the boid
 	var boid_direction : Vector3 = Vector3.ZERO
 	boid_direction = (seperation_force + cohesion_force + repel_force + flee_force + stay_on_screen_force)
 	
@@ -276,55 +278,58 @@ func boid_movement(delta: float):
 	#THIS IS THE START OF THE BOID FOLLOWING THE CURSOR BEHAVIOR!
 	else :
 		boid_direction += cursor_force + alignment_force
+	# cancel any vertical component in the desired movement direction
+	boid_direction.y = 0
 	boid_direction = boid_direction.normalized()
 	
-	var velocity_to_add = Vector3.ZERO
+	#var velocity_to_add = Vector3.ZERO
 	#movement/"looking"
 	# added lerp/slerp to get rid of some jitter
 	match steering_mode:
 		STEERING_MODE.LERP:
-			boid_direction.y = 0
+			var vel: Vector3 = Vector3.ZERO
 			if boid_direction.length_squared() > 0.001:
-				boid_direction = boid_direction.normalized()
-				vel = vel.lerp(boid_direction, steering_smoothness * delta)
+				#boid_direction = boid_direction.normalized()
+				vel = linear_velocity.lerp(boid_direction, steering_smoothness * delta)
 				vel.y = 0
 				vel = vel.normalized()
-			
 			linear_velocity = vel * speed
 			#velocity_to_add = vel * speed
 			#apply_central_force((velocity_to_add - linear_velocity) * mass)
 		STEERING_MODE.STEERING_FORCE:
-			boid_direction.y = 0
-			if boid_direction.length_squared() > 0.001:
-				boid_direction = boid_direction.normalized()
+			#boid_direction.y = 0
+			#if boid_direction.length_squared() > 0.001:
+				#boid_direction = boid_direction.normalized()
 			var desired_velocity = boid_direction * speed
+			# the velocity to add to the current velocity
 			var steering = desired_velocity - linear_velocity
 			var speed_scaled = pow(steering.length() / desired_velocity.length(), speed_scale_exp) * desired_velocity.length()
-			steering = steering.normalized() * speed_scaled
 			steering.y = 0
-			#steering.normalized() * speed
+			steering = steering.normalized() * speed_scaled
 			
-			#steering = steering.limit_length(delta * steering_smoothness)
-			
-			#velocity_to_add += steering
-			#velocity_to_add = velocity_to_add.limit_length(speed)
+			# clamp the length of the steering vector
 			steering = steering.limit_length(speed)
 			# why is there no limit_length for minimum length???
 			if linear_velocity.length() < min_speed:
 				steering = steering.normalized() * min_speed
 			
-			vel = steering.normalized()
+			#vel = steering.normalized()
+			# delta is not needed for this function. It is meant to be applied every physics frame.
 			apply_central_force(steering * mass)
 	
 	#move_and_slide()
 	
 	# rotate node for display
 	match rotation_mode:
-		ROTATION_MODE.LERP:
-			if vel.length_squared() > 0.001:
-				var target_rotation = Transform3D().looking_at(vel, Vector3.UP).basis
+		ROTATION_MODE.LERP_TO_VELOCITY:
+			if linear_velocity.length_squared() > 0.001:
+				var target_rotation = Transform3D().looking_at(linear_velocity, Vector3.UP).basis
 				global_transform.basis = global_transform.basis.slerp(target_rotation, rotation_smoothness * delta)
-		ROTATION_MODE.NONE:
+		ROTATION_MODE.LERP_TO_GOAL:
+			if boid_direction.length_squared() > 0.001:
+				var target_rotation = Transform3D().looking_at(boid_direction, Vector3.UP).basis
+				global_transform.basis = global_transform.basis.slerp(target_rotation, rotation_smoothness * delta)
+		ROTATION_MODE.SNAP_TO_VELOCITY:
 			# no interpolation
 			if linear_velocity.length_squared() > 0.001:
 				var target_pos = global_position + linear_velocity
