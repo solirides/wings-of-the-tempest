@@ -120,7 +120,7 @@ func STAY_ON_SCREEN() -> Vector3 :
 
 #I see, I'm going to change this so that if they get within this repel radius, they call the "flee" function, which forces the boid to fly a set distance 180 
 func repel() -> Vector3:
-	var offset := global_position - flock.mouse_target
+	var offset := global_position - flock.boid_goal
 	offset.y = 0
 	var distance := offset.length()
 	
@@ -194,8 +194,8 @@ func local_center(neighbors: Array) -> Vector3 :
 	if neighbors.size() == 0:
 		return global_position
 	
-	for boids in neighbors :
-		center_force += boids.global_position
+	for boid in neighbors :
+		center_force += boid.global_position
 	
 	center_force = center_force / neighbors.size()
 	
@@ -237,7 +237,7 @@ func boid_movement(delta: float):
 			neighbors.append(other)
 	
 	var repel_force := Vector3.ZERO
-	var cursor_force : = Vector3.ZERO
+	var goal_force : = Vector3.ZERO
 
 		
 	var flee_force := Vector3.ZERO 
@@ -245,8 +245,8 @@ func boid_movement(delta: float):
 		flee_force = _flee(delta) * flee_weight
 	
 	else :
-		#heading towards the cursor
-		cursor_force = global_position.direction_to(flock.mouse_target) * goal_weight
+		#heading towards the cursor/goal
+		goal_force = global_position.direction_to(flock.boid_goal) * goal_weight
 	
 	#seperation force
 	var seperation_force : Vector3 = seperation(neighbors) * seperate_weight
@@ -259,8 +259,10 @@ func boid_movement(delta: float):
 	
 	#CEO of BOID pathing 🔥
 	# boid_direction is the combined target direction of the boid
+	#print(str(self))
 	var boid_direction : Vector3 = Vector3.ZERO
 	boid_direction = (seperation_force + cohesion_force + repel_force + flee_force + stay_on_screen_force)
+	#print(boid_direction)
 	
 	#When the cursor is in spread out/repel mode the boids have slightly modified behaviors
 	if Input.is_action_pressed("repel"):
@@ -274,13 +276,16 @@ func boid_movement(delta: float):
 		
 		
 		boid_direction += spin_alignment + camera_force + boid_subflock_spin_force
+		#print(boid_direction)
 
 	#THIS IS THE START OF THE BOID FOLLOWING THE CURSOR BEHAVIOR!
 	else :
-		boid_direction += cursor_force + alignment_force
+		boid_direction += goal_force + alignment_force
+		#print(boid_direction)
 	# cancel any vertical component in the desired movement direction
 	boid_direction.y = 0
 	boid_direction = boid_direction.normalized()
+	#print(boid_direction)
 	
 	#var velocity_to_add = Vector3.ZERO
 	#movement/"looking"
@@ -305,7 +310,12 @@ func boid_movement(delta: float):
 			var steering = desired_velocity - linear_velocity
 			var speed_scaled = pow(steering.length() / desired_velocity.length(), speed_scale_exp) * desired_velocity.length()
 			steering.y = 0
-			steering = steering.normalized() * speed_scaled
+			if steering != Vector3.ZERO:
+				steering = steering.normalized() * speed_scaled
+				#print(steering)
+				#print(boid_direction)
+			else:
+				steering = global_basis.z.normalized() * min_speed
 			
 			# clamp the length of the steering vector
 			steering = steering.limit_length(speed)
@@ -335,12 +345,13 @@ func boid_movement(delta: float):
 				var target_pos = global_position + linear_velocity
 				look_at(target_pos, Vector3.UP)
 
-func remove_boid(death_animation: bool = true):
+func kill_boid(death_animation: bool = true):
 	# prevent this function from running multiple times
 	if death_queued:
 		return
 	death_queued = true
-	flock.boids.erase(self)
+	flock.remove_boid(self)
+	
 	if death_animation:
 		var instance = death_particles.instantiate()
 		#get_tree().root.add_child(instance)
@@ -353,4 +364,31 @@ func remove_boid(death_animation: bool = true):
 		tween.tween_callback(queue_free)
 	
 	boid_died.emit(self, global_position)
+	
+
+func transfer_to_flock(new_flock: Flock):
+	if new_flock == flock:
+		return
+	flock.boids.erase(self)
+	flock.all_boids.erase(self)
+	if self not in new_flock.boids:
+		new_flock.boids.append(self)
+	if self not in new_flock.all_boids:
+		# you may get duplicate entries of the same boid when moving from a subflock to parent flock
+		new_flock.all_boids.append(self)
+	if new_flock in flock.subflocks:
+		flock.all_boids.append(self)
+	
+	flock = new_flock
+	debug_flock_display(new_flock)
+
+func debug_flock_display(flock: Flock):
+	# for debug
+	$Label3D.text = str(flock)
+	var random = RandomNumberGenerator.new()
+	random.seed = flock.get_instance_id()
+	$MeshInstance3D.mesh = $MeshInstance3D.mesh.duplicate()
+	$MeshInstance3D.mesh.material = $MeshInstance3D.mesh.material.duplicate()
+	$MeshInstance3D.mesh.material.albedo_color = Color.from_hsv(random.randf(), 0.5, 1.0)
+	
 	

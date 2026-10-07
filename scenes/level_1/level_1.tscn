@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://4kq8akwlf2yl" path="res://scenes/level_1/level_1.gd" id="1_ghvtn"]
 [ext_resource type="PackedScene" uid="uid://p7nyl4088ndh" path="res://modules/flock/flock.tscn" id="2_jr17i"]
 [ext_resource type="Material" uid="uid://dto6fxhv5ubub" path="res://assets/materials/placeholder_checker.tres" id="3_janvk"]
+[ext_resource type="Script" uid="uid://bs41iuhewme8j" path="res://modules/flock/sub_flock.gd" id="4_1uvjm"]
+[ext_resource type="Script" uid="uid://d4n162so51dr8" path="res://modules/flock/main_flock.gd" id="4_c5bgo"]
 [ext_resource type="Material" uid="uid://du74kmr3sjb4l" path="res://assets/materials/placeholder_checker_2.tres" id="4_igcjm"]
 [ext_resource type="Shader" uid="uid://ca2i5qj33kbir" path="res://assets/materials/water.gdshader" id="6_nubdk"]
 [ext_resource type="PackedScene" uid="uid://geh1ds7gqhgf" path="res://modules/hud/hud.tscn" id="7_fxajv"]
@@ -67,10 +69,18 @@ layer = 10
 [node name="Hud" parent="CanvasLayer" unique_id=719202679 instance=ExtResource("7_fxajv")]
 unique_name_in_owner = true
 
-[node name="Flock" parent="." unique_id=1876045196 node_paths=PackedStringArray("camera") instance=ExtResource("2_jr17i")]
+[node name="Flock" parent="." unique_id=1876045196 node_paths=PackedStringArray("cursor", "subflocks", "camera") instance=ExtResource("2_jr17i")]
 unique_name_in_owner = true
-num_boids = 32
+script = ExtResource("4_c5bgo")
+num_boids = 2
+cursor = NodePath("MeshInstance3D2")
+subflocks = [NodePath("SubFlock")]
 camera = NodePath("../Camera")
+
+[node name="SubFlock" type="Node3D" parent="Flock" unique_id=318110185 node_paths=PackedStringArray("parent_flock", "camera")]
+script = ExtResource("4_1uvjm")
+parent_flock = NodePath("..")
+camera = NodePath("../../Camera")
 
 [node name="Camera" parent="." unique_id=1488927985 node_paths=PackedStringArray("flock") instance=ExtResource("1_7n1yb")]
 transform = Transform3D(0.47715876, -0.7996896, 0.36443946, 0, 0.41469318, 0.9099613, -0.87881714, -0.434196, 0.19787449, 4.999996, 11, 2.999998)
