@@ -1,7 +1,13 @@
 [gd_resource type="Resource" script_class="ChunkDefinition" format=3 uid="uid://bg42i47u31q65"]
 
-[ext_resource type="Script" uid="uid://c7p7hnng1ap77" path="res://modules/terrain/chunk_definition.gd" id="1_2kgbf"]
+[ext_resource type="Script" path="res://modules/terrain/generator/chunk_definition.gd" id="1_abwy3"]
+[ext_resource type="Script" uid="uid://d1yagks8php3j" path="res://modules/terrain/generator/chunk_terrain_obj.gd" id="2_bj22w"]
+[ext_resource type="Resource" uid="uid://b0as6bx7pi4my" path="res://modules/terrain/test_terrain_heightmap.tres" id="3_bj22w"]
 
 [resource]
-script = ExtResource("1_2kgbf")
+script = ExtResource("1_abwy3")
 size = Vector3i(16, 16, 16)
+terrain_height = 6
+terrain_objects = Dictionary[ExtResource("2_bj22w"), Vector2i]({
+ExtResource("3_bj22w"): Vector2i(4, 4)
+})

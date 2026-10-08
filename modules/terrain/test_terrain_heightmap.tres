@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ChunkTerrainHeightMap" format=3 uid="uid://b0as6bx7pi4my"]
+
+[ext_resource type="Script" uid="uid://gl83leh4buxo" path="res://modules/terrain/generator/chunk_terrain_heightmap.gd" id="1_k2kyt"]
+
+[resource]
+script = ExtResource("1_k2kyt")
+operation = 1
+size = Vector3i(8, 0, 8)
+entry = "11111111
+11111111
+11111111
+11111111
+11111111
+11111111
+11111111
+11111111"
+metadata/_custom_type_script = "uid://gl83leh4buxo"

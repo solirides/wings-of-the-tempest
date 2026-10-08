@@ -1,16 +1,41 @@
 [gd_resource type="Resource" script_class="ChunkLibrary" format=3 uid="uid://cnhauj7okt3ps"]
 
+<<<<<<< Updated upstream
 [ext_resource type="Script" uid="uid://ch801uy47d3n8" path="res://modules/terrain/decision tree/chunk_dec_tree_leaf.gd" id="1_6pfcn"]
 [ext_resource type="Resource" uid="uid://bg42i47u31q65" path="res://modules/terrain/test_chunkdef.tres" id="1_nngoa"]
 [ext_resource type="Script" uid="uid://cstsqxraxip48" path="res://modules/terrain/chunk_library.gd" id="2_6pfcn"]
+=======
+[ext_resource type="Script" uid="uid://druojap16exs5" path="res://modules/terrain/decision tree/chunk_dec_tree_leaf.gd" id="1_6pfcn"]
+[ext_resource type="Script" uid="uid://xavbwey3mu0d" path="res://modules/terrain/decision tree/chunk_dec_tree.gd" id="1_6r631"]
+[ext_resource type="Resource" uid="uid://bg42i47u31q65" path="res://modules/terrain/test_chunkdef.tres" id="1_nngoa"]
+[ext_resource type="Resource" uid="uid://c7iou5744evmq" path="res://modules/terrain/test_chunkdef2.tres" id="2_3rshd"]
+[ext_resource type="Script" path="res://modules/terrain/generator/chunk_library.gd" id="3_nngoa"]
+[ext_resource type="Script" uid="uid://bs34yubkm0w8i" path="res://modules/terrain/decision tree/chunk_dec_tree_if_periodic.gd" id="4_da3ga"]
+>>>>>>> Stashed changes
 [ext_resource type="Material" uid="uid://bt5nph1wxgig7" path="res://modules/terrain/terrain_triplanar_map.tres" id="4_nngoa"]
+[ext_resource type="Script" uid="uid://dk1yhnyg4gnx5" path="res://modules/terrain/decision tree/chunk_dec_tree_group_priority.gd" id="6_iq2tk"]
 
-[sub_resource type="Resource" id="Resource_jewke"]
+[sub_resource type="Resource" id="Resource_c8drl"]
+script = ExtResource("1_6pfcn")
+chunk = ExtResource("2_3rshd")
+
+[sub_resource type="Resource" id="Resource_4q24b"]
 script = ExtResource("1_6pfcn")
 chunk = ExtResource("1_nngoa")
 
+[sub_resource type="Resource" id="Resource_v5m86"]
+script = ExtResource("4_da3ga")
+period = 2
+succeed = SubResource("Resource_4q24b")
+fail = SubResource("Resource_c8drl")
+
+[sub_resource type="Resource" id="Resource_jvfn2"]
+script = ExtResource("6_iq2tk")
+children = Array[ExtResource("1_6r631")]([SubResource("Resource_v5m86")])
+
 [resource]
-script = ExtResource("2_6pfcn")
-chunk_size = Vector3i(16, 16, 16)
+script = ExtResource("3_nngoa")
 terrain_material = ExtResource("4_nngoa")
-child = SubResource("Resource_jewke")
+size = Vector3i(16, 16, 16)
+terrain_height = 6
+child = SubResource("Resource_jvfn2")
