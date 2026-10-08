@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://b3o6tsxlufhca"]
+
+[ext_resource type="Script" uid="uid://c4aspvm5lui4n" path="res://modules/wind_zone/wind_zone.gd" id="1_4dunt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f24ow"]
+size = Vector3(23, 12, 13)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4dunt"]
+albedo_color = Color(0.39077854, 0.88278264, 0.9099337, 1)
+
+[node name="WindZone" type="Area3D" unique_id=2060379650]
+script = ExtResource("1_4dunt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1292212605]
+shape = SubResource("BoxShape3D_f24ow")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=995128731]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+size = Vector3(24, 1, 14)
+material = SubResource("StandardMaterial3D_4dunt")

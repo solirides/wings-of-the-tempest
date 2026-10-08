@@ -36,7 +36,7 @@ func _physics_process(delta: float) -> void:
 	
 	# If the boid's still alive and we're close enough, count it as a hit
 	if is_instance_valid(target) and global_position.distance_to(target.global_position) <= hit_radius:
-		target.remove_boid()
+		target.kill_boid()
 		queue_free()
 		return
 	

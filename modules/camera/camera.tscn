@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://djuyymnymg6xj" path="res://modules/camera/camera.gd" id="1_pf27r"]
 [ext_resource type="Shader" uid="uid://dopya06kwga34" path="res://modules/camera/posterize.gdshader" id="2_ogeh7"]
+[ext_resource type="Script" uid="uid://cifv7bgmpaick" path="res://modules/camera/shake.gd" id="2_otekq"]
 
 [sub_resource type="Gradient" id="Gradient_ogeh7"]
 interpolation_mode = 1
@@ -22,7 +23,13 @@ shader_parameter/gamma = 1.0
 transform = Transform3D(0.47715876, -0.7996896, 0.36443955, 0, 0.41469327, 0.9099613, -0.87881714, -0.434196, 0.19787452, 0, 0, 0)
 script = ExtResource("1_pf27r")
 
-[node name="Node3D" type="Node3D" parent="." unique_id=1823544482]
+[node name="Shake" type="Node3D" parent="." unique_id=1823544482]
+script = ExtResource("2_otekq")
+
+[node name="Duration" type="Timer" parent="Shake" unique_id=45643122]
+one_shot = true
+
+[node name="Frequency" type="Timer" parent="Shake" unique_id=1192257166]
 
 [node name="Shaders" type="Control" parent="." unique_id=1328386959]
 layout_mode = 3
@@ -40,3 +47,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[connection signal="timeout" from="Shake/Duration" to="Shake" method="_on_duration_timeout"]
+[connection signal="timeout" from="Shake/Frequency" to="Shake" method="_on_frequency_timeout"]

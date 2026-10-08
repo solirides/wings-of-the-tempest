@@ -64,11 +64,16 @@ signal hunger_changed
 
 @export var num_boids: int = 10
 @export var spawn_radius: float = 10.0
-@onready var cursor: MeshInstance3D = $MeshInstance3D2
+@export var cursor: MeshInstance3D
 
+# only boids with movement controlled by the main flock, not subflocks
 var boids: Array[Boid] = []
-var mouse_target : Vector3
+var boid_goal : Vector3
 var boid_scene = preload("res://modules/flock/player_bird/player_bird.tscn")
+
+@export var subflocks: Array[SubFlock] = []
+# all boids including ones in subflocks
+var all_boids: Array[Boid] = []
 
 # Camera
 @export var camera: Camera3D
@@ -83,36 +88,13 @@ var boid_scene = preload("res://modules/flock/player_bird/player_bird.tscn")
 
 
 func _ready() -> void:
-	Global.flock = self
-	# call Global.check_ready_nodes() once this ready function is finished
-	connect("ready", Global.check_ready_nodes)
+	pass
 
 
-	for i in range(num_boids):
-		var new_boid: Boid = boid_scene.instantiate()
-
-		add_child(new_boid)
-		
-		var angle := randf_range(0.0, TAU)
-		var distance := randf_range(0.0, spawn_radius)
-
-		new_boid.position = Vector3(
-			cos(angle) * distance,
-			0.0,
-			sin(angle) * distance
-		)
-
-		boids.append(new_boid)
+func _physics_process(delta: float) -> void:
 	
-
-
-func _process(delta: float) -> void:
-	
-	mouse_target = get_mouse_world_position(camera)
-	cursor.global_position = mouse_target
-	
-	if !boids.is_empty():
-		for boid in boids:
+	if !all_boids.is_empty():
+		for boid in all_boids:
 			if boid.speed > boid.default_speed:
 				boid.speed = max(boid.default_speed, boid.speed - speed_penalty_interval * delta)
 		
@@ -122,7 +104,7 @@ func _process(delta: float) -> void:
 			#print("hunger: " + str(current_hunger))
 			#this code block inflicts speed penalties below 50 hunger
 			if current_hunger < 50.0:
-				for boid in boids:
+				for boid in all_boids:
 					boid.speed = max(0.0, boid.speed - speed_penalty_interval * delta)
 			
 			hunger_changed.emit(current_hunger)
@@ -135,7 +117,7 @@ func _process(delta: float) -> void:
 			if current_hunger < -starve_death_interval:
 				print("starved")
 				current_hunger = 0.0
-				boids[0].remove_boid() #this line can be assumed 
+				all_boids[0].kill_boid() #this line can be assumed 
 				# to not trigger a bad memory access error because
 				# the entire hunger update system depends on a boid existing
 
@@ -173,3 +155,19 @@ func get_center_of_mass(nodes: Array = boids) -> Vector3:
 		total_position += n.global_position
 		
 	return total_position / float(nodes.size())
+
+func _on_boid_death(boid: Node, pos: Vector3):
+	# the boid gets deleted in like one frame so idk if this var is useful
+	Global.camera.shake.shake()
+
+func remove_boid(boid: Boid):
+	print(len(all_boids))
+	boids.erase(boid)
+	all_boids.erase(boid)
+	print(len(all_boids))
+	print("%s removed from %s" % [boid, boids])
+	print("%s removed from %s" % [boid, all_boids])
+
+func transfer_boids_to_flock(flock: Flock):
+	for boid in all_boids:
+		boid.transfer_to_flock(flock)

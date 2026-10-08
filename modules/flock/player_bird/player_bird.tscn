@@ -4,40 +4,34 @@
 [ext_resource type="PackedScene" uid="uid://cufxowsrrv1sf" path="res://assets/models/bird.tscn" id="2_7mqqf"]
 [ext_resource type="Script" uid="uid://dgjg6gb1dy4h3" path="res://assets/models/bird.gd" id="3_lqu4f"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bmd0r"]
-albedo_color = Color(1.540184e-06, 0.7125109, 0.7370215, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eylny"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_25nu7"]
-material = SubResource("StandardMaterial3D_bmd0r")
-radius = 0.3
-height = 1.0
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_25rpd"]
-albedo_color = Color(0.891643, 0.71356356, 0, 1)
-roughness = 0.25
-
-[sub_resource type="PrismMesh" id="PrismMesh_ftwdc"]
-material = SubResource("StandardMaterial3D_25rpd")
+[sub_resource type="SphereMesh" id="SphereMesh_lqu4f"]
+material = SubResource("StandardMaterial3D_eylny")
+radius = 0.2
+height = 0.4
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ppj06"]
 radius = 0.4
 height = 1.2
 
-[node name="PlayerBird" type="CharacterBody3D" unique_id=1778213726 groups=["boids"]]
-motion_mode = 1
+[sub_resource type="BoxShape3D" id="BoxShape3D_pe8da"]
+size = Vector3(1, 1, 1.6539917)
+
+[node name="PlayerBird" type="RigidBody3D" unique_id=1004426464 groups=["boids"]]
+axis_lock_linear_y = true
+linear_damp = 0.5
 script = ExtResource("1_25rpd")
+speed = 20.0
+min_speed = 5.0
+speed_scale_exp = 0.3
 seperate_weight = 4.0
 steering_smoothness = 20.0
 steering_mode = 1
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=801781277]
-transform = Transform3D(-3.4577672e-09, -0.0791045, 0.99686635, 1, -4.371139e-08, -2.220446e-16, 4.3574413e-08, 0.99686635, 0.0791045, 0, 0, 0)
-visible = false
-mesh = SubResource("CapsuleMesh_25nu7")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D" unique_id=838218058]
-transform = Transform3D(-0.3, 2.6226832e-08, 0, -2.6226836e-08, -0.3, 0, 0, 0, 0.3, -2.1257568e-08, -0.4863164, -0.00988926)
-mesh = SubResource("PrismMesh_ftwdc")
+transform = Transform3D(-3.4577672e-09, -0.0791045, 0.99686635, 1, -4.371139e-08, -2.220446e-16, 4.3574413e-08, 0.99686635, 0.0791045, 0, 0.40833855, 0)
+mesh = SubResource("SphereMesh_lqu4f")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1304606213]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
@@ -46,3 +40,17 @@ shape = SubResource("CapsuleShape3D_ppj06")
 [node name="bird" parent="." unique_id=704641589 instance=ExtResource("2_7mqqf")]
 transform = Transform3D(-1.5, 0, -1.3113416e-07, 0, 1.5, 0, 1.3113416e-07, 0, -1.5, 0, 0, 0)
 script = ExtResource("3_lqu4f")
+
+[node name="FoodDetector" type="Area3D" parent="." unique_id=1302198398]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FoodDetector" unique_id=175697622]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.29537964)
+shape = SubResource("BoxShape3D_pe8da")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=596761634]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4443034, 0)
+visible = false
+billboard = 1
+font_size = 70
