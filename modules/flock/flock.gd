@@ -14,9 +14,8 @@ const MAX_HEALTH: float = 100.0
 var health = MAX_HEALTH
 
 # 9/27/26 So far I've only added a signal that is emitted whenever the health is equal to zero,
-# but feel free to add more. Just make sure to invoke it only from the check_status() function in this script
+# but feel free to add more. Just make sure to invoke it only from the check_heath_status() function in this script
 signal health_reached_zero
-
 
 # Getter functions for health, one retrieves the exact health and the other
 # retrieves the percent of the max health the flock is currently at
@@ -33,27 +32,27 @@ func take_damage(damage: float) -> void:
 		print("Invalid damage argument or health has reached zero")
 		return
 	health -= damage
-	check_status()
+	check_heath_status()
 
 func take_percent_damage(percent_damage: float) -> void:
 	if (percent_damage > 1.0 || percent_damage < 0 || health <= 0):
 		print("Invalid damage argument or health has reached zero")
 		return
 	health -= percent_damage * MAX_HEALTH
-	check_status()
+	check_heath_status()
 
 func heal(health_healed : float) -> void:
 	health += health_healed;
-	check_status()
+	check_heath_status()
 
 func heal_percent(heal_percent: float) -> void:
 	if (heal_percent < 0 || heal_percent > 1):
 		print("Invalid health argument")
 		return
 	health += heal_percent * MAX_HEALTH
-	check_status()
+	check_heath_status()
 
-func check_status() -> void:
+func check_heath_status() -> void:
 	if (health <= 0):
 		health = 0
 		health_reached_zero.emit()
@@ -61,19 +60,6 @@ func check_status() -> void:
 		health = MAX_HEALTH
 
 signal hunger_changed
-
-@export var num_boids: int = 10
-@export var spawn_radius: float = 10.0
-@export var cursor: MeshInstance3D
-
-# only boids with movement controlled by the main flock, not subflocks
-var boids: Array[Boid] = []
-var boid_goal : Vector3
-var boid_scene = preload("res://modules/flock/player_bird/player_bird.tscn")
-
-@export var subflocks: Array[SubFlock] = []
-# all boids including ones in subflocks
-var all_boids: Array[Boid] = []
 
 # Camera
 @export var camera: Camera3D
@@ -85,14 +71,23 @@ var all_boids: Array[Boid] = []
 @export var starve_death_interval: float = 15.0
 @export var speed_penalty_interval: float = 0.1
 
+@export var num_boids: int = 10
+@export var spawn_radius: float = 10.0
+@export var cursor: MeshInstance3D
+@export var subflocks: Array[SubFlock] = []
 
+# only boids with movement controlled by the main flock, not subflocks
+var boids: Array[Boid] = []
+var boid_goal : Vector3
+var boid_scene = preload("res://modules/flock/player_bird/player_bird.tscn")
+
+# all boids including ones in subflocks
+var all_boids: Array[Boid] = []
 
 func _ready() -> void:
 	pass
 
-
 func _physics_process(delta: float) -> void:
-	
 	if !all_boids.is_empty():
 		for boid in all_boids:
 			if boid.speed > boid.default_speed:

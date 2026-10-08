@@ -8,16 +8,13 @@ func _ready() -> void:
 	Global.flock = self
 	# call Global.check_ready_nodes() once this ready function is finished
 	connect("ready", Global.check_ready_nodes)
-
-
+	
 	for i in range(num_boids):
 		var new_boid: Boid = boid_scene.instantiate()
-
 		add_child(new_boid)
 		
 		var angle := randf_range(0.0, TAU)
 		var distance := randf_range(0.0, spawn_radius)
-
 		new_boid.position = Vector3(
 			cos(angle) * distance,
 			0.0,
@@ -29,13 +26,12 @@ func _ready() -> void:
 		new_boid.boid_died.connect(_on_boid_death)
 	# duplicate the array (do NOT pass by reference (or you will be very very sad when the code does not work))
 	all_boids = boids.duplicate()
-	print(all_boids)
+	#print(all_boids)
 
 func _process(delta: float) -> void:
 	boid_goal = get_mouse_world_position(camera)
 	if cursor:
 		cursor.global_position = boid_goal
-
 
 func split_flock(num: int, subflock:SubFlock):
 	var b = boids.duplicate()
