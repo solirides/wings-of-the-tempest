@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://bt5nph1wxgig7"]
 
-[ext_resource type="Shader" uid="uid://cksgq8lklok5u" path="res://modules/terrain/terrain_triplanar_map.gdshader" id="1_ks7cj"]
+[ext_resource type="Shader" path="res://modules/terrain/terrain_triplanar_map.gdshader" id="1_ks7cj"]
 [ext_resource type="Texture2D" uid="uid://dwdtdb2543c08" path="res://modules/terrain/test_terrain.png" id="2_owuit"]
 
 [resource]

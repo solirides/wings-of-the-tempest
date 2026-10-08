@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_k2kyt")
-operation = 1
+operation = 2
 size = Vector3i(8, 0, 8)
 entry = "11111111
 11111111
