@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ChunkDefinition" format=3 uid="uid://c7iou5744evmq"]
+
+[ext_resource type="Script" path="res://modules/terrain/generator/chunk_definition.gd" id="1_jvfn2"]
+[ext_resource type="Script" uid="uid://d1yagks8php3j" path="res://modules/terrain/generator/chunk_terrain_obj.gd" id="2_v5m86"]
+[ext_resource type="Resource" uid="uid://jgby7s18k2q8" path="res://modules/terrain/test_terrain_structure.tres" id="3_jvfn2"]
+
+[resource]
+script = ExtResource("1_jvfn2")
+size = Vector3i(16, 16, 16)
+terrain_height = 6
+terrain_objects = Dictionary[ExtResource("2_v5m86"), Vector2i]({
+ExtResource("3_jvfn2"): Vector2i(6, 6)
+})

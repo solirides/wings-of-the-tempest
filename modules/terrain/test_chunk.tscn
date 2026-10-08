@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dmehpm17b8ihr"]
 
-[ext_resource type="Script" uid="uid://b3mxk6d61pwq2" path="res://modules/terrain/chunk_generator.gd" id="1_jewke"]
+[ext_resource type="Script" uid="uid://b3mxk6d61pwq2" path="res://modules/terrain/generator/chunk_generator.gd" id="1_jewke"]
 [ext_resource type="Resource" uid="uid://cnhauj7okt3ps" path="res://modules/terrain/test_lib.tres" id="2_yqyt3"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jewke"]
