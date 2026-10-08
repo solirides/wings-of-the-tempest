@@ -5,8 +5,6 @@ class_name SubFlock
 # while still sharing the same health, hunger, and other stats
 
 @export var parent_flock: Flock
-#var boid_goal: Vector3
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
