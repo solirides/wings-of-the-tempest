@@ -161,12 +161,12 @@ func _on_boid_death(boid: Node, pos: Vector3):
 	Global.camera.shake.shake()
 
 func remove_boid(boid: Boid):
-	print(len(all_boids))
+	#print(len(all_boids))
 	boids.erase(boid)
 	all_boids.erase(boid)
-	print(len(all_boids))
-	print("%s removed from %s" % [boid, boids])
-	print("%s removed from %s" % [boid, all_boids])
+	#print(len(all_boids))
+	#print("%s removed from %s" % [boid, boids])
+	#print("%s removed from %s" % [boid, all_boids])
 
 func transfer_boids_to_flock(flock: Flock):
 	for boid in all_boids:

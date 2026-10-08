@@ -28,6 +28,7 @@ speed_scale_exp = 0.3
 seperate_weight = 4.0
 steering_smoothness = 20.0
 steering_mode = 1
+rotation_mode = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=801781277]
 transform = Transform3D(-3.4577672e-09, -0.0791045, 0.99686635, 1, -4.371139e-08, -2.220446e-16, 4.3574413e-08, 0.99686635, 0.0791045, 0, 0.40833855, 0)

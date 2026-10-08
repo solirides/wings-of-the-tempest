@@ -1,6 +1,7 @@
 extends Flock
 class_name MainFlock
 
+@export var split_boid_count: int = 5
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -45,6 +46,7 @@ func split_flock(num: int, subflock:SubFlock):
 	
 	# set subflock target
 	subflock.boid_goal = get_mouse_world_position(camera)
+	#print(subflock.boid_goal)
 	
 
 func regroup_flock():
@@ -54,4 +56,4 @@ func regroup_flock():
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("split_flock"):
 		regroup_flock()
-		split_flock(1, subflocks[0])
+		split_flock(split_boid_count, subflocks[0])

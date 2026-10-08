@@ -128,11 +128,16 @@ func repel() -> Vector3:
 		return Vector3.ZERO
 	
 	#fleeing, only applicable when the "Flee Button" is pressed.
-	if Input.is_action_pressed("repel") and not is_fleeing :
+	#if Input.is_action_pressed("repel") and not is_fleeing :
+	if not is_fleeing:
 		is_fleeing = true
 		flee_timer = flee_duration
 		flee_direction = offset.normalized() 
-	
+	#if is_nan(offset.x):
+		#print(offset)
+		#print(global_position)
+		#print(flock.boid_goal)
+		
 	return offset.normalized()
 	
 #flee/cowards function...
@@ -247,6 +252,10 @@ func boid_movement(delta: float):
 	else :
 		#heading towards the cursor/goal
 		goal_force = global_position.direction_to(flock.boid_goal) * goal_weight
+		#print("goal force")
+		#print(goal_force)
+		#print(global_position)
+		#print(flock.boid_goal)
 	
 	#seperation force
 	var seperation_force : Vector3 = seperation(neighbors) * seperate_weight
@@ -261,7 +270,7 @@ func boid_movement(delta: float):
 	# boid_direction is the combined target direction of the boid
 	#print(str(self))
 	var boid_direction : Vector3 = Vector3.ZERO
-	boid_direction = (seperation_force + cohesion_force + repel_force + flee_force + stay_on_screen_force)
+	boid_direction = (seperation_force + cohesion_force + flee_force + stay_on_screen_force)
 	#print(boid_direction)
 	
 	#When the cursor is in spread out/repel mode the boids have slightly modified behaviors
@@ -275,7 +284,7 @@ func boid_movement(delta: float):
 		var spin_alignment = alignment_force * 0.2
 		
 		
-		boid_direction += spin_alignment + camera_force + boid_subflock_spin_force
+		boid_direction += spin_alignment + camera_force + boid_subflock_spin_force + repel_force
 		#print(boid_direction)
 
 	#THIS IS THE START OF THE BOID FOLLOWING THE CURSOR BEHAVIOR!
@@ -295,10 +304,10 @@ func boid_movement(delta: float):
 			var vel: Vector3 = Vector3.ZERO
 			if boid_direction.length_squared() > 0.001:
 				#boid_direction = boid_direction.normalized()
-				vel = linear_velocity.lerp(boid_direction, steering_smoothness * delta)
+				vel = linear_velocity.lerp(boid_direction*speed, steering_smoothness * delta)
 				vel.y = 0
-				vel = vel.normalized()
-			linear_velocity = vel * speed
+				vel = vel.normalized() * speed
+			linear_velocity = vel
 			#velocity_to_add = vel * speed
 			#apply_central_force((velocity_to_add - linear_velocity) * mass)
 		STEERING_MODE.STEERING_FORCE:
@@ -308,7 +317,13 @@ func boid_movement(delta: float):
 			var desired_velocity = boid_direction * speed
 			# the velocity to add to the current velocity
 			var steering = desired_velocity - linear_velocity
-			var speed_scaled = pow(steering.length() / desired_velocity.length(), speed_scale_exp) * desired_velocity.length()
+			var speed_scaled = 0
+			# this should prevent any divide by zero errors
+			if desired_velocity.length() != 0:
+				speed_scaled = pow(steering.length() / desired_velocity.length(), speed_scale_exp) * desired_velocity.length()
+			if is_nan(speed_scaled):
+				printerr("speed_scaled is NAN!!!!!")
+				speed_scaled = 0
 			steering.y = 0
 			if steering != Vector3.ZERO:
 				steering = steering.normalized() * speed_scaled
@@ -333,11 +348,13 @@ func boid_movement(delta: float):
 	match rotation_mode:
 		ROTATION_MODE.LERP_TO_VELOCITY:
 			if linear_velocity.length_squared() > 0.001:
-				var target_rotation = Transform3D().looking_at(linear_velocity, Vector3.UP).basis
+				var target_rotation = Transform3D.IDENTITY.looking_at(linear_velocity, Vector3.UP).basis
+				target_rotation = target_rotation.orthonormalized()
 				global_transform.basis = global_transform.basis.slerp(target_rotation, rotation_smoothness * delta)
 		ROTATION_MODE.LERP_TO_GOAL:
 			if boid_direction.length_squared() > 0.001:
-				var target_rotation = Transform3D().looking_at(boid_direction, Vector3.UP).basis
+				var target_rotation = Transform3D.IDENTITY.looking_at(boid_direction, Vector3.UP).basis
+				target_rotation = target_rotation.orthonormalized()
 				global_transform.basis = global_transform.basis.slerp(target_rotation, rotation_smoothness * delta)
 		ROTATION_MODE.SNAP_TO_VELOCITY:
 			# no interpolation

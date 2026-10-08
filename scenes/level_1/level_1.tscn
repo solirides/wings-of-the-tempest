@@ -72,7 +72,8 @@ unique_name_in_owner = true
 [node name="Flock" parent="." unique_id=1876045196 node_paths=PackedStringArray("cursor", "subflocks", "camera") instance=ExtResource("2_jr17i")]
 unique_name_in_owner = true
 script = ExtResource("4_c5bgo")
-num_boids = 2
+split_boid_count = 5
+num_boids = 20
 cursor = NodePath("MeshInstance3D2")
 subflocks = [NodePath("SubFlock")]
 camera = NodePath("../Camera")
