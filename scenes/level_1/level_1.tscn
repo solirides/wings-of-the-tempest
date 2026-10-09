@@ -16,6 +16,7 @@
 [ext_resource type="Script" uid="uid://ddomg1qhruqyf" path="res://scenes/level_1/goal.gd" id="11_0lhw3"]
 [ext_resource type="PackedScene" uid="uid://b3o6tsxlufhca" path="res://modules/wind_zone/wind_zone.tscn" id="13_665yd"]
 [ext_resource type="PackedScene" uid="uid://bhhy738m44d75" path="res://modules/wind_trails/wind_trails.tscn" id="14_3fps6"]
+[ext_resource type="PackedScene" uid="uid://dan4yb6n1bkxe" path="res://scenes/storm/stormTesting.tscn" id="17_la62n"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
 render_priority = 0
@@ -170,6 +171,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 0)
 strength = 10.0
 radius = 30.0
+
+[node name="Area3D" parent="." unique_id=904228582 instance=ExtResource("17_la62n")]
 
 [connection signal="body_entered" from="Goal" to="Goal" method="_on_body_entered"]
 
