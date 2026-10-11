@@ -4,6 +4,12 @@ extends Enemy # Controls hunter.tscn
 @export var windup_time: float = 0.8
 #@export var fire_cooldown: float = 4.0
 @export var bullet_scene: PackedScene
+# 0 aims at where the boid is now, 1 aims at where it will be when the arrow lands
+@export var lead_amount: float = 1.0
+# If true, aim at the most packed together boid instead of the nearest
+@export var target_clusters: bool = true
+# How close boids have to be to count as the same cluster
+@export var cluster_radius: float = 3.0
 
 # Gets the arrowspawn and firecooldown once at the start 
 @onready var arrow_spawn: Marker3D = $ArrowSpawn 
@@ -15,6 +21,8 @@ extends Enemy # Controls hunter.tscn
 #var target: Node3D = null 
 # The boid the hunter is aiming at while winding up
 var current_target: Node3D = null
+# The bullet being charged, it shows the dotted path before it fires
+var charging_bullet = null
 var is_winding_up:= false
 
 # Called when the node enters the scene tree for the first time.
@@ -28,17 +36,55 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	# If hunter is already aimming skip everything below
 	if is_winding_up: 
-		# Keep facing the boid so the aim rod points where the shot will go
+		# Keep facing where the boid will be so the aim rod points where the shot will go
 		if is_instance_valid(current_target):
-			look_at(current_target.global_position, Vector3.UP)
+			var aim_point = predict_position(current_target)
+			look_at(aim_point, Vector3.UP)
+			# Keep the dotted path lined up with the boid
+			if is_instance_valid(charging_bullet):
+				charging_bullet.aim(arrow_spawn.global_position, aim_point, current_target)
 		return 
-	# Look for the closest boid in its range 
+	# Look for a boid in its range 
 	if attack_ready:
-		var target = find_nearest_boid()
+		var target = find_target()
 		if target:
 			look_at(target.global_position, Vector3.UP)
 			# call the attack handler defined in the Enemy class
 			attack(target)
+
+func find_target() -> Node3D:
+	# Pick the target the way the Inspector setting says
+	if target_clusters:
+		return find_cluster_target()
+	return find_nearest_boid()
+
+func find_cluster_target() -> Node3D:
+	var boids = get_tree().get_nodes_in_group("boids")
+	var best: Node3D = null
+	var best_count := -1
+	for boid in boids:
+		# Skip dying boids and boids out of range
+		if boid.death_queued:
+			continue
+		if global_position.distance_to(boid.global_position) > track_range:
+			continue
+		# Count how many other boids are packed around this one
+		var count := 0
+		for other in boids:
+			if other != boid and not other.death_queued and boid.global_position.distance_to(other.global_position) <= cluster_radius:
+				count += 1
+		# Keep the boid with the most neighbors
+		if count > best_count:
+			best_count = count
+			best = boid
+	return best
+
+func predict_position(target: Node3D) -> Vector3:
+	# Without a bullet there's no flight time to lead by
+	if not is_instance_valid(charging_bullet):
+		return target.global_position
+	# Where the boid will be when the arrow lands
+	return target.global_position + target.linear_velocity * charging_bullet.flight_time * lead_amount
 		
 func find_nearest_boid() -> Node3D: 
 	var boids = get_tree().get_nodes_in_group("boids")
@@ -64,22 +110,32 @@ func attack_function(target: Node3D) -> void:
 	current_target = target
 	# Show the aim rod as a warning that a shot is coming
 	aim_indicator.visible = true
+	# Make the bullet now so its dotted path shows while charging
+	if bullet_scene:
+		charging_bullet = bullet_scene.instantiate()
+		# Parent it to the hunter so it goes away if the hunter does
+		add_child(charging_bullet)
+		charging_bullet.aim(arrow_spawn.global_position, predict_position(target), target)
 	# Pause
 	await get_tree().create_timer(windup_time).timeout
 	# Warning is over, hide the aim rod
 	aim_indicator.visible = false
 	# Fire
 	# the bird may be deleted between the time that the attack is started and the bullet is fired
-	if target:
+	if is_instance_valid(target):
 		fire_bullet(target)
+	elif is_instance_valid(charging_bullet):
+		# No target left, so throw the charging bullet away
+		charging_bullet.queue_free()
 	# Reset 
 	is_winding_up = false
 	current_target = null
+	charging_bullet = null
 	#cooldown_timer.start()
 
 func fire_bullet(target: Node3D) -> void:
-	if not target or not bullet_scene:
+	if not target or not is_instance_valid(charging_bullet):
 		return
-	var bullet = bullet_scene.instantiate()
-	get_tree().current_scene.add_child(bullet)
-	bullet.launch(arrow_spawn.global_position, target.global_position, target)
+	# Put the bullet in the world so it stops following the hunter
+	charging_bullet.reparent(get_tree().current_scene)
+	charging_bullet.launch(arrow_spawn.global_position, predict_position(target), target)

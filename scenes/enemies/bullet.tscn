@@ -2,7 +2,15 @@
 
 [ext_resource type="Script" uid="uid://b55ur2ltrwn7p" path="res://scenes/enemies/bullet.gd" id="1_hl25f"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_6olrb"]
+[sub_resource type="CylinderMesh" id="CylinderMesh_07510"]
+top_radius = 0.0
+bottom_radius = 0.15
+height = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6olrb"]
+top_radius = 0.04
+bottom_radius = 0.04
+height = 0.5
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6lmcw"]
 
@@ -10,7 +18,12 @@
 script = ExtResource("1_hl25f")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1295787968]
-mesh = SubResource("SphereMesh_6olrb")
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_07510")
+
+[node name="Shaft" type="MeshInstance3D" parent="MeshInstance3D" unique_id=522836261]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0)
+mesh = SubResource("CylinderMesh_6olrb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1558102088]
 shape = SubResource("SphereShape3D_6lmcw")
