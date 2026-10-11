@@ -1,8 +1,24 @@
-extends CharacterBody3D
+extends RigidBody3D
 class_name Boid
+
+signal boid_died(boid: Node, pos: Vector3)
+
+enum STEERING_MODE {
+	LERP,
+	STEERING_FORCE
+}
+
+enum ROTATION_MODE {
+	SNAP_TO_VELOCITY,
+	LERP_TO_VELOCITY,
+	LERP_TO_GOAL
+}
+
 const default_speed : float = 5.0
+
 @export var speed : float = 15
 @export var min_speed : float = 2
+@export var speed_scale_exp: float = 1.0
 @export var perception_range : float = 8
 @export var personal_space : float = 4
 
@@ -12,7 +28,6 @@ const default_speed : float = 5.0
 @export var goal_weight : float = 1.2
 @export var stay_on_screen_weight : float = 2
 @export var cam_moving_weight : float = 1.2
-
 
 @export var repel_radius: float = 5.0
 @export var repel_weight: float = 5.0
@@ -28,24 +43,12 @@ const default_speed : float = 5.0
 @export var spin_weight : float = 1
 @export var minimum_group_size : float = 5
 
-var flock: Flock
-var vel : Vector3 = Vector3.ZERO
 @export var steering_smoothness: float = 8.0
 @export var rotation_smoothness: float = 8.0
+@export var steering_mode: STEERING_MODE = STEERING_MODE.LERP
+@export var rotation_mode: ROTATION_MODE = ROTATION_MODE.LERP_TO_VELOCITY
 
-@export var steering_mode:STEERING_MODE = STEERING_MODE.LERP
-@export var rotation_mode:ROTATION_MODE = ROTATION_MODE.LERP
-
-enum STEERING_MODE {
-	LERP,
-	STEERING_FORCE
-}
-
-enum ROTATION_MODE {
-	NONE,
-	LERP
-}
-
+var flock: Flock
 #TS makes the boids spin in a random direction so that they don't look so robotic.............. while in the stupid fucking split up mode.
 var spin_direction: float = 1.0 if randf() > 0.5 else -1.0 
 
@@ -59,17 +62,30 @@ var move_direction: Vector3:
 var death_particles = preload("res://modules/flock/death_particles.tscn")
 var death_queued = false
 
+@onready var food_detector: Area3D = $FoodDetector
+
 func _ready() -> void:
 	flock = get_parent() as Flock
 	add_to_group("boids")
+	food_detector.area_entered.connect(_on_food_detector_area_entered)
+
+func _physics_process(delta: float) -> void:
+	if !death_queued:
+		boid_movement(delta)
+
+func _on_food_detector_area_entered(area: Area3D) -> void:
+	# Area3D is a child of the Food root node
+	var food: Food = area.get_parent()
+	# this stops several boids from eating the same food in one physics frame
+	if not food is Food or food.is_queued_for_deletion():
+		return
+	flock.eat(food.hunger_value)
+	food.queue_free()
 
 func STAY_ON_SCREEN() -> Vector3 :
-	
 	var force : Vector3 = Vector3.ZERO
-	
 	var cam = Global.camera
 	var window_size = get_viewport().get_visible_rect().size
-	
 	var margin := 100.0
 	var boid_pos = cam.unproject_position(global_position)
 	
@@ -105,21 +121,24 @@ func STAY_ON_SCREEN() -> Vector3 :
 
 #I see, I'm going to change this so that if they get within this repel radius, they call the "flee" function, which forces the boid to fly a set distance 180 
 func repel() -> Vector3:
-	var offset := global_position - flock.mouse_target
+	var offset := global_position - flock.boid_goal
 	offset.y = 0
 	var distance := offset.length()
 	
 	if distance > repel_radius or distance < 0.001:
 		return Vector3.ZERO
 	
-	#fleeing, only applicable when the "Flee Button" is pressed.
-	if Input.is_action_pressed("repel") and not is_fleeing :
+	if not is_fleeing:
 		is_fleeing = true
 		flee_timer = flee_duration
 		flee_direction = offset.normalized() 
-	
+	#if is_nan(offset.x):
+		#print(offset)
+		#print(global_position)
+		#print(flock.boid_goal)
+		
 	return offset.normalized()
-	
+
 #flee/cowards function...
 func _flee(delta: float) -> Vector3 :
 	flee_timer -= delta
@@ -137,7 +156,6 @@ func seperation(neighbors : Array) -> Vector3 :
 	
 	for boid in neighbors :
 		var distance : float = global_position.distance_to(boid.global_position)
-		
 		if distance < personal_space and distance > 0.1:
 			var sep_direction = global_position - boid.global_position
 			sep_force += sep_direction.normalized() / distance
@@ -150,15 +168,13 @@ func alignment(neighbors : Array) -> Vector3 :
 		return ali_force
 		
 	for boid in neighbors :
-		ali_force += boid.vel
+		ali_force += boid.linear_velocity
 	
 	ali_force = (ali_force / neighbors.size()).normalized()
-	
 	return ali_force
 
 #Cohesion force
 func cohesion(neighbors : Array) -> Vector3 :
-	
 	var coh_force : Vector3 = Vector3.ZERO
 	if neighbors.size() == 0:
 		return coh_force
@@ -168,7 +184,6 @@ func cohesion(neighbors : Array) -> Vector3 :
 	
 	coh_force /= neighbors.size()
 	coh_force = global_position.direction_to(coh_force)
-	
 	return coh_force
 
 #This is for the new force stuff related to the "repel mode shit"
@@ -179,11 +194,10 @@ func local_center(neighbors: Array) -> Vector3 :
 	if neighbors.size() == 0:
 		return global_position
 	
-	for boids in neighbors :
-		center_force += boids.global_position
+	for boid in neighbors :
+		center_force += boid.global_position
 	
 	center_force = center_force / neighbors.size()
-	
 	return center_force
 
 func spinning(center: Vector3, neighbors: Array) -> Vector3:
@@ -192,19 +206,10 @@ func spinning(center: Vector3, neighbors: Array) -> Vector3:
 	
 	var offset = global_position - center
 	var tangent = Vector3(-offset.z, 0, offset.x).normalized()
-	
 	return tangent * spin_direction
 
 #This is WHERE THE MAGIC BEGINS, NO MORE CALCULATING BORING ASS VECTOR SHITS!!!!!!!!!
-func _physics_process(delta: float) -> void:
-	if !death_queued:
-		boid_movement(delta)
-
 func boid_movement(delta: float):
-	#seeing whose arround who
-	#var boids : Array = get_tree().get_nodes_in_group("boids")
-	
-	#biggest change yet IMO, they no longer target the cursor if the camera is moving!
 	var camera_force : Vector3 = Vector3.ZERO
 	if cam_is_moving :
 		camera_force = move_direction * cam_moving_weight
@@ -215,23 +220,19 @@ func boid_movement(delta: float):
 	for other in boids:
 		if other == self :
 			continue
-		
 		var distance_to_boids : float = global_position.distance_to(other.global_position)
-		
 		if distance_to_boids < perception_range:
 			neighbors.append(other)
 	
 	var repel_force := Vector3.ZERO
-	var cursor_force : = Vector3.ZERO
-
-		
+	var goal_force : = Vector3.ZERO
 	var flee_force := Vector3.ZERO 
+	
 	if is_fleeing :
 		flee_force = _flee(delta) * flee_weight
-	
 	else :
-		#heading towards the cursor
-		cursor_force = global_position.direction_to(flock.mouse_target) * goal_weight
+		#heading towards the cursor/goal
+		goal_force = global_position.direction_to(flock.boid_goal) * goal_weight
 	
 	#seperation force
 	var seperation_force : Vector3 = seperation(neighbors) * seperate_weight
@@ -243,77 +244,84 @@ func boid_movement(delta: float):
 	var stay_on_screen_force : Vector3 = STAY_ON_SCREEN() * stay_on_screen_weight
 	
 	#CEO of BOID pathing 🔥
+	# boid_direction is the combined target direction of the boid
+	#print(str(self))
 	var boid_direction : Vector3 = Vector3.ZERO
-	boid_direction = (seperation_force + cohesion_force + repel_force + flee_force + stay_on_screen_force)
+	boid_direction = (seperation_force + cohesion_force + flee_force + stay_on_screen_force)
+	#print(boid_direction)
 	
 	#When the cursor is in spread out/repel mode the boids have slightly modified behaviors
 	if Input.is_action_pressed("repel"):
 		repel_force = repel() * repel_weight
 		#when the camera is not moving, boids in large groups should start spinning in place.
-		var boid_subflock_spin_force : Vector3 = spinning(local_center(neighbors), neighbors) * spin_weight
+		var boid_subflock_spin_force : Vector3 = Vector3.ZERO
+		if cam_is_moving == false :
+			boid_subflock_spin_force = spinning(local_center(neighbors), neighbors) * spin_weight
 		var spin_alignment = alignment_force * 0.2
-		
-		
-		boid_direction += spin_alignment + camera_force + boid_subflock_spin_force
-
-	#THIS IS THE START OF THE BOID FOLLOWING THE CURSOR BEHAVIOR!
+		boid_direction += spin_alignment + camera_force + boid_subflock_spin_force + repel_force
 	else :
-		boid_direction += cursor_force + alignment_force
+		boid_direction += goal_force + alignment_force
+
+	boid_direction.y = 0
 	boid_direction = boid_direction.normalized()
 	
 	#movement/"looking"
 	# added lerp/slerp to get rid of some jitter
 	match steering_mode:
 		STEERING_MODE.LERP:
-			boid_direction.y = 0
+			var vel: Vector3 = Vector3.ZERO
 			if boid_direction.length_squared() > 0.001:
-				boid_direction = boid_direction.normalized()
-				vel = vel.lerp(boid_direction, steering_smoothness * delta)
+				vel = linear_velocity.lerp(boid_direction*speed, steering_smoothness * delta)
 				vel.y = 0
-				vel = vel.normalized()
-			
-			velocity = vel * speed
-		
+				vel = vel.normalized() * speed
+			linear_velocity = vel
 		STEERING_MODE.STEERING_FORCE:
-			boid_direction.y = 0
-			if boid_direction.length_squared() > 0.001:
-				boid_direction = boid_direction.normalized()
 			var desired_velocity = boid_direction * speed
-			var steering = desired_velocity - velocity
+			var steering = desired_velocity - linear_velocity
+			var speed_scaled = 0
+			if desired_velocity.length() != 0:
+				speed_scaled = pow(steering.length() / desired_velocity.length(), speed_scale_exp) * desired_velocity.length()
+			if is_nan(speed_scaled):
+				printerr("speed_scaled is NAN!!!!!")
+				speed_scaled = 0
 			steering.y = 0
-			steering = steering.limit_length(delta * steering_smoothness)
+			if steering != Vector3.ZERO:
+				steering = steering.normalized() * speed_scaled
+			else:
+				steering = global_basis.z.normalized() * min_speed
 			
-			velocity += steering
-			velocity = velocity.limit_length(speed)
-			# why is there no limit_length for minimum length???
-			if velocity.length() < min_speed:
-				velocity = velocity.normalized() * min_speed
+			steering = steering.limit_length(speed)
+			if linear_velocity.length() < min_speed:
+				steering = steering.normalized() * min_speed
 			
-			vel = velocity.normalized()
-	
-	move_and_slide()
+			apply_central_force(steering * mass)
 	
 	# rotate node for display
 	match rotation_mode:
-		ROTATION_MODE.LERP:
-			if vel.length_squared() > 0.001:
-				var target_rotation = Transform3D().looking_at(vel, Vector3.UP).basis
+		ROTATION_MODE.LERP_TO_VELOCITY:
+			if linear_velocity.length_squared() > 0.001:
+				var target_rotation = Transform3D.IDENTITY.looking_at(linear_velocity, Vector3.UP).basis
+				target_rotation = target_rotation.orthonormalized()
 				global_transform.basis = global_transform.basis.slerp(target_rotation, rotation_smoothness * delta)
-		ROTATION_MODE.NONE:
-			# no interpolation
-			if velocity.length_squared() > 0.001:
-				var target_pos = global_position + velocity
+		ROTATION_MODE.LERP_TO_GOAL:
+			if boid_direction.length_squared() > 0.001:
+				var target_rotation = Transform3D.IDENTITY.looking_at(boid_direction, Vector3.UP).basis
+				target_rotation = target_rotation.orthonormalized()
+				global_transform.basis = global_transform.basis.slerp(target_rotation, rotation_smoothness * delta)
+		ROTATION_MODE.SNAP_TO_VELOCITY:
+			if linear_velocity.length_squared() > 0.001:
+				var target_pos = global_position + linear_velocity
 				look_at(target_pos, Vector3.UP)
 
-func remove_boid(death_animation: bool = true):
+func kill_boid(death_animation: bool = true):
 	# prevent this function from running multiple times
 	if death_queued:
 		return
 	death_queued = true
-	flock.boids.erase(self)
+	flock.remove_boid(self)
+	
 	if death_animation:
 		var instance = death_particles.instantiate()
-		#get_tree().root.add_child(instance)
 		add_child(instance)
 		instance.global_position = self.global_position
 		instance.start_animation()
@@ -321,4 +329,31 @@ func remove_boid(death_animation: bool = true):
 		var tween = get_tree().create_tween()
 		tween.tween_property(self, "scale", Vector3.ZERO, 1.0)
 		tween.tween_callback(queue_free)
+	
+	boid_died.emit(self, global_position)
+
+func transfer_to_flock(new_flock: Flock):
+	if new_flock == flock:
+		return
+	flock.boids.erase(self)
+	flock.all_boids.erase(self)
+	if self not in new_flock.boids:
+		new_flock.boids.append(self)
+	if self not in new_flock.all_boids:
+		new_flock.all_boids.append(self)
+	if new_flock in flock.subflocks:
+		flock.all_boids.append(self)
+	
+	flock = new_flock
+	debug_flock_display(new_flock)
+
+func debug_flock_display(flock: Flock):
+	# for debug
+	$Label3D.text = str(flock)
+	var random = RandomNumberGenerator.new()
+	random.seed = flock.get_instance_id()
+	$MeshInstance3D.mesh = $MeshInstance3D.mesh.duplicate()
+	$MeshInstance3D.mesh.material = $MeshInstance3D.mesh.material.duplicate()
+	$MeshInstance3D.mesh.material.albedo_color = Color.from_hsv(random.randf(), 0.5, 1.0)
+	
 	

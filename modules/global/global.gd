@@ -4,7 +4,7 @@ extends Node
 # res://modules/global/global.tscn
 
 
-var score:int = 0
+var score: int = 0
 # Generally try to use these variables in Global to get references to these nodes. (or use the % prefix)
 # This way we only have to make sure they exist here.
 var flock: Node

@@ -4,8 +4,13 @@
 
 [sub_resource type="SphereMesh" id="SphereMesh_6olrb"]
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_6lmcw"]
+
 [node name="Bullet" type="Area3D" unique_id=660157548]
 script = ExtResource("1_hl25f")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1295787968]
 mesh = SubResource("SphereMesh_6olrb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1558102088]
+shape = SubResource("SphereShape3D_6lmcw")

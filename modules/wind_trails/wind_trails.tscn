@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://bhhy738m44d75"]
+
+[ext_resource type="Material" uid="uid://dlt7l1ak5marx" path="res://assets/materials/wind_trail_material.tres" id="1_5pq56"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fpwb5"]
+inherit_velocity_ratio = 1.0
+spread = 15.0
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, 0, 0)
+turbulence_enabled = true
+turbulence_noise_strength = 0.01
+turbulence_influence_min = 0.010000001
+turbulence_influence_max = 0.060000002
+
+[sub_resource type="Curve" id="Curve_gu2oc"]
+_data = [Vector2(0, 0), 0.0, 1.1385543, 0, 0, Vector2(0.63703704, 0.49397588), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.8332696, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_ytn5a"]
+material = ExtResource("1_5pq56")
+sections = 6
+curve = SubResource("Curve_gu2oc")
+
+[node name="WindTrails" type="GPUParticles3D" unique_id=1253582775]
+cast_shadow = 0
+amount = 4
+lifetime = 3.0
+trail_enabled = true
+trail_lifetime = 0.4
+process_material = SubResource("ParticleProcessMaterial_fpwb5")
+draw_pass_1 = SubResource("TubeTrailMesh_ytn5a")

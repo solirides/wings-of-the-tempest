@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://0vkdd2i01g77"]
 
-[ext_resource type="Material" uid="uid://dlt7l1ak5marx" path="res://assets/materials/wind_trail_material.tres" id="1_ytn5a"]
+[ext_resource type="PackedScene" uid="uid://bhhy738m44d75" path="res://modules/wind_trails/wind_trails.tscn" id="1_3c6gx"]
 [ext_resource type="Material" uid="uid://c2tigyl6qdson" path="res://assets/materials/storm_wall_material.tres" id="2_ytn5a"]
 [ext_resource type="PackedScene" uid="uid://cdmpa3pleltgx" path="res://modules/storm_wall/storm_wall.tscn" id="3_hpuu2"]
 [ext_resource type="PackedScene" uid="uid://dp2pii0qjqgy2" path="res://modules/storm_wall/storm_wall_2.tscn" id="4_gu2oc"]
@@ -11,26 +11,6 @@
 [ext_resource type="Material" uid="uid://m83xmteamd1e" path="res://assets/materials/water_material.tres" id="8_ohm3u"]
 [ext_resource type="Material" uid="uid://du74kmr3sjb4l" path="res://assets/materials/placeholder_checker_2.tres" id="9_ohm3u"]
 [ext_resource type="PackedScene" uid="uid://d3mpcfi2m2o0v" path="res://modules/camera/camera.tscn" id="11_3c6gx"]
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fpwb5"]
-inherit_velocity_ratio = 1.0
-spread = 15.0
-initial_velocity_min = 5.0
-initial_velocity_max = 10.0
-gravity = Vector3(0, 0, 0)
-turbulence_enabled = true
-turbulence_noise_strength = 0.01
-turbulence_influence_min = 0.010000001
-turbulence_influence_max = 0.060000002
-
-[sub_resource type="Curve" id="Curve_gu2oc"]
-_data = [Vector2(0, 0), 0.0, 1.1385543, 0, 0, Vector2(0.63703704, 0.49397588), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.8332696, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_ytn5a"]
-material = ExtResource("1_ytn5a")
-sections = 6
-curve = SubResource("Curve_gu2oc")
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_6lmcw"]
 top_radius = 2.435
@@ -111,15 +91,8 @@ subdivide_depth = 20
 
 [node name="VisualTesting" type="Node3D" unique_id=1424071881]
 
-[node name="WindTrails" type="GPUParticles3D" parent="." unique_id=379601455]
+[node name="WindTrails" parent="." unique_id=1253582775 instance=ExtResource("1_3c6gx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.22064, 0)
-cast_shadow = 0
-amount = 4
-lifetime = 3.0
-trail_enabled = true
-trail_lifetime = 0.4
-process_material = SubResource("ParticleProcessMaterial_fpwb5")
-draw_pass_1 = SubResource("TubeTrailMesh_ytn5a")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1645070766]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.240463, 0, -9.7564335)
@@ -233,3 +206,4 @@ material = ExtResource("7_dipdn")
 
 [node name="Camera" parent="." unique_id=506319422 instance=ExtResource("11_3c6gx")]
 current = true
+enable_post_processing = false
