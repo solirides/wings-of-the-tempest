@@ -19,19 +19,21 @@ shader_parameter/use_gradient = false
 shader_parameter/steps = 12
 shader_parameter/gamma = 1.0
 
-[node name="Camera" type="Camera3D" unique_id=506319422]
-transform = Transform3D(0.47715876, -0.7996896, 0.36443955, 0, 0.41469327, 0.9099613, -0.87881714, -0.434196, 0.19787452, 0, 0, 0)
+[node name="CameraAnchor" type="Node3D" unique_id=856289716]
 script = ExtResource("1_pf27r")
 
-[node name="Shake" type="Node3D" parent="." unique_id=1823544482]
+[node name="Camera" type="Camera3D" parent="." unique_id=506319422]
+transform = Transform3D(0.47715876, -0.7996896, 0.36443955, 0, 0.41469327, 0.9099613, -0.87881714, -0.434196, 0.19787452, 0, 0, 0)
+
+[node name="Shake" type="Node3D" parent="Camera" unique_id=1823544482]
 script = ExtResource("2_otekq")
 
-[node name="Duration" type="Timer" parent="Shake" unique_id=45643122]
+[node name="Duration" type="Timer" parent="Camera/Shake" unique_id=45643122]
 one_shot = true
 
-[node name="Frequency" type="Timer" parent="Shake" unique_id=1192257166]
+[node name="Frequency" type="Timer" parent="Camera/Shake" unique_id=1192257166]
 
-[node name="Shaders" type="Control" parent="." unique_id=1328386959]
+[node name="Shaders" type="Control" parent="Camera" unique_id=1328386959]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -39,7 +41,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PosterizeShader" type="ColorRect" parent="Shaders" unique_id=1648680280]
+[node name="PosterizeShader" type="ColorRect" parent="Camera/Shaders" unique_id=1648680280]
 material = SubResource("ShaderMaterial_6lmcw")
 layout_mode = 1
 anchors_preset = 15
@@ -48,5 +50,5 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[connection signal="timeout" from="Shake/Duration" to="Shake" method="_on_duration_timeout"]
-[connection signal="timeout" from="Shake/Frequency" to="Shake" method="_on_frequency_timeout"]
+[connection signal="timeout" from="Camera/Shake/Duration" to="Camera/Shake" method="_on_duration_timeout"]
+[connection signal="timeout" from="Camera/Shake/Frequency" to="Camera/Shake" method="_on_frequency_timeout"]

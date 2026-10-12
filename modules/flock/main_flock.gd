@@ -29,7 +29,7 @@ func _ready() -> void:
 	#print(all_boids)
 
 func _process(delta: float) -> void:
-	boid_goal = get_mouse_world_position(camera)
+	boid_goal = get_mouse_world_position(camera_controller.camera_node)
 	if cursor:
 		cursor.global_position = boid_goal
 
@@ -41,7 +41,7 @@ func split_flock(num: int, subflock:SubFlock):
 		boid.transfer_to_flock(subflock)
 	
 	# set subflock target
-	subflock.boid_goal = get_mouse_world_position(camera)
+	subflock.boid_goal = get_mouse_world_position(camera_controller.camera_node)
 	#print(subflock.boid_goal)
 	
 

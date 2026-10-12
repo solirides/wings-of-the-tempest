@@ -62,7 +62,7 @@ func check_heath_status() -> void:
 signal hunger_changed
 
 # Camera
-@export var camera: Camera3D
+@export var camera_controller: Node
 
 # Hunger
 @export var max_hunger: float = 100.0

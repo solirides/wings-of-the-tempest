@@ -87,7 +87,7 @@ func STAY_ON_SCREEN() -> Vector3 :
 	var cam = Global.camera
 	var window_size = get_viewport().get_visible_rect().size
 	var margin := 100.0
-	var boid_pos = cam.unproject_position(global_position)
+	var boid_pos = cam.camera_node.unproject_position(global_position)
 	
 	#This is messy as hell, I'm sorry. But the old way I used to do it made them clump up like CRAZY
 	var off_left = boid_pos.x < margin

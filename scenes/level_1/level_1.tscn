@@ -69,24 +69,24 @@ layer = 10
 [node name="Hud" parent="CanvasLayer" unique_id=719202679 instance=ExtResource("7_fxajv")]
 unique_name_in_owner = true
 
-[node name="Flock" parent="." unique_id=1876045196 node_paths=PackedStringArray("camera", "cursor", "subflocks") instance=ExtResource("2_jr17i")]
+[node name="Flock" parent="." unique_id=1876045196 node_paths=PackedStringArray("camera_controller", "cursor", "subflocks") instance=ExtResource("2_jr17i")]
 unique_name_in_owner = true
 script = ExtResource("4_c5bgo")
 split_boid_count = 5
-camera = NodePath("../Camera")
+camera_controller = NodePath("../Camera")
 num_boids = 20
 cursor = NodePath("MeshInstance3D2")
 subflocks = [NodePath("SubFlock")]
 
-[node name="SubFlock" type="Node3D" parent="Flock" unique_id=318110185 node_paths=PackedStringArray("parent_flock", "camera")]
+[node name="SubFlock" type="Node3D" parent="Flock" unique_id=318110185 node_paths=PackedStringArray("parent_flock", "camera_controller")]
 script = ExtResource("4_1uvjm")
 parent_flock = NodePath("..")
-camera = NodePath("../../Camera")
+camera_controller = NodePath("../../Camera")
 
 [node name="Camera" parent="." unique_id=1488927985 node_paths=PackedStringArray("flock") instance=ExtResource("1_7n1yb")]
-transform = Transform3D(0.47715876, -0.7996896, 0.36443946, 0, 0.41469318, 0.9099613, -0.87881714, -0.434196, 0.19787449, 4.999996, 11, 2.999998)
-fov = 60.0
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 4.999996, 4, -1.0000019)
 flock = NodePath("../Flock")
+min_zoom = 1.0
 
 [node name="Ground" type="CSGBox3D" parent="." unique_id=1501656876]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
