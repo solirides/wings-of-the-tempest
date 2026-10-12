@@ -200,6 +200,7 @@ func local_center(neighbors: Array) -> Vector3 :
 	center_force = center_force / neighbors.size()
 	return center_force
 
+var debug_count : int = 0
 func spinning(center: Vector3, neighbors: Array) -> Vector3:
 	if neighbors.size() < minimum_group_size :
 		return Vector3.ZERO
@@ -260,7 +261,8 @@ func boid_movement(delta: float):
 		var spin_alignment = alignment_force * 0.2
 		boid_direction += spin_alignment + camera_force + boid_subflock_spin_force + repel_force
 	else :
-		boid_direction += goal_force + alignment_force
+		
+		boid_direction += goal_force.normalized() + alignment_force
 
 	boid_direction.y = 0
 	boid_direction = boid_direction.normalized()
@@ -290,7 +292,7 @@ func boid_movement(delta: float):
 			else:
 				steering = global_basis.z.normalized() * min_speed
 			
-			steering = steering.limit_length(speed)
+			steering = steering.normalized() * speed
 			if linear_velocity.length() < min_speed:
 				steering = steering.normalized() * min_speed
 			
