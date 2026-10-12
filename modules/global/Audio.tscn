@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://dqcq86q0uyrwl"]
+
+[ext_resource type="Script" uid="uid://bd1ksgtuu66ef" path="res://modules/global/audio.gd" id="1_ux4r1"]
+[ext_resource type="Script" uid="uid://cykvyc3xo04n8" path="res://modules/global/sound.gd" id="2_v13wf"]
+[ext_resource type="AudioStream" uid="uid://bjd6qjykxmius" path="res://assets/sounds/test_sound.mp3" id="3_a8t2j"]
+[ext_resource type="AudioStream" uid="uid://bdsjseijpet3p" path="res://assets/sounds/test_sound_2.mp3" id="4_ifptk"]
+
+[sub_resource type="Resource" id="Resource_v13wf"]
+script = ExtResource("2_v13wf")
+sound_name = "test_sound_1"
+audio_stream = ExtResource("3_a8t2j")
+metadata/_custom_type_script = "uid://cykvyc3xo04n8"
+
+[sub_resource type="Resource" id="Resource_ew3f2"]
+script = ExtResource("2_v13wf")
+sound_name = "test_sound_2"
+audio_stream = ExtResource("4_ifptk")
+metadata/_custom_type_script = "uid://cykvyc3xo04n8"
+
+[node name="Audio" type="Node" unique_id=1856727547]
+script = ExtResource("1_ux4r1")
+sounds = Array[ExtResource("2_v13wf")]([SubResource("Resource_v13wf"), SubResource("Resource_ew3f2")])
+
+[node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=940978963]
+
+[node name="SFX" type="Node" parent="." unique_id=1587058588]
