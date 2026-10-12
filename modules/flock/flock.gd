@@ -94,19 +94,19 @@ func _physics_process(delta: float) -> void:
 				boid.speed = max(boid.default_speed, boid.speed - speed_penalty_interval * delta)
 		
 		#in essence both of these if statements are decreasing the hunger
-		if current_hunger > 0:
-			current_hunger = max(0.0, current_hunger - starve_rate * delta)
+		#if current_hunger > 0:
+			#current_hunger = max(0.0, current_hunger - starve_rate * delta)
 			#print("hunger: " + str(current_hunger))
 			#this code block inflicts speed penalties below 50 hunger
-			if current_hunger < 50.0:
-				for boid in all_boids:
-					boid.speed = max(0.0, boid.speed - speed_penalty_interval * delta)
+			#if current_hunger < 50.0:
+				#for boid in all_boids:
+					#boid.speed = max(0.0, boid.speed - speed_penalty_interval * delta)
 			
-			hunger_changed.emit(current_hunger)
-		else:
+			#hunger_changed.emit(current_hunger)
+		#else:
 			#there is no speed penalty because you already ran out of hunger
-			current_hunger = min(0.0, current_hunger - starve_rate * delta)
-			hunger_changed.emit(current_hunger)
+			#current_hunger = min(0.0, current_hunger - starve_rate * delta)
+			#hunger_changed.emit(current_hunger)
 			
 			#this if-statement will kill birds of starvation periodically
 			if current_hunger < -starve_death_interval:
