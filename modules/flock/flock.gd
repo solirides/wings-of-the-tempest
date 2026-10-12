@@ -90,7 +90,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if !all_boids.is_empty():
 		for boid in all_boids:
-			if boid.speed > boid.default_speed:
+			if current_hunger > 50.0:
 				boid.speed = max(boid.default_speed, boid.speed - speed_penalty_interval * delta)
 		
 		#in essence both of these if statements are decreasing the hunger
