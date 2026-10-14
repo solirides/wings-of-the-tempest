@@ -69,11 +69,18 @@ func _input(event: InputEvent) -> void:
 #this input statment is temporary/for debug only. I imagine that how far the camera is zoomed out will be based on how many boids are on screen.
 func _unhandled_input(event: InputEvent) -> void:
 	# control camera zoom
+	var zoom_direction: int = 0
 	if event is InputEventMouseButton and event.pressed :
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			zoom -= zoom_speed
+			zoom_direction = -1;
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			zoom += zoom_speed
+			zoom_direction = 1;
+	elif event is InputEventKey and event.pressed:
+		if event.keycode == KEY_BRACKETLEFT:
+			zoom_direction = -1;
+		elif event.keycode == KEY_BRACKETRIGHT:
+			zoom_direction = 1;
+	zoom += zoom_speed * zoom_direction;
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
