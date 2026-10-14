@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b12pbyggfvd45" path="res://modules/flock/player_bird/boid.gd" id="1_25rpd"]
 [ext_resource type="PackedScene" uid="uid://cufxowsrrv1sf" path="res://assets/models/bird.tscn" id="2_7mqqf"]
+[ext_resource type="PackedScene" uid="uid://b6gylk13xq7rl" path="res://assets/models/bird v1.2.glb" id="2_eylny"]
 [ext_resource type="Script" uid="uid://dgjg6gb1dy4h3" path="res://assets/models/bird.gd" id="3_lqu4f"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eylny"]
@@ -38,8 +39,13 @@ mesh = SubResource("SphereMesh_lqu4f")
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_ppj06")
 
+[node name="bird v1_2" parent="." unique_id=790560813 instance=ExtResource("2_eylny")]
+transform = Transform3D(-1.5, 0, -1.3113416e-07, 0, 1.5, 0, 1.3113416e-07, 0, -1.5, 0, 0, 0)
+script = ExtResource("3_lqu4f")
+
 [node name="bird" parent="." unique_id=704641589 instance=ExtResource("2_7mqqf")]
 transform = Transform3D(-1.5, 0, -1.3113416e-07, 0, 1.5, 0, 1.3113416e-07, 0, -1.5, 0, 0, 0)
+visible = false
 script = ExtResource("3_lqu4f")
 
 [node name="FoodDetector" type="Area3D" parent="." unique_id=1302198398]

@@ -1,8 +1,8 @@
-extends Camera3D
+extends Node3D
 
-# Press F to toggle free cam=
+# Press F to toggle free cam
 # Press esc to toggle mouse capture mode (code is in Global)
-#
+# Avoid rotating the camera anchor. Rotate the Camera node instead.
 
 @export var flock: Node3D
 #THX, https://gameidea.org/2024/12/13/how-to-make-an-rts-camera-system-in-godot/ I stole your shit
@@ -12,7 +12,7 @@ extends Camera3D
 #@export_range(0, 1000) cam_zoom : float = 1
 @export_range(0, 1000) var cam_zoom : float = 1
 @export_range(0, 1000, 0.1) var zoom_speed: float = 4
-@export_range(0, 1000) var min_zoom: float = 10
+@export_range(0, 1000) var min_zoom: float = 4
 @export_range(0, 1000) var max_zoom: float = 60
 
 
@@ -20,10 +20,13 @@ extends Camera3D
 #exporting sum shit for the BOID behavior.
 
 @export var enable_post_processing: bool = true
+@export var mouse_sensitivity: float = 0.1
+
+@onready var camera_node:Camera3D = $Camera
+
 var cam_is_moving: bool = false
 var move_direction: Vector3 = Vector3.ZERO
 var camera_velocity: Vector3 = Vector3.ZERO
-@export var mouse_sensitivity: float = 0.1
 
 var free_cam_mode: bool = false
 var free_cam_transform: Transform3D = Transform3D.IDENTITY
@@ -32,7 +35,7 @@ var free_cam_transform: Transform3D = Transform3D.IDENTITY
 var last_mouse_pos: Vector2
 var zoom : float = 64
 
-@onready var shake = $Shake
+@onready var shake = $Camera/Shake
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -41,12 +44,12 @@ func _ready() -> void:
 	connect("ready", Global.check_ready_nodes)
 	
 	#Global.camera = self
-	if projection == Camera3D.PROJECTION_ORTHOGONAL:
-		zoom = size
+	if camera_node.projection == Camera3D.PROJECTION_ORTHOGONAL:
+		zoom = camera_node.size
 	else:
-		zoom = position.y
+		zoom = self.global_position.distance_to(camera_node.global_position)
 	
-	$Shaders.visible = enable_post_processing
+	$Camera/Shaders.visible = enable_post_processing
 	
 
 func _input(event: InputEvent) -> void:
@@ -54,23 +57,30 @@ func _input(event: InputEvent) -> void:
 		toggle_free_cam()
 	if free_cam_mode == true and event is InputEventMouseMotion:
 		# yaw
-		self.global_rotation.y += deg_to_rad(-event.screen_relative.x * mouse_sensitivity)
+		camera_node.global_rotation.y += deg_to_rad(-event.screen_relative.x * mouse_sensitivity)
 		# pitch
-		self.global_rotation.x +=deg_to_rad(-event.screen_relative.y * mouse_sensitivity)
-		self.rotation.x = clamp(self.rotation.x, deg_to_rad(-90), deg_to_rad(90))
+		camera_node.global_rotation.x +=deg_to_rad(-event.screen_relative.y * mouse_sensitivity)
+		camera_node.rotation.x = clamp(camera_node.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 	if event.is_action_pressed("post_processing"):
 		enable_post_processing = !enable_post_processing
 		$Shaders.visible = enable_post_processing
 		shake.shake()
-	
 
 #this input statment is temporary/for debug only. I imagine that how far the camera is zoomed out will be based on how many boids are on screen.
 func _unhandled_input(event: InputEvent) -> void:
+	# control camera zoom
+	var zoom_direction: int = 0
 	if event is InputEventMouseButton and event.pressed :
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			zoom -= zoom_speed
+			zoom_direction = -1;
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			zoom += zoom_speed
+			zoom_direction = 1;
+	elif event is InputEventKey and event.pressed:
+		if event.keycode == KEY_BRACKETLEFT:
+			zoom_direction = -1;
+		elif event.keycode == KEY_BRACKETRIGHT:
+			zoom_direction = 1;
+	zoom += zoom_speed * zoom_direction;
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -112,8 +122,8 @@ func _cam_movement(delta: float) -> void :
 		#print("I should be moving")
 	
 	
-	var forward = -global_transform.basis.z
-	var right = global_transform.basis.x
+	var forward = -camera_node.global_transform.basis.z
+	var right = camera_node.global_transform.basis.x
 	forward.y = 0
 	right.y = 0
 	forward = forward.normalized()
@@ -137,14 +147,16 @@ func _cam_movement(delta: float) -> void :
 func _cam_zoom(delta: float) -> void :
 	zoom = clamp(zoom, min_zoom, max_zoom)
 	
-	if projection == Camera3D.PROJECTION_ORTHOGONAL:
-		size = lerp(size, zoom, 10.0 * delta)
+	if camera_node.projection == Camera3D.PROJECTION_ORTHOGONAL:
+		camera_node.size = lerp(camera_node.size, zoom, 10.0 * delta)
 	else:
-		position.y = lerp(position.y, zoom, 10.0 * delta)
-		#position.z = lerp(position.z, zoom, 10.0 * delta)
-		
-		#how tf?
-
+		#position.y = lerp(position.y, zoom, 10.0 * delta)
+		# get the vector pointing opposite of the view direction
+		var camera_back: Vector3 = camera_node.global_basis.z
+		# set the camera node's position to be
+		# some distance from the anchor according to zoom
+		var target_position = camera_back * zoom + self.global_position
+		camera_node.global_position = lerp(camera_node.global_position, target_position, delta * zoom_speed)
 
 func toggle_free_cam(state: bool = !free_cam_mode):
 	if free_cam_mode == state:
