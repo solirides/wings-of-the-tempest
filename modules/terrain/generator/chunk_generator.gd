@@ -14,14 +14,22 @@ func create_chunk( state: ChunkGenState ) -> void:
 	
 	var chunk_def: = pick_chunk_def( state );
 	
-	#Create chunk in world
+	# Create chunk in world
 	var chunk: = Chunk.new();
 	add_child( chunk );
 	chunk.set_terrain_material( library.terrain_material );
-	chunk.position.x = state.chunk_index * chunk_def.size.x;
+	chunk.position.x = state.chunk_index * chunk_def.get_size().x;
 	
-	#Generate chunk using data from definition
-	chunk.create_terrain( chunk_def.create_terrain_data( state ) );
+	# Generate chunk using data from definition
+	var terrain_data: = chunk_def.create_terrain_data( state );
+	chunk.create_terrain( terrain_data );
+	chunk.create_heightmap( terrain_data );
+	
+	# DEBUG Create heightmap mesh
+	chunk.create_heightmap_mesh( 4 );
+	
+	# Create chunk objects (must have created heightmap)
+	chunk.create_objects( chunk_def.get_objects() );
 	
 	current_state._increment();
 

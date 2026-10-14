@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ChunkTerrainStructure" format=3 uid="uid://yjmaq4a5vl14"]
 
-[ext_resource type="Script" uid="uid://cbh61mpsstvi6" path="res://modules/terrain/generator/chunk_terrain_structure.gd" id="1_r2gkj"]
+[ext_resource type="Script" uid="uid://c5btrc608ji66" path="res://modules/terrain/generator/chunk_terrain_structure.gd" id="1_r2gkj"]
 
 [resource]
 script = ExtResource("1_r2gkj")
@@ -55,4 +55,3 @@ entry = "0000
 1111
 1111
 1111"
-metadata/_custom_type_script = "uid://cbh61mpsstvi6"

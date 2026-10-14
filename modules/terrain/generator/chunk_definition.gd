@@ -2,6 +2,7 @@ extends Resource
 class_name ChunkDefinition
 
 @export var size: Vector3i;
+@export var objects: Dictionary[ ChunkObject, Vector2 ];
 @export var terrain_height: int;
 @export var terrain_objects: Dictionary[ ChunkTerrainObject, Vector2i ];
 
@@ -34,3 +35,9 @@ func create_terrain_data( state: ChunkGenState ) -> Array3D:
 		scalar_field.set_at( voxel, value );
 	
 	return scalar_field;
+
+func get_objects() -> Dictionary[ ChunkObject, Vector2 ]:
+	return objects;
+
+func get_size() -> Vector3i:
+	return size;

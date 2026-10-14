@@ -1,7 +1,13 @@
 extends Node3D
 class_name Chunk
 
+static var heightmap_debug_material: StandardMaterial3D = preload( "res://modules/terrain/heightmap_debug.tres" );
+
+var size: Vector3i;
 var mesh_instance: MeshInstance3D;
+var collision_instance: StaticBody3D;
+var heightmap: Array3D;
+var heightmap_mesh_instance: MeshInstance3D;
 
 ## Set material used by the chunk's terrain mesh
 func set_terrain_material( material: Material ) -> void:
@@ -9,23 +15,120 @@ func set_terrain_material( material: Material ) -> void:
 
 ## Create terrain for this chunk based on a 3D grid of scalar voxel data
 func create_terrain( scalar_field: Array3D ) -> void:
-	mesh_instance.mesh = MarchingCube.generate_mesh( MarchingCube.generate_vertices( scalar_field, 0.0 ) );
+	size = scalar_field.get_size() - Vector3i.ONE;
+	var mesh = MarchingCube.generate_mesh( MarchingCube.generate_vertices( scalar_field, 0.0 ) );
+	mesh_instance.mesh = mesh;
+	collision_instance.create_shape_owner( mesh );
 
-## Creates a quick and dirty plane with a random heightmap
-func test_generation( noise: Noise ) -> void:
+## Create heightmap for this chunk based on a 3d grid of scalar voxel data
+func create_heightmap( scalar_field: Array3D ) -> void:
 	
-	var test_field: = Array3D.packedFloat32( Vector3i.ONE * 17 );
+	# Get height of field
+	var height: int = scalar_field.get_size().y - 1;
 	
-	for pos in Rect3iIterator.new( position, test_field.get_size() ):
-		test_field.set_at( Vector3( pos ) - position, 4.0 * noise.get_noise_2d( 10 * pos.x, 10 * pos.z ) - pos.y + 10 );
-	#	test_field.set_at( pos, noise.get_noise_3d( 10 * pos.x, 10 * pos.z, 10 * pos.y ) );
+	# Create flat array
+	heightmap = Array3D.packedFloat32( Vector3i( scalar_field.get_size().x, 1, scalar_field.get_size().z ) );
 	
-	create_terrain( test_field );
+	# For each horizontal coordinate...
+	for horizontal in Rect3iIterator.new( Vector3i.ZERO, heightmap.size ):
+		
+		# Remember previous scalar
+		var prev_val: float;
+		
+		# Descending through the field...
+		for y in range( height, 0, -1 ):
+			
+			# Get position
+			var pos: = Vector3i( horizontal.x, y, horizontal.z );
+			
+			# Get value at position
+			var val: float = scalar_field.get_at( pos );
+			
+			# If value indicates inside terrain...
+			if val > 0:
+				
+				# If at top of field, just set to top
+				if y == height:
+					heightmap.set_at( horizontal, height );
+				
+				# Otherwise, set to position proportional between this and last value
+				else:
+					heightmap.set_at( horizontal, 
+						lerp( y, y + 1, val / ( val - prev_val ) )
+					);
+				
+				# Exit loop
+				break;
+			prev_val = val;
 
+## Create a mesh to draw the heightmap, for debugging purposes
+func create_heightmap_mesh( resolution: float ) -> void:
+	
+	#Create surface
+	var surface_tool: = SurfaceTool.new();
+	surface_tool.begin( Mesh.PRIMITIVE_POINTS );
+	surface_tool.set_smooth_group( -1 );
+	
+	#Add vertices
+	for iter: Vector3i in Rect3iIterator.new( Vector3i.ZERO, ( heightmap.get_size() - Vector3i( 1, 0, 1 ) ) * resolution ):
+		var pos: = Vector3( iter ) / resolution;
+		pos.y = get_height( Vector2( pos.x, pos.z ) );
+		surface_tool.add_vertex( pos );
+	
+	surface_tool.index();
+	heightmap_mesh_instance.mesh = surface_tool.commit();
+	heightmap_mesh_instance.material_override = heightmap_debug_material;
 
+## Create objects for this chunk based on a list of objects and vectors
+func create_objects( objects: Dictionary[ ChunkObject, Vector2 ] ) -> void:
+	
+	for object: ChunkObject in objects.keys():
+		var object_pos: = objects[ object ];
+		var object_node: Node3D = object.scene.instantiate();
+		add_child( object_node );
+		object.position = Vector3( object_pos.x, object.height_offset, object_pos.y );
+		if object.height_mode == ChunkObject.HeightMode.SNAP:
+			object.position.y += get_height( Vector2( object_pos.x, object_pos.y ) );
 
 func _ready() -> void:
 	
-	#Create mesh node
+	#Create internal nodes
 	mesh_instance = MeshInstance3D.new();
 	add_child( mesh_instance, false, Node.INTERNAL_MODE_FRONT );
+	heightmap_mesh_instance = MeshInstance3D.new();
+	add_child( heightmap_mesh_instance, false, Node.INTERNAL_MODE_FRONT );
+	collision_instance = StaticBody3D.new();
+	add_child( collision_instance );
+
+
+
+## Find the intersection of a ray, from start to end, with the terrain mesh. \nMUST BE CALLED DURING PHYSICS PROCESSING
+func intersect( start: Vector3, end: Vector3 ) -> Vector3:
+	
+	var space_state: = get_world_3d().direct_space_state;
+	var ray_query: = PhysicsRayQueryParameters3D.create( start, end );
+	
+	var ray_result: = space_state.intersect_ray( ray_query );
+	
+	if ray_result.is_empty():
+		return -Vector3.ONE;
+	
+	return ray_result.position;
+
+## Find vertical position of heighest terrain at horizontal position
+func get_height( coordinates: Vector2 ) -> float:
+	var integer: Vector2i = coordinates.floor();
+	var fractional: = coordinates.posmod( 1.0 );
+	return lerp( 
+		lerp( 
+			heightmap.get_at( Vector3i( integer.x, 0, integer.y ) ),
+			heightmap.get_at( Vector3i( integer.x + 1, 0, integer.y ) ),
+			fractional.x
+		),
+		lerp( 
+			heightmap.get_at( Vector3i( integer.x, 0, integer.y + 1 ) ),
+			heightmap.get_at( Vector3i( integer.x + 1, 0, integer.y + 1 ) ),
+			fractional.x
+		),
+		fractional.y
+	);

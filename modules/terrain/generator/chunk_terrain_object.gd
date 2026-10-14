@@ -3,14 +3,13 @@ class_name ChunkTerrainObject
 
 @export var size: Vector3i;
 
-var data: PackedByteArray;
+var data: PackedFloat32Array;
 @export_multiline( "monospace" ) var entry: String:
 	set( value ):
 		entry = value;
 		data.clear();
-		for chara in entry:
-			if not chara in [ " ", "\n" ]:
-				data.append( chara == "1" );
+		for chara in entry.remove_chars( " \n" ).to_ascii_buffer():
+			data.append( ( chara - 48 ) / 10.0 );
 
 
 

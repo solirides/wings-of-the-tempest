@@ -8,7 +8,6 @@ func is_in_bounds( position: Vector3i ) -> bool:
 	return position.x >= 0 and position.y >= 0 and position.z >= 0 and \
 		position.x < size.x and position.y < size.y and position.z < size.z;
 
-# TODO Temporary methed for reading voxel data. Will be replaced with new editing method
 func transform_voxel( position: Vector3i, value: float ) -> float:
 	
 	position.y -= height;
