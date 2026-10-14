@@ -5,7 +5,9 @@ signal boid_died(boid: Node, pos: Vector3)
 
 enum STEERING_MODE {
 	LERP,
-	STEERING_FORCE
+	STEERING_FORCE,
+	CONSTANT_SPEED,
+	CONSTANT_EVERYTHING
 }
 
 enum ROTATION_MODE {
@@ -45,6 +47,7 @@ const default_speed : float = 5.0
 
 @export var steering_smoothness: float = 8.0
 @export var rotation_smoothness: float = 8.0
+@export var steering_strength: float = 8.0
 @export var steering_mode: STEERING_MODE = STEERING_MODE.LERP
 @export var rotation_mode: ROTATION_MODE = ROTATION_MODE.LERP_TO_VELOCITY
 
@@ -261,16 +264,18 @@ func boid_movement(delta: float):
 		var spin_alignment = alignment_force * 0.2
 		boid_direction += spin_alignment + camera_force + boid_subflock_spin_force + repel_force
 	else :
-		
-		boid_direction += goal_force.normalized() + alignment_force
+		# goal force is normalized and scaled by the goal weight earlier in this function
+		boid_direction += goal_force + alignment_force
 
 	boid_direction.y = 0
 	boid_direction = boid_direction.normalized()
 	
-	#movement/"looking"
-	# added lerp/slerp to get rid of some jitter
+	# The steering mode is the function that changes the boid's velocity according to boid_direction
+	# They provide different modes of interpolation
+	# (since directly setting the velocity to boid_direction looks unnatural)
 	match steering_mode:
 		STEERING_MODE.LERP:
+			# The original steering mode. Simply lerp to the desired velocity from the current one.
 			var vel: Vector3 = Vector3.ZERO
 			if boid_direction.length_squared() > 0.001:
 				vel = linear_velocity.lerp(boid_direction*speed, steering_smoothness * delta)
@@ -278,25 +283,67 @@ func boid_movement(delta: float):
 				vel = vel.normalized() * speed
 			linear_velocity = vel
 		STEERING_MODE.STEERING_FORCE:
-			var desired_velocity = boid_direction * speed
+			var speed_bias = 1.5 # Does not change min or max speeds. Higher values make boids prefer higher speeds.
+			var desired_velocity = boid_direction * speed * speed_bias
 			var steering = desired_velocity - linear_velocity
-			var speed_scaled = 0
-			if desired_velocity.length() != 0:
-				speed_scaled = pow(steering.length() / desired_velocity.length(), speed_scale_exp) * desired_velocity.length()
-			if is_nan(speed_scaled):
-				printerr("speed_scaled is NAN!!!!!")
-				speed_scaled = 0
-			steering.y = 0
+			#var speed_scaled = speed
+			#if desired_velocity.length() != 0:
+				##speed_scaled = pow(steering.length() / desired_velocity.length(), speed_scale_exp) * desired_velocity.length()
+				#speed_scaled = speed
+			#if is_nan(speed_scaled):
+				#printerr("speed_scaled is NAN!!!!!")
+				#speed_scaled = 0
+			#steering.y = 0
+			#print("printing")
 			if steering != Vector3.ZERO:
-				steering = steering.normalized() * speed_scaled
+				steering = steering.normalized() * clamp(steering.length(), min_speed, speed_bias*speed)
+				#print(steering.length())
+				#steering = steering.normalized() * speed
 			else:
-				steering = global_basis.z.normalized() * min_speed
-			
-			steering = steering.normalized() * speed
-			if linear_velocity.length() < min_speed:
-				steering = steering.normalized() * min_speed
+				# force the boid to go forward at min speed
+				steering = -global_basis.z.normalized() * min_speed
 			
 			apply_central_force(steering * mass)
+			
+			# clamp the speed to be between min speed and max speed
+			linear_velocity = linear_velocity.normalized() * clamp(linear_velocity.length(), min_speed, speed)
+			
+			print(linear_velocity.length())
+			
+			
+		STEERING_MODE.CONSTANT_SPEED:
+			# Maintain a constant speed for the boid. Lerp for rotation.
+			# Apply forces perpendicular to the velocity to turn the boid without affecting its speed.
+			var target_dir = boid_direction.normalized()
+			var current_dir = linear_velocity.normalized()
+			if linear_velocity == Vector3.ZERO:
+				# Make the boid move forward at constant speed in the direction it is facing
+				linear_velocity = -global_basis.z * speed
+			else:
+				var current_angle = target_dir.signed_angle_to(current_dir, Vector3.UP)
+				var new_angle: float = lerp(current_angle, 0.0, steering_strength * delta)
+				linear_velocity = speed * target_dir.rotated(Vector3.UP, new_angle)
+			# ensure speed is constant
+			linear_velocity = linear_velocity.normalized() * speed
+		STEERING_MODE.CONSTANT_EVERYTHING:
+			# constant linear speed and turning speed
+			var target_dir = boid_direction.normalized()
+			var current_dir = linear_velocity.normalized()
+			if linear_velocity == Vector3.ZERO:
+				# Make the boid move forward at constant speed in the direction it is facing
+				linear_velocity = -global_basis.z * speed
+			else:
+				var angle_to_target = linear_velocity.signed_angle_to(target_dir, Vector3.UP)
+				if steering_strength * delta >= abs(angle_to_target):
+					linear_velocity = linear_velocity.length() * target_dir
+				else:
+					linear_velocity = linear_velocity.rotated(Vector3.UP, sign(angle_to_target) * steering_strength * delta)
+				#linear_velocity = lerp(angle_to_target, delta)
+				#apply_torque(Vector3.UP * steering_strength * angle_to_target * inertia)
+				#print(Vector3.UP * steering_strength * angle_to_target)
+			linear_velocity = linear_velocity.normalized() * speed
+			#print(linear_velocity.length())
+			
 	
 	# rotate node for display
 	match rotation_mode:
