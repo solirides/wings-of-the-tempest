@@ -86,9 +86,9 @@ func create_objects( objects: Dictionary[ ChunkObject, Vector2 ] ) -> void:
 		var object_pos: = objects[ object ];
 		var object_node: Node3D = object.scene.instantiate();
 		add_child( object_node );
-		object.position = Vector3( object_pos.x, object.height_offset, object_pos.y );
+		object_node.position = Vector3( object_pos.x, object.height_offset, object_pos.y );
 		if object.height_mode == ChunkObject.HeightMode.SNAP:
-			object.position.y += get_height( Vector2( object_pos.x, object_pos.y ) );
+			object_node.position.y += get_height( Vector2( object_pos.x, object_pos.y ) );
 
 func _ready() -> void:
 	

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ChunkObject" format=3 uid="uid://c7rxv5uhw0cm1"]
+
+[ext_resource type="Script" uid="uid://uj3jsrmj1mkc" path="res://modules/terrain/generator/chunk_object.gd" id="1_rj7y2"]
+[ext_resource type="PackedScene" uid="uid://r2i5ufxdudpc" path="res://scenes/enemies/hunter.tscn" id="1_stbdk"]
+
+[resource]
+script = ExtResource("1_rj7y2")
+scene = ExtResource("1_stbdk")
+height_mode = 1
+metadata/_custom_type_script = "uid://uj3jsrmj1mkc"
