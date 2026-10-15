@@ -120,7 +120,7 @@ shadow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
 
 [node name="Food" parent="." unique_id=149562037 instance=ExtResource("9_do3hi")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.2989235, -0.52907073, 8.328536)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.7820635, -0.52907073, 8.328536)
 
 [node name="HawkPath" type="Path3D" parent="." unique_id=1051712067]
 curve = SubResource("Curve3D_0lhw3")

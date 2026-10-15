@@ -77,10 +77,10 @@ func _on_food_detector_area_entered(area: Area3D) -> void:
 	# Area3D is a child of the Food root node
 	var food: Food = area.get_parent()
 	# this stops several boids from eating the same food in one physics frame
-	if not food is Food or food.is_queued_for_deletion():
+	if not food is Food or food.eaten:
 		return
 	flock.eat(food.hunger_value)
-	food.queue_free()
+	food.consumed()
 
 func STAY_ON_SCREEN() -> Vector3 :
 	var force : Vector3 = Vector3.ZERO

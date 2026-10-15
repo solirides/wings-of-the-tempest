@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://s1tbrwtifmt6"
-path="res://.godot/imported/berry_bush.glb-2d7459dac91904e9388136daf20eb921.scn"
+uid="uid://q3v01o57h3b1"
+path="res://.godot/imported/bare_bush.glb-84ee42852996be8a4211d6fbc6eea3d9.scn"
 
 [deps]
 
-source_file="res://assets/models/berry_bush.glb"
-dest_files=["res://.godot/imported/berry_bush.glb-2d7459dac91904e9388136daf20eb921.scn"]
+source_file="res://assets/models/bare_bush.glb"
+dest_files=["res://.godot/imported/bare_bush.glb-84ee42852996be8a4211d6fbc6eea3d9.scn"]
 
 [params]
 
