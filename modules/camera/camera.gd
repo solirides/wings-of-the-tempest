@@ -20,6 +20,8 @@ extends Node3D
 #exporting sum shit for the BOID behavior.
 
 @export var enable_post_processing: bool = true
+@export var lock_to_axis: bool = true
+@export var axis: Vector3 = Vector3(0,0,-1)
 @export var mouse_sensitivity: float = 0.1
 
 @onready var camera_node:Camera3D = $Camera
@@ -31,9 +33,11 @@ var camera_velocity: Vector3 = Vector3.ZERO
 var free_cam_mode: bool = false
 var free_cam_transform: Transform3D = Transform3D.IDENTITY
 
-
 var last_mouse_pos: Vector2
 var zoom : float = 64
+
+@onready var target_position: Vector3 = camera_node.position
+@onready var target_rotation: Vector3 = camera_node.rotation
 
 @onready var shake = $Camera/Shake
 
@@ -57,29 +61,25 @@ func _input(event: InputEvent) -> void:
 		toggle_free_cam()
 	if free_cam_mode == true and event is InputEventMouseMotion:
 		# yaw
-		camera_node.global_rotation.y += deg_to_rad(-event.screen_relative.x * mouse_sensitivity)
+		target_rotation.y += deg_to_rad(-event.screen_relative.x * mouse_sensitivity)
 		# pitch
-		camera_node.global_rotation.x +=deg_to_rad(-event.screen_relative.y * mouse_sensitivity)
-		camera_node.rotation.x = clamp(camera_node.rotation.x, deg_to_rad(-90), deg_to_rad(90))
+		target_rotation.x +=deg_to_rad(-event.screen_relative.y * mouse_sensitivity)
+		target_rotation.x = clamp(target_rotation.x, deg_to_rad(-90), deg_to_rad(90))
 	if event.is_action_pressed("post_processing"):
 		enable_post_processing = !enable_post_processing
-		$Shaders.visible = enable_post_processing
+		$Camera/Shaders.visible = enable_post_processing
 		shake.shake()
+	if event.is_action_pressed("toggle_camera_lock"):
+		lock_to_axis = !lock_to_axis
 
 #this input statment is temporary/for debug only. I imagine that how far the camera is zoomed out will be based on how many boids are on screen.
 func _unhandled_input(event: InputEvent) -> void:
 	# control camera zoom
 	var zoom_direction: int = 0
-	if event is InputEventMouseButton and event.pressed :
-		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			zoom_direction = -1;
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			zoom_direction = 1;
-	elif event is InputEventKey and event.pressed:
-		if event.keycode == KEY_BRACKETLEFT:
-			zoom_direction = -1;
-		elif event.keycode == KEY_BRACKETRIGHT:
-			zoom_direction = 1;
+	if event.is_action_pressed("zoom_in"):
+		zoom_direction = -1
+	elif event.is_action_pressed("zoom_out"):
+		zoom_direction = 1
 	zoom += zoom_speed * zoom_direction;
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -89,14 +89,17 @@ func _process(delta: float) -> void:
 	else:
 		_cam_zoom(delta)
 		_cam_movement(delta)
+	camera_node.position = lerp(camera_node.position, target_position, delta * zoom_speed)
+	camera_node.rotation = lerp(camera_node.rotation, target_rotation, delta * zoom_speed)
 
 func _free_cam_movement(delta: float) -> void:
 	var input_vec = Input.get_vector("free_cam_left","free_cam_right","free_cam_forward","free_cam_backward")
-	var direction = global_transform.basis * Vector3(input_vec.x, 0, input_vec.y)
+	var direction = camera_node.global_transform.basis * Vector3(input_vec.x, 0, input_vec.y)
 	direction = direction.normalized()
 	var velocity = direction * cam_speed * delta
 	
-	global_position += velocity
+	target_position += velocity
+	#camera_node.global_position += velocity
 	
 
 #this feels jank as shit.... sorry. My tutorials way of doing cam movement didn't work.
@@ -121,18 +124,24 @@ func _cam_movement(delta: float) -> void :
 		move_dir.z = -1.0  #Down or fackward
 		#print("I should be moving")
 	
-	
+	# get the vectors of the screen's forward and right in 3d space
 	var forward = -camera_node.global_transform.basis.z
 	var right = camera_node.global_transform.basis.x
-	forward.y = 0
-	right.y = 0
-	forward = forward.normalized()
-	right = right.normalized()
-	
-	move_direction = (right * move_dir.x + forward * move_dir.z).normalized()
+	if lock_to_axis:
+		# project movement vectors to the fixed axis
+		forward = forward.normalized()
+		right = right.normalized()
+		move_direction = (right * move_dir.x + forward * move_dir.z).normalized().project(axis)
+	else:
+		# project the movement vectors to the ground plane
+		forward.y = 0
+		right.y = 0
+		forward = forward.normalized()
+		right = right.normalized()
+		move_direction = (right * move_dir.x + forward * move_dir.z).normalized()
 	
 	camera_velocity = lerp(camera_velocity, move_direction, delta * accel_speed)
-	
+	# change position of the anchor (this node)
 	global_position += camera_velocity * cam_speed * delta
 	
 	if move_dir != Vector3.ZERO :
@@ -155,8 +164,9 @@ func _cam_zoom(delta: float) -> void :
 		var camera_back: Vector3 = camera_node.global_basis.z
 		# set the camera node's position to be
 		# some distance from the anchor according to zoom
-		var target_position = camera_back * zoom + self.global_position
-		camera_node.global_position = lerp(camera_node.global_position, target_position, delta * zoom_speed)
+		#target_position = camera_back * zoom + self.global_position
+		target_position = camera_back * zoom
+		#camera_node.global_position = lerp(camera_node.global_position, target_position, delta * zoom_speed)
 
 func toggle_free_cam(state: bool = !free_cam_mode):
 	if free_cam_mode == state:
@@ -165,12 +175,18 @@ func toggle_free_cam(state: bool = !free_cam_mode):
 	free_cam_mode = state
 	if free_cam_mode:
 		# save the current transform of the camera
-		free_cam_transform = global_transform
+		free_cam_transform = camera_node.transform
 		# remove any roll from the camera
 		global_rotation.z = 0
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		# unlock the movement
+		lock_to_axis = false
 	else:
-		# load the transform of the camera before entering free cam
-		global_transform = free_cam_transform
+		# load the transform of the camera when exiting freecam
+		#camera_node.transform = free_cam_transform
+		target_position = free_cam_transform.origin
+		target_rotation = free_cam_transform.basis.get_euler()
 		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
+		# lock the movement
+		lock_to_axis = true
 	
