@@ -2,7 +2,7 @@ extends Area3D
 
 const STORM_DIRECTION: Vector3 = Vector3(0.7071, 0.0, 0.7071) #unit vector @ 45 degrees
 const STORM_SPEED: float = 5.0 #Arbitray value for now
-const STORM_DAMAGE: float = 0.05 
+const STORM_DAMAGE: float = 0.001 
 #percent of MAX_HEALTH that gets taken away every frame a boid is in the storm
 
 # Called when the node enters the scene tree for the first time.
@@ -22,7 +22,10 @@ func move_storm(delta: float) -> void:
 #damages any boids within the hitbox
 func damage_boid() -> void:
 	var overlapping_bodies: Array[Node3D] = get_overlapping_bodies()
+	print('in damage function!')
 	for n in overlapping_bodies:
-		if  overlapping_bodies[n].is_in_group("boids"):
-			overlapping_bodies[n].take_percent_damage(STORM_DAMAGE)
+		print("In for loop!")
+		if  n is Boid:
+			Global.flock.take_percent_damage(STORM_DAMAGE)
 			print("Boid Damaged!")
+			print(Global.flock.get_health())
