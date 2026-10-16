@@ -2,15 +2,18 @@
 
 [ext_resource type="Script" uid="uid://c6u25dpraqrqn" path="res://modules/hud/hud.gd" id="1_lqyyi"]
 [ext_resource type="Texture2D" uid="uid://cw2nmsb2q5ynn" path="res://assets/textures/UI/healthbarUnder.png" id="2_sunxf"]
+[ext_resource type="Texture2D" uid="uid://oi42l00xp8p1" path="res://WoT_tomato_big.png" id="3_fib5d"]
 [ext_resource type="Texture2D" uid="uid://d0cvmckaqaoa7" path="res://assets/textures/UI/healthbarProgress.png" id="3_v6k41"]
 [ext_resource type="Script" uid="uid://cxboty7yf78n1" path="res://modules/hud/level_end_screen.gd" id="4_v6k41"]
 
 [sub_resource type="SystemFont" id="SystemFont_0lhw3"]
 font_names = PackedStringArray("Noto Sans", "Open Sans", "Cantarell")
+font_weight = 300
 subpixel_positioning = 0
 
 [sub_resource type="LabelSettings" id="LabelSettings_6lmcw"]
 font = SubResource("SystemFont_0lhw3")
+font_size = 24
 
 [sub_resource type="SystemFont" id="SystemFont_sd20g"]
 font_names = PackedStringArray("Noto Sans", "Roboto", "Sans-Serif")
@@ -40,29 +43,20 @@ grow_vertical = 2
 script = ExtResource("1_lqyyi")
 
 [node name="Label" type="Label" parent="." unique_id=452652156]
-layout_mode = 0
-offset_left = 24.0
-offset_top = 24.0
-offset_right = 116.0
-offset_bottom = 58.0
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -500.0
+offset_top = 20.0
+offset_right = -19.0
+offset_bottom = 128.0
+grow_horizontal = 0
 text = "Toggle post processing: T
 Free cam: F
-Zoom: mouse wheel
-Toggle camera lock: L"
+Zoom: mouse wheel OR brackets '[' and ']'"
 label_settings = SubResource("LabelSettings_6lmcw")
-
-[node name="HungerBar" type="TextureProgressBar" parent="." unique_id=166203044]
-unique_name_in_owner = true
-texture_filter = 1
-layout_mode = 0
-offset_left = 12.0
-offset_top = 8.0
-offset_right = 140.0
-offset_bottom = 28.0
-value = 100.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_sunxf")
-texture_progress = ExtResource("3_v6k41")
+horizontal_alignment = 2
 
 [node name="LevelEndScreen" type="ColorRect" parent="." unique_id=7232756]
 layout_mode = 1
@@ -71,7 +65,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.18837145, 0.18837145, 0.18837145, 0.558)
+color = Color(0, 0, 0, 0.5568628)
 script = ExtResource("4_v6k41")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="LevelEndScreen" unique_id=147339816]
@@ -101,3 +95,37 @@ text = "summary:
 something something
 123123"
 label_settings = SubResource("LabelSettings_v6k41")
+
+[node name="GridContainer" type="GridContainer" parent="." unique_id=2091174181]
+layout_mode = 0
+offset_right = 335.0
+offset_bottom = 52.0
+
+[node name="SplitContainer" type="SplitContainer" parent="." unique_id=1295742172]
+layout_mode = 0
+offset_right = 312.0
+offset_bottom = 40.0
+
+[node name="HSplitContainer" type="HSplitContainer" parent="." unique_id=981328906]
+layout_mode = 0
+offset_right = 216.0
+offset_bottom = 40.0
+offset_transform_enabled = true
+split_offsets = PackedInt32Array(40, 51)
+drag_area_highlight_in_editor = true
+split_offset = 40
+
+[node name="NinePatchRect" type="NinePatchRect" parent="HSplitContainer" unique_id=28838331]
+layout_mode = 2
+texture = ExtResource("3_fib5d")
+
+[node name="HungerBar" type="TextureProgressBar" parent="HSplitContainer" unique_id=166203044]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 2
+value = 100.0
+nine_patch_stretch = true
+stretch_margin_left = 1
+stretch_margin_right = 1
+texture_under = ExtResource("2_sunxf")
+texture_progress = ExtResource("3_v6k41")
