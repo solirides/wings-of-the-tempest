@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://dan4yb6n1bkxe"]
+
+[ext_resource type="Script" uid="uid://fmcuq58nap5n" path="res://scenes/storm/storm_script.gd" id="1_hrl36"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_xotop"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_xotop"]
+
+[node name="Area3D" type="Area3D" unique_id=904228582]
+transform = Transform3D(25, 0, 0, 0, 25, 0, 0, 0, 25, 0, 0, 0)
+script = ExtResource("1_hrl36")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=888527240]
+shape = SubResource("SphereShape3D_xotop")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1638935674]
+mesh = SubResource("SphereMesh_xotop")
