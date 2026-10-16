@@ -26,6 +26,6 @@ func damage_boid() -> void:
 	for n in overlapping_bodies:
 		print("In for loop!")
 		if  n is Boid:
-			Global.flock.take_percent_damage(STORM_DAMAGE)
+			n.take_percent_damage(STORM_DAMAGE)
 			print("Boid Damaged!")
-			print(Global.flock.get_health())
+			print(n.get_health())

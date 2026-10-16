@@ -3,6 +3,7 @@ class_name Flock
 
 
 
+signal hunger_changed
 
 
 # Camera
