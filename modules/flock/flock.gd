@@ -28,6 +28,8 @@ var boid_scene = preload("res://modules/flock/player_bird/player_bird.tscn")
 # all boids including ones in subflocks
 var all_boids: Array[Boid] = []
 
+signal hunger_changed
+
 func _ready() -> void:
 	pass
 

@@ -57,8 +57,6 @@ func check_heath_status() -> void:
 	elif (health >= MAX_HEALTH):
 		health = MAX_HEALTH
 
-signal hunger_changed
-
 signal boid_died(boid: Node, pos: Vector3)
 
 enum STEERING_MODE {
