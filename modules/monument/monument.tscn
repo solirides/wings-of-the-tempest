@@ -1,3 +1,34 @@
 [gd_scene format=3 uid="uid://llwk0a2c7qid"]
 
-[node name="Monument" type="Node3D" unique_id=947769492]
+[ext_resource type="Script" uid="uid://bsxfgo1noghrg" path="res://modules/monument/monument.gd" id="1_04lvu"]
+[ext_resource type="PackedScene" uid="uid://djp8cfuy8ngss" path="res://assets/models/monument.glb" id="1_uj3d7"]
+[ext_resource type="Texture2D" uid="uid://oi42l00xp8p1" path="res://WoT_tomato_big.png" id="2_04lvu"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6lmcw"]
+size = Vector3(1.3515625, 2.0497742, 1.5751953)
+
+[node name="Monument" type="RigidBody3D" unique_id=1299745215]
+mass = 40.0
+freeze = true
+script = ExtResource("1_04lvu")
+
+[node name="MonumentStone" parent="." unique_id=2013786790 instance=ExtResource("1_uj3d7")]
+
+[node name="Decal" type="Decal" parent="." unique_id=1087923712]
+transform = Transform3D(1, 0, 0, 0, -0.25881907, -0.9659258, 0, 0.9659258, -0.25881907, 0, 1.1413516, -0.58604443)
+size = Vector3(0.4, 1, 0.4)
+texture_albedo = ExtResource("2_04lvu")
+upper_fade = 0.033796888
+lower_fade = 0.04160883
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2071764137]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82951355, 0)
+shape = SubResource("BoxShape3D_6lmcw")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1314619413]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=2108367473]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82951355, 0)
+shape = SubResource("BoxShape3D_6lmcw")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

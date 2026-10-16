@@ -23,6 +23,7 @@
 [ext_resource type="Resource" uid="uid://cnhauj7okt3ps" path="res://modules/terrain/test_lib.tres" id="21_06ebd"]
 [ext_resource type="Script" uid="uid://c2fvqmbrch2q0" path="res://modules/terrain/generator/chunk_library.gd" id="22_8v8ov"]
 [ext_resource type="Material" uid="uid://bt5nph1wxgig7" path="res://modules/terrain/terrain_triplanar_map.tres" id="23_8m3jb"]
+[ext_resource type="PackedScene" uid="uid://llwk0a2c7qid" path="res://modules/monument/monument.tscn" id="24_8v8ov"]
 
 [sub_resource type="Resource" id="Resource_dc6vu"]
 script = ExtResource("5_la62n")
@@ -203,13 +204,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -2)
 [node name="Hunter" parent="." unique_id=431166771 instance=ExtResource("18_aph6o")]
 
 [node name="Storm" parent="." unique_id=904228582 instance=ExtResource("19_c2dwa")]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, -52)
 
 [node name="ChunkGenerator" type="Node3D" parent="." unique_id=74537442]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
 script = ExtResource("20_r87tm")
 library = SubResource("Resource_7wfhb")
 metadata/_custom_type_script = "uid://bt145qipdjfhd"
+
+[node name="Monument" parent="." unique_id=1299745215 instance=ExtResource("24_8v8ov")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 17)
 
 [connection signal="body_entered" from="Goal" to="Goal" method="_on_body_entered"]
 

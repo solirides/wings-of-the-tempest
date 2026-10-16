@@ -13,7 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://d3mpcfi2m2o0v" path="res://modules/camera/camera.tscn" id="11_3c6gx"]
 [ext_resource type="PackedScene" uid="uid://dw2ok50o8jmpy" path="res://assets/models/tree_1.glb" id="12_qkd13"]
 [ext_resource type="PackedScene" uid="uid://cbq0ineejoob8" path="res://assets/models/tree_2.glb" id="13_qkbqg"]
-[ext_resource type="PackedScene" uid="uid://djp8cfuy8ngss" path="res://assets/models/monument.glb" id="14_y8dgv"]
+[ext_resource type="PackedScene" uid="uid://llwk0a2c7qid" path="res://modules/monument/monument.tscn" id="14_qkd13"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_6lmcw"]
 top_radius = 2.435
@@ -130,11 +130,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.492632, 10.340721, -10.6941
 strength = 8.0
 radius = 50.0
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1388319539]
-transform = Transform3D(-0.98027116, 0.1314877, -0.14757857, 0, 0.7466382, 0.66523033, 0.1976574, 0.6521061, -0.73190784, -4.107521, 14.266959, -22.59141)
-visible = false
-fov = 60.0
-
 [node name="storm_wall" parent="." unique_id=291485413 instance=ExtResource("3_hpuu2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11.671848)
 visible = false
@@ -216,5 +211,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5091915, -3.5468204, -15.39
 [node name="tree_2" parent="." unique_id=1430638242 instance=ExtResource("13_qkbqg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7805767, -3.398378, -12.212251)
 
-[node name="monument" parent="." unique_id=797288562 instance=ExtResource("14_y8dgv")]
+[node name="Monument" parent="." unique_id=947769492 instance=ExtResource("14_qkd13")]
 transform = Transform3D(0.8692031, 0, 0.49445528, 0, 1, 0, -0.49445528, 0, 0.8692031, 0.555419, -3.8018508, -16.047024)
+
+[node name="CameraAnchor" parent="." unique_id=856289716 instance=ExtResource("11_3c6gx")]
