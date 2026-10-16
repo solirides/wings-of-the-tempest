@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://r2i5ufxdudpc"]
+[gd_scene format=3 uid="uid://d18u81083qnes"]
 
-[ext_resource type="Script" uid="uid://4etiissoi0ux" path="res://scenes/enemies/hunter.gd" id="1_vu6l5"]
-[ext_resource type="PackedScene" uid="uid://dfnojmsp7p67" path="res://scenes/enemies/bullet.tscn" id="2_07510"]
+[ext_resource type="Script" uid="uid://4etiissoi0ux" path="res://modules/enemy/hunter.gd" id="1_vu6l5"]
+[ext_resource type="PackedScene" uid="uid://dfnojmsp7p67" path="res://modules/enemy/bullet.tscn" id="2_07510"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_6olrb"]
 
@@ -11,11 +11,14 @@ albedo_color = Color(1, 0.36766997, 0.361507, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_6olrb"]
 size = Vector3(0.1, 0.1, 2)
 
-[node name="Hunter" type="Node3D" unique_id=2124715634]
+[node name="Hunter" type="RigidBody3D" unique_id=431166771]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -1)
+freeze = true
+freeze_mode = 1
 script = ExtResource("1_vu6l5")
 bullet_scene = ExtResource("2_07510")
 attack_speed = 4.0
+state = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1382166599]
 mesh = SubResource("CylinderMesh_6olrb")

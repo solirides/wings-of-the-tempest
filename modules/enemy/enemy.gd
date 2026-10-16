@@ -1,9 +1,17 @@
-extends Node3D
+extends RigidBody3D
 class_name Enemy
 
 # This class is extended by specific enemy scripts
 # and contains shared things like health, attack handling, etc
 # Try to keep this class modular and extensible
+
+enum EnemyState {
+	IDLE,
+	WANDERING,
+	TRACKING,
+	ATTACKING,
+	RETREATING
+}
 
 @export var health = 10
 @export var attack_damage = 1
@@ -14,11 +22,14 @@ class_name Enemy
 
 @export var movement_speed = 3.0
 
+@export var state: EnemyState = EnemyState.IDLE
+
 var attack_ready = true
 
-func _physics_process(_delta: float) -> void:
-	if attack_ready:
-		try_attack()
+func _physics_process(delta: float) -> void:
+	state_machine_process(delta)
+	#if attack_ready:
+		#try_attack()
 
 func try_attack():
 	# default behavior: attacks the first boid it finds in range.
@@ -46,3 +57,9 @@ func take_damage(amount: int):
 	health -= amount
 	if health <= 0:
 		queue_free()
+
+func state_machine_process(delta: float):
+	match state:
+		EnemyState.ATTACKING:
+			if attack_ready:
+				try_attack()

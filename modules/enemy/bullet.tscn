@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dfnojmsp7p67"]
 
-[ext_resource type="Script" uid="uid://b55ur2ltrwn7p" path="res://scenes/enemies/bullet.gd" id="1_hl25f"]
+[ext_resource type="Script" uid="uid://b55ur2ltrwn7p" path="res://modules/enemy/bullet.gd" id="1_hl25f"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_07510"]
 top_radius = 0.0

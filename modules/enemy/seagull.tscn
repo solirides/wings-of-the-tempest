@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://r2i5ufxdudpc"]
+
+[ext_resource type="Script" uid="uid://bg0irjak7ea1e" path="res://modules/enemy/seagull.gd" id="1_fdf45"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6olrb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_07510"]
+albedo_color = Color(1, 0.36766997, 0.361507, 1)
+
+[node name="Seagull" type="RigidBody3D" unique_id=628006216 node_paths=PackedStringArray("wander_timer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -1)
+axis_lock_linear_y = true
+axis_lock_angular_y = true
+script = ExtResource("1_fdf45")
+wander_timer = NodePath("Wander")
+movement_speed = 10.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1382166599]
+mesh = SubResource("CylinderMesh_6olrb")
+surface_material_override/0 = SubResource("StandardMaterial3D_07510")
+
+[node name="Wander" type="Timer" parent="." unique_id=1508670701]
+wait_time = 4.0
+one_shot = true
+
+[connection signal="timeout" from="Wander" to="." method="_on_wander_timeout"]
