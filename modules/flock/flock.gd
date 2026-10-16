@@ -3,8 +3,6 @@ class_name Flock
 
 
 
-signal hunger_changed
-
 
 # Camera
 @export var camera_controller: Node

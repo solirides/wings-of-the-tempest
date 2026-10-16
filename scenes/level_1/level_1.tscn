@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://b3o6tsxlufhca" path="res://modules/wind_zone/wind_zone.tscn" id="13_665yd"]
 [ext_resource type="PackedScene" uid="uid://bhhy738m44d75" path="res://modules/wind_trails/wind_trails.tscn" id="14_3fps6"]
 [ext_resource type="PackedScene" uid="uid://d18u81083qnes" path="res://modules/enemy/hunter.tscn" id="18_aph6o"]
+[ext_resource type="PackedScene" uid="uid://dan4yb6n1bkxe" path="res://scenes/storm/stormTesting.tscn" id="19_c2dwa"]
 
 [sub_resource type="Resource" id="Resource_dc6vu"]
 script = ExtResource("5_la62n")
@@ -186,6 +187,8 @@ radius = 30.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -2)
 
 [node name="Hunter" parent="." unique_id=431166771 instance=ExtResource("18_aph6o")]
+
+[node name="Area3D" parent="." unique_id=904228582 instance=ExtResource("19_c2dwa")]
 
 [connection signal="body_entered" from="Goal" to="Goal" method="_on_body_entered"]
 
