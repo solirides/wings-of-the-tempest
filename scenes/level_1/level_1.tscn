@@ -19,6 +19,10 @@
 [ext_resource type="PackedScene" uid="uid://bhhy738m44d75" path="res://modules/wind_trails/wind_trails.tscn" id="14_3fps6"]
 [ext_resource type="PackedScene" uid="uid://d18u81083qnes" path="res://modules/enemy/hunter.tscn" id="18_aph6o"]
 [ext_resource type="PackedScene" uid="uid://dan4yb6n1bkxe" path="res://scenes/storm/stormTesting.tscn" id="19_c2dwa"]
+[ext_resource type="Script" uid="uid://bt145qipdjfhd" path="res://modules/terrain/generator/chunk_generator.gd" id="20_r87tm"]
+[ext_resource type="Resource" uid="uid://cnhauj7okt3ps" path="res://modules/terrain/test_lib.tres" id="21_06ebd"]
+[ext_resource type="Script" uid="uid://c2fvqmbrch2q0" path="res://modules/terrain/generator/chunk_library.gd" id="22_8v8ov"]
+[ext_resource type="Material" uid="uid://bt5nph1wxgig7" path="res://modules/terrain/terrain_triplanar_map.tres" id="23_8m3jb"]
 
 [sub_resource type="Resource" id="Resource_dc6vu"]
 script = ExtResource("5_la62n")
@@ -47,17 +51,20 @@ shader_parameter/wave_a = Vector4(1, 0, 0.25, 8)
 shader_parameter/wave_b = Vector4(1, 1, 0.15, 4)
 shader_parameter/wave_c = Vector4(0, 1, 0.1, 1.4)
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sd20g"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_06ebd"]
 sky_top_color = Color(0.6394856, 0.76958525, 0.81879675, 1)
 sky_horizon_color = Color(0.9099479, 0.9124562, 0.91746753, 1)
+ground_bottom_color = Color(0.100675784, 0.188003, 0.2258929, 1)
 
-[sub_resource type="Sky" id="Sky_opn7a"]
-sky_material = SubResource("ProceduralSkyMaterial_sd20g")
+[sub_resource type="Sky" id="Sky_8v8ov"]
+sky_material = SubResource("ProceduralSkyMaterial_06ebd")
 
-[sub_resource type="Environment" id="Environment_6lmcw"]
+[sub_resource type="Environment" id="Environment_8m3jb"]
 background_mode = 2
-sky = SubResource("Sky_opn7a")
+sky = SubResource("Sky_8v8ov")
 tonemap_mode = 2
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
 
 [sub_resource type="Curve3D" id="Curve3D_0lhw3"]
 closed = true
@@ -72,6 +79,13 @@ size = Vector3(7, 5, 5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6lmcw"]
 albedo_color = Color(0.59106696, 0.8964245, 0.3219582, 1)
+
+[sub_resource type="Resource" id="Resource_7wfhb"]
+script = ExtResource("22_8v8ov")
+terrain_material = ExtResource("23_8m3jb")
+size = Vector3i(32, 1, 32)
+child = ExtResource("21_06ebd")
+metadata/_custom_type_script = "uid://c2fvqmbrch2q0"
 
 [node name="World" type="Node3D" unique_id=1809984319]
 script = ExtResource("1_ghvtn")
@@ -123,11 +137,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -2)
 material = ExtResource("4_igcjm")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=641059559]
-environment = SubResource("Environment_6lmcw")
+environment = SubResource("Environment_8m3jb")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=157938174]
 transform = Transform3D(1, 0, 0, 0, 0.30214062, 0.9532634, 0, -0.9532634, 0.30214062, 0, 9, 0)
-light_color = Color(0.9989719, 0.9289781, 0.74482167, 1)
+light_color = Color(1, 0.9915, 0.97, 1)
 light_energy = 0.5
 shadow_enabled = true
 
@@ -188,7 +202,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -2)
 
 [node name="Hunter" parent="." unique_id=431166771 instance=ExtResource("18_aph6o")]
 
-[node name="Area3D" parent="." unique_id=904228582 instance=ExtResource("19_c2dwa")]
+[node name="Storm" parent="." unique_id=904228582 instance=ExtResource("19_c2dwa")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+
+[node name="ChunkGenerator" type="Node3D" parent="." unique_id=74537442]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+script = ExtResource("20_r87tm")
+library = SubResource("Resource_7wfhb")
+metadata/_custom_type_script = "uid://bt145qipdjfhd"
 
 [connection signal="body_entered" from="Goal" to="Goal" method="_on_body_entered"]
 

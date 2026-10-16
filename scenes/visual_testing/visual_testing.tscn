@@ -11,6 +11,9 @@
 [ext_resource type="Material" uid="uid://m83xmteamd1e" path="res://assets/materials/water_material.tres" id="8_ohm3u"]
 [ext_resource type="Material" uid="uid://du74kmr3sjb4l" path="res://assets/materials/placeholder_checker_2.tres" id="9_ohm3u"]
 [ext_resource type="PackedScene" uid="uid://d3mpcfi2m2o0v" path="res://modules/camera/camera.tscn" id="11_3c6gx"]
+[ext_resource type="PackedScene" uid="uid://dw2ok50o8jmpy" path="res://assets/models/tree_1.glb" id="12_qkd13"]
+[ext_resource type="PackedScene" uid="uid://cbq0ineejoob8" path="res://assets/models/tree_2.glb" id="13_qkbqg"]
+[ext_resource type="PackedScene" uid="uid://djp8cfuy8ngss" path="res://assets/models/monument.glb" id="14_y8dgv"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_6lmcw"]
 top_radius = 2.435
@@ -205,5 +208,13 @@ sides = 20
 material = ExtResource("7_dipdn")
 
 [node name="Camera" parent="." unique_id=506319422 instance=ExtResource("11_3c6gx")]
-current = true
 enable_post_processing = false
+
+[node name="tree_1" parent="." unique_id=390786271 instance=ExtResource("12_qkd13")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5091915, -3.5468204, -15.396438)
+
+[node name="tree_2" parent="." unique_id=1430638242 instance=ExtResource("13_qkbqg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7805767, -3.398378, -12.212251)
+
+[node name="monument" parent="." unique_id=797288562 instance=ExtResource("14_y8dgv")]
+transform = Transform3D(0.8692031, 0, 0.49445528, 0, 1, 0, -0.49445528, 0, 0.8692031, 0.555419, -3.8018508, -16.047024)
