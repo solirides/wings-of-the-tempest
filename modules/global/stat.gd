@@ -9,15 +9,17 @@ class_name Stat
 
 @export var max_value:float = INF
 @export var min_value:float = -INF
-#
-#func _init(p_name:String = "", p_description:String = "", p_base_value:float = 0, p_min_value:float = -INF, p_max_value:float = INF, p_modifier:float = 1, p_value:float = p_base_value) -> void:
-	#name = p_name
-	#description = p_description
-	#value = p_value
-	#base_value = p_base_value
-	#modifier = p_modifier
-	#max_value = p_max_value
-	#min_value = p_min_value
+
+func _init(p_name:String = "", p_description:String = "", \
+		p_base_value:float = 0, p_min_value:float = -INF, p_max_value:float = INF, \
+		p_modifiers:Array[StatModifier] = [], p_value:float = p_base_value) -> void:
+	name = p_name
+	description = p_description
+	value = p_value
+	base_value = p_base_value
+	modifiers = p_modifiers
+	max_value = p_max_value
+	min_value = p_min_value
 
 # recalculate the value of the stat with all modifiers
 func update_value():

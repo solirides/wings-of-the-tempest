@@ -11,7 +11,7 @@ enum ModifierType {
 }
 
 func apply_modifier(value:float) -> float:
-	match ModifierType:
+	match modifier_type:
 		ModifierType.ADD:
 			return value + modifier_value
 		ModifierType.MULTIPLY:

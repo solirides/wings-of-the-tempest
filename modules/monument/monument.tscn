@@ -3,14 +3,32 @@
 [ext_resource type="Script" uid="uid://bsxfgo1noghrg" path="res://modules/monument/monument.gd" id="1_04lvu"]
 [ext_resource type="PackedScene" uid="uid://djp8cfuy8ngss" path="res://assets/models/monument.glb" id="1_uj3d7"]
 [ext_resource type="Texture2D" uid="uid://oi42l00xp8p1" path="res://WoT_tomato_big.png" id="2_04lvu"]
+[ext_resource type="Script" uid="uid://drg54p7u7nh1s" path="res://modules/global/monument_effect.gd" id="2_awhtn"]
+[ext_resource type="Script" uid="uid://bftxduhaltc0m" path="res://modules/global/stat_modifier.gd" id="2_jq2bj"]
+
+[sub_resource type="Resource" id="Resource_awhtn"]
+script = ExtResource("2_jq2bj")
+modifier_value = 2.0
+modifier_type = 1
+metadata/_custom_type_script = "uid://bftxduhaltc0m"
+
+[sub_resource type="Resource" id="Resource_04lvu"]
+script = ExtResource("2_awhtn")
+path_to_stat = "speed"
+modifiers = Array[ExtResource("2_jq2bj")]([SubResource("Resource_awhtn")])
+metadata/_custom_type_script = "uid://drg54p7u7nh1s"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6lmcw"]
 size = Vector3(1.3515625, 2.0497742, 1.5751953)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_awhtn"]
+size = Vector3(2.4, 2.4, 2.4)
 
 [node name="Monument" type="RigidBody3D" unique_id=1299745215]
 mass = 40.0
 freeze = true
 script = ExtResource("1_04lvu")
+monument_effects = Array[ExtResource("2_awhtn")]([SubResource("Resource_04lvu")])
 
 [node name="MonumentStone" parent="." unique_id=2013786790 instance=ExtResource("1_uj3d7")]
 
@@ -29,6 +47,12 @@ shape = SubResource("BoxShape3D_6lmcw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=2108367473]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82951355, 0)
-shape = SubResource("BoxShape3D_6lmcw")
+shape = SubResource("BoxShape3D_awhtn")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1540564505]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5653472, 0)
+visible = false
+light_color = Color(0.41000003, 0.8918333, 1, 1)
+light_energy = 10.0
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
