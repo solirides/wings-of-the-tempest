@@ -172,7 +172,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 0)
 strength = 10.0
 radius = 30.0
 
-[node name="Area3D" parent="." unique_id=904228582 instance=ExtResource("17_la62n")]
+[node name="Storm" parent="." unique_id=904228582 instance=ExtResource("17_la62n")]
 
 [connection signal="body_entered" from="Goal" to="Goal" method="_on_body_entered"]
 

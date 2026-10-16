@@ -1,9 +1,9 @@
 extends Area3D
 
-
 const STORM_DIRECTION: Vector3 = Vector3(0.7071, 0.0, 0.7071) #unit vector @ 45 degrees
 const STORM_SPEED: float = 5.0 #Arbitray value for now
-# could become a variable and increase speed?
+const STORM_DAMAGE: float = 0.05 
+#percent of MAX_HEALTH that gets taken away every frame a boid is in the storm
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -12,6 +12,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
 	move_storm(delta)
+	damage_boid()
 
 #Used to move storm across the level
 #Could use a path in the future
@@ -20,4 +21,8 @@ func move_storm(delta: float) -> void:
 
 #damages any boids within the hitbox
 func damage_boid() -> void:
-	pass
+	var overlapping_bodies: Array[Node3D] = get_overlapping_bodies()
+	for n in overlapping_bodies:
+		if  overlapping_bodies[n].is_in_group("boids"):
+			overlapping_bodies[n].take_percent_damage(STORM_DAMAGE)
+			print("Boid Damaged!")
