@@ -1,13 +1,15 @@
 [gd_scene format=3 uid="uid://bphsnhj7h6a70"]
 
-[ext_resource type="Script" uid="uid://kcxhpt2bsugs" path="res://scenes/enemies/hawk.gd" id="1_kvbro"]
+[ext_resource type="Script" uid="uid://kcxhpt2bsugs" path="res://modules/enemy/hawk.gd" id="1_kvbro"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_6olrb"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ewcdy"]
 albedo_color = Color(0.88581675, 0.7032674, 7.70092e-07, 1)
 
-[node name="Hawk" type="Node3D" unique_id=1431889848]
+[node name="Hawk" type="RigidBody3D" unique_id=40116280]
+freeze = true
+freeze_mode = 1
 script = ExtResource("1_kvbro")
 enable_own_movement = false
 attack_speed = 0.5

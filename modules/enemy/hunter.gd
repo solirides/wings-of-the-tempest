@@ -35,7 +35,8 @@ func _ready() -> void:
 	
 func _physics_process(delta: float) -> void:
 	# If hunter is already aimming skip everything below
-	if is_winding_up: 
+	if is_winding_up:
+		print("hunter winding up")
 		# Keep facing where the boid will be so the aim rod points where the shot will go
 		if is_instance_valid(current_target):
 			var aim_point = predict_position(current_target)
