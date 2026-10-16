@@ -59,52 +59,8 @@ func check_heath_status() -> void:
 
 signal boid_died(boid: Node, pos: Vector3)
 
-enum STEERING_MODE {
-	LERP,
-	STEERING_FORCE
-}
-
-enum ROTATION_MODE {
-	SNAP_TO_VELOCITY,
-	LERP_TO_VELOCITY,
-	LERP_TO_GOAL
-}
-
-const default_speed : float = 5.0
-
-@export var speed : float = 15
-@export var min_speed : float = 2
-@export var speed_scale_exp: float = 1.0
-@export var perception_range : float = 8
-@export var personal_space : float = 4
-
-@export var seperate_weight : float = 2
-@export var alignment_weight : float = 1
-@export var cohesion_weight : float = 1
-@export var goal_weight : float = 1.2
-@export var stay_on_screen_weight : float = 2
-@export var cam_moving_weight : float = 1.2
-
-@export var repel_radius: float = 5.0
-@export var repel_weight: float = 5.0
-
-#coward shit
-@export var flee_weight: float = 2.1
-@export var is_fleeing: bool = false
-@export var flee_timer: float = 0.0
-@export var flee_duration: float = 3 #3 seconds
-@export var flee_direction: Vector3 = Vector3.ZERO
-
-#split up sub group stuff
-@export var spin_weight : float = 1
-@export var minimum_group_size : float = 5
-
-@export var steering_smoothness: float = 8.0
-@export var rotation_smoothness: float = 8.0
-@export var steering_mode: STEERING_MODE = STEERING_MODE.LERP
-@export var rotation_mode: ROTATION_MODE = ROTATION_MODE.LERP_TO_VELOCITY
-
-var flock: Flock
+@onready var flock: Flock = get_parent()
+@onready var properties = flock.boid_properties
 #TS makes the boids spin in a random direction so that they don't look so robotic.............. while in the stupid fucking split up mode.
 var spin_direction: float = 1.0 if randf() > 0.5 else -1.0 
 
@@ -121,7 +77,7 @@ var death_queued = false
 @onready var food_detector: Area3D = $FoodDetector
 
 func _ready() -> void:
-	flock = get_parent() as Flock
+	#flock = get_parent() as Flock
 	add_to_group("boids")
 	food_detector.area_entered.connect(_on_food_detector_area_entered)
 
@@ -181,13 +137,13 @@ func repel() -> Vector3:
 	offset.y = 0
 	var distance := offset.length()
 	
-	if distance > repel_radius or distance < 0.001:
+	if distance > properties.repel_radius or distance < 0.001:
 		return Vector3.ZERO
 	
-	if not is_fleeing:
-		is_fleeing = true
-		flee_timer = flee_duration
-		flee_direction = offset.normalized() 
+	if not properties.is_fleeing:
+		properties.is_fleeing = true
+		properties.flee_timer = properties.flee_duration
+		properties.flee_direction = offset.normalized() 
 	#if is_nan(offset.x):
 		#print(offset)
 		#print(global_position)
@@ -197,12 +153,12 @@ func repel() -> Vector3:
 
 #flee/cowards function...
 func _flee(delta: float) -> Vector3 :
-	flee_timer -= delta
-	if flee_timer <= 0 :
-		is_fleeing = false
+	properties.flee_timer -= delta
+	if properties.flee_timer <= 0 :
+		properties.is_fleeing = false
 		return Vector3.ZERO
 	
-	return flee_direction
+	return properties.flee_direction
 
 #seperation force calcualtions ... thx https://vanhunteradams.com/Pico/Animal_Movement/Boids-algorithm.html
 func seperation(neighbors : Array) -> Vector3 :
@@ -212,7 +168,7 @@ func seperation(neighbors : Array) -> Vector3 :
 	
 	for boid in neighbors :
 		var distance : float = global_position.distance_to(boid.global_position)
-		if distance < personal_space and distance > 0.1:
+		if distance < properties.personal_space and distance > 0.1:
 			var sep_direction = global_position - boid.global_position
 			sep_force += sep_direction.normalized() / distance
 	return sep_force
@@ -256,8 +212,9 @@ func local_center(neighbors: Array) -> Vector3 :
 	center_force = center_force / neighbors.size()
 	return center_force
 
+var debug_count : int = 0
 func spinning(center: Vector3, neighbors: Array) -> Vector3:
-	if neighbors.size() < minimum_group_size :
+	if neighbors.size() < properties.minimum_group_size :
 		return Vector3.ZERO
 	
 	var offset = global_position - center
@@ -268,7 +225,7 @@ func spinning(center: Vector3, neighbors: Array) -> Vector3:
 func boid_movement(delta: float):
 	var camera_force : Vector3 = Vector3.ZERO
 	if cam_is_moving :
-		camera_force = move_direction * cam_moving_weight
+		camera_force = move_direction * properties.cam_moving_weight
 	
 	var boids: Array[Boid] = flock.boids
 	var neighbors : Array = []
@@ -277,27 +234,27 @@ func boid_movement(delta: float):
 		if other == self :
 			continue
 		var distance_to_boids : float = global_position.distance_to(other.global_position)
-		if distance_to_boids < perception_range:
+		if distance_to_boids < properties.perception_range:
 			neighbors.append(other)
 	
 	var repel_force := Vector3.ZERO
 	var goal_force : = Vector3.ZERO
 	var flee_force := Vector3.ZERO 
 	
-	if is_fleeing :
-		flee_force = _flee(delta) * flee_weight
+	if properties.is_fleeing :
+		flee_force = _flee(delta) * properties.flee_weight
 	else :
 		#heading towards the cursor/goal
-		goal_force = global_position.direction_to(flock.boid_goal) * goal_weight
+		goal_force = global_position.direction_to(flock.boid_goal) * properties.goal_weight
 	
 	#seperation force
-	var seperation_force : Vector3 = seperation(neighbors) * seperate_weight
+	var seperation_force : Vector3 = seperation(neighbors) * properties.seperate_weight
 	#alignment force
-	var alignment_force : Vector3 = alignment(neighbors) * alignment_weight
+	var alignment_force : Vector3 = alignment(neighbors) * properties.alignment_weight
 	#cohesion_force
-	var cohesion_force : Vector3 = cohesion(neighbors) * cohesion_weight
+	var cohesion_force : Vector3 = cohesion(neighbors) * properties.cohesion_weight
 	#staying on the freaking screen
-	var stay_on_screen_force : Vector3 = STAY_ON_SCREEN() * stay_on_screen_weight
+	var stay_on_screen_force : Vector3 = STAY_ON_SCREEN() * properties.stay_on_screen_weight
 	
 	#CEO of BOID pathing 🔥
 	# boid_direction is the combined target direction of the boid
@@ -308,63 +265,108 @@ func boid_movement(delta: float):
 	
 	#When the cursor is in spread out/repel mode the boids have slightly modified behaviors
 	if Input.is_action_pressed("repel"):
-		repel_force = repel() * repel_weight
+		repel_force = repel() * properties.repel_weight
 		#when the camera is not moving, boids in large groups should start spinning in place.
 		var boid_subflock_spin_force : Vector3 = Vector3.ZERO
 		if cam_is_moving == false :
-			boid_subflock_spin_force = spinning(local_center(neighbors), neighbors) * spin_weight
+			boid_subflock_spin_force = spinning(local_center(neighbors), neighbors) * properties.spin_weight
 		var spin_alignment = alignment_force * 0.2
 		boid_direction += spin_alignment + camera_force + boid_subflock_spin_force + repel_force
 	else :
+		# goal force is normalized and scaled by the goal weight earlier in this function
 		boid_direction += goal_force + alignment_force
 
 	boid_direction.y = 0
 	boid_direction = boid_direction.normalized()
 	
-	#movement/"looking"
-	# added lerp/slerp to get rid of some jitter
-	match steering_mode:
-		STEERING_MODE.LERP:
+	# The steering mode is the function that changes the boid's velocity according to boid_direction
+	# They provide different modes of interpolation
+	# (since directly setting the velocity to boid_direction looks unnatural)
+	match properties.steering_mode:
+		BoidProperties.STEERING_MODE.LERP:
+			# The original steering mode. Simply lerp to the desired velocity from the current one.
 			var vel: Vector3 = Vector3.ZERO
 			if boid_direction.length_squared() > 0.001:
-				vel = linear_velocity.lerp(boid_direction*speed, steering_smoothness * delta)
+				vel = linear_velocity.lerp(boid_direction*properties.speed, properties.steering_smoothness * delta)
 				vel.y = 0
-				vel = vel.normalized() * speed
+				vel = vel.normalized() * properties.speed
 			linear_velocity = vel
-		STEERING_MODE.STEERING_FORCE:
-			var desired_velocity = boid_direction * speed
+		BoidProperties.STEERING_MODE.STEERING_FORCE:
+			var speed_bias = 1.5 # Does not change min or max speeds. Higher values make boids prefer higher speeds.
+			var desired_velocity = boid_direction * properties.speed * speed_bias
 			var steering = desired_velocity - linear_velocity
-			var speed_scaled = 0
-			if desired_velocity.length() != 0:
-				speed_scaled = pow(steering.length() / desired_velocity.length(), speed_scale_exp) * desired_velocity.length()
-			if is_nan(speed_scaled):
-				printerr("speed_scaled is NAN!!!!!")
-				speed_scaled = 0
-			steering.y = 0
+			#var speed_scaled = speed
+			#if desired_velocity.length() != 0:
+				##speed_scaled = pow(steering.length() / desired_velocity.length(), speed_scale_exp) * desired_velocity.length()
+				#speed_scaled = speed
+			#if is_nan(speed_scaled):
+				#printerr("speed_scaled is NAN!!!!!")
+				#speed_scaled = 0
+			#steering.y = 0
+			#print("printing")
 			if steering != Vector3.ZERO:
-				steering = steering.normalized() * speed_scaled
+				steering = steering.normalized() * clamp(steering.length(), properties.min_speed, speed_bias*properties.speed)
+				#print(steering.length())
+				#steering = steering.normalized() * speed
 			else:
-				steering = global_basis.z.normalized() * min_speed
-			
-			steering = steering.limit_length(speed)
-			if linear_velocity.length() < min_speed:
-				steering = steering.normalized() * min_speed
+				# force the boid to go forward at min speed
+				steering = -global_basis.z.normalized() * properties.min_speed
 			
 			apply_central_force(steering * mass)
+			
+			# clamp the speed to be between min speed and max speed
+			linear_velocity = linear_velocity.normalized() * clamp(linear_velocity.length(), properties.min_speed, properties.speed)
+			
+			#print(linear_velocity.length())
+			
+			
+		BoidProperties.STEERING_MODE.CONSTANT_SPEED:
+			# Maintain a constant speed for the boid. Lerp for rotation.
+			# Apply forces perpendicular to the velocity to turn the boid without affecting its speed.
+			var target_dir = boid_direction.normalized()
+			var current_dir = linear_velocity.normalized()
+			if linear_velocity == Vector3.ZERO:
+				# Make the boid move forward at constant speed in the direction it is facing
+				linear_velocity = -global_basis.z * properties.speed
+			else:
+				var current_angle = target_dir.signed_angle_to(current_dir, Vector3.UP)
+				var new_angle: float = lerp(current_angle, 0.0, properties.steering_strength * delta)
+				linear_velocity = properties.speed * target_dir.rotated(Vector3.UP, new_angle)
+			# ensure speed is constant
+			linear_velocity = linear_velocity.normalized() * properties.speed
+		BoidProperties.STEERING_MODE.CONSTANT_EVERYTHING:
+			# constant linear speed and turning speed
+			var target_dir = boid_direction.normalized()
+			var current_dir = linear_velocity.normalized()
+			if linear_velocity == Vector3.ZERO:
+				# Make the boid move forward at constant speed in the direction it is facing
+				linear_velocity = -global_basis.z * properties.speed
+			else:
+				var angle_to_target = linear_velocity.signed_angle_to(target_dir, Vector3.UP)
+				if properties.steering_strength * delta >= abs(angle_to_target):
+					linear_velocity = linear_velocity.length() * target_dir
+				else:
+					linear_velocity = linear_velocity.rotated(Vector3.UP, sign(angle_to_target) * properties.steering_strength * delta)
+				#linear_velocity = lerp(angle_to_target, delta)
+				#apply_torque(Vector3.UP * steering_strength * angle_to_target * inertia)
+				#print(Vector3.UP * steering_strength * angle_to_target)
+			linear_velocity = linear_velocity.normalized() * properties.speed
+			#print(linear_velocity.length())
+			
 	
 	# rotate node for display
-	match rotation_mode:
-		ROTATION_MODE.LERP_TO_VELOCITY:
+	match properties.rotation_mode:
+		BoidProperties.ROTATION_MODE.LERP_TO_VELOCITY:
 			if linear_velocity.length_squared() > 0.001:
 				var target_rotation = Transform3D.IDENTITY.looking_at(linear_velocity, Vector3.UP).basis
 				target_rotation = target_rotation.orthonormalized()
-				global_transform.basis = global_transform.basis.slerp(target_rotation, rotation_smoothness * delta)
-		ROTATION_MODE.LERP_TO_GOAL:
+				global_transform.basis = global_transform.basis.slerp(target_rotation, properties.rotation_smoothness * delta)
+		BoidProperties.ROTATION_MODE.LERP_TO_GOAL:
 			if boid_direction.length_squared() > 0.001:
 				var target_rotation = Transform3D.IDENTITY.looking_at(boid_direction, Vector3.UP).basis
 				target_rotation = target_rotation.orthonormalized()
-				global_transform.basis = global_transform.basis.slerp(target_rotation, rotation_smoothness * delta)
-		ROTATION_MODE.SNAP_TO_VELOCITY:
+				global_transform.basis = global_transform.basis.slerp(target_rotation, properties.rotation_smoothness * delta)
+		BoidProperties.ROTATION_MODE.SNAP_TO_VELOCITY:
 			if linear_velocity.length_squared() > 0.001:
 				var target_pos = global_position + linear_velocity
 				look_at(target_pos, Vector3.UP)

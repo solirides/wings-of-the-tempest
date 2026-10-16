@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://bs41iuhewme8j" path="res://modules/flock/sub_flock.gd" id="4_1uvjm"]
 [ext_resource type="Script" uid="uid://d4n162so51dr8" path="res://modules/flock/main_flock.gd" id="4_c5bgo"]
 [ext_resource type="Material" uid="uid://du74kmr3sjb4l" path="res://assets/materials/placeholder_checker_2.tres" id="4_igcjm"]
+[ext_resource type="Script" uid="uid://dstx1f47q2ki1" path="res://modules/flock/player_bird/boid_properties.gd" id="5_la62n"]
 [ext_resource type="Shader" uid="uid://ca2i5qj33kbir" path="res://assets/materials/water.gdshader" id="6_nubdk"]
 [ext_resource type="PackedScene" uid="uid://geh1ds7gqhgf" path="res://modules/hud/hud.tscn" id="7_fxajv"]
 [ext_resource type="PackedScene" uid="uid://r2i5ufxdudpc" path="res://modules/enemy/seagull.tscn" id="8_yhntr"]
@@ -17,6 +18,16 @@
 [ext_resource type="PackedScene" uid="uid://b3o6tsxlufhca" path="res://modules/wind_zone/wind_zone.tscn" id="13_665yd"]
 [ext_resource type="PackedScene" uid="uid://bhhy738m44d75" path="res://modules/wind_trails/wind_trails.tscn" id="14_3fps6"]
 [ext_resource type="PackedScene" uid="uid://d18u81083qnes" path="res://modules/enemy/hunter.tscn" id="18_aph6o"]
+
+[sub_resource type="Resource" id="Resource_dc6vu"]
+script = ExtResource("5_la62n")
+steering_mode = 1
+metadata/_custom_type_script = "uid://dstx1f47q2ki1"
+
+[sub_resource type="Resource" id="Resource_aph6o"]
+script = ExtResource("5_la62n")
+steering_mode = 1
+metadata/_custom_type_script = "uid://dstx1f47q2ki1"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
 render_priority = 0
@@ -78,11 +89,13 @@ camera_controller = NodePath("../Camera")
 num_boids = 20
 cursor = NodePath("MeshInstance3D2")
 subflocks = [NodePath("SubFlock")]
+boid_properties = SubResource("Resource_dc6vu")
 
 [node name="SubFlock" type="Node3D" parent="Flock" unique_id=318110185 node_paths=PackedStringArray("parent_flock", "camera_controller")]
 script = ExtResource("4_1uvjm")
 parent_flock = NodePath("..")
 camera_controller = NodePath("../../Camera")
+boid_properties = SubResource("Resource_aph6o")
 
 [node name="Camera" parent="." unique_id=1488927985 node_paths=PackedStringArray("flock") instance=ExtResource("1_7n1yb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 4.999996, 4, -1.0000019)

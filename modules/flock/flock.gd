@@ -20,6 +20,8 @@ class_name Flock
 @export var cursor: MeshInstance3D
 @export var subflocks: Array[SubFlock] = []
 
+@export var boid_properties: BoidProperties = BoidProperties.new()
+
 # only boids with movement controlled by the main flock, not subflocks
 var boids: Array[Boid] = []
 var boid_goal : Vector3
@@ -34,43 +36,42 @@ func _ready() -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
-	if !all_boids.is_empty():
-		for boid in all_boids:
-			if current_hunger > 50.0:
-				boid.speed = max(boid.default_speed, boid.speed - speed_penalty_interval * delta)
-		
-		#in essence both of these if statements are decreasing the hunger
-		if current_hunger > 0:
-			current_hunger = max(0.0, current_hunger - starve_rate * delta)
-			#print("hunger: " + str(current_hunger))
-			#this code block inflicts speed penalties below 50 hunger
-			if current_hunger < 50.0:
-				for boid in all_boids:
-					boid.speed = max(0.0, boid.speed - speed_penalty_interval * delta)
-			
-			hunger_changed.emit(current_hunger)
-		else:
-			#there is no speed penalty because you already ran out of hunger
-			current_hunger = min(0.0, current_hunger - starve_rate * delta)
-			hunger_changed.emit(current_hunger)
-			
-			#this if-statement will kill birds of starvation periodically
-			if current_hunger < -starve_death_interval:
-				print("starved")
-				current_hunger = 0.0
-				all_boids[0].kill_boid() #this line can be assumed 
-				# to not trigger a bad memory access error because
-				# the entire hunger update system depends on a boid existing
+	
+	if current_hunger > 50.0:
+		boid_properties.speed = max(boid_properties.min_speed, boid_properties.speed - speed_penalty_interval * delta)
+	
+#in essence both of these if statements are decreasing the hunger
+#if current_hunger > 0:
+	#current_hunger = max(0.0, current_hunger - starve_rate * delta)
+	#print("hunger: " + str(current_hunger))
+	#this code block inflicts speed penalties below 50 hunger
+	#if current_hunger < 50.0:
+		#for boid in all_boids:
+			#boid.speed = max(0.0, boid.speed - speed_penalty_interval * delta)
+	
+	#hunger_changed.emit(current_hunger)
+#else:
+	#there is no speed penalty because you already ran out of hunger
+	#current_hunger = min(0.0, current_hunger - starve_rate * delta)
+	#hunger_changed.emit(current_hunger)
+	
+	#this if-statement will kill birds of starvation periodically
+	if current_hunger < -starve_death_interval:
+		print("starved")
+		current_hunger = 0.0
+		all_boids[0].kill_boid() #this line can be assumed 
+		# to not trigger a bad memory access error because
+		# the entire hunger update system depends on a boid existing
 
 func eat(value: float) -> void:
 	if (current_hunger < 0.0):
 		current_hunger = 0.0
 
-	for boid in boids:
-		boid.speed += value * speed_penalty_interval
-		#this line does imply that you can get a speed boost
-		#beyond your default speed value, but that will
-		#be corrected in the _process function
+	
+	boid_properties.speed += value * speed_penalty_interval
+	#this line does imply that you can get a speed boost
+	#beyond your default speed value, but that will
+	#be corrected in the _process function
 	current_hunger = min(current_hunger + value, max_hunger)
 	hunger_changed.emit(current_hunger)
 	
