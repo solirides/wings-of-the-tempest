@@ -22,31 +22,6 @@ size = Vector3(1, 1, 1.6539917)
 [node name="PlayerBird" type="RigidBody3D" unique_id=1004426464 groups=["boids"]]
 axis_lock_linear_y = true
 script = ExtResource("1_25rpd")
-speed = null
-min_speed = null
-speed_scale_exp = null
-perception_range = null
-personal_space = null
-seperate_weight = null
-alignment_weight = null
-cohesion_weight = null
-goal_weight = null
-stay_on_screen_weight = null
-cam_moving_weight = null
-repel_radius = null
-repel_weight = null
-flee_weight = null
-is_fleeing = null
-flee_timer = null
-flee_duration = null
-flee_direction = null
-spin_weight = null
-minimum_group_size = null
-steering_smoothness = 20.0
-rotation_smoothness = null
-steering_strength = 5.0
-steering_mode = 1
-rotation_mode = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=801781277]
 transform = Transform3D(-3.4577672e-09, -0.0791045, 0.99686635, 1, -4.371139e-08, -2.220446e-16, 4.3574413e-08, 0.99686635, 0.0791045, 0, 0.40833855, 0)

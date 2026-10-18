@@ -34,6 +34,17 @@ signal hunger_changed
 func _ready() -> void:
 	pass
 
+#Use this to handle any button presses which would change the state of the boids... for now, I'm thinking scatter mode and landing
+func _unhandled_input(event: InputEvent) -> void:
+	
+	#THIS changes causses the boids to repel... ALSO NO LONGER A HOLD THING!!!!
+	if event.is_action_pressed("repel") :
+		boid_properties.scatter = !boid_properties.scatter
+		boid_properties.default_state = !boid_properties.default_state
+		print("I'm chaning scatter states")
+	
+	
+
 func _physics_process(delta: float) -> void:
 	
 	if current_hunger > 50.0:

@@ -31,6 +31,8 @@ enum ROTATION_MODE {
 @export var repel_radius: float = 5.0
 @export var repel_weight: float = 5.0
 
+@export var default_state: bool = true
+
 #coward shit
 @export var flee_weight: float = 2.1
 @export var is_fleeing: bool = false
@@ -41,6 +43,7 @@ enum ROTATION_MODE {
 #split up sub group stuff
 @export var spin_weight : float = 1
 @export var minimum_group_size : float = 5
+@export var scatter : bool = false
 
 @export var steering_smoothness: float = 8.0
 @export var rotation_smoothness: float = 8.0

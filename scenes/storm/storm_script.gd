@@ -22,9 +22,9 @@ func move_storm(delta: float) -> void:
 #damages any boids within the hitbox
 func damage_boid() -> void:
 	var overlapping_bodies: Array[Node3D] = get_overlapping_bodies()
-	print('in damage function!')
+	#print('in damage function!')
 	for n in overlapping_bodies:
-		print("In for loop!")
+		#print("In for loop!")
 		if  n is Boid:
 			n.take_percent_damage(STORM_DAMAGE)
 			print("Boid Damaged!")
