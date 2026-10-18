@@ -48,7 +48,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	
 	if current_hunger > 50.0:
-		boid_properties.speed = max(boid_properties.min_speed, boid_properties.speed - speed_penalty_interval * delta)
+		boid_properties.speed.value = max(boid_properties.min_speed.value, boid_properties.speed.value - speed_penalty_interval * delta)
 	
 #in essence both of these if statements are decreasing the hunger
 #if current_hunger > 0:
@@ -78,7 +78,7 @@ func eat(value: float) -> void:
 		current_hunger = 0.0
 
 	
-	boid_properties.speed += value * speed_penalty_interval
+	boid_properties.speed.value += value * speed_penalty_interval
 	#this line does imply that you can get a speed boost
 	#beyond your default speed value, but that will
 	#be corrected in the _process function

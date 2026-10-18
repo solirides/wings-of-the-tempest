@@ -27,5 +27,5 @@ func damage_boid() -> void:
 		#print("In for loop!")
 		if  n is Boid:
 			n.take_percent_damage(STORM_DAMAGE)
-			print("Boid Damaged!")
-			print(n.get_health())
+			#print("Boid Damaged!")
+			#print(n.get_health())

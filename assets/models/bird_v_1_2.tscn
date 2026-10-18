@@ -1,5 +1,5 @@
 [gd_scene format=3 uid="uid://ccxxydkdic7wl"]
 
-[ext_resource type="PackedScene" uid="uid://b6gylk13xq7rl" path="res://assets/models/bird v1.2.glb" id="1_n7k1g"]
+[ext_resource type="PackedScene" uid="uid://b6gylk13xq7rl" path="res://assets/models/bird_v1.2.glb" id="1_n7k1g"]
 
 [node name="bird v1_2" unique_id=790560813 instance=ExtResource("1_n7k1g")]
