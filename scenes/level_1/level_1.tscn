@@ -96,6 +96,7 @@ layer = 10
 
 [node name="Hud" parent="CanvasLayer" unique_id=719202679 instance=ExtResource("7_fxajv")]
 unique_name_in_owner = true
+mouse_filter = 1
 
 [node name="Flock" parent="." unique_id=1876045196 node_paths=PackedStringArray("camera_controller", "cursor", "subflocks") instance=ExtResource("2_jr17i")]
 unique_name_in_owner = true

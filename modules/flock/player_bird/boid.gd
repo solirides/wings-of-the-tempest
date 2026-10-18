@@ -264,7 +264,7 @@ func boid_movement(delta: float):
 	#print(boid_direction)
 	
 	#When the cursor is in spread out/repel mode the boids have slightly modified behaviors
-	if Input.is_action_pressed("repel"):
+	if properties.scatter:
 		repel_force = repel() * properties.repel_weight.value
 		#when the camera is not moving, boids in large groups should start spinning in place.
 		var boid_subflock_spin_force : Vector3 = Vector3.ZERO
