@@ -26,6 +26,8 @@ size = 20.0
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=636382993]
 environment = SubResource("Environment_yqyt3")
 
-[node name="ChunkGenerator" type="Node" parent="." unique_id=1456001381]
+[node name="ChunkGenerator" type="Node3D" parent="." unique_id=1507864857]
 script = ExtResource("1_jewke")
 library = ExtResource("2_yqyt3")
+direction = Vector3i(0, 0, 1)
+metadata/_custom_type_script = "uid://bt145qipdjfhd"

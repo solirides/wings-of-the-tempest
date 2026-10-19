@@ -3,7 +3,8 @@ class_name Chunk
 
 static var heightmap_debug_material: StandardMaterial3D = preload( "res://modules/terrain/heightmap_debug.tres" );
 
-var size: Vector3i;
+var terrain_size: Vector3i;
+var terrain_scale: Vector3;
 var mesh_instance: MeshInstance3D;
 var collision_instance: StaticBody3D;
 var heightmap: Array3D;
@@ -15,8 +16,7 @@ func set_terrain_material( material: Material ) -> void:
 
 ## Create terrain for this chunk based on a 3D grid of scalar voxel data
 func create_terrain( scalar_field: Array3D ) -> void:
-	size = scalar_field.get_size() - Vector3i.ONE;
-	var mesh = MarchingCube.generate_mesh( MarchingCube.generate_vertices( scalar_field, 0.0 ) );
+	var mesh = MarchingCube.generate_mesh( MarchingCube.generate_vertices( scalar_field, 0.0, terrain_scale ) );
 	mesh_instance.mesh = mesh;
 	collision_instance.create_shape_owner( mesh );
 
@@ -24,13 +24,13 @@ func create_terrain( scalar_field: Array3D ) -> void:
 func create_heightmap( scalar_field: Array3D ) -> void:
 	
 	# Get height of field
-	var height: int = scalar_field.get_size().y - 1;
+	var height: int = terrain_size.y;
 	
 	# Create flat array
-	heightmap = Array3D.packedFloat32( Vector3i( scalar_field.get_size().x, 1, scalar_field.get_size().z ) );
+	heightmap = Array3D.packedFloat32( Vector3i( terrain_size.x, 1, terrain_size.z ) );
 	
 	# For each horizontal coordinate...
-	for horizontal in Rect3iIterator.new( Vector3i.ZERO, heightmap.size ):
+	for horizontal in Rect3iIterator.new( Vector3i.ZERO, heightmap.get_size() ):
 		
 		# Remember previous scalar
 		var prev_val: float;
@@ -71,9 +71,9 @@ func create_heightmap_mesh( resolution: float ) -> void:
 	
 	#Add vertices
 	for iter: Vector3i in Rect3iIterator.new( Vector3i.ZERO, ( heightmap.get_size() - Vector3i( 1, 0, 1 ) ) * resolution ):
-		var pos: = Vector3( iter ) / resolution;
+		var pos: = Vector3( iter ) / resolution * terrain_scale;
 		pos.y = get_height( Vector2( pos.x, pos.z ) );
-		surface_tool.add_vertex( pos );
+		surface_tool.add_vertex( pos * scale );
 	
 	surface_tool.index();
 	heightmap_mesh_instance.mesh = surface_tool.commit();
@@ -89,6 +89,10 @@ func create_objects( objects: Dictionary[ ChunkObject, Vector2 ] ) -> void:
 		object_node.position = Vector3( object_pos.x, object.height_offset, object_pos.y );
 		if object.height_mode == ChunkObject.HeightMode.SNAP:
 			object_node.position.y += get_height( Vector2( object_pos.x, object_pos.y ) );
+
+func _init( definition: ChunkDefinition ) -> void:
+	terrain_size = definition.terrain_size;
+	terrain_scale = definition.terrain_scale;
 
 func _ready() -> void:
 	
@@ -117,6 +121,7 @@ func intersect( start: Vector3, end: Vector3 ) -> Vector3:
 
 ## Find vertical position of heighest terrain at horizontal position
 func get_height( coordinates: Vector2 ) -> float:
+	coordinates /= Vector2( terrain_scale.x, terrain_scale.z );
 	var integer: Vector2i = coordinates.floor();
 	var fractional: = coordinates.posmod( 1.0 );
 	return lerp( 

@@ -55,6 +55,7 @@ func _ready() -> void:
 	
 	$Camera/Shaders.visible = enable_post_processing
 	
+	set_notify_transform( true );
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("free_cam"):
@@ -189,4 +190,9 @@ func toggle_free_cam(state: bool = !free_cam_mode):
 		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 		# lock the movement
 		lock_to_axis = true
-	
+
+# Emit signal when moved, so other nodes (ie terrain generation) can detect it
+signal moved;
+func _notification( what: int ) -> void:
+	if what == NOTIFICATION_TRANSFORM_CHANGED:
+		moved.emit();

@@ -1,20 +1,19 @@
 extends Resource
 class_name ChunkDefinition
 
-@export var size: Vector3i;
-@export var objects: Dictionary[ ChunkObject, Vector2 ];
+@export var terrain_size: Vector3i;
+@export var terrain_scale: Vector3;
 @export var terrain_height: int;
+@export var objects: Dictionary[ ChunkObject, Vector2 ];
 @export var terrain_objects: Dictionary[ ChunkTerrainObject, Vector2i ];
 
-func create_terrain_data( state: ChunkGenState ) -> Array3D:
+func create_terrain_data( state: ChunkGenState, chunk_position: Vector3 ) -> Array3D:
 	
-	var chunk_pos: Vector3i = Vector3i.RIGHT * size * state.chunk_index;
-	
-	var scalar_field: = Array3D.packedFloat32( size + Vector3i.ONE );
+	var scalar_field: = Array3D.packedFloat32( terrain_size + Vector3i.ONE );
 	
 	for voxel in Rect3iIterator.new( Vector3i.ZERO, scalar_field.size ):
 		
-		var world_voxel = chunk_pos + voxel;
+		var world_voxel: = Vector3i( chunk_position / terrain_scale ) + voxel;
 		
 		# Get base noise value
 		var value: float = ( state.noise.get_noise_2d( 10 * world_voxel.x, 10 * world_voxel.z ) * 0.5 + 0.5 ) \
@@ -40,4 +39,4 @@ func get_objects() -> Dictionary[ ChunkObject, Vector2 ]:
 	return objects;
 
 func get_size() -> Vector3i:
-	return size;
+	return terrain_size;
