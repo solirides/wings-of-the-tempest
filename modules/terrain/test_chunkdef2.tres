@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="ChunkDefinition" format=3 uid="uid://c7iou5744evmq"]
 
 [ext_resource type="Script" uid="uid://cks7psb1tg0ob" path="res://modules/terrain/generator/chunk_definition.gd" id="1_jvfn2"]
-[ext_resource type="Script" uid="uid://uj3jsrmj1mkc" path="res://modules/terrain/generator/chunk_object.gd" id="1_v5m86"]
-[ext_resource type="Script" uid="uid://vtvjnhf5wa53" path="res://modules/terrain/generator/chunk_terrain_object.gd" id="3_4q24b"]
+[ext_resource type="Script" uid="uid://obk0gl5ybof4" path="res://modules/terrain/generator/chunk_object.gd" id="1_v5m86"]
+[ext_resource type="Script" uid="uid://hn4a0fyr272r" path="res://modules/terrain/generator/chunk_terrain_object.gd" id="3_4q24b"]
 
 [resource]
 script = ExtResource("1_jvfn2")

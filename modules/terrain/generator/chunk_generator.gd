@@ -3,12 +3,18 @@ class_name ChunkGenerator
 
 @export var tracked_node: Node3D:
 	set( value ):
-		value.moved.connect( _tracked_node_moved, CONNECT_APPEND_SOURCE_OBJECT  );
+		if value and value.has_signal( "moved" ):
+			value.moved.connect( _tracked_node_moved, CONNECT_APPEND_SOURCE_OBJECT  );
+		if not value and value.has_signal( "moved" ) and value.moved.is_connected( _tracked_node_moved ):
+			value.moved.disconnect( _tracked_node_moved );
+		tracked_node = value;
 @export var tracking_buffer: float;
 
 @export var library: ChunkLibrary;
 @export var direction: Vector3;
+
 var current_state: ChunkGenState;
+var chunk_meshing_thread: Thread;
 
 
 
@@ -30,17 +36,26 @@ func create_chunk( state: ChunkGenState ) -> void:
 	chunk.position = get_state_chunk_position( state );
 	
 	# Generate chunk using data from definition
-	var terrain_data: = chunk_def.create_terrain_data( state, chunk.position );
-	chunk.create_terrain( terrain_data );
+	var terrain_data: = Array3D.packedFloat32( chunk_def.terrain_size + Vector3i.ONE );
+	
+	# Create terrain
+	chunk_def.create_terrain_data( terrain_data, state, chunk.position );
+	chunk_def.create_terrain_objects( terrain_data );
+	
+	# Create heightmap and objects
 	chunk.create_heightmap( terrain_data );
-	
-	# DEBUG Create heightmap mesh
-	chunk.create_heightmap_mesh( 4 );
-	
-	# Create chunk objects (must have created heightmap)
 	chunk.create_objects( chunk_def.get_objects() );
 	
 	current_state._increment();
+	
+	# Create chunk terrain mesh
+	if chunk_meshing_thread.is_started():
+		chunk_meshing_thread.wait_to_finish();
+	
+	chunk_meshing_thread.start( chunk.create_terrain_mesh.bind( terrain_data ) );
+	
+	# DEBUG
+	chunk.create_heightmap_mesh( 4 );
 
 
 
@@ -49,6 +64,12 @@ func _ready() -> void:
 	#Initialize state, with Time used as random seed
 	@warning_ignore("narrowing_conversion")
 	current_state = ChunkGenState.new( Time.get_unix_time_from_system() );
+	
+	#Initialize thread
+	chunk_meshing_thread = Thread.new();
+
+func _exit_tree() -> void:
+	chunk_meshing_thread.wait_to_finish();
 
 #TEST
 func _unhandled_input( event: InputEvent ) -> void:

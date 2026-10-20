@@ -15,51 +15,51 @@ func set_terrain_material( material: Material ) -> void:
 	mesh_instance.material_override = material;
 
 ## Create terrain for this chunk based on a 3D grid of scalar voxel data
-func create_terrain( scalar_field: Array3D ) -> void:
+func create_terrain_mesh( scalar_field: Array3D ) -> void:
 	var mesh = MarchingCube.generate_mesh( MarchingCube.generate_vertices( scalar_field, 0.0, terrain_scale ) );
-	mesh_instance.mesh = mesh;
-	collision_instance.create_shape_owner( mesh );
+	mesh_instance.set_deferred( "mesh", mesh );
+	collision_instance.call_deferred( "create_shape_owner", mesh );
 
 ## Create heightmap for this chunk based on a 3d grid of scalar voxel data
 func create_heightmap( scalar_field: Array3D ) -> void:
+	heightmap = Array3D.packedFloat32( Vector3i( terrain_size.x + 1, 1, terrain_size.z + 1 ) );
+	var group = WorkerThreadPool.add_group_task( create_heightmap_at_position.bind( scalar_field, heightmap ), heightmap.get_length(), -1, false, "Heightmap Generation thread" );
+	WorkerThreadPool.wait_for_group_task_completion( group );
+
+## Create the heightmap at one horizontal postion. Used by threads when calling create_heightmap()
+func create_heightmap_at_position( index: int, scalar_field: Array3D, this_heightmap: Array3D ) -> void:
 	
-	# Get height of field
+	var horizontal = this_heightmap.get_position_at( index );
 	var height: int = terrain_size.y;
 	
-	# Create flat array
-	heightmap = Array3D.packedFloat32( Vector3i( terrain_size.x, 1, terrain_size.z ) );
+	# Remember previous scalar
+	var prev_val: float;
 	
-	# For each horizontal coordinate...
-	for horizontal in Rect3iIterator.new( Vector3i.ZERO, heightmap.get_size() ):
+	# Descending through the field...
+	for y in range( height, 0, -1 ):
 		
-		# Remember previous scalar
-		var prev_val: float;
+		# Get position
+		var pos: = Vector3i( horizontal.x, y, horizontal.z );
 		
-		# Descending through the field...
-		for y in range( height, 0, -1 ):
+		# Get value at position
+		var val: float = scalar_field.get_at( pos );
+		
+		# If value indicates inside terrain...
+		if val > 0:
 			
-			# Get position
-			var pos: = Vector3i( horizontal.x, y, horizontal.z );
+			# If at top of field, just set to top
+			if y == height:
+				heightmap.set_at( horizontal, height );
 			
-			# Get value at position
-			var val: float = scalar_field.get_at( pos );
+			# Otherwise, set to position proportional between this and last value
+			else:
+				heightmap.set_at( horizontal, 
+					lerp( y, y + 1, val / ( val - prev_val ) )
+				);
 			
-			# If value indicates inside terrain...
-			if val > 0:
-				
-				# If at top of field, just set to top
-				if y == height:
-					heightmap.set_at( horizontal, height );
-				
-				# Otherwise, set to position proportional between this and last value
-				else:
-					heightmap.set_at( horizontal, 
-						lerp( y, y + 1, val / ( val - prev_val ) )
-					);
-				
-				# Exit loop
-				break;
-			prev_val = val;
+			# Exit loop
+			break;
+		prev_val = val;
 
 ## Create a mesh to draw the heightmap, for debugging purposes
 func create_heightmap_mesh( resolution: float ) -> void:

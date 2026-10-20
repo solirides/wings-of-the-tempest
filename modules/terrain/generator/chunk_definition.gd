@@ -7,33 +7,38 @@ class_name ChunkDefinition
 @export var objects: Dictionary[ ChunkObject, Vector2 ];
 @export var terrain_objects: Dictionary[ ChunkTerrainObject, Vector2i ];
 
-func create_terrain_data( state: ChunkGenState, chunk_position: Vector3 ) -> Array3D:
+func create_terrain_data( scalar_field: Array3D, state: ChunkGenState, chunk_position: Vector3 ) -> void:
 	
-	var scalar_field: = Array3D.packedFloat32( terrain_size + Vector3i.ONE );
+	var group: = WorkerThreadPool.add_group_task( create_terrain_data_at_voxel.bind( scalar_field, state, chunk_position ), scalar_field.get_length(), -1, false, "Chunk Generation thread" );
+	WorkerThreadPool.wait_for_group_task_completion( group );
+
+func create_terrain_data_at_voxel( index: int, scalar_field: Array3D, state: ChunkGenState, chunk_position: Vector3 ) -> void:
 	
-	for voxel in Rect3iIterator.new( Vector3i.ZERO, scalar_field.size ):
+	var voxel = scalar_field.get_position_at( index );
+	
+	var world_voxel = Vector3i( chunk_position / terrain_scale ) + voxel;
+	
+	# Get base noise value
+	var value: float = ( state.noise.get_noise_2d( 10 * world_voxel.x, 10 * world_voxel.z ) * 0.5 + 0.5 ) \
+		* terrain_height - world_voxel.y;
+	
+	# Set in field
+	scalar_field.set_at( voxel, value );
+
+func create_terrain_objects( scalar_field: Array3D ) -> void:
+	
+	# Get object data
+	for object: ChunkTerrainObject in terrain_objects.keys():
 		
-		var world_voxel: = Vector3i( chunk_position / terrain_scale ) + voxel;
+		var bounds: = object.get_bounds();
+		for axis in 3: if bounds[axis] < 0: bounds[axis] = terrain_size[axis];
 		
-		# Get base noise value
-		var value: float = ( state.noise.get_noise_2d( 10 * world_voxel.x, 10 * world_voxel.z ) * 0.5 + 0.5 ) \
-			* terrain_height - world_voxel.y;
-		
-		# Get object data
-		for object in terrain_objects.keys():
+		for voxel in Rect3iIterator.new( Vector3i.ZERO, bounds ):
 			
-			# Get origin of object
 			var object_origin = terrain_objects.get( object );
-			var object_voxel = voxel - Vector3i( object_origin.x, 0, object_origin.y );
+			var chunk_voxel = voxel + Vector3i( object_origin.x, object.get_height(), object_origin.y );
 			
-			# Transform value from object
-			if object.is_in_bounds( object_voxel ):
-				value = object.transform_voxel( object_voxel, value );
-		
-		# Set in field
-		scalar_field.set_at( voxel, value );
-	
-	return scalar_field;
+			scalar_field.set_at( chunk_voxel, object.transform_voxel( voxel, scalar_field.get_at( chunk_voxel ) ) );
 
 func get_objects() -> Dictionary[ ChunkObject, Vector2 ]:
 	return objects;
