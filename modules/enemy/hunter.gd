@@ -104,7 +104,8 @@ func find_nearest_boid() -> Node3D:
 
 	return nearest
 
-func attack_function(target: Node3D) -> void:
+func attack_function(target: Node3D) -> bool:
+	var success: bool = false
 	# Lock onto target 
 	is_winding_up = true
 	# Remember who we're aiming at so the rod can keep following them
@@ -125,6 +126,7 @@ func attack_function(target: Node3D) -> void:
 	# the bird may be deleted between the time that the attack is started and the bullet is fired
 	if is_instance_valid(target):
 		fire_bullet(target)
+		success = true
 	elif is_instance_valid(charging_bullet):
 		# No target left, so throw the charging bullet away
 		charging_bullet.queue_free()
@@ -133,6 +135,7 @@ func attack_function(target: Node3D) -> void:
 	current_target = null
 	charging_bullet = null
 	#cooldown_timer.start()
+	return success
 
 func fire_bullet(target: Node3D) -> void:
 	if not target or not is_instance_valid(charging_bullet):

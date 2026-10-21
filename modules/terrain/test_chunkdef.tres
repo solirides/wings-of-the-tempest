@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="ChunkDefinition" format=3 uid="uid://bg42i47u31q65"]
 
 [ext_resource type="Script" uid="uid://cks7psb1tg0ob" path="res://modules/terrain/generator/chunk_definition.gd" id="1_abwy3"]
-[ext_resource type="Script" uid="uid://uj3jsrmj1mkc" path="res://modules/terrain/generator/chunk_object.gd" id="1_sffh1"]
+[ext_resource type="Script" uid="uid://obk0gl5ybof4" path="res://modules/terrain/generator/chunk_object.gd" id="1_sffh1"]
 [ext_resource type="Resource" uid="uid://c7rxv5uhw0cm1" path="res://modules/terrain/test_object_hunter.tres" id="2_8d6l8"]
-[ext_resource type="Script" uid="uid://vtvjnhf5wa53" path="res://modules/terrain/generator/chunk_terrain_object.gd" id="2_bj22w"]
+[ext_resource type="Script" uid="uid://hn4a0fyr272r" path="res://modules/terrain/generator/chunk_terrain_object.gd" id="2_bj22w"]
 [ext_resource type="Resource" uid="uid://b0as6bx7pi4my" path="res://modules/terrain/test_terrain_heightmap.tres" id="3_bj22w"]
 
 [resource]

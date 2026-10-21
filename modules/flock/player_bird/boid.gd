@@ -84,6 +84,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if !death_queued:
 		boid_movement(delta)
+	#print(linear_velocity.length())
 
 func _on_food_detector_area_entered(area: Area3D) -> void:
 	# Area3D is a child of the Food root node

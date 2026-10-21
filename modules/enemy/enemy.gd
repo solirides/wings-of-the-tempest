@@ -28,18 +28,19 @@ var attack_ready = true
 
 func _physics_process(delta: float) -> void:
 	state_machine_process(delta)
-	#if attack_ready:
-		#try_attack()
+	if attack_ready:
+		try_attack()
 
-func try_attack():
+func try_attack() -> bool:
 	# default behavior: attacks the first boid it finds in range.
 	# subclasses can override this
 	for n in Global.flock.boids:
 		if n.global_position.distance_to(self.global_position) <= attack_range:
 			attack(n)
-			break
+			return true
+	return false
 
-
+# AVOID MODIFYING THIS HELPER FUNCTION. Change attack_function_instead
 func attack(target: Node3D):
 	attack_ready = false
 	# call the attack behavior defined by the subclass inheriting this class
@@ -49,17 +50,24 @@ func attack(target: Node3D):
 	await get_tree().create_timer(attack_speed).timeout
 	attack_ready = true
 
-func attack_function(_target: Node3D):
+func attack_function(target: Node3D) -> bool:
 	# override this function in the subclass
-	pass
+	return false
 
 func take_damage(amount: int):
 	health -= amount
 	if health <= 0:
 		queue_free()
 
+# a function for the state machine that is run in physics_process
 func state_machine_process(delta: float):
 	match state:
 		EnemyState.ATTACKING:
 			if attack_ready:
 				try_attack()
+
+func set_state(state: EnemyState):
+	self.state = state
+	match state:
+		_:
+			pass
