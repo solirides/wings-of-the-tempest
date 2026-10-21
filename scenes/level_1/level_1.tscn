@@ -17,7 +17,6 @@
 [ext_resource type="Script" uid="uid://ddomg1qhruqyf" path="res://scenes/level_1/goal.gd" id="11_0lhw3"]
 [ext_resource type="PackedScene" uid="uid://b3o6tsxlufhca" path="res://modules/wind_zone/wind_zone.tscn" id="13_665yd"]
 [ext_resource type="PackedScene" uid="uid://bhhy738m44d75" path="res://modules/wind_trails/wind_trails.tscn" id="14_3fps6"]
-<<<<<<< Updated upstream
 [ext_resource type="PackedScene" uid="uid://d18u81083qnes" path="res://modules/enemy/hunter.tscn" id="18_aph6o"]
 [ext_resource type="PackedScene" uid="uid://dan4yb6n1bkxe" path="res://scenes/storm/stormTesting.tscn" id="19_c2dwa"]
 [ext_resource type="Script" uid="uid://bt145qipdjfhd" path="res://modules/terrain/generator/chunk_generator.gd" id="20_r87tm"]
@@ -35,10 +34,6 @@ metadata/_custom_type_script = "uid://dstx1f47q2ki1"
 script = ExtResource("5_la62n")
 steering_mode = 1
 metadata/_custom_type_script = "uid://dstx1f47q2ki1"
-=======
-[ext_resource type="Script" uid="uid://bt145qipdjfhd" path="res://modules/terrain/generator/chunk_generator.gd" id="17_la62n"]
-[ext_resource type="Resource" uid="uid://cnhauj7okt3ps" path="res://modules/terrain/test_lib.tres" id="18_aph6o"]
->>>>>>> Stashed changes
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
 render_priority = 0
@@ -89,7 +84,6 @@ albedo_color = Color(0.59106696, 0.8964245, 0.3219582, 1)
 [sub_resource type="Resource" id="Resource_7wfhb"]
 script = ExtResource("22_8v8ov")
 terrain_material = ExtResource("23_8m3jb")
-size = Vector3i(32, 1, 32)
 child = ExtResource("21_06ebd")
 metadata/_custom_type_script = "uid://c2fvqmbrch2q0"
 
@@ -204,7 +198,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 0)
 strength = 10.0
 radius = 30.0
 
-<<<<<<< Updated upstream
 [node name="Seagull" parent="." unique_id=628006216 instance=ExtResource("8_yhntr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -2)
 
@@ -222,17 +215,6 @@ metadata/_custom_type_script = "uid://bt145qipdjfhd"
 [node name="Monument" parent="." unique_id=1299745215 instance=ExtResource("24_8v8ov")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 17)
 
-=======
-[node name="ChunkGenerator" type="Node3D" parent="." unique_id=520508623 node_paths=PackedStringArray("tracked_node")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, -6, 0)
-script = ExtResource("17_la62n")
-tracked_node = NodePath("../Camera")
-tracking_buffer = 128.0
-library = ExtResource("18_aph6o")
-direction = Vector3(0, 0, -1)
-metadata/_custom_type_script = "uid://bt145qipdjfhd"
-
->>>>>>> Stashed changes
 [connection signal="body_entered" from="Goal" to="Goal" method="_on_body_entered"]
 
 [editable path="Flock"]
