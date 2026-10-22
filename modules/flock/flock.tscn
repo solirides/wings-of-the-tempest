@@ -23,9 +23,9 @@ shadow_enabled = true
 mesh = SubResource("CylinderMesh_ftwdc")
 surface_material_override/0 = SubResource("StandardMaterial3D_btmmu")
 
-[node name="groundRay" type="RayCast3D" parent="." unique_id=1801870000]
+[node name="groundRayDOWN" type="RayCast3D" parent="." unique_id=1801870000]
 
 [node name="SubFlock" type="Node3D" parent="." unique_id=1838721350]
 script = ExtResource("2_btmmu")
 
-[node name="groundRay" type="RayCast3D" parent="SubFlock" unique_id=622253004]
+[node name="groundRayDOWN" type="RayCast3D" parent="SubFlock" unique_id=622253004]

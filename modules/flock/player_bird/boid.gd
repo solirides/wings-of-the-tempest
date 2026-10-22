@@ -138,7 +138,7 @@ func STAY_ON_SCREEN() -> Vector3 :
 
 #I see, I'm going to change this so that if they get within this repel radius, they call the "flee" function, which forces the boid to fly a set distance 180 
 func repel() -> Vector3:
-	var offset := global_position - flock.boid_goal
+	var offset := global_position - flock.flock_goal
 	offset.y = 0
 	var distance := offset.length()
 	
@@ -251,7 +251,7 @@ func boid_movement(delta: float):
 		flee_force = _flee(delta) * properties.flee_weight.value
 	else :
 		#heading towards the cursor/goal
-		goal_force = global_position.direction_to(flock.boid_goal) * properties.goal_weight.value
+		goal_force = global_position.direction_to(flock.flock_goal) * properties.goal_weight.value
 	
 	#seperation force
 	var seperation_force : Vector3 = seperation(neighbors) * properties.seperate_weight.value
