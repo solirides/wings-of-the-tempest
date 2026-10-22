@@ -34,12 +34,15 @@ func _physics_process(delta: float) -> void:
 func try_attack() -> bool:
 	# default behavior: attacks the first boid it finds in range.
 	# subclasses can override this
-	for n in Global.flock.boids:
+	for n in Global.flock.all_boids:
+		# Skip boids that are already dying
+		if n.death_queued:
+			continue
 		if n.global_position.distance_to(self.global_position) <= attack_range:
 			attack(n)
 			return true
 	return false
-
+	
 # AVOID MODIFYING THIS HELPER FUNCTION. Change attack_function_instead
 func attack(target: Node3D):
 	attack_ready = false
