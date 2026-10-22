@@ -3,9 +3,11 @@ class_name ChunkTerrainHeightMap
 
 @export_enum( "Add", "Sub", "Min", "Max" ) var operation: int;
 
-func is_in_bounds( position: Vector3i ) -> bool:
-	return position.x >= 0 and position.z >= 0 and \
-		position.x < size.x and position.z < size.z;
+func get_bounds() -> Vector3i:
+	return Vector3i( size.x, -1, size.z );
+
+func get_height() -> int:
+	return 0;
 
 func transform_voxel( position: Vector3i, value: float ) -> float:
 	
