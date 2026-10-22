@@ -69,6 +69,9 @@ func find_cluster_target() -> Node3D:
 			continue
 		if global_position.distance_to(boid.global_position) > track_range:
 			continue
+		# Skip boids hidden behind terrain
+		if not has_line_of_sight(boid):
+			continue
 		# Count how many other boids are packed around this one
 		var count := 0
 		for other in boids:
@@ -96,15 +99,16 @@ func find_nearest_boid() -> Node3D:
 		# Skip boids that are already dying so the hunter doesn't waste a shot on them
 		if boid.death_queued:
 			continue
-		# Updates to the nearest boid
+		# Updates to the nearest boid if the hunter can see it
 		var dist = global_position.distance_to(boid.global_position)
-		if dist < nearest_dist:
+		if dist < nearest_dist and has_line_of_sight(boid):
 			nearest_dist = dist
 			nearest = boid
 
 	return nearest
 
-func attack_function(target: Node3D) -> void:
+func attack_function(target: Node3D) -> bool:
+	var success: bool = false
 	# Lock onto target 
 	is_winding_up = true
 	# Remember who we're aiming at so the rod can keep following them
@@ -123,16 +127,18 @@ func attack_function(target: Node3D) -> void:
 	aim_indicator.visible = false
 	# Fire
 	# the bird may be deleted between the time that the attack is started and the bullet is fired
-	if is_instance_valid(target):
+	if is_instance_valid(target) and has_line_of_sight(target):
 		fire_bullet(target)
+		success = true
 	elif is_instance_valid(charging_bullet):
-		# No target left, so throw the charging bullet away
+		# Target is gone or out of sight, so throw the charging bullet away
 		charging_bullet.queue_free()
 	# Reset 
 	is_winding_up = false
 	current_target = null
 	charging_bullet = null
 	#cooldown_timer.start()
+	return success
 
 func fire_bullet(target: Node3D) -> void:
 	if not target or not is_instance_valid(charging_bullet):
@@ -140,3 +146,11 @@ func fire_bullet(target: Node3D) -> void:
 	# Put the bullet in the world so it stops following the hunter
 	charging_bullet.reparent(get_tree().current_scene)
 	charging_bullet.launch(arrow_spawn.global_position, predict_position(target), target)
+
+func has_line_of_sight(target: Node3D) -> bool:
+	# Ray from the bow to the boid, ignoring the hunter itself
+	var query = PhysicsRayQueryParameters3D.create(arrow_spawn.global_position, target.global_position)
+	query.exclude = [get_rid()]
+	var hit = get_world_3d().direct_space_state.intersect_ray(query)
+	# Clear if nothing is in the way or it hits a boid first
+	return hit.is_empty() or hit.collider.is_in_group("boids")

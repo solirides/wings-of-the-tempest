@@ -5,7 +5,7 @@
 [sub_resource type="CylinderMesh" id="CylinderMesh_6olrb"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_07510"]
-albedo_color = Color(1, 0.36766997, 0.361507, 1)
+albedo_color = Color(0.67149216, 0.8694088, 0.28693953, 1)
 
 [node name="Seagull" type="RigidBody3D" unique_id=628006216 node_paths=PackedStringArray("wander_timer")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -1)
@@ -13,7 +13,10 @@ axis_lock_linear_y = true
 axis_lock_angular_y = true
 script = ExtResource("1_fdf45")
 wander_timer = NodePath("Wander")
-movement_speed = 10.0
+wander_count = 2
+circle_radius = 10.0
+track_range = 40.0
+movement_speed = 4.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1382166599]
 mesh = SubResource("CylinderMesh_6olrb")
