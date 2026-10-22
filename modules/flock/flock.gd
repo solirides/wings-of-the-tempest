@@ -41,14 +41,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	#THIS changes causses the boids to repel... ALSO NO LONGER A HOLD THING!!!!
 	if event.is_action_pressed("repel") :
-		boid_properties.scatter = !boid_properties.scatter
-		boid_properties.default_state = !boid_properties.default_state
-		
-		#there is probably a MUCH better way of implementing this... but I'm tired :(
 		if boid_properties.flockIsLanded :
 			print("You cannot scatter while the boids are meant to be landed!")
 			boid_properties.scatter = false
-		
+		else:
+			# toggle boid scattering mode
+			boid_properties.scatter = !boid_properties.scatter
+			boid_properties.default_state = !boid_properties.default_state
 		print("I'm chaning scatter states")
 		
 	#This detects if 
@@ -57,22 +56,24 @@ func _unhandled_input(event: InputEvent) -> void:
 		#This is SUPPOSED to run when the Boid are flying in the air and you want them to land.
 		if boid_properties.flockIsFlying:
 			print("The boids are supposed to land now.")
-			boid_properties.flockIsFlying = !boid_properties.flockIsFlying
-			boid_properties.flockIsLanded = !boid_properties.flockIsLanded
+			boid_properties.flockIsFlying = false
+			# do not set flockIsLanded until it actually lands
+			#boid_properties.flockIsLanded = false
 			boid_properties.scatter = false
 			boid_properties.default_state = true
-			
 		#This is should run when the Boids are landed and you want them to get their lard asses in the air.
-		elif boid_properties.flockIsLanded:
+		#elif boid_properties.flockIsLanded:
+		else:
 			print("RISE FROM YOUR GRAVES!!!!! EHEHEHEHEHEH")
-			boid_properties.flockIsLanded = !boid_properties.flockIsLanded
-			boid_properties.flockIsFlying = !boid_properties.flockIsFlying
+			boid_properties.flockIsLanded = false
+			boid_properties.flockIsFlying = true
 			
 			global_position.y = flockMaxHeight
 	
 #This function will always update the flocks position to the nearest piece of terrain.
-@onready var groundRay : RayCast3D = $groundRay
-func landedFlock() -> void :
+@export var groundRay : RayCast3D
+func attempt_landing() -> void :
+	groundRay.global_position = get_center_of_mass(boids)
 	groundRay.target_position = Vector3(0, -100, 0)
 	
 	groundRay.force_raycast_update()
@@ -81,10 +82,8 @@ func landedFlock() -> void :
 		print("found something to land on")
 		var collisionPoint = groundRay.get_collision_point()
 		
-		
 		global_position.y = collisionPoint.y
-		
-		
+		boid_properties.flockIsLanded = true
 		
 	else :
 		print("Didn't see anything, sorry!")
@@ -100,8 +99,10 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	
-	if boid_properties.flockIsLanded :
-		landedFlock()
+	# if flock is attempting to land and hasn't found a landing spot yet
+	if boid_properties.flockIsFlying == false and boid_properties.flockIsLanded == false:
+		# try to find something to land on
+		attempt_landing()
 	
 	if current_hunger > 50.0:
 		boid_properties.speed.value = max(boid_properties.min_speed.value, boid_properties.speed.value - speed_penalty_interval * delta)

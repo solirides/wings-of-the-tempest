@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://4kq8akwlf2yl" path="res://scenes/level_1/level_1.gd" id="1_ghvtn"]
 [ext_resource type="PackedScene" uid="uid://p7nyl4088ndh" path="res://modules/flock/flock.tscn" id="2_jr17i"]
 [ext_resource type="Material" uid="uid://dto6fxhv5ubub" path="res://assets/materials/placeholder_checker.tres" id="3_janvk"]
-[ext_resource type="Script" uid="uid://ibic0u58s8yh" path="res://modules/flock/sub_flock.gd" id="4_1uvjm"]
 [ext_resource type="Script" uid="uid://d4n162so51dr8" path="res://modules/flock/main_flock.gd" id="4_c5bgo"]
 [ext_resource type="Material" uid="uid://du74kmr3sjb4l" path="res://assets/materials/placeholder_checker_2.tres" id="4_igcjm"]
 [ext_resource type="Script" uid="uid://bftxduhaltc0m" path="res://modules/global/stat_modifier.gd" id="5_1gdhe"]
@@ -29,6 +28,7 @@
 script = ExtResource("6_s3crn")
 name = "alignment_weight"
 description = ""
+base_value = 0.0
 value = 1.0
 
 [sub_resource type="Resource" id="Resource_vfkmt"]
@@ -42,6 +42,7 @@ value = 1.2
 script = ExtResource("6_s3crn")
 name = "cohesion_weight"
 description = ""
+base_value = 0.0
 value = 1.0
 
 [sub_resource type="Resource" id="Resource_qodog"]
@@ -139,6 +140,7 @@ value = 0.3
 script = ExtResource("6_s3crn")
 name = "spin_weight"
 description = ""
+base_value = 0.0
 value = 1.0
 
 [sub_resource type="Resource" id="Resource_i67mf"]
