@@ -75,7 +75,6 @@ func _unhandled_input(event: InputEvent) -> void:
 func attempt_landing() -> void :
 	groundRay.global_position = get_center_of_mass(boids)
 	groundRay.target_position = Vector3(0, -100, 0)
-	
 	groundRay.force_raycast_update()
 	
 	if groundRay.is_colliding() :
