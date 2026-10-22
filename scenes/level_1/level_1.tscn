@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://4kq8akwlf2yl" path="res://scenes/level_1/level_1.gd" id="1_ghvtn"]
 [ext_resource type="PackedScene" uid="uid://p7nyl4088ndh" path="res://modules/flock/flock.tscn" id="2_jr17i"]
 [ext_resource type="Material" uid="uid://dto6fxhv5ubub" path="res://assets/materials/placeholder_checker.tres" id="3_janvk"]
-[ext_resource type="Script" uid="uid://bs41iuhewme8j" path="res://modules/flock/sub_flock.gd" id="4_1uvjm"]
+[ext_resource type="Script" uid="uid://ibic0u58s8yh" path="res://modules/flock/sub_flock.gd" id="4_1uvjm"]
 [ext_resource type="Script" uid="uid://d4n162so51dr8" path="res://modules/flock/main_flock.gd" id="4_c5bgo"]
 [ext_resource type="Material" uid="uid://du74kmr3sjb4l" path="res://assets/materials/placeholder_checker_2.tres" id="4_igcjm"]
 [ext_resource type="Script" uid="uid://dstx1f47q2ki1" path="res://modules/flock/player_bird/boid_properties.gd" id="5_la62n"]
@@ -21,8 +21,6 @@
 [ext_resource type="PackedScene" uid="uid://dan4yb6n1bkxe" path="res://scenes/storm/stormTesting.tscn" id="19_c2dwa"]
 [ext_resource type="Script" uid="uid://bt145qipdjfhd" path="res://modules/terrain/generator/chunk_generator.gd" id="20_r87tm"]
 [ext_resource type="Resource" uid="uid://cnhauj7okt3ps" path="res://modules/terrain/test_lib.tres" id="21_06ebd"]
-[ext_resource type="Script" uid="uid://c2fvqmbrch2q0" path="res://modules/terrain/generator/chunk_library.gd" id="22_8v8ov"]
-[ext_resource type="Material" uid="uid://bt5nph1wxgig7" path="res://modules/terrain/terrain_triplanar_map.tres" id="23_8m3jb"]
 [ext_resource type="PackedScene" uid="uid://llwk0a2c7qid" path="res://modules/monument/monument.tscn" id="24_8v8ov"]
 
 [sub_resource type="Resource" id="Resource_dc6vu"]
@@ -80,12 +78,6 @@ size = Vector3(7, 5, 5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6lmcw"]
 albedo_color = Color(0.59106696, 0.8964245, 0.3219582, 1)
-
-[sub_resource type="Resource" id="Resource_7wfhb"]
-script = ExtResource("22_8v8ov")
-terrain_material = ExtResource("23_8m3jb")
-child = ExtResource("21_06ebd")
-metadata/_custom_type_script = "uid://c2fvqmbrch2q0"
 
 [node name="World" type="Node3D" unique_id=1809984319]
 script = ExtResource("1_ghvtn")
@@ -206,10 +198,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -2)
 [node name="Storm" parent="." unique_id=904228582 instance=ExtResource("19_c2dwa")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, -52)
 
-[node name="ChunkGenerator" type="Node3D" parent="." unique_id=74537442]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+[node name="ChunkGenerator" type="Node3D" parent="." unique_id=74537442 node_paths=PackedStringArray("tracked_node")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, -6, 0)
 script = ExtResource("20_r87tm")
-library = SubResource("Resource_7wfhb")
+tracked_node = NodePath("../Camera")
+tracking_buffer = 128.0
+library = ExtResource("21_06ebd")
+direction = Vector3(0, 0, -1)
 metadata/_custom_type_script = "uid://bt145qipdjfhd"
 
 [node name="Monument" parent="." unique_id=1299745215 instance=ExtResource("24_8v8ov")]

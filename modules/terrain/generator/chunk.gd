@@ -21,16 +21,15 @@ func create_terrain_mesh( scalar_field: Array3D ) -> void:
 	collision_instance.call_deferred( "create_shape_owner", mesh );
 
 ## Create heightmap for this chunk based on a 3d grid of scalar voxel data
-func create_heightmap( scalar_field: Array3D ) -> void:
+func create_heightmap( scalar_field: Array3D, height: int ) -> void:
 	heightmap = Array3D.packedFloat32( Vector3i( terrain_size.x + 1, 1, terrain_size.z + 1 ) );
-	var group = WorkerThreadPool.add_group_task( create_heightmap_at_position.bind( scalar_field, heightmap ), heightmap.get_length(), -1, false, "Heightmap Generation thread" );
+	var group = WorkerThreadPool.add_group_task( create_heightmap_at_position.bind( scalar_field, height, heightmap ), heightmap.get_length(), -1, false, "Heightmap Generation thread" );
 	WorkerThreadPool.wait_for_group_task_completion( group );
 
 ## Create the heightmap at one horizontal postion. Used by threads when calling create_heightmap()
-func create_heightmap_at_position( index: int, scalar_field: Array3D, this_heightmap: Array3D ) -> void:
+func create_heightmap_at_position( index: int, scalar_field: Array3D, height: int, this_heightmap: Array3D ) -> void:
 	
 	var horizontal = this_heightmap.get_position_at( index );
-	var height: int = terrain_size.y;
 	
 	# Remember previous scalar
 	var prev_val: float;
@@ -47,9 +46,9 @@ func create_heightmap_at_position( index: int, scalar_field: Array3D, this_heigh
 		# If value indicates inside terrain...
 		if val > 0:
 			
-			# If at top of field, just set to top
+			# If at top of field, set as innaccessible
 			if y == height:
-				heightmap.set_at( horizontal, height );
+				heightmap.set_at( horizontal, -1 );
 			
 			# Otherwise, set to position proportional between this and last value
 			else:
@@ -72,8 +71,9 @@ func create_heightmap_mesh( resolution: float ) -> void:
 	#Add vertices
 	for iter: Vector3i in Rect3iIterator.new( Vector3i.ZERO, ( heightmap.get_size() - Vector3i( 1, 0, 1 ) ) * resolution ):
 		var pos: = Vector3( iter ) / resolution * terrain_scale;
-		pos.y = get_height( Vector2( pos.x, pos.z ) );
-		surface_tool.add_vertex( pos * scale );
+		if is_height_accessible( Vector2( pos.x, pos.z ) ):
+			pos.y = get_height( Vector2( pos.x, pos.z ) );
+			surface_tool.add_vertex( pos * scale );
 	
 	surface_tool.index();
 	heightmap_mesh_instance.mesh = surface_tool.commit();
@@ -119,7 +119,7 @@ func intersect( start: Vector3, end: Vector3 ) -> Vector3:
 	
 	return ray_result.position;
 
-## Find vertical position of heighest terrain at horizontal position
+## Find vertical position of heighest terrain below accessible height at horizontal position
 func get_height( coordinates: Vector2 ) -> float:
 	coordinates /= Vector2( terrain_scale.x, terrain_scale.z );
 	var integer: Vector2i = coordinates.floor();
@@ -137,3 +137,7 @@ func get_height( coordinates: Vector2 ) -> float:
 		),
 		fractional.y
 	);
+
+## Check if position at accessible height is occluded by terrain
+func is_height_accessible( coordinates: Vector2 ) -> bool:
+	return get_height( coordinates ) >= 0;

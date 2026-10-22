@@ -2,14 +2,20 @@
 extends ChunkDecTreeSingle
 class_name ChunkLibrary
 
-const SYNCHRONIZED_PROPERTIES: PackedStringArray = [ "terrain_size", "terrain_scale", "terrain_height" ];
+const SYNCHRONIZED_PROPERTIES: PackedStringArray = [ 
+	"terrain_size", 
+	"terrain_scale", 
+	"terrain_decorator_height", 
+	"terrain_accessible_height" 
+];
 
 @export var terrain_material: Material;
 
 @export_group( "Chunk Properties" )
 @export var terrain_size: Vector3i;
 @export var terrain_scale: Vector3;
-@export var terrain_height: int;
+@export var terrain_decorator_height: int;
+@export var terrain_accessible_height: int;
 
 ## Get actual size of terrain area
 func get_chunk_global_size() -> Vector3:

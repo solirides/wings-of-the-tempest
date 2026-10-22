@@ -39,14 +39,15 @@ func create_chunk( state: ChunkGenState ) -> void:
 	var terrain_data: = Array3D.packedFloat32( chunk_def.terrain_size + Vector3i.ONE );
 	
 	# Create terrain
-	chunk_def.create_terrain_data( terrain_data, state, chunk.position );
+	chunk_def.create_terrain_surface( terrain_data, state, chunk.position );
 	chunk_def.create_terrain_objects( terrain_data );
 	
-	# Create heightmap and objects
-	chunk.create_heightmap( terrain_data );
-	chunk.create_objects( chunk_def.get_objects() );
+	# Increment state ASAP
+	state._increment();
 	
-	current_state._increment();
+	# Create heightmap and objects
+	chunk.create_heightmap( terrain_data, chunk_def.terrain_accessible_height );
+	chunk.create_objects( chunk_def.get_objects() );
 	
 	# Create chunk terrain mesh
 	if chunk_meshing_thread.is_started():
@@ -77,5 +78,8 @@ func _unhandled_input( event: InputEvent ) -> void:
 		create_chunk( current_state );
 
 func _tracked_node_moved( node: Node3D ) -> void:
+	
+	assert( library.get_chunk_global_size() != Vector3.ZERO, "Cannot track node while chunk size is zero" );
+	
 	while ( node.position * direction ).length() + tracking_buffer > get_state_chunk_position( current_state ).length():
 		create_chunk( current_state );

@@ -8,4 +8,5 @@
 script = ExtResource("1_jvfn2")
 terrain_size = Vector3i(16, 16, 16)
 terrain_scale = Vector3(4, 1, 4)
-terrain_height = 6
+terrain_decorator_height = 6
+terrain_accessible_height = 8

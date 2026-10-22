@@ -10,7 +10,8 @@
 script = ExtResource("1_abwy3")
 terrain_size = Vector3i(16, 16, 16)
 terrain_scale = Vector3(4, 1, 4)
-terrain_height = 6
+terrain_decorator_height = 6
+terrain_accessible_height = 8
 objects = Dictionary[ExtResource("1_sffh1"), Vector2]({
 ExtResource("2_8d6l8"): Vector2(2, 14)
 })

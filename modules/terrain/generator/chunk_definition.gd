@@ -3,24 +3,25 @@ class_name ChunkDefinition
 
 @export var terrain_size: Vector3i;
 @export var terrain_scale: Vector3;
-@export var terrain_height: int;
+@export var terrain_decorator_height: int;
+@export var terrain_accessible_height: int;
 @export var objects: Dictionary[ ChunkObject, Vector2 ];
 @export var terrain_objects: Dictionary[ ChunkTerrainObject, Vector2i ];
 
-func create_terrain_data( scalar_field: Array3D, state: ChunkGenState, chunk_position: Vector3 ) -> void:
+func create_terrain_surface( scalar_field: Array3D, state: ChunkGenState, chunk_position: Vector3 ) -> void:
 	
-	var group: = WorkerThreadPool.add_group_task( create_terrain_data_at_voxel.bind( scalar_field, state, chunk_position ), scalar_field.get_length(), -1, false, "Chunk Generation thread" );
+	var group: = WorkerThreadPool.add_group_task( create_terrain_surface_at_voxel.bind( scalar_field, state, chunk_position ), scalar_field.get_length(), -1, false, "Chunk Generation thread" );
 	WorkerThreadPool.wait_for_group_task_completion( group );
 
-func create_terrain_data_at_voxel( index: int, scalar_field: Array3D, state: ChunkGenState, chunk_position: Vector3 ) -> void:
+func create_terrain_surface_at_voxel( index: int, scalar_field: Array3D, state: ChunkGenState, chunk_position: Vector3 ) -> void:
 	
 	var voxel = scalar_field.get_position_at( index );
 	
 	var world_voxel = Vector3i( chunk_position / terrain_scale ) + voxel;
 	
-	# Get base noise value
+	# Get decorator noise value
 	var value: float = ( state.noise.get_noise_2d( 10 * world_voxel.x, 10 * world_voxel.z ) * 0.5 + 0.5 ) \
-		* terrain_height - world_voxel.y;
+		* terrain_decorator_height - world_voxel.y;
 	
 	# Set in field
 	scalar_field.set_at( voxel, value );
