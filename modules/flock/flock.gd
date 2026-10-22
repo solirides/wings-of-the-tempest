@@ -71,6 +71,15 @@ func _unhandled_input(event: InputEvent) -> void:
 			global_position.y = flockMaxHeight
 	
 #This function will always update the flocks position to the nearest piece of terrain.
+
+#YO WSG Caden! This is the function I need help with!!!!!
+#Right now, it casts a raycast -100(meters?) from the flocks position looking for solid ground.
+#If it hits solid ground, it sets the the flocks global_position.y position to the y-axis.
+#If it hits nothing, it just runs a print statement and was supposed to return the flock to "flockMaxHeight"
+#Essentially, while flock is meant to be "grounded" it should draw accross the terrain, updating it height as needed.
+
+#It's obviously far from done, since I intended to switch over to the functions you wrote.
+#Feel free do to whatever you want with this, I lowkey don't know what I am dong!!!! :0))))
 @onready var groundRay : RayCast3D = $groundRayDOWN
 func landedFlock() -> void :
 	groundRay.target_position = Vector3(0, -100, 0)
@@ -80,14 +89,11 @@ func landedFlock() -> void :
 		print("found something to land on")
 		var collisionPoint = groundRay.get_collision_point()
 		
-		
 		global_position.y = collisionPoint.y
-		
-		
-		
 	else :
 		print("Didn't see anything, sorry!")
 		#global_position.y = flockMaxHeight
+#End of groundRay function...
 
 func _process(delta: float) -> void:
 	#this allows for the boid's main goal to be updated later on. Maybe for a better flock split system??????
