@@ -45,8 +45,9 @@ func create_chunk( state: ChunkGenState ) -> void:
 	# Increment state ASAP
 	state._increment();
 	
-	# Create heightmap and objects
-	chunk.create_heightmap( terrain_data, chunk_def.terrain_accessible_height );
+	# Create heightmaps and objects
+	chunk.heightmap_accessibility = chunk.create_heightmap( terrain_data, chunk_def.terrain_accessible_height );
+	chunk.heightmap_terrain = chunk.create_heightmap( terrain_data, chunk_def.terrain_size.y );
 	chunk.create_objects( chunk_def.get_objects() );
 	
 	# Create chunk terrain mesh
@@ -56,7 +57,7 @@ func create_chunk( state: ChunkGenState ) -> void:
 	chunk_meshing_thread.start( chunk.create_terrain_mesh.bind( terrain_data ) );
 	
 	# DEBUG
-	chunk.create_heightmap_mesh( 4 );
+	chunk.create_heightmap_mesh( chunk.heightmap_terrain, 4 );
 
 
 
