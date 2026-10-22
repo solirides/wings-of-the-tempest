@@ -28,11 +28,6 @@ script = ExtResource("5_la62n")
 steering_mode = 1
 metadata/_custom_type_script = "uid://dstx1f47q2ki1"
 
-[sub_resource type="Resource" id="Resource_aph6o"]
-script = ExtResource("5_la62n")
-steering_mode = 1
-metadata/_custom_type_script = "uid://dstx1f47q2ki1"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
 render_priority = 0
 shader = ExtResource("6_nubdk")
@@ -79,6 +74,17 @@ size = Vector3(7, 5, 5)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6lmcw"]
 albedo_color = Color(0.59106696, 0.8964245, 0.3219582, 1)
 
+[sub_resource type="Resource" id="Resource_7wfhb"]
+script = ExtResource("22_8v8ov")
+terrain_material = ExtResource("23_8m3jb")
+size = Vector3i(32, 1, 32)
+child = ExtResource("21_06ebd")
+metadata/_custom_type_script = "uid://c2fvqmbrch2q0"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hjb8m"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_hjb8m"]
+
 [node name="World" type="Node3D" unique_id=1809984319]
 script = ExtResource("1_ghvtn")
 
@@ -87,6 +93,7 @@ layer = 10
 
 [node name="Hud" parent="CanvasLayer" unique_id=719202679 instance=ExtResource("7_fxajv")]
 unique_name_in_owner = true
+mouse_filter = 1
 
 [node name="Flock" parent="." unique_id=1876045196 node_paths=PackedStringArray("camera_controller", "cursor", "subflocks") instance=ExtResource("2_jr17i")]
 unique_name_in_owner = true
@@ -95,14 +102,8 @@ split_boid_count = 5
 camera_controller = NodePath("../Camera")
 num_boids = 20
 cursor = NodePath("MeshInstance3D2")
-subflocks = [NodePath("SubFlock")]
+subflocks = [null]
 boid_properties = SubResource("Resource_dc6vu")
-
-[node name="SubFlock" type="Node3D" parent="Flock" unique_id=318110185 node_paths=PackedStringArray("parent_flock", "camera_controller")]
-script = ExtResource("4_1uvjm")
-parent_flock = NodePath("..")
-camera_controller = NodePath("../../Camera")
-boid_properties = SubResource("Resource_aph6o")
 
 [node name="Camera" parent="." unique_id=1488927985 node_paths=PackedStringArray("flock") instance=ExtResource("1_7n1yb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 4.999996, 4, -1.0000019)
@@ -197,6 +198,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -2)
 
 [node name="Storm" parent="." unique_id=904228582 instance=ExtResource("19_c2dwa")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, -52)
+visible = false
 
 [node name="ChunkGenerator" type="Node3D" parent="." unique_id=74537442 node_paths=PackedStringArray("tracked_node")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, -6, 0)
@@ -209,6 +211,17 @@ metadata/_custom_type_script = "uid://bt145qipdjfhd"
 
 [node name="Monument" parent="." unique_id=1299745215 instance=ExtResource("24_8v8ov")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 17)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=764293437]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 27.247795, -18.361774, -43.46116)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1301683315]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+shape = SubResource("BoxShape3D_hjb8m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1594190105]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+mesh = SubResource("BoxMesh_hjb8m")
 
 [connection signal="body_entered" from="Goal" to="Goal" method="_on_body_entered"]
 
