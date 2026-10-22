@@ -47,15 +47,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 	#This detects if 
 	if event.is_action_pressed("land") :
-		print("The boids are supposed to land now.")
 		
 		#This is SUPPOSED to run when the Boid are flying in the air and you want them to land.
 		if boid_properties.flockIsFlying:
+			print("The boids are supposed to land now.")
 			boid_properties.flockIsFlying = !boid_properties.flockIsFlying
 			boid_properties.flockIsLanded = !boid_properties.flockIsLanded
 			
 		#This is should run when the Boids are landed and you want them to get their lard asses in the air.
 		elif boid_properties.flockIsLanded:
+			print("RISE FROM YOUR GRAVES!!!!! EHEHEHEHEHEH")
 			boid_properties.flockIsLanded = !boid_properties.flockIsLanded
 			boid_properties.flockIsFlying = !boid_properties.flockIsFlying
 			
@@ -67,8 +68,8 @@ func landedFlock() -> void :
 	groundRay.target_position = Vector3(0, -100, 0)
 	
 	if groundRay.is_colliding() :
+		print("found something to land on")
 		var collisionPoint = groundRay.get_collision_point()
-		
 		global_position.y = collisionPoint.y
 		
 	else :

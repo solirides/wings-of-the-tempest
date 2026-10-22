@@ -86,8 +86,8 @@ func _physics_process(delta: float) -> void:
 	if !death_queued:
 		boid_movement(delta)
 	
-	if (properties.flockIsFlying == false):
-		print("I am going to land")
+	#if (properties.flockIsFlying == false):
+		#print("I am going to land")
 		
 
 func _on_food_detector_area_entered(area: Area3D) -> void:
