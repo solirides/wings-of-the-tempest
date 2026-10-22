@@ -31,8 +31,10 @@ var all_boids: Array[Boid] = []
 
 signal hunger_changed
 
+#This is such a JANK way of doing this but...
+var flockMaxHeight = 5
 func _ready() -> void:
-	pass
+	global_position.y = flockMaxHeight 
 
 #Use this to handle any button presses which would change the state of the boids... for now, I'm thinking scatter mode and landing
 func _unhandled_input(event: InputEvent) -> void:
@@ -42,10 +44,40 @@ func _unhandled_input(event: InputEvent) -> void:
 		boid_properties.scatter = !boid_properties.scatter
 		boid_properties.default_state = !boid_properties.default_state
 		print("I'm chaning scatter states")
+		
+	#This detects if 
+	if event.is_action_pressed("land") :
+		print("The boids are supposed to land now.")
+		
+		#This is SUPPOSED to run when the Boid are flying in the air and you want them to land.
+		if boid_properties.flockIsFlying:
+			boid_properties.flockIsFlying = !boid_properties.flockIsFlying
+			boid_properties.flockIsLanded = !boid_properties.flockIsLanded
+			
+		#This is should run when the Boids are landed and you want them to get their lard asses in the air.
+		elif boid_properties.flockIsLanded:
+			boid_properties.flockIsLanded = !boid_properties.flockIsLanded
+			boid_properties.flockIsFlying = !boid_properties.flockIsFlying
+			
+			global_position.y = flockMaxHeight
 	
+#This function will always update the flocks position to the nearest piece of terrain.
+@onready var groundRay : RayCast3D = $groundRay
+func landedFlock() -> void :
+	groundRay.target_position = Vector3(0, -100, 0)
 	
+	if groundRay.is_colliding() :
+		var collisionPoint = groundRay.get_collision_point()
+		
+		global_position.y = collisionPoint.y
+		
+	else :
+		print("Didn't see anything, sorry!")
 
 func _physics_process(delta: float) -> void:
+	
+	if boid_properties.flockIsLanded :
+		landedFlock()
 	
 	if current_hunger > 50.0:
 		boid_properties.speed.value = max(boid_properties.min_speed.value, boid_properties.speed.value - speed_penalty_interval * delta)

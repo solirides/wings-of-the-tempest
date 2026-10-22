@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://4kq8akwlf2yl" path="res://scenes/level_1/level_1.gd" id="1_ghvtn"]
 [ext_resource type="PackedScene" uid="uid://p7nyl4088ndh" path="res://modules/flock/flock.tscn" id="2_jr17i"]
 [ext_resource type="Material" uid="uid://dto6fxhv5ubub" path="res://assets/materials/placeholder_checker.tres" id="3_janvk"]
-[ext_resource type="Script" uid="uid://bs41iuhewme8j" path="res://modules/flock/sub_flock.gd" id="4_1uvjm"]
 [ext_resource type="Script" uid="uid://d4n162so51dr8" path="res://modules/flock/main_flock.gd" id="4_c5bgo"]
 [ext_resource type="Material" uid="uid://du74kmr3sjb4l" path="res://assets/materials/placeholder_checker_2.tres" id="4_igcjm"]
 [ext_resource type="Script" uid="uid://dstx1f47q2ki1" path="res://modules/flock/player_bird/boid_properties.gd" id="5_la62n"]
@@ -26,11 +25,6 @@
 [ext_resource type="PackedScene" uid="uid://llwk0a2c7qid" path="res://modules/monument/monument.tscn" id="24_8v8ov"]
 
 [sub_resource type="Resource" id="Resource_dc6vu"]
-script = ExtResource("5_la62n")
-steering_mode = 1
-metadata/_custom_type_script = "uid://dstx1f47q2ki1"
-
-[sub_resource type="Resource" id="Resource_aph6o"]
 script = ExtResource("5_la62n")
 steering_mode = 1
 metadata/_custom_type_script = "uid://dstx1f47q2ki1"
@@ -105,14 +99,8 @@ split_boid_count = 5
 camera_controller = NodePath("../Camera")
 num_boids = 20
 cursor = NodePath("MeshInstance3D2")
-subflocks = [NodePath("SubFlock")]
+subflocks = [null]
 boid_properties = SubResource("Resource_dc6vu")
-
-[node name="SubFlock" type="Node3D" parent="Flock" unique_id=318110185 node_paths=PackedStringArray("parent_flock", "camera_controller")]
-script = ExtResource("4_1uvjm")
-parent_flock = NodePath("..")
-camera_controller = NodePath("../../Camera")
-boid_properties = SubResource("Resource_aph6o")
 
 [node name="Camera" parent="." unique_id=1488927985 node_paths=PackedStringArray("flock") instance=ExtResource("1_7n1yb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 4.999996, 4, -1.0000019)
@@ -206,6 +194,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -2)
 
 [node name="Storm" parent="." unique_id=904228582 instance=ExtResource("19_c2dwa")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, -52)
+visible = false
 
 [node name="ChunkGenerator" type="Node3D" parent="." unique_id=74537442]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)

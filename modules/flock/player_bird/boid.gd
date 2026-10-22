@@ -82,8 +82,13 @@ func _ready() -> void:
 	food_detector.area_entered.connect(_on_food_detector_area_entered)
 
 func _physics_process(delta: float) -> void:
+	#print(global_position.y)
 	if !death_queued:
 		boid_movement(delta)
+	
+	if (properties.flockIsFlying == false):
+		print("I am going to land")
+		
 
 func _on_food_detector_area_entered(area: Area3D) -> void:
 	# Area3D is a child of the Food root node
@@ -222,6 +227,7 @@ func spinning(center: Vector3, neighbors: Array) -> Vector3:
 	return tangent * spin_direction
 
 #This is WHERE THE MAGIC BEGINS, NO MORE CALCULATING BORING ASS VECTOR SHITS!!!!!!!!!
+
 func boid_movement(delta: float):
 	var camera_force : Vector3 = Vector3.ZERO
 	if cam_is_moving :
@@ -264,7 +270,8 @@ func boid_movement(delta: float):
 	#print(boid_direction)
 	
 	#When the cursor is in spread out/repel mode the boids have slightly modified behaviors
-	if properties.scatter:
+	#the boids can ONLY SEPERATE IN THE AIR.
+	if properties.scatter && (properties.isLanding == false && properties.isLanded == false && properties.isRising == false):
 		repel_force = repel() * properties.repel_weight.value
 		#when the camera is not moving, boids in large groups should start spinning in place.
 		var boid_subflock_spin_force : Vector3 = Vector3.ZERO

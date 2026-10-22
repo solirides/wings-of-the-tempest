@@ -50,3 +50,13 @@ enum ROTATION_MODE {
 @export var steering_strength : Stat     = Stat.new("steering_strength",     "", 8.0)
 @export var steering_mode : STEERING_MODE = STEERING_MODE.LERP
 @export var rotation_mode : ROTATION_MODE = ROTATION_MODE.LERP_TO_VELOCITY
+
+#Landing stuff! FOR THE BOIDS
+@export var isFlying : bool = true
+@export var isLanding : bool = false
+
+@export var isLanded : bool = false
+@export var isRising : bool = false
+
+@export var flockIsFlying : bool = true
+@export var flockIsLanded : bool = false
