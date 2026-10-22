@@ -3,6 +3,43 @@ class_name Chunk
 
 static var heightmap_debug_material: StandardMaterial3D = preload( "res://modules/terrain/heightmap_debug.tres" );
 
+static var all: Array[ Chunk ];
+
+## Returns the chunk which contains the global position. Returns NULL if no chunk is present at that position
+static func get_chunk_containing_global_position( at_position: Vector3 ) -> Chunk:
+	
+	for chunk in all:
+		if at_position >= chunk.global_position and at_position < chunk.global_position + chunk.get_global_size():
+			return chunk;
+	
+	return null;
+
+## Returns a list of chunks containing the volume bounded by the global ray's start and endpoints
+static func get_chunks_containing_global_ray( start_position: Vector3, end_position: Vector3 ) -> Array[ Chunk ]:
+	
+	var returned_chunks: Array[ Chunk ];
+	
+	var min_pos: = start_position.min( end_position );
+	var max_pos: = start_position.max( end_position );
+	
+	for chunk in all:
+		if chunk.global_position >= min_pos and chunk.global_position + chunk.get_global_size() < max_pos:
+			returned_chunks.append( chunk );
+	
+	return returned_chunks;
+
+## Returns the global position at the intersection between the global ray and all chunks' terrain. Returns Vector3.INF if no intersection is found
+static func intersect_all( start_position: Vector3, end_position: Vector3 ) -> Vector3:
+	
+	for chunk in get_chunks_containing_global_ray( start_position, end_position ):
+		var intersection: = chunk.intersect( start_position - chunk.global_position, end_position - chunk.global_position );
+		if intersection != Vector3.INF:
+			return intersection;
+	
+	return Vector3.INF;
+
+
+
 var terrain_size: Vector3i;
 var terrain_scale: Vector3;
 var mesh_instance: MeshInstance3D;
@@ -10,9 +47,16 @@ var collision_instance: StaticBody3D;
 var heightmap: Array3D;
 var heightmap_mesh_instance: MeshInstance3D;
 
+
+## Return size of chunk in worldspace
+func get_global_size() -> Vector3:
+	return Vector3( terrain_size ) * terrain_scale;
+
 ## Set material used by the chunk's terrain mesh
 func set_terrain_material( material: Material ) -> void:
 	mesh_instance.material_override = material;
+
+
 
 ## Create terrain for this chunk based on a 3D grid of scalar voxel data
 func create_terrain_mesh( scalar_field: Array3D ) -> void:
@@ -90,6 +134,8 @@ func create_objects( objects: Dictionary[ ChunkObject, Vector2 ] ) -> void:
 		if object.height_mode == ChunkObject.HeightMode.SNAP:
 			object_node.position.y += get_height( Vector2( object_pos.x, object_pos.y ) );
 
+
+
 func _init( definition: ChunkDefinition ) -> void:
 	terrain_size = definition.terrain_size;
 	terrain_scale = definition.terrain_scale;
@@ -104,9 +150,15 @@ func _ready() -> void:
 	collision_instance = StaticBody3D.new();
 	add_child( collision_instance );
 
+func _enter_tree() -> void:
+	all.append( self );
+
+func _exit_tree() -> void:
+	all.erase( self );
 
 
-## Find the intersection of a ray, from start to end, with the terrain mesh. \nMUST BE CALLED DURING PHYSICS PROCESSING
+
+## Find the intersection of a ray, from start to end, with the terrain mesh. Returns Vector3.INF if no intersection is found.\nMUST BE CALLED DURING PHYSICS PROCESSING
 func intersect( start: Vector3, end: Vector3 ) -> Vector3:
 	
 	var space_state: = get_world_3d().direct_space_state;
@@ -115,7 +167,7 @@ func intersect( start: Vector3, end: Vector3 ) -> Vector3:
 	var ray_result: = space_state.intersect_ray( ray_query );
 	
 	if ray_result.is_empty():
-		return -Vector3.ONE;
+		return Vector3.INF;
 	
 	return ray_result.position;
 
