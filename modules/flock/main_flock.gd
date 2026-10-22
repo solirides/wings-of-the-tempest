@@ -34,11 +34,9 @@ func _ready() -> void:
 	#print(all_boids)
 	
 
-func _process(delta: float) -> void:
-	boid_goal = get_mouse_world_position(camera_controller.camera_node)
-	if cursor:
-		cursor.global_position = boid_goal
+#I moved _process boid goal stuff into flocks own _process function!
 
+#this is completely borked RN.
 func split_flock(num: int, subflock:SubFlock):
 	var b = boids.duplicate()
 	b.shuffle()

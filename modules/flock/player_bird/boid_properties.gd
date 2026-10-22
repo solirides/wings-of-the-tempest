@@ -32,6 +32,7 @@ enum ROTATION_MODE {
 @export var repel_radius : Stat          = Stat.new("repel_radius",          "", 5.0)
 @export var repel_weight : Stat          = Stat.new("repel_weight",          "", 5.0)
 
+#This means that they are in the air following the cursor normally. I should probably make this name clearer.
 @export var default_state : bool = true
 
 # coward shit

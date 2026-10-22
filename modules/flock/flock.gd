@@ -23,7 +23,7 @@ class_name Flock
 
 # only boids with movement controlled by the main flock, not subflocks
 var boids: Array[Boid] = []
-var boid_goal : Vector3
+var flock_goal : Vector3
 var boid_scene = preload("res://modules/flock/player_bird/player_bird.tscn")
 
 # all boids including ones in subflocks
@@ -84,8 +84,19 @@ func landedFlock() -> void :
 		
 		global_position.y = collisionPoint.y
 		
-	#else :
-		#print("Didn't see anything, sorry!")
+		
+		
+	else :
+		print("Didn't see anything, sorry!")
+		#global_position.y = flockMaxHeight
+
+func _process(delta: float) -> void:
+	#this allows for the boid's main goal to be updated later on. Maybe for a better flock split system??????
+	#This IS not perfect, if I want the boids to split into subflocks, I need to give them functionality to do so... in their OWN script!
+	flock_goal = get_cursor_pos()
+	global_position = get_cursor_pos()
+	if cursor:
+		cursor.global_position = get_cursor_pos()
 
 func _physics_process(delta: float) -> void:
 	
@@ -135,15 +146,20 @@ func get_mouse_world_position(camera: Camera3D) -> Vector3:
 
 	var ray_origin := camera.project_ray_origin(mouse_pos)
 	var ray_direction := camera.project_ray_normal(mouse_pos)
-
-	global_position.x = boid_goal.x
-	global_position.z = boid_goal.z
+	
+	var flock_x := global_position.x
+	var flock_z := global_position.z
 	var flock_y := global_position.y
+	
 	if abs(ray_direction.y) < 0.0001:
 		return ray_origin
 	
 	var t = (flock_y - ray_origin.y) / ray_direction.y
 	return ray_origin + ray_direction * t
+	
+#This should send the position of the mouse to anything that needs it, without having to send for the camera.
+func get_cursor_pos() -> Vector3 :
+	return get_mouse_world_position(camera_controller.camera_node)
 
 func get_center_of_mass(nodes: Array = boids) -> Vector3:
 	if nodes.is_empty():

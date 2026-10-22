@@ -365,13 +365,24 @@ metadata/_custom_type_script = "uid://bt145qipdjfhd"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 17)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=764293437]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 27.247795, -18.361774, -43.46116)
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 1.7530136, -18.361774, -43.46116)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1301683315]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
 shape = SubResource("BoxShape3D_hjb8m")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1594190105]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+mesh = SubResource("BoxMesh_hjb8m")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="." unique_id=1355511757]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -22.067488, -15.253859, -43.46116)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2" unique_id=840622438]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+shape = SubResource("BoxShape3D_hjb8m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2" unique_id=1335545565]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
 mesh = SubResource("BoxMesh_hjb8m")
 
