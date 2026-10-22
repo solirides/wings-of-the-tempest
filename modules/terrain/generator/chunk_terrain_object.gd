@@ -13,10 +13,13 @@ var data: PackedFloat32Array;
 
 
 
-## Determine if voxel is in object
-@warning_ignore( "unused_parameter" )
-func is_in_bounds( position: Vector3i ) -> bool:
-	return false;
+## Volume of voxels covered by obect
+func get_bounds() -> Vector3i:
+	return -Vector3i.ONE;
+
+## Lower bounds of voxel volume 
+func get_height() -> int:
+	return -1;
 
 ## Get voxel data from object 
 @warning_ignore( "unused_parameter" )

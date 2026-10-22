@@ -58,3 +58,10 @@ func set_at( position: Vector3i, value: Variant ) -> void:
 
 func get_size() -> Vector3i:
 	return size;
+
+func get_length() -> int:
+	return array.size();
+
+func get_position_at( index: int ) -> Vector3i:
+	@warning_ignore("integer_division")
+	return Vector3i( index % size.x, ( index / size.x ) % size.y, index / size.x / size.y );

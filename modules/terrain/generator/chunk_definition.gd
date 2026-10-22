@@ -1,43 +1,48 @@
 extends Resource
 class_name ChunkDefinition
 
-@export var size: Vector3i;
+@export var terrain_size: Vector3i;
+@export var terrain_scale: Vector3;
+@export var terrain_decorator_height: int;
+@export var terrain_accessible_height: int;
 @export var objects: Dictionary[ ChunkObject, Vector2 ];
-@export var terrain_height: int;
 @export var terrain_objects: Dictionary[ ChunkTerrainObject, Vector2i ];
 
-func create_terrain_data( state: ChunkGenState ) -> Array3D:
+func create_terrain_surface( scalar_field: Array3D, state: ChunkGenState, chunk_position: Vector3 ) -> void:
 	
-	var chunk_pos: Vector3i = Vector3i.RIGHT * size * state.chunk_index;
+	var group: = WorkerThreadPool.add_group_task( create_terrain_surface_at_voxel.bind( scalar_field, state, chunk_position ), scalar_field.get_length(), -1, false, "Chunk Generation thread" );
+	WorkerThreadPool.wait_for_group_task_completion( group );
+
+func create_terrain_surface_at_voxel( index: int, scalar_field: Array3D, state: ChunkGenState, chunk_position: Vector3 ) -> void:
 	
-	var scalar_field: = Array3D.packedFloat32( size + Vector3i.ONE );
+	var voxel = scalar_field.get_position_at( index );
 	
-	for voxel in Rect3iIterator.new( Vector3i.ZERO, scalar_field.size ):
+	var world_voxel = Vector3i( chunk_position / terrain_scale ) + voxel;
+	
+	# Get decorator noise value
+	var value: float = ( state.noise.get_noise_2d( 10 * world_voxel.x, 10 * world_voxel.z ) * 0.5 + 0.5 ) \
+		* terrain_decorator_height - world_voxel.y;
+	
+	# Set in field
+	scalar_field.set_at( voxel, value );
+
+func create_terrain_objects( scalar_field: Array3D ) -> void:
+	
+	# Get object data
+	for object: ChunkTerrainObject in terrain_objects.keys():
 		
-		var world_voxel = chunk_pos + voxel;
+		var bounds: = object.get_bounds();
+		for axis in 3: if bounds[axis] < 0: bounds[axis] = terrain_size[axis];
 		
-		# Get base noise value
-		var value: float = ( state.noise.get_noise_2d( 10 * world_voxel.x, 10 * world_voxel.z ) * 0.5 + 0.5 ) \
-			* terrain_height - world_voxel.y;
-		
-		# Get object data
-		for object in terrain_objects.keys():
+		for voxel in Rect3iIterator.new( Vector3i.ZERO, bounds ):
 			
-			# Get origin of object
 			var object_origin = terrain_objects.get( object );
-			var object_voxel = voxel - Vector3i( object_origin.x, 0, object_origin.y );
+			var chunk_voxel = voxel + Vector3i( object_origin.x, object.get_height(), object_origin.y );
 			
-			# Transform value from object
-			if object.is_in_bounds( object_voxel ):
-				value = object.transform_voxel( object_voxel, value );
-		
-		# Set in field
-		scalar_field.set_at( voxel, value );
-	
-	return scalar_field;
+			scalar_field.set_at( chunk_voxel, object.transform_voxel( voxel, scalar_field.get_at( chunk_voxel ) ) );
 
 func get_objects() -> Dictionary[ ChunkObject, Vector2 ]:
 	return objects;
 
 func get_size() -> Vector3i:
-	return size;
+	return terrain_size;

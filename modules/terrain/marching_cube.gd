@@ -1,11 +1,11 @@
 class_name MarchingCube
 
-static func generate_vertices( scalar_field: Array3D, iso: float ) -> PackedVector3Array:
+static func generate_vertices( scalar_field: Array3D, iso: float = 0, scale: Vector3 = Vector3.ONE ) -> PackedVector3Array:
 	
 	var vertices: = PackedVector3Array();
 	
 	for position in Rect3iIterator.new( Vector3i.ZERO, scalar_field.get_size() - Vector3i.ONE ):
-		vertices += get_triangle( scalar_field, iso, position );
+		vertices += get_triangle( scalar_field, iso, position, scale );
 	
 	return vertices;
 
@@ -48,7 +48,7 @@ static func interpolate_vertex( scalar_field: Array3D, iso: float, position_0: V
 	var interpolation: = ( iso - value_0 ) / ( value_1 - value_0 );
 	return Vector3( position_0 ).lerp( position_1, interpolation );
 
-static func get_triangle( scalar_field: Array3D, iso: float, position: Vector3i ) -> PackedVector3Array:
+static func get_triangle( scalar_field: Array3D, iso: float, position: Vector3i, scale: Vector3 ) -> PackedVector3Array:
 	
 	var triangle: PackedVector3Array;
 	var tri_index: = get_triangulation( scalar_field, iso, position );
@@ -60,7 +60,7 @@ static func get_triangle( scalar_field: Array3D, iso: float, position: Vector3i 
 		var p1: = position + CUBE_VERTICES[ point_indeces.y ];
 		
 		var vertex: = interpolate_vertex( scalar_field, iso, p0, p1 );
-		triangle.append( vertex );
+		triangle.append( vertex * scale );
 		
 		tri_index += 1;
 	
