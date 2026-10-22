@@ -71,10 +71,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			global_position.y = flockMaxHeight
 	
 #This function will always update the flocks position to the nearest piece of terrain.
-@onready var groundRay : RayCast3D = $groundRay
+@onready var groundRay : RayCast3D = $groundRayDOWN
 func landedFlock() -> void :
 	groundRay.target_position = Vector3(0, -100, 0)
-	
 	groundRay.force_raycast_update()
 	
 	if groundRay.is_colliding() :
