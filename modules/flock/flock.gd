@@ -79,23 +79,18 @@ func _unhandled_input(event: InputEvent) -> void:
 
 #It's obviously far from done, since I intended to switch over to the functions you wrote.
 #Feel free do to whatever you want with this, I lowkey don't know what I am dong!!!! :0))))
-@export var groundRay : RayCast3D
 func attempt_landing() -> void :
-	groundRay.global_position = get_center_of_mass(boids)
-	groundRay.target_position = Vector3(0, -100, 0)
-	groundRay.force_raycast_update()
 	
-	if groundRay.is_colliding() :
+	var chunk_intersection: = Chunk.intersect( global_position, global_position + 100 * Vector3.DOWN, get_world_3d() );
+	
+	if chunk_intersection != Vector3.INF:
 		print("found something to land on")
-		var collisionPoint = groundRay.get_collision_point()
-		
-		global_position.y = collisionPoint.y
+		global_position.y = chunk_intersection.y
 		boid_properties.flockIsLanded = true
 		
 	else :
 		print("Didn't see anything, sorry!")
-		#global_position.y = flockMaxHeight
-#End of groundRay function...
+		global_position.y = flockMaxHeight
 
 func _process(delta: float) -> void:
 	#this allows for the boid's main goal to be updated later on. Maybe for a better flock split system??????

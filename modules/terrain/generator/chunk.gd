@@ -14,36 +14,18 @@ static func get_chunk_containing_global_position( at_position: Vector3 ) -> Chun
 	
 	return null;
 
-## Returns a list of chunks containing the volume bounded by the global ray's start and endpoints
-static func get_chunks_containing_global_ray( start_position: Vector3, end_position: Vector3 ) -> Array[ Chunk ]:
-	
-	var returned_chunks: Array[ Chunk ];
-	
-	var min_pos: = start_position.min( end_position );
-	var max_pos: = start_position.max( end_position );
-	
-	for chunk in all:
-		if chunk.global_position >= min_pos and chunk.global_position + chunk.get_global_size() < max_pos:
-			returned_chunks.append( chunk );
-	
-	return returned_chunks;
-
 ## Returns the global position at the intersection between the global ray and all chunks' terrain. Returns Vector3.INF if no intersection is found
-static func intersect_all( start_position: Vector3, end_position: Vector3 ) -> Vector3:
+static func intersect( start: Vector3, end: Vector3, world: World3D ) -> Vector3:
 	
-	for chunk in get_chunks_containing_global_ray( start_position, end_position ):
-		var intersection: = chunk.intersect( start_position - chunk.global_position, end_position - chunk.global_position );
-		if intersection != Vector3.INF:
-			return intersection;
+	var space_state: = world.direct_space_state;
+	var ray_query: = PhysicsRayQueryParameters3D.create( start, end, 4 );
 	
-	return Vector3.INF;
-
-## Returns the height of terrain below Accessible Height at 
-static func get_global_height_accessible( at_position: Vector3 ) -> float:
+	var ray_result: = space_state.intersect_ray( ray_query );
 	
-	var chunk: = get_chunk_containing_global_position( at_position );
-	var local_position: = at_position - chunk.global_position;
-	return chunk.get_height( chunk.heightmap_accessibility, Vector2( local_position.x, local_position.z ) );
+	if ray_result.is_empty():
+		return Vector3.INF;
+	
+	return ray_result.position;
 
 
 
@@ -68,9 +50,16 @@ func set_terrain_material( material: Material ) -> void:
 
 ## Create terrain for this chunk based on a 3D grid of scalar voxel data
 func create_terrain_mesh( scalar_field: Array3D ) -> void:
-	var mesh = MarchingCube.generate_mesh( MarchingCube.generate_vertices( scalar_field, 0.0, terrain_scale ) );
+	var mesh: = MarchingCube.generate_mesh( MarchingCube.generate_vertices( scalar_field, 0.0, terrain_scale ) );
 	mesh_instance.set_deferred( "mesh", mesh );
-	collision_instance.call_deferred( "create_shape_owner", mesh );
+	( func():
+		var shape: = ConcavePolygonShape3D.new();
+		shape.set_faces( mesh.get_faces() );
+		var shape_owner: = CollisionShape3D.new();
+		shape_owner.shape = shape;
+		collision_instance.add_child( shape_owner, false, INTERNAL_MODE_FRONT );
+		collision_instance.collision_layer = 4; # Terrain layer
+	).call_deferred();
 
 ## Create heightmap for this chunk based on a 3d grid of scalar voxel data
 func create_heightmap( scalar_field: Array3D, height: int ) -> Array3D:
@@ -169,19 +158,6 @@ func _exit_tree() -> void:
 	all.erase( self );
 
 
-
-## Find the intersection of a ray, from start to end, with the terrain mesh. Returns Vector3.INF if no intersection is found.\nMUST BE CALLED DURING PHYSICS PROCESSING
-func intersect( start: Vector3, end: Vector3 ) -> Vector3:
-	
-	var space_state: = get_world_3d().direct_space_state;
-	var ray_query: = PhysicsRayQueryParameters3D.create( start, end );
-	
-	var ray_result: = space_state.intersect_ray( ray_query );
-	
-	if ray_result.is_empty():
-		return Vector3.INF;
-	
-	return ray_result.position;
 
 ## Find vertical position using a heightmap at a horizontal position
 func get_height( heightmap: Array3D, coordinates: Vector2 ) -> float:
