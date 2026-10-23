@@ -82,14 +82,16 @@ func _unhandled_input(event: InputEvent) -> void:
 #Feel free do to whatever you want with this, I lowkey don't know what I am dong!!!! :0))))
 func attempt_landing() -> void :
 	
-	var chunk_intersection: = Chunk.intersect( global_position, global_position + 100 * Vector3.DOWN, get_world_3d() );
+	var above_chunk: Chunk = Chunk.get_chunk_containing_global_position( global_position );
+	var relative_position: = global_position - above_chunk.global_position;
+	var horizontal: = Vector2( relative_position.x, relative_position.z );
 	
-	if chunk_intersection != Vector3.INF:
+	if above_chunk and above_chunk.is_height_accessible( horizontal ):
 		print("found something to land on")
-		global_position.y = chunk_intersection.y
+		global_position.y = above_chunk.global_position.y + above_chunk.get_height( above_chunk.heightmap_accessibility, horizontal );
 		boid_properties.flockIsLanded = true
-		
-	else :
+	
+	else:
 		print("Didn't see anything, sorry!")
 		global_position.y = flockMaxHeight
 
