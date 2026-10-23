@@ -397,6 +397,9 @@ func kill_boid(death_animation: bool = true):
 	
 	boid_died.emit(self, global_position)
 
+# Move the boid to a new flock and adjust the boids and all_boids variables accordingly.
+# This boid should be in the boids variable of only the subflock if split.
+# This boid should be in all_boids for the main flock even when in a subflock.
 func transfer_to_flock(new_flock: Flock):
 	if new_flock == flock:
 		return

@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://oi42l00xp8p1" path="res://WoT_tomato_big.png" id="3_fib5d"]
 [ext_resource type="Texture2D" uid="uid://d0cvmckaqaoa7" path="res://assets/textures/UI/healthbarProgress.png" id="3_v6k41"]
 [ext_resource type="Script" uid="uid://cxboty7yf78n1" path="res://modules/hud/level_end_screen.gd" id="4_v6k41"]
+[ext_resource type="Texture2D" uid="uid://bj3hijlfqx172" path="res://flock.png" id="6_ugr31"]
 
 [sub_resource type="SystemFont" id="SystemFont_0lhw3"]
 font_names = PackedStringArray("Noto Sans", "Open Sans", "Cantarell")
@@ -106,22 +107,46 @@ layout_mode = 0
 offset_right = 312.0
 offset_bottom = 40.0
 
-[node name="HSplitContainer" type="HSplitContainer" parent="." unique_id=981328906]
+[node name="Bars" type="VBoxContainer" parent="." unique_id=191135526]
 layout_mode = 0
-offset_right = 216.0
-offset_bottom = 40.0
-offset_transform_enabled = true
-split_offsets = PackedInt32Array(40, 51)
-drag_area_highlight_in_editor = true
-split_offset = 40
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 264.0
+offset_bottom = 60.0
+offset_transform_position = Vector2(20, 20)
 
-[node name="NinePatchRect" type="NinePatchRect" parent="HSplitContainer" unique_id=28838331]
+[node name="HBoxContainer" type="HBoxContainer" parent="Bars" unique_id=313975500]
+layout_mode = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Bars/HBoxContainer" unique_id=28838331]
+custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 texture = ExtResource("3_fib5d")
 
-[node name="HungerBar" type="TextureProgressBar" parent="HSplitContainer" unique_id=166203044]
+[node name="HungerBar" type="TextureProgressBar" parent="Bars/HBoxContainer" unique_id=166203044]
 unique_name_in_owner = true
 texture_filter = 1
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+value = 100.0
+nine_patch_stretch = true
+stretch_margin_left = 1
+stretch_margin_right = 1
+texture_under = ExtResource("2_sunxf")
+texture_progress = ExtResource("3_v6k41")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Bars" unique_id=673885322]
+layout_mode = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Bars/HBoxContainer2" unique_id=1794107377]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("6_ugr31")
+
+[node name="WaterBar" type="TextureProgressBar" parent="Bars/HBoxContainer2" unique_id=44336012]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 value = 100.0
 nine_patch_stretch = true

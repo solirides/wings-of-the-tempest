@@ -39,3 +39,10 @@ func add_modifier(modifier:StatModifier):
 	modifiers.append(modifier)
 	value = modifier.apply_modifier(value)
 	value = clamp(value, min_value, max_value)
+
+func remove_modifier(name: String):
+	for modifier in modifiers:
+		if modifier.name == name:
+			modifiers.erase(modifier)
+			print("modifier found and removed")
+			break

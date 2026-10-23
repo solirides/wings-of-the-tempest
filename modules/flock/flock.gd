@@ -13,6 +13,7 @@ class_name Flock
 @export var starve_rate: float = 2.0
 @export var starve_death_interval: float = 15.0
 @export var speed_penalty_interval: float = 0.1
+@export var min_hunger_speed_penalty: float = 0.7
 
 @export var num_boids: int = 10
 @export var spawn_radius: float = 10.0
@@ -29,7 +30,7 @@ var boid_scene = preload("res://modules/flock/player_bird/player_bird.tscn")
 # all boids including ones in subflocks
 var all_boids: Array[Boid] = []
 
-signal hunger_changed
+signal hunger_changed(current_hunger:float)
 
 #This is such a JANK way of doing this but...
 var flockMaxHeight = 5
@@ -107,23 +108,27 @@ func _physics_process(delta: float) -> void:
 		# try to find something to land on
 		attempt_landing()
 	
-	if current_hunger > 50.0:
-		boid_properties.speed.value = max(boid_properties.min_speed.value, boid_properties.speed.value - speed_penalty_interval * delta)
+	#if current_hunger > 50.0:
+		#boid_properties.speed.value = max(boid_properties.min_speed.value, boid_properties.speed.value - speed_penalty_interval * delta)
 	
-#in essence both of these if statements are decreasing the hunger
-#if current_hunger > 0:
-	#current_hunger = max(0.0, current_hunger - starve_rate * delta)
-	#print("hunger: " + str(current_hunger))
-	#this code block inflicts speed penalties below 50 hunger
-	#if current_hunger < 50.0:
-		#for boid in all_boids:
-			#boid.speed = max(0.0, boid.speed - speed_penalty_interval * delta)
-	
-	#hunger_changed.emit(current_hunger)
-#else:
-	#there is no speed penalty because you already ran out of hunger
-	#current_hunger = min(0.0, current_hunger - starve_rate * delta)
-	#hunger_changed.emit(current_hunger)
+	#in essence both of these if statements are decreasing the hunger
+	if current_hunger > 0:
+		current_hunger = max(0.0, current_hunger - starve_rate * delta)
+		print("hunger: " + str(current_hunger))
+		# this code block inflicts speed penalties below 50 hunger
+		if current_hunger < 50.0:
+			for boid in all_boids:
+				var new_speed_mult = lerp(min_hunger_speed_penalty, 1.0, current_hunger / max_hunger)
+				var modifier = StatModifier.new("hunger_penalty", new_speed_mult, StatModifier.ModifierType.MULTIPLY)
+				boid_properties.speed.remove_modifier("hunger_penalty")
+				boid_properties.speed.apply_modifier(modifier)
+				#boid.speed = max(0.0, boid.speed - speed_penalty_interval * delta)
+		
+		hunger_changed.emit(current_hunger)
+	else:
+		# there is no speed penalty because you already ran out of hunger
+		current_hunger = min(0.0, current_hunger - starve_rate * delta)
+		hunger_changed.emit(current_hunger)
 	
 	#this if-statement will kill birds of starvation periodically
 	if current_hunger < -starve_death_interval:

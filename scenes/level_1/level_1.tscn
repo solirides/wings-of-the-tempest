@@ -186,6 +186,7 @@ minimum_group_size = SubResource("Resource_iy62o")
 steering_smoothness = SubResource("Resource_ksjoe")
 rotation_smoothness = SubResource("Resource_xe581")
 steering_strength = SubResource("Resource_ghgx6")
+rotation_mode = 2
 metadata/_custom_type_script = "uid://dstx1f47q2ki1"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
@@ -229,7 +230,7 @@ _data = {
 point_count = 7
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6lmcw"]
-size = Vector3(7, 5, 5)
+size = Vector3(7, 16, 5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6lmcw"]
 albedo_color = Color(0.59106696, 0.8964245, 0.3219582, 1)
@@ -311,6 +312,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -63)
 script = ExtResource("11_0lhw3")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Goal" unique_id=183862571]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 0)
 shape = SubResource("BoxShape3D_6lmcw")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Goal" unique_id=1737226008]
@@ -335,6 +337,7 @@ outline_size = 80
 [node name="WindZone" parent="." unique_id=2060379650 instance=ExtResource("13_665yd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 26)
 wind_direction = Vector3(1, 0, 0)
+wind_strength = 60.0
 
 [node name="WindTrails" parent="WindZone" unique_id=1253582775 instance=ExtResource("14_3fps6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, 0)
@@ -352,7 +355,6 @@ attack_range = 2.0
 
 [node name="Storm" parent="." unique_id=904228582 instance=ExtResource("19_c2dwa")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, -52)
-visible = false
 
 [node name="ChunkGenerator" type="Node3D" parent="." unique_id=74537442 node_paths=PackedStringArray("tracked_node")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, -6, 0)
