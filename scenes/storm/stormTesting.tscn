@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://fmcuq58nap5n" path="res://scenes/storm/storm_script.gd" id="1_hrl36"]
 [ext_resource type="PackedScene" uid="uid://dp2pii0qjqgy2" path="res://modules/storm_wall/storm_wall_2.tscn" id="2_i225i"]
+[ext_resource type="Script" uid="uid://ltydgk0o4cj3" path="res://scenes/storm/rain.gd" id="3_d4m54"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_f24ow"]
 height = 30.0
@@ -11,6 +12,10 @@ radius = 5.0
 top_radius = 5.0
 bottom_radius = 5.0
 height = 30.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_xotop"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_xotop"]
 
 [node name="Storm" type="Area3D" unique_id=904228582]
 transform = Transform3D(25, 0, 0, 0, 25, 0, 0, 0, 25, 0, 0, 0)
@@ -26,3 +31,15 @@ visible = false
 mesh = SubResource("CylinderMesh_6lmcw")
 
 [node name="storm_wall_2" parent="." unique_id=479115584 instance=ExtResource("2_i225i")]
+
+[node name="Rain_Hitbox" type="Area3D" parent="." unique_id=1861455761]
+transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, 0, 0, 0)
+script = ExtResource("3_d4m54")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Rain_Hitbox" unique_id=1798419822]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+shape = SubResource("SphereShape3D_xotop")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Rain_Hitbox" unique_id=1199248022]
+transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, 0, 0, 0)
+mesh = SubResource("SphereMesh_xotop")

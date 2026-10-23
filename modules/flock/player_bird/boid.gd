@@ -7,7 +7,7 @@ class_name Boid
 # add to the health respectively, while take_percent_damage() and heal_percent() each take a percent of the maximum health
 # (as a decimal between 0 and 1) to subtract or add to the health respectively.  
 
-# Flock Health Varibables and Signals
+# Flock Health Variables and Signals
 const MAX_HEALTH: float = 100.0
 var health = MAX_HEALTH
 

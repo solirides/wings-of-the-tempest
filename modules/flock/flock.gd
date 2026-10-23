@@ -31,6 +31,39 @@ var all_boids: Array[Boid] = []
 
 signal hunger_changed
 
+#hydrate or die-drate
+#Water is a whole flock resource
+const WATER_CAPACITY: float = 100.0
+var hydration = WATER_CAPACITY
+
+# Getter functions for water, one retrieves the exact water and the other
+# retrieves the percent of the water capacity the flock is currently at
+func get_hydration() -> float:
+	return hydration
+func get_hydration_percent() -> float:
+	return hydration / WATER_CAPACITY
+
+func take_percent_hydration(take_percent: float) -> void:
+	if (take_percent > 1.0 || take_percent < 0 || hydration <= 0):
+		print("Invalid water argument or hydration has reached zero")
+		return
+	hydration -= take_percent * WATER_CAPACITY
+	check_hydration_status()
+
+func give_percent_hydration(give_percent: float) -> void:
+	if (give_percent < 0 || give_percent > 1):
+		print("Invalid water argument")
+		return
+	hydration += give_percent * WATER_CAPACITY
+	check_hydration_status()
+
+func check_hydration_status() -> void:
+	if (hydration <= 0):
+		hydration = 0
+		#health_reached_zero.emit()
+	elif (hydration >= WATER_CAPACITY):
+		hydration = WATER_CAPACITY
+
 func _ready() -> void:
 	pass
 
@@ -38,6 +71,7 @@ func _physics_process(delta: float) -> void:
 	
 	if current_hunger > 50.0:
 		boid_properties.speed.value = max(boid_properties.min_speed.value, boid_properties.speed.value - speed_penalty_interval * delta)
+	
 	
 #in essence both of these if statements are decreasing the hunger
 #if current_hunger > 0:
