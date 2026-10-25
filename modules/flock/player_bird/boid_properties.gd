@@ -1,3 +1,4 @@
+@tool
 extends Resource
 class_name BoidProperties
 
@@ -31,6 +32,9 @@ enum ROTATION_MODE {
 @export var repel_radius : Stat          = Stat.new("repel_radius",          "", 5.0)
 @export var repel_weight : Stat          = Stat.new("repel_weight",          "", 5.0)
 
+#This means that they are in the air following the cursor normally. I should probably make this name clearer.
+@export var default_state : bool = true
+
 # coward shit
 @export var flee_weight : Stat           = Stat.new("flee_weight",           "", 2.1)
 @export var is_fleeing : bool = false
@@ -41,9 +45,20 @@ enum ROTATION_MODE {
 # split up sub group stuff
 @export var spin_weight : Stat           = Stat.new("spin_weight",           "", 1)
 @export var minimum_group_size : Stat    = Stat.new("minimum_group_size",    "", 5)
+@export var scatter : bool = false
 
 @export var steering_smoothness : Stat   = Stat.new("steering_smoothness",   "", 8.0)
 @export var rotation_smoothness : Stat   = Stat.new("rotation_smoothness",   "", 8.0)
 @export var steering_strength : Stat     = Stat.new("steering_strength",     "", 8.0)
 @export var steering_mode : STEERING_MODE = STEERING_MODE.LERP
 @export var rotation_mode : ROTATION_MODE = ROTATION_MODE.LERP_TO_VELOCITY
+
+#Landing stuff! FOR THE BOIDS
+@export var isFlying : bool = true
+@export var isLanding : bool = false
+
+@export var isLanded : bool = false
+@export var isRising : bool = false
+
+@export var flockIsFlying : bool = true
+@export var flockIsLanded : bool = false

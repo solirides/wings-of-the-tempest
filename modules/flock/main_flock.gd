@@ -5,6 +5,9 @@ class_name MainFlock
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	super() #If there is a better way to do this, please FIX THIS, but for right now...
+			#this super() ensures that the flock.gd is at a height of 5, since the boid's position seems to be tied to the height of the flock.
+	
 	Global.flock = self
 	# call Global.check_ready_nodes() once this ready function is finished
 	connect("ready", Global.check_ready_nodes)
@@ -13,11 +16,13 @@ func _ready() -> void:
 		var new_boid: Boid = boid_scene.instantiate()
 		add_child(new_boid)
 		
+		new_boid.top_level = true
+		
 		var angle := randf_range(0.0, TAU)
 		var distance := randf_range(0.0, spawn_radius)
 		new_boid.position = Vector3(
 			cos(angle) * distance,
-			0.0,
+			flockMaxHeight, #the boids spawn at the same height as the flock
 			sin(angle) * distance
 		)
 
@@ -27,12 +32,11 @@ func _ready() -> void:
 	# duplicate the array (do NOT pass by reference (or you will be very very sad when the code does not work))
 	all_boids = boids.duplicate()
 	#print(all_boids)
+	
 
-func _process(delta: float) -> void:
-	boid_goal = get_mouse_world_position(camera_controller.camera_node)
-	if cursor:
-		cursor.global_position = boid_goal
+#I moved _process boid goal stuff into flocks own _process function!
 
+#this is completely borked RN.
 func split_flock(num: int, subflock:SubFlock):
 	var b = boids.duplicate()
 	b.shuffle()

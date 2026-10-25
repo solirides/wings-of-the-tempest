@@ -55,6 +55,7 @@ func _ready() -> void:
 	
 	$Camera/Shaders.visible = enable_post_processing
 	
+	set_notify_transform( true );
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("free_cam"):
@@ -89,6 +90,11 @@ func _process(delta: float) -> void:
 	else:
 		_cam_zoom(delta)
 		_cam_movement(delta)
+		
+		#this ties the height of the camera to the FLOCK? Maybe change? IDK it makes sense for now.
+		if flock and is_instance_valid(flock) :
+			global_position.y = lerp(global_position.y, flock.global_position.y, delta * 5.0)
+		
 	camera_node.position = lerp(camera_node.position, target_position, delta * zoom_speed)
 	camera_node.rotation = lerp(camera_node.rotation, target_rotation, delta * zoom_speed)
 
@@ -189,4 +195,9 @@ func toggle_free_cam(state: bool = !free_cam_mode):
 		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 		# lock the movement
 		lock_to_axis = true
-	
+
+# Emit signal when moved, so other nodes (ie terrain generation) can detect it
+signal moved;
+func _notification( what: int ) -> void:
+	if what == NOTIFICATION_TRANSFORM_CHANGED:
+		moved.emit();

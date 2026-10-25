@@ -30,6 +30,8 @@ children = Array[ExtResource("1_6r631")]([SubResource("Resource_v5m86")])
 [resource]
 script = ExtResource("3_nngoa")
 terrain_material = ExtResource("4_nngoa")
-size = Vector3i(16, 16, 16)
-terrain_height = 6
+terrain_size = Vector3i(16, 16, 16)
+terrain_scale = Vector3(4, 1, 4)
+terrain_decorator_height = 6
+terrain_accessible_height = 8
 child = SubResource("Resource_jvfn2")

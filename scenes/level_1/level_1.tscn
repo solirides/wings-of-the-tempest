@@ -4,11 +4,12 @@
 [ext_resource type="Script" uid="uid://4kq8akwlf2yl" path="res://scenes/level_1/level_1.gd" id="1_ghvtn"]
 [ext_resource type="PackedScene" uid="uid://p7nyl4088ndh" path="res://modules/flock/flock.tscn" id="2_jr17i"]
 [ext_resource type="Material" uid="uid://dto6fxhv5ubub" path="res://assets/materials/placeholder_checker.tres" id="3_janvk"]
-[ext_resource type="Script" uid="uid://bs41iuhewme8j" path="res://modules/flock/sub_flock.gd" id="4_1uvjm"]
 [ext_resource type="Script" uid="uid://d4n162so51dr8" path="res://modules/flock/main_flock.gd" id="4_c5bgo"]
 [ext_resource type="Material" uid="uid://du74kmr3sjb4l" path="res://assets/materials/placeholder_checker_2.tres" id="4_igcjm"]
+[ext_resource type="Script" uid="uid://bftxduhaltc0m" path="res://modules/global/stat_modifier.gd" id="5_1gdhe"]
 [ext_resource type="Script" uid="uid://dstx1f47q2ki1" path="res://modules/flock/player_bird/boid_properties.gd" id="5_la62n"]
 [ext_resource type="Shader" uid="uid://ca2i5qj33kbir" path="res://assets/materials/water.gdshader" id="6_nubdk"]
+[ext_resource type="Script" uid="uid://bv8nqa5kn647" path="res://modules/global/stat.gd" id="6_s3crn"]
 [ext_resource type="PackedScene" uid="uid://geh1ds7gqhgf" path="res://modules/hud/hud.tscn" id="7_fxajv"]
 [ext_resource type="PackedScene" uid="uid://r2i5ufxdudpc" path="res://modules/enemy/seagull.tscn" id="8_yhntr"]
 [ext_resource type="Script" uid="uid://ci1rc3kcvxd16" path="res://scenes/level_1/HawkPath.gd" id="9_bmd0r"]
@@ -21,18 +22,171 @@
 [ext_resource type="PackedScene" uid="uid://dan4yb6n1bkxe" path="res://scenes/storm/stormTesting.tscn" id="19_c2dwa"]
 [ext_resource type="Script" uid="uid://bt145qipdjfhd" path="res://modules/terrain/generator/chunk_generator.gd" id="20_r87tm"]
 [ext_resource type="Resource" uid="uid://cnhauj7okt3ps" path="res://modules/terrain/test_lib.tres" id="21_06ebd"]
-[ext_resource type="Script" uid="uid://c2fvqmbrch2q0" path="res://modules/terrain/generator/chunk_library.gd" id="22_8v8ov"]
-[ext_resource type="Material" uid="uid://bt5nph1wxgig7" path="res://modules/terrain/terrain_triplanar_map.tres" id="23_8m3jb"]
 [ext_resource type="PackedScene" uid="uid://llwk0a2c7qid" path="res://modules/monument/monument.tscn" id="24_8v8ov"]
 
-[sub_resource type="Resource" id="Resource_dc6vu"]
-script = ExtResource("5_la62n")
-steering_mode = 1
-metadata/_custom_type_script = "uid://dstx1f47q2ki1"
+[sub_resource type="Resource" id="Resource_45mk7"]
+script = ExtResource("6_s3crn")
+name = "alignment_weight"
+description = ""
+base_value = 0.0
+value = 1.0
 
-[sub_resource type="Resource" id="Resource_aph6o"]
+[sub_resource type="Resource" id="Resource_vfkmt"]
+script = ExtResource("6_s3crn")
+name = "cam_moving_weight"
+description = ""
+base_value = 1.2
+value = 1.2
+
+[sub_resource type="Resource" id="Resource_fgy5t"]
+script = ExtResource("6_s3crn")
+name = "cohesion_weight"
+description = ""
+base_value = 0.0
+value = 1.0
+
+[sub_resource type="Resource" id="Resource_qodog"]
+script = ExtResource("6_s3crn")
+name = "flee_duration"
+description = ""
+base_value = 3.0
+value = 3.0
+
+[sub_resource type="Resource" id="Resource_rt066"]
+script = ExtResource("6_s3crn")
+name = "flee_weight"
+description = ""
+base_value = 2.1
+value = 2.1
+
+[sub_resource type="Resource" id="Resource_af74n"]
+script = ExtResource("6_s3crn")
+name = "goal_weight"
+description = ""
+base_value = 1.2
+value = 1.2
+
+[sub_resource type="Resource" id="Resource_ie0qw"]
+script = ExtResource("6_s3crn")
+name = "min_speed"
+description = ""
+base_value = 5.0
+value = 5.0
+
+[sub_resource type="Resource" id="Resource_iy62o"]
+script = ExtResource("6_s3crn")
+name = "minimum_group_size"
+description = ""
+base_value = 5.0
+value = 5.0
+
+[sub_resource type="Resource" id="Resource_a5k2f"]
+script = ExtResource("6_s3crn")
+name = "perception_range"
+description = ""
+base_value = 8.0
+value = 8.0
+
+[sub_resource type="Resource" id="Resource_j30x2"]
+script = ExtResource("6_s3crn")
+name = "personal_space"
+description = ""
+base_value = 4.0
+value = 4.0
+
+[sub_resource type="Resource" id="Resource_so1i6"]
+script = ExtResource("6_s3crn")
+name = "repel_radius"
+description = ""
+base_value = 5.0
+value = 5.0
+
+[sub_resource type="Resource" id="Resource_ut4nd"]
+script = ExtResource("6_s3crn")
+name = "repel_weight"
+description = ""
+base_value = 5.0
+value = 5.0
+
+[sub_resource type="Resource" id="Resource_xe581"]
+script = ExtResource("6_s3crn")
+name = "rotation_smoothness"
+description = ""
+base_value = 8.0
+value = 8.0
+
+[sub_resource type="Resource" id="Resource_fmkhg"]
+script = ExtResource("6_s3crn")
+name = "seperate_weight"
+description = ""
+base_value = 4.0
+value = 4.0
+
+[sub_resource type="Resource" id="Resource_qdac5"]
+script = ExtResource("6_s3crn")
+name = "speed"
+description = ""
+base_value = 10.0
+value = 10.0
+
+[sub_resource type="Resource" id="Resource_c8xid"]
+script = ExtResource("6_s3crn")
+name = "speed_scale_exp"
+description = ""
+base_value = 0.3
+value = 0.3
+
+[sub_resource type="Resource" id="Resource_aodxh"]
+script = ExtResource("6_s3crn")
+name = "spin_weight"
+description = ""
+base_value = 0.0
+value = 1.0
+
+[sub_resource type="Resource" id="Resource_i67mf"]
+script = ExtResource("6_s3crn")
+name = "stay_on_screen_weight"
+description = ""
+base_value = 2.0
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_ksjoe"]
+script = ExtResource("6_s3crn")
+name = "steering_smoothness"
+description = ""
+base_value = 8.0
+value = 8.0
+
+[sub_resource type="Resource" id="Resource_ghgx6"]
+script = ExtResource("6_s3crn")
+name = "steering_strength"
+description = ""
+base_value = 8.0
+value = 8.0
+
+[sub_resource type="Resource" id="Resource_8v8ov"]
 script = ExtResource("5_la62n")
-steering_mode = 1
+speed = SubResource("Resource_qdac5")
+min_speed = SubResource("Resource_ie0qw")
+speed_scale_exp = SubResource("Resource_c8xid")
+perception_range = SubResource("Resource_a5k2f")
+personal_space = SubResource("Resource_j30x2")
+seperate_weight = SubResource("Resource_fmkhg")
+alignment_weight = SubResource("Resource_45mk7")
+cohesion_weight = SubResource("Resource_fgy5t")
+goal_weight = SubResource("Resource_af74n")
+stay_on_screen_weight = SubResource("Resource_i67mf")
+cam_moving_weight = SubResource("Resource_vfkmt")
+repel_radius = SubResource("Resource_so1i6")
+repel_weight = SubResource("Resource_ut4nd")
+flee_weight = SubResource("Resource_rt066")
+flee_duration = SubResource("Resource_qodog")
+spin_weight = SubResource("Resource_aodxh")
+minimum_group_size = SubResource("Resource_iy62o")
+steering_smoothness = SubResource("Resource_ksjoe")
+rotation_smoothness = SubResource("Resource_xe581")
+steering_strength = SubResource("Resource_ghgx6")
+rotation_mode = 2
 metadata/_custom_type_script = "uid://dstx1f47q2ki1"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
@@ -76,17 +230,14 @@ _data = {
 point_count = 7
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6lmcw"]
-size = Vector3(7, 5, 5)
+size = Vector3(7, 16, 5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6lmcw"]
 albedo_color = Color(0.59106696, 0.8964245, 0.3219582, 1)
 
-[sub_resource type="Resource" id="Resource_7wfhb"]
-script = ExtResource("22_8v8ov")
-terrain_material = ExtResource("23_8m3jb")
-size = Vector3i(32, 1, 32)
-child = ExtResource("21_06ebd")
-metadata/_custom_type_script = "uid://c2fvqmbrch2q0"
+[sub_resource type="BoxShape3D" id="BoxShape3D_hjb8m"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_hjb8m"]
 
 [node name="World" type="Node3D" unique_id=1809984319]
 script = ExtResource("1_ghvtn")
@@ -96,6 +247,7 @@ layer = 10
 
 [node name="Hud" parent="CanvasLayer" unique_id=719202679 instance=ExtResource("7_fxajv")]
 unique_name_in_owner = true
+mouse_filter = 1
 
 [node name="Flock" parent="." unique_id=1876045196 node_paths=PackedStringArray("camera_controller", "cursor", "subflocks") instance=ExtResource("2_jr17i")]
 unique_name_in_owner = true
@@ -105,13 +257,7 @@ camera_controller = NodePath("../Camera")
 num_boids = 20
 cursor = NodePath("MeshInstance3D2")
 subflocks = [NodePath("SubFlock")]
-boid_properties = SubResource("Resource_dc6vu")
-
-[node name="SubFlock" type="Node3D" parent="Flock" unique_id=318110185 node_paths=PackedStringArray("parent_flock", "camera_controller")]
-script = ExtResource("4_1uvjm")
-parent_flock = NodePath("..")
-camera_controller = NodePath("../../Camera")
-boid_properties = SubResource("Resource_aph6o")
+boid_properties = SubResource("Resource_8v8ov")
 
 [node name="Camera" parent="." unique_id=1488927985 node_paths=PackedStringArray("flock") instance=ExtResource("1_7n1yb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 4.999996, 4, -1.0000019)
@@ -120,6 +266,7 @@ min_zoom = 1.0
 
 [node name="Ground" type="CSGBox3D" parent="." unique_id=1501656876]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+visible = false
 size = Vector3(40, 1, 40)
 material = ExtResource("3_janvk")
 
@@ -165,6 +312,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -63)
 script = ExtResource("11_0lhw3")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Goal" unique_id=183862571]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 0)
 shape = SubResource("BoxShape3D_6lmcw")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Goal" unique_id=1737226008]
@@ -189,6 +337,7 @@ outline_size = 80
 [node name="WindZone" parent="." unique_id=2060379650 instance=ExtResource("13_665yd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 26)
 wind_direction = Vector3(1, 0, 0)
+wind_strength = 60.0
 
 [node name="WindTrails" parent="WindZone" unique_id=1253582775 instance=ExtResource("14_3fps6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, 0)
@@ -200,20 +349,46 @@ radius = 30.0
 
 [node name="Seagull" parent="." unique_id=628006216 instance=ExtResource("8_yhntr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -2)
+attack_range = 2.0
 
 [node name="Hunter" parent="." unique_id=431166771 instance=ExtResource("18_aph6o")]
 
 [node name="Storm" parent="." unique_id=904228582 instance=ExtResource("19_c2dwa")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, -52)
 
-[node name="ChunkGenerator" type="Node3D" parent="." unique_id=74537442]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+[node name="ChunkGenerator" type="Node3D" parent="." unique_id=74537442 node_paths=PackedStringArray("tracked_node")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, -6, 0)
 script = ExtResource("20_r87tm")
-library = SubResource("Resource_7wfhb")
+tracked_node = NodePath("../Camera")
+tracking_buffer = 128.0
+library = ExtResource("21_06ebd")
+direction = Vector3(0, 0, -1)
 metadata/_custom_type_script = "uid://bt145qipdjfhd"
 
 [node name="Monument" parent="." unique_id=1299745215 instance=ExtResource("24_8v8ov")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 17)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=764293437]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 1.7530136, -18.361774, -43.46116)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1301683315]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+shape = SubResource("BoxShape3D_hjb8m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1594190105]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+mesh = SubResource("BoxMesh_hjb8m")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="." unique_id=1355511757]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -22.067488, -15.253859, -43.46116)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2" unique_id=840622438]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+shape = SubResource("BoxShape3D_hjb8m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2" unique_id=1335545565]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+mesh = SubResource("BoxMesh_hjb8m")
 
 [connection signal="body_entered" from="Goal" to="Goal" method="_on_body_entered"]
 

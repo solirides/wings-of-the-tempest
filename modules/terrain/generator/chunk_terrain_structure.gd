@@ -3,10 +3,11 @@ class_name ChunkTerrainStructure
 
 @export var height: int;
 
-func is_in_bounds( position: Vector3i ) -> bool:
-	
-	return position.x >= 0 and position.y >= 0 and position.z >= 0 and \
-		position.x < size.x and position.y < size.y and position.z < size.z;
+func get_bounds() -> Vector3i:
+	return size;
+
+func get_height() -> int:
+	return height;
 
 func transform_voxel( position: Vector3i, value: float ) -> float:
 	

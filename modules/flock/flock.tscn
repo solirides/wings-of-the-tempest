@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://p7nyl4088ndh"]
 
 [ext_resource type="Script" uid="uid://dmevrx7885wp8" path="res://modules/flock/flock.gd" id="1_btmmu"]
+[ext_resource type="Script" uid="uid://bs41iuhewme8j" path="res://modules/flock/sub_flock.gd" id="2_btmmu"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_ftwdc"]
 top_radius = 0.3
@@ -10,8 +11,9 @@ height = 0.1
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_btmmu"]
 albedo_color = Color(0.078431375, 0.43529412, 1, 1)
 
-[node name="Flock" type="Node3D" unique_id=1876045196]
+[node name="Flock" type="Node3D" unique_id=1876045196 node_paths=PackedStringArray("groundRay")]
 script = ExtResource("1_btmmu")
+groundRay = NodePath("groundRayDOWN")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1580735606]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
@@ -21,3 +23,11 @@ shadow_enabled = true
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1280409849]
 mesh = SubResource("CylinderMesh_ftwdc")
 surface_material_override/0 = SubResource("StandardMaterial3D_btmmu")
+
+[node name="groundRayDOWN" type="RayCast3D" parent="." unique_id=1801870000]
+
+[node name="SubFlock" type="Node3D" parent="." unique_id=1838721350 node_paths=PackedStringArray("groundRay")]
+script = ExtResource("2_btmmu")
+groundRay = NodePath("groundRayDOWN")
+
+[node name="groundRayDOWN" type="RayCast3D" parent="SubFlock" unique_id=622253004]

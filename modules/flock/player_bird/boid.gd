@@ -82,8 +82,13 @@ func _ready() -> void:
 	food_detector.area_entered.connect(_on_food_detector_area_entered)
 
 func _physics_process(delta: float) -> void:
+	#print(global_position.y)
 	if !death_queued:
 		boid_movement(delta)
+	
+	#if (properties.flockIsFlying == false):
+		#print("I am going to land")
+		
 
 func _on_food_detector_area_entered(area: Area3D) -> void:
 	# Area3D is a child of the Food root node
@@ -133,7 +138,7 @@ func STAY_ON_SCREEN() -> Vector3 :
 
 #I see, I'm going to change this so that if they get within this repel radius, they call the "flee" function, which forces the boid to fly a set distance 180 
 func repel() -> Vector3:
-	var offset := global_position - flock.boid_goal
+	var offset := global_position - flock.flock_goal
 	offset.y = 0
 	var distance := offset.length()
 	
@@ -222,6 +227,7 @@ func spinning(center: Vector3, neighbors: Array) -> Vector3:
 	return tangent * spin_direction
 
 #This is WHERE THE MAGIC BEGINS, NO MORE CALCULATING BORING ASS VECTOR SHITS!!!!!!!!!
+
 func boid_movement(delta: float):
 	var camera_force : Vector3 = Vector3.ZERO
 	if cam_is_moving :
@@ -245,7 +251,7 @@ func boid_movement(delta: float):
 		flee_force = _flee(delta) * properties.flee_weight.value
 	else :
 		#heading towards the cursor/goal
-		goal_force = global_position.direction_to(flock.boid_goal) * properties.goal_weight.value
+		goal_force = global_position.direction_to(flock.flock_goal) * properties.goal_weight.value
 	
 	#seperation force
 	var seperation_force : Vector3 = seperation(neighbors) * properties.seperate_weight.value
@@ -264,7 +270,8 @@ func boid_movement(delta: float):
 	#print(boid_direction)
 	
 	#When the cursor is in spread out/repel mode the boids have slightly modified behaviors
-	if Input.is_action_pressed("repel"):
+	#the boids can ONLY SEPERATE IN THE AIR.
+	if properties.scatter && (properties.isLanding == false && properties.isLanded == false && properties.isRising == false):
 		repel_force = repel() * properties.repel_weight.value
 		#when the camera is not moving, boids in large groups should start spinning in place.
 		var boid_subflock_spin_force : Vector3 = Vector3.ZERO
@@ -330,7 +337,7 @@ func boid_movement(delta: float):
 				linear_velocity = -global_basis.z * properties.speed.value
 			else:
 				var current_angle = target_dir.signed_angle_to(current_dir, Vector3.UP)
-				var new_angle: float = lerp(current_angle, 0.0, properties.steering_strength * delta)
+				var new_angle: float = lerp(current_angle, 0.0, properties.steering_strength.value * delta)
 				linear_velocity = properties.speed.value * target_dir.rotated(Vector3.UP, new_angle)
 			# ensure speed is constant
 			linear_velocity = linear_velocity.normalized() * properties.speed.value
@@ -390,6 +397,9 @@ func kill_boid(death_animation: bool = true):
 	
 	boid_died.emit(self, global_position)
 
+# Move the boid to a new flock and adjust the boids and all_boids variables accordingly.
+# This boid should be in the boids variable of only the subflock if split.
+# This boid should be in all_boids for the main flock even when in a subflock.
 func transfer_to_flock(new_flock: Flock):
 	if new_flock == flock:
 		return
