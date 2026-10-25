@@ -13,6 +13,7 @@ class_name Flock
 @export var starve_rate: float = 2.0
 @export var starve_death_interval: float = 15.0
 @export var speed_penalty_interval: float = 0.1
+@export var min_hunger_speed_penalty: float = 0.7
 
 @export var num_boids: int = 10
 @export var spawn_radius: float = 10.0
@@ -29,7 +30,7 @@ var boid_scene = preload("res://modules/flock/player_bird/player_bird.tscn")
 # all boids including ones in subflocks
 var all_boids: Array[Boid] = []
 
-signal hunger_changed
+signal hunger_changed(current_hunger:float)
 
 #This is such a JANK way of doing this but...
 var flockMaxHeight = 5
@@ -41,14 +42,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	#THIS changes causses the boids to repel... ALSO NO LONGER A HOLD THING!!!!
 	if event.is_action_pressed("repel") :
-		boid_properties.scatter = !boid_properties.scatter
-		boid_properties.default_state = !boid_properties.default_state
-		
-		#there is probably a MUCH better way of implementing this... but I'm tired :(
 		if boid_properties.flockIsLanded :
 			print("You cannot scatter while the boids are meant to be landed!")
 			boid_properties.scatter = false
-		
+		else:
+			# toggle boid scattering mode
+			boid_properties.scatter = !boid_properties.scatter
+			boid_properties.default_state = !boid_properties.default_state
 		print("I'm chaning scatter states")
 		
 	#This detects if 
@@ -57,38 +57,43 @@ func _unhandled_input(event: InputEvent) -> void:
 		#This is SUPPOSED to run when the Boid are flying in the air and you want them to land.
 		if boid_properties.flockIsFlying:
 			print("The boids are supposed to land now.")
-			boid_properties.flockIsFlying = !boid_properties.flockIsFlying
-			boid_properties.flockIsLanded = !boid_properties.flockIsLanded
+			boid_properties.flockIsFlying = false
+			# do not set flockIsLanded until it actually lands
+			#boid_properties.flockIsLanded = false
 			boid_properties.scatter = false
 			boid_properties.default_state = true
-			
 		#This is should run when the Boids are landed and you want them to get their lard asses in the air.
-		elif boid_properties.flockIsLanded:
+		#elif boid_properties.flockIsLanded:
+		else:
 			print("RISE FROM YOUR GRAVES!!!!! EHEHEHEHEHEH")
-			boid_properties.flockIsLanded = !boid_properties.flockIsLanded
-			boid_properties.flockIsFlying = !boid_properties.flockIsFlying
+			boid_properties.flockIsLanded = false
+			boid_properties.flockIsFlying = true
 			
 			global_position.y = flockMaxHeight
 	
-#This function will always update the flocks position to the nearest piece of terrain.
-@onready var groundRay : RayCast3D = $groundRay
-func landedFlock() -> void :
-	groundRay.target_position = Vector3(0, -100, 0)
+
+#YO WSG Caden! This is the function I need help with!!!!!
+#Right now, it casts a raycast -100(meters?) from the flocks position looking for solid ground.
+#If it hits solid ground, it sets the the flocks global_position.y position to the y-axis.
+#If it hits nothing, it just runs a print statement and was supposed to return the flock to "flockMaxHeight"
+#Essentially, while flock is meant to be "grounded" it should draw accross the terrain, updating it height as needed.
+
+#It's obviously far from done, since I intended to switch over to the functions you wrote.
+#Feel free do to whatever you want with this, I lowkey don't know what I am dong!!!! :0))))
+func attempt_landing() -> void :
 	
-	groundRay.force_raycast_update()
+	var above_chunk: Chunk = Chunk.get_chunk_containing_global_position( global_position );
+	var relative_position: = global_position - above_chunk.global_position;
+	var horizontal: = Vector2( relative_position.x, relative_position.z );
 	
-	if groundRay.is_colliding() :
+	if above_chunk and above_chunk.is_height_accessible( horizontal ):
 		print("found something to land on")
-		var collisionPoint = groundRay.get_collision_point()
-		
-		
-		global_position.y = collisionPoint.y
-		
-		
-		
-	else :
+		global_position.y = above_chunk.global_position.y + above_chunk.get_height( above_chunk.heightmap_accessibility, horizontal );
+		boid_properties.flockIsLanded = true
+	
+	else:
 		print("Didn't see anything, sorry!")
-		#global_position.y = flockMaxHeight
+		global_position.y = flockMaxHeight
 
 func _process(delta: float) -> void:
 	#this allows for the boid's main goal to be updated later on. Maybe for a better flock split system??????
@@ -100,26 +105,32 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	
-	if boid_properties.flockIsLanded :
-		landedFlock()
+	# if flock is attempting to land and hasn't found a landing spot yet
+	if boid_properties.flockIsFlying == false and boid_properties.flockIsLanded == false:
+		# try to find something to land on
+		attempt_landing()
 	
-	if current_hunger > 50.0:
-		boid_properties.speed.value = max(boid_properties.min_speed.value, boid_properties.speed.value - speed_penalty_interval * delta)
+	#if current_hunger > 50.0:
+		#boid_properties.speed.value = max(boid_properties.min_speed.value, boid_properties.speed.value - speed_penalty_interval * delta)
 	
-#in essence both of these if statements are decreasing the hunger
-#if current_hunger > 0:
-	#current_hunger = max(0.0, current_hunger - starve_rate * delta)
-	#print("hunger: " + str(current_hunger))
-	#this code block inflicts speed penalties below 50 hunger
-	#if current_hunger < 50.0:
-		#for boid in all_boids:
-			#boid.speed = max(0.0, boid.speed - speed_penalty_interval * delta)
-	
-	#hunger_changed.emit(current_hunger)
-#else:
-	#there is no speed penalty because you already ran out of hunger
-	#current_hunger = min(0.0, current_hunger - starve_rate * delta)
-	#hunger_changed.emit(current_hunger)
+	#in essence both of these if statements are decreasing the hunger
+	if current_hunger > 0:
+		current_hunger = max(0.0, current_hunger - starve_rate * delta)
+		print("hunger: " + str(current_hunger))
+		# this code block inflicts speed penalties below 50 hunger
+		if current_hunger < 50.0:
+			for boid in all_boids:
+				var new_speed_mult = lerp(min_hunger_speed_penalty, 1.0, current_hunger / max_hunger)
+				var modifier = StatModifier.new("hunger_penalty", new_speed_mult, StatModifier.ModifierType.MULTIPLY)
+				boid_properties.speed.remove_modifier("hunger_penalty")
+				boid_properties.speed.apply_modifier(modifier)
+				#boid.speed = max(0.0, boid.speed - speed_penalty_interval * delta)
+		
+		hunger_changed.emit(current_hunger)
+	else:
+		# there is no speed penalty because you already ran out of hunger
+		current_hunger = min(0.0, current_hunger - starve_rate * delta)
+		hunger_changed.emit(current_hunger)
 	
 	#this if-statement will kill birds of starvation periodically
 	if current_hunger < -starve_death_interval:

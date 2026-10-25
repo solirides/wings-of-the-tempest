@@ -14,29 +14,18 @@ static func get_chunk_containing_global_position( at_position: Vector3 ) -> Chun
 	
 	return null;
 
-## Returns a list of chunks containing the volume bounded by the global ray's start and endpoints
-static func get_chunks_containing_global_ray( start_position: Vector3, end_position: Vector3 ) -> Array[ Chunk ]:
-	
-	var returned_chunks: Array[ Chunk ];
-	
-	var min_pos: = start_position.min( end_position );
-	var max_pos: = start_position.max( end_position );
-	
-	for chunk in all:
-		if chunk.global_position >= min_pos and chunk.global_position + chunk.get_global_size() < max_pos:
-			returned_chunks.append( chunk );
-	
-	return returned_chunks;
-
 ## Returns the global position at the intersection between the global ray and all chunks' terrain. Returns Vector3.INF if no intersection is found
-static func intersect_all( start_position: Vector3, end_position: Vector3 ) -> Vector3:
+static func intersect( start: Vector3, end: Vector3, world: World3D ) -> Vector3:
 	
-	for chunk in get_chunks_containing_global_ray( start_position, end_position ):
-		var intersection: = chunk.intersect( start_position - chunk.global_position, end_position - chunk.global_position );
-		if intersection != Vector3.INF:
-			return intersection;
+	var space_state: = world.direct_space_state;
+	var ray_query: = PhysicsRayQueryParameters3D.create( start, end, 4 );
 	
-	return Vector3.INF;
+	var ray_result: = space_state.intersect_ray( ray_query );
+	
+	if ray_result.is_empty():
+		return Vector3.INF;
+	
+	return ray_result.position;
 
 
 
@@ -44,7 +33,8 @@ var terrain_size: Vector3i;
 var terrain_scale: Vector3;
 var mesh_instance: MeshInstance3D;
 var collision_instance: StaticBody3D;
-var heightmap: Array3D;
+var heightmap_terrain: Array3D;
+var heightmap_accessibility: Array3D;
 var heightmap_mesh_instance: MeshInstance3D;
 
 
@@ -60,15 +50,24 @@ func set_terrain_material( material: Material ) -> void:
 
 ## Create terrain for this chunk based on a 3D grid of scalar voxel data
 func create_terrain_mesh( scalar_field: Array3D ) -> void:
-	var mesh = MarchingCube.generate_mesh( MarchingCube.generate_vertices( scalar_field, 0.0, terrain_scale ) );
-	mesh_instance.set_deferred( "mesh", mesh );
-	collision_instance.call_deferred( "create_shape_owner", mesh );
+	
+	var mesh: = MarchingCube.generate_mesh( MarchingCube.generate_vertices( scalar_field, 0.0, terrain_scale ) );	
+	mesh_instance.mesh = mesh;
+	
+	var shape: = ConcavePolygonShape3D.new();
+	shape.set_faces( mesh.get_faces() );
+	var shape_owner: = CollisionShape3D.new();
+	shape_owner.shape = shape;
+	
+	collision_instance.add_child( shape_owner, false, INTERNAL_MODE_FRONT );
+	collision_instance.collision_layer = 4; # Terrain layer
 
 ## Create heightmap for this chunk based on a 3d grid of scalar voxel data
-func create_heightmap( scalar_field: Array3D, height: int ) -> void:
-	heightmap = Array3D.packedFloat32( Vector3i( terrain_size.x + 1, 1, terrain_size.z + 1 ) );
-	var group = WorkerThreadPool.add_group_task( create_heightmap_at_position.bind( scalar_field, height, heightmap ), heightmap.get_length(), -1, false, "Heightmap Generation thread" );
+func create_heightmap( scalar_field: Array3D, height: int ) -> Array3D:
+	var new_heightmap = Array3D.packedFloat32( Vector3i( terrain_size.x + 1, 1, terrain_size.z + 1 ) );
+	var group = WorkerThreadPool.add_group_task( create_heightmap_at_position.bind( scalar_field, height, new_heightmap ), new_heightmap.get_length(), -1, false, "Heightmap Generation thread" );
 	WorkerThreadPool.wait_for_group_task_completion( group );
+	return new_heightmap;
 
 ## Create the heightmap at one horizontal postion. Used by threads when calling create_heightmap()
 func create_heightmap_at_position( index: int, scalar_field: Array3D, height: int, this_heightmap: Array3D ) -> void:
@@ -90,22 +89,26 @@ func create_heightmap_at_position( index: int, scalar_field: Array3D, height: in
 		# If value indicates inside terrain...
 		if val > 0:
 			
-			# If at top of field, set as innaccessible
+			# If at top of field, set as top
+			if y == scalar_field.get_size().y:
+				this_heightmap.set_at( horizontal, y );
+				break;
+			
+			# If exceeding accessible height, set as innaccessible
 			if y == height:
-				heightmap.set_at( horizontal, -1 );
+				this_heightmap.set_at( horizontal, -1 );
+				break
 			
 			# Otherwise, set to position proportional between this and last value
-			else:
-				heightmap.set_at( horizontal, 
-					lerp( y, y + 1, val / ( val - prev_val ) )
-				);
-			
-			# Exit loop
+			this_heightmap.set_at( horizontal, 
+				lerp( y, y + 1, val / ( val - prev_val ) )
+			);
 			break;
+		
 		prev_val = val;
 
 ## Create a mesh to draw the heightmap, for debugging purposes
-func create_heightmap_mesh( resolution: float ) -> void:
+func create_heightmap_mesh( this_heightmap: Array3D, resolution: float ) -> void:
 	
 	#Create surface
 	var surface_tool: = SurfaceTool.new();
@@ -113,15 +116,14 @@ func create_heightmap_mesh( resolution: float ) -> void:
 	surface_tool.set_smooth_group( -1 );
 	
 	#Add vertices
-	for iter: Vector3i in Rect3iIterator.new( Vector3i.ZERO, ( heightmap.get_size() - Vector3i( 1, 0, 1 ) ) * resolution ):
+	for iter: Vector3i in Rect3iIterator.new( Vector3i.ZERO, ( this_heightmap.get_size() - Vector3i( 1, 0, 1 ) ) * resolution ):
 		var pos: = Vector3( iter ) / resolution * terrain_scale;
 		if is_height_accessible( Vector2( pos.x, pos.z ) ):
-			pos.y = get_height( Vector2( pos.x, pos.z ) );
+			pos.y = get_height( this_heightmap, Vector2( pos.x, pos.z ) );
 			surface_tool.add_vertex( pos * scale );
 	
 	surface_tool.index();
-	heightmap_mesh_instance.mesh = surface_tool.commit();
-	heightmap_mesh_instance.material_override = heightmap_debug_material;
+	return surface_tool.commit();
 
 ## Create objects for this chunk based on a list of objects and vectors
 func create_objects( objects: Dictionary[ ChunkObject, Vector2 ] ) -> void:
@@ -132,7 +134,7 @@ func create_objects( objects: Dictionary[ ChunkObject, Vector2 ] ) -> void:
 		add_child( object_node );
 		object_node.position = Vector3( object_pos.x, object.height_offset, object_pos.y );
 		if object.height_mode == ChunkObject.HeightMode.SNAP:
-			object_node.position.y += get_height( Vector2( object_pos.x, object_pos.y ) );
+			object_node.position.y += get_height( heightmap_terrain, Vector2( object_pos.x, object_pos.y ) );
 
 
 
@@ -158,21 +160,8 @@ func _exit_tree() -> void:
 
 
 
-## Find the intersection of a ray, from start to end, with the terrain mesh. Returns Vector3.INF if no intersection is found.\nMUST BE CALLED DURING PHYSICS PROCESSING
-func intersect( start: Vector3, end: Vector3 ) -> Vector3:
-	
-	var space_state: = get_world_3d().direct_space_state;
-	var ray_query: = PhysicsRayQueryParameters3D.create( start, end );
-	
-	var ray_result: = space_state.intersect_ray( ray_query );
-	
-	if ray_result.is_empty():
-		return Vector3.INF;
-	
-	return ray_result.position;
-
-## Find vertical position of heighest terrain below accessible height at horizontal position
-func get_height( coordinates: Vector2 ) -> float:
+## Find vertical position using a heightmap at a horizontal position
+func get_height( heightmap: Array3D, coordinates: Vector2 ) -> float:
 	coordinates /= Vector2( terrain_scale.x, terrain_scale.z );
 	var integer: Vector2i = coordinates.floor();
 	var fractional: = coordinates.posmod( 1.0 );
@@ -192,4 +181,4 @@ func get_height( coordinates: Vector2 ) -> float:
 
 ## Check if position at accessible height is occluded by terrain
 func is_height_accessible( coordinates: Vector2 ) -> bool:
-	return get_height( coordinates ) >= 0;
+	return get_height( heightmap_accessibility, coordinates ) >= 0;

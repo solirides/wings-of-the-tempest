@@ -14,7 +14,6 @@ class_name ChunkGenerator
 @export var direction: Vector3;
 
 var current_state: ChunkGenState;
-var chunk_meshing_thread: Thread;
 
 
 
@@ -45,18 +44,16 @@ func create_chunk( state: ChunkGenState ) -> void:
 	# Increment state ASAP
 	state._increment();
 	
-	# Create heightmap and objects
-	chunk.create_heightmap( terrain_data, chunk_def.terrain_accessible_height );
+	# Create heightmaps and objects
+	chunk.heightmap_accessibility = chunk.create_heightmap( terrain_data, chunk_def.terrain_accessible_height );
+	chunk.heightmap_terrain = chunk.create_heightmap( terrain_data, chunk_def.terrain_size.y );
 	chunk.create_objects( chunk_def.get_objects() );
 	
-	# Create chunk terrain mesh
-	if chunk_meshing_thread.is_started():
-		chunk_meshing_thread.wait_to_finish();
-	
-	chunk_meshing_thread.start( chunk.create_terrain_mesh.bind( terrain_data ) );
+	# Create mesh
+	chunk.create_terrain_mesh( terrain_data );
 	
 	# DEBUG
-	chunk.create_heightmap_mesh( 4 );
+	chunk.create_heightmap_mesh( chunk.heightmap_terrain, 4 );
 
 
 
@@ -65,12 +62,6 @@ func _ready() -> void:
 	#Initialize state, with Time used as random seed
 	@warning_ignore("narrowing_conversion")
 	current_state = ChunkGenState.new( Time.get_unix_time_from_system() );
-	
-	#Initialize thread
-	chunk_meshing_thread = Thread.new();
-
-func _exit_tree() -> void:
-	chunk_meshing_thread.wait_to_finish();
 
 #TEST
 func _unhandled_input( event: InputEvent ) -> void:

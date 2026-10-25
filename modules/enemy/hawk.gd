@@ -41,8 +41,10 @@ func _physics_process(delta: float) -> void:
 	# handle attack
 	super._physics_process(delta)
 
-func attack_function(target: Node3D):
+func attack_function(target: Node3D) -> bool:
 	# override function from Enemy class
 	if target.is_in_group("boids"):
 		#print("kill target")
 		target.kill_boid()
+		return true
+	return false
