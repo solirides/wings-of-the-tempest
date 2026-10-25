@@ -22,7 +22,7 @@ func _ready() -> void:
 		var distance := randf_range(0.0, spawn_radius)
 		new_boid.position = Vector3(
 			cos(angle) * distance,
-			flockMaxHeight, #the boids spawn at the same height as the flock
+			boid_properties.flockMaxHeight, #the boids spawn at the same height as the flock
 			sin(angle) * distance
 		)
 
