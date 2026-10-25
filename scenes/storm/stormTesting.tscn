@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://fmcuq58nap5n" path="res://scenes/storm/storm_script.gd" id="1_hrl36"]
 [ext_resource type="PackedScene" uid="uid://dp2pii0qjqgy2" path="res://modules/storm_wall/storm_wall_2.tscn" id="2_i225i"]
 [ext_resource type="Script" uid="uid://ltydgk0o4cj3" path="res://scenes/storm/rain.gd" id="3_d4m54"]
+[ext_resource type="Script" uid="uid://c4aspvm5lui4n" path="res://modules/wind_zone/wind_zone.gd" id="4_frhyh"]
+[ext_resource type="Material" uid="uid://dlt7l1ak5marx" path="res://assets/materials/wind_trail_material.tres" id="5_rl88t"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_f24ow"]
 height = 30.0
@@ -14,11 +16,42 @@ bottom_radius = 5.0
 height = 30.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_xotop"]
+radius = 15.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_xotop"]
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rl88t"]
+frequency = 0.05
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_frhyh"]
+noise = SubResource("FastNoiseLite_rl88t")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_rl88t"]
+radius = 11.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_iyi2d"]
+emission_shape = 3
+emission_box_extents = Vector3(20, 3, 3)
+inherit_velocity_ratio = 1.0
+spread = 15.0
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, 0, 0)
+turbulence_enabled = true
+turbulence_noise_strength = 0.01
+turbulence_influence_min = 0.010000001
+turbulence_influence_max = 0.060000002
+
+[sub_resource type="Curve" id="Curve_gu2oc"]
+_data = [Vector2(0, 0), 0.0, 1.1385543, 0, 0, Vector2(0.63703704, 0.49397588), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.8332696, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_qeaqf"]
+material = ExtResource("5_rl88t")
+sections = 6
+curve = SubResource("Curve_gu2oc")
+
 [node name="Storm" type="Area3D" unique_id=904228582]
-transform = Transform3D(25, 0, 0, 0, 25, 0, 0, 0, 25, 0, 0, 0)
 script = ExtResource("1_hrl36")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=888527240]
@@ -33,7 +66,6 @@ mesh = SubResource("CylinderMesh_6lmcw")
 [node name="storm_wall_2" parent="." unique_id=479115584 instance=ExtResource("2_i225i")]
 
 [node name="Rain_Hitbox" type="Area3D" parent="." unique_id=1861455761]
-transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, 0, 0, 0)
 script = ExtResource("3_d4m54")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Rain_Hitbox" unique_id=1798419822]
@@ -42,4 +74,37 @@ shape = SubResource("SphereShape3D_xotop")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Rain_Hitbox" unique_id=1199248022]
 transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, 0, 0, 0)
+visible = false
 mesh = SubResource("SphereMesh_xotop")
+
+[node name="WindHitbox" type="Area3D" parent="." unique_id=247244507 node_paths=PackedStringArray("timer", "particle_emitter", "particle_attractor")]
+script = ExtResource("4_frhyh")
+mode = 1
+wind_map = SubResource("NoiseTexture2D_frhyh")
+timer = NodePath("Timer")
+particle_emitter = NodePath("WindTrails")
+particle_attractor = NodePath("GPUParticlesAttractorSphere3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WindHitbox" unique_id=1929681861]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+shape = SubResource("SphereShape3D_rl88t")
+
+[node name="Timer" type="Timer" parent="WindHitbox" unique_id=785407920]
+wait_time = 1.5
+
+[node name="WindTrails" type="GPUParticles3D" parent="WindHitbox" unique_id=1253582775]
+layers = 2
+cast_shadow = 0
+amount = 20
+lifetime = 3.0
+trail_enabled = true
+trail_lifetime = 0.4
+process_material = SubResource("ParticleProcessMaterial_iyi2d")
+draw_pass_1 = SubResource("TubeTrailMesh_qeaqf")
+
+[node name="GPUParticlesAttractorSphere3D" type="GPUParticlesAttractorSphere3D" parent="WindHitbox" unique_id=212130559]
+strength = 30.0
+cull_mask = 4293918722
+radius = 30.0
+
+[connection signal="timeout" from="WindHitbox/Timer" to="WindHitbox" method="_on_timer_timeout"]

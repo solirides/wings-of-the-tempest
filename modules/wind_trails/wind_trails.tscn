@@ -3,6 +3,8 @@
 [ext_resource type="Material" uid="uid://dlt7l1ak5marx" path="res://assets/materials/wind_trail_material.tres" id="1_5pq56"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fpwb5"]
+emission_shape = 1
+emission_sphere_radius = 8.0
 inherit_velocity_ratio = 1.0
 spread = 15.0
 initial_velocity_min = 5.0
@@ -24,7 +26,7 @@ curve = SubResource("Curve_gu2oc")
 
 [node name="WindTrails" type="GPUParticles3D" unique_id=1253582775]
 cast_shadow = 0
-amount = 4
+amount = 10
 lifetime = 3.0
 trail_enabled = true
 trail_lifetime = 0.4

@@ -30,7 +30,6 @@ name = "alignment_weight"
 description = ""
 base_value = 0.0
 value = 1.0
-expirations = null
 
 [sub_resource type="Resource" id="Resource_vfkmt"]
 script = ExtResource("6_s3crn")
@@ -38,7 +37,6 @@ name = "cam_moving_weight"
 description = ""
 base_value = 1.2
 value = 1.2
-expirations = null
 
 [sub_resource type="Resource" id="Resource_fgy5t"]
 script = ExtResource("6_s3crn")
@@ -46,7 +44,6 @@ name = "cohesion_weight"
 description = ""
 base_value = 0.0
 value = 1.0
-expirations = null
 
 [sub_resource type="Resource" id="Resource_qodog"]
 script = ExtResource("6_s3crn")
@@ -54,7 +51,6 @@ name = "flee_duration"
 description = ""
 base_value = 3.0
 value = 3.0
-expirations = null
 
 [sub_resource type="Resource" id="Resource_rt066"]
 script = ExtResource("6_s3crn")
@@ -62,7 +58,6 @@ name = "flee_weight"
 description = ""
 base_value = 2.1
 value = 2.1
-expirations = null
 
 [sub_resource type="Resource" id="Resource_af74n"]
 script = ExtResource("6_s3crn")
@@ -70,7 +65,6 @@ name = "goal_weight"
 description = ""
 base_value = 1.2
 value = 1.2
-expirations = null
 
 [sub_resource type="Resource" id="Resource_ie0qw"]
 script = ExtResource("6_s3crn")
@@ -78,7 +72,6 @@ name = "min_speed"
 description = ""
 base_value = 5.0
 value = 5.0
-expirations = null
 
 [sub_resource type="Resource" id="Resource_iy62o"]
 script = ExtResource("6_s3crn")
@@ -86,7 +79,6 @@ name = "minimum_group_size"
 description = ""
 base_value = 5.0
 value = 5.0
-expirations = null
 
 [sub_resource type="Resource" id="Resource_a5k2f"]
 script = ExtResource("6_s3crn")
@@ -94,7 +86,6 @@ name = "perception_range"
 description = ""
 base_value = 8.0
 value = 8.0
-expirations = null
 
 [sub_resource type="Resource" id="Resource_j30x2"]
 script = ExtResource("6_s3crn")
@@ -102,7 +93,6 @@ name = "personal_space"
 description = ""
 base_value = 4.0
 value = 4.0
-expirations = null
 
 [sub_resource type="Resource" id="Resource_so1i6"]
 script = ExtResource("6_s3crn")
@@ -110,7 +100,6 @@ name = "repel_radius"
 description = ""
 base_value = 5.0
 value = 5.0
-expirations = null
 
 [sub_resource type="Resource" id="Resource_ut4nd"]
 script = ExtResource("6_s3crn")
@@ -118,7 +107,6 @@ name = "repel_weight"
 description = ""
 base_value = 5.0
 value = 5.0
-expirations = null
 
 [sub_resource type="Resource" id="Resource_xe581"]
 script = ExtResource("6_s3crn")
@@ -126,7 +114,6 @@ name = "rotation_smoothness"
 description = ""
 base_value = 8.0
 value = 8.0
-expirations = null
 
 [sub_resource type="Resource" id="Resource_fmkhg"]
 script = ExtResource("6_s3crn")
@@ -134,7 +121,6 @@ name = "seperate_weight"
 description = ""
 base_value = 4.0
 value = 4.0
-expirations = null
 
 [sub_resource type="Resource" id="Resource_qdac5"]
 script = ExtResource("6_s3crn")
@@ -142,7 +128,6 @@ name = "speed"
 description = ""
 base_value = 10.0
 value = 10.0
-expirations = null
 
 [sub_resource type="Resource" id="Resource_c8xid"]
 script = ExtResource("6_s3crn")
@@ -150,7 +135,6 @@ name = "speed_scale_exp"
 description = ""
 base_value = 0.3
 value = 0.3
-expirations = null
 
 [sub_resource type="Resource" id="Resource_aodxh"]
 script = ExtResource("6_s3crn")
@@ -158,7 +142,6 @@ name = "spin_weight"
 description = ""
 base_value = 0.0
 value = 1.0
-expirations = null
 
 [sub_resource type="Resource" id="Resource_i67mf"]
 script = ExtResource("6_s3crn")
@@ -166,7 +149,6 @@ name = "stay_on_screen_weight"
 description = ""
 base_value = 2.0
 value = 2.0
-expirations = null
 
 [sub_resource type="Resource" id="Resource_ksjoe"]
 script = ExtResource("6_s3crn")
@@ -174,7 +156,6 @@ name = "steering_smoothness"
 description = ""
 base_value = 8.0
 value = 8.0
-expirations = null
 
 [sub_resource type="Resource" id="Resource_ghgx6"]
 script = ExtResource("6_s3crn")
@@ -182,7 +163,6 @@ name = "steering_strength"
 description = ""
 base_value = 8.0
 value = 8.0
-expirations = null
 
 [sub_resource type="Resource" id="Resource_8v8ov"]
 script = ExtResource("5_la62n")
