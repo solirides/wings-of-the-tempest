@@ -45,7 +45,7 @@ func split_flock(num: int, subflock:SubFlock):
 		boid.transfer_to_flock(subflock)
 	
 	# set subflock target
-	subflock.boid_goal = get_mouse_world_position(camera_controller.camera_node)
+	subflock.flock_goal = get_mouse_world_position(camera_controller.camera_node)
 	#print(subflock.boid_goal)
 	
 

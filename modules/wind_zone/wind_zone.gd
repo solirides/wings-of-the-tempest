@@ -20,4 +20,7 @@ func _physics_process(delta: float) -> void:
 			
 
 func apply_wind(body: PhysicsBody3D):
-	body.apply_central_force(wind_strength * wind_direction.normalized())
+	var force = wind_strength * wind_direction.normalized()
+	body.apply_central_force(force)
+	# keep track of force applied for display
+	body.wind_force += force

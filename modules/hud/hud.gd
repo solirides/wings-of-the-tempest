@@ -47,4 +47,5 @@ func update_debug_info():
 			lines.append("hunger speed modifier: " + str(Global.flock.boid_properties.speed.get_modifier("hunger_penalty").modifier_value))
 		lines.append("speed: " + str(Global.flock.boid_properties.speed.value))
 		lines.append("hydration: " + str(Global.flock.hydration))
+		lines.append("scattering: " + str(Global.flock.boid_properties.scatter))
 	$DebugInfo.text = "\n".join(lines)

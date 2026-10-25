@@ -92,7 +92,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			# toggle boid scattering mode
 			boid_properties.scatter = !boid_properties.scatter
 			boid_properties.default_state = !boid_properties.default_state
-		print("I'm chaning scatter states")
+		print("I'm changing scatter states")
 		
 	#This detects if 
 	if event.is_action_pressed("land") :
@@ -195,9 +195,8 @@ func _physics_process(delta: float) -> void:
 	if current_hunger < -starve_death_interval:
 		print("starved")
 		current_hunger = 0.0
-		all_boids[0].kill_boid() #this line can be assumed 
-		# to not trigger a bad memory access error because
-		# the entire hunger update system depends on a boid existing
+		if len(all_boids) > 0:
+			all_boids[0].kill_boid()
 
 func eat(value: float) -> void:
 	if (current_hunger < 0.0):

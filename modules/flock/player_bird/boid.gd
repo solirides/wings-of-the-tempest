@@ -74,6 +74,10 @@ var move_direction: Vector3:
 var death_particles = preload("res://modules/flock/death_particles.tscn")
 var death_queued = false
 
+# keep track of force applied for display
+# reset after every physics frame
+var wind_force: Vector3 = Vector3.ZERO
+
 @onready var food_detector: Area3D = $FoodDetector
 
 func _ready() -> void:
@@ -365,7 +369,9 @@ func boid_movement(delta: float):
 	match properties.rotation_mode:
 		BoidProperties.ROTATION_MODE.LERP_TO_VELOCITY:
 			if linear_velocity.length_squared() > 0.001:
-				var target_rotation = Transform3D.IDENTITY.looking_at(linear_velocity, Vector3.UP).basis
+				# cancel the velocity contribution from wind
+				var own_velocity = linear_velocity - wind_force*delta
+				var target_rotation = Transform3D.IDENTITY.looking_at(own_velocity, Vector3.UP).basis
 				target_rotation = target_rotation.orthonormalized()
 				global_transform.basis = global_transform.basis.slerp(target_rotation, properties.rotation_smoothness.value * delta)
 		BoidProperties.ROTATION_MODE.LERP_TO_GOAL:
@@ -377,6 +383,9 @@ func boid_movement(delta: float):
 			if linear_velocity.length_squared() > 0.001:
 				var target_pos = global_position + linear_velocity
 				look_at(target_pos, Vector3.UP)
+	
+	wind_force = Vector3.ZERO
+	
 
 func kill_boid(death_animation: bool = true):
 	# prevent this function from running multiple times

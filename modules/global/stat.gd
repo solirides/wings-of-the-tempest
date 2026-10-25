@@ -10,6 +10,8 @@ class_name Stat
 
 @export var max_value:float = INF
 @export var min_value:float = -INF
+#
+#@export var expirations = []
 
 func _init(p_name:String = "", p_description:String = "", \
 		p_base_value:float = 0, p_min_value:float = -INF, p_max_value:float = INF, \
@@ -21,6 +23,7 @@ func _init(p_name:String = "", p_description:String = "", \
 	modifiers = p_modifiers
 	max_value = p_max_value
 	min_value = p_min_value
+	
 
 # recalculate the value of the stat with all modifiers
 func update_value():
@@ -39,14 +42,18 @@ func add_modifier(modifier:StatModifier):
 	modifiers.append(modifier)
 	value = modifier.apply_modifier(value)
 	value = clamp(value, min_value, max_value)
+	
 
 func remove_modifier(name: String):
 	for modifier in modifiers:
 		if modifier.name == name:
-			modifiers.erase(modifier)
+			remove_modifier_directly(modifier)
 			#print("modifier found and removed")
 			break
 	update_value()
+
+func remove_modifier_directly(modifier: StatModifier):
+	modifiers.erase(modifier)
 
 func get_modifier(name: String) -> StatModifier:
 	for modifier in modifiers:
