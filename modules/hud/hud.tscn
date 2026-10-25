@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://oi42l00xp8p1" path="res://WoT_tomato_big.png" id="3_fib5d"]
 [ext_resource type="Texture2D" uid="uid://d0cvmckaqaoa7" path="res://assets/textures/UI/healthbarProgress.png" id="3_v6k41"]
 [ext_resource type="Script" uid="uid://cxboty7yf78n1" path="res://modules/hud/level_end_screen.gd" id="4_v6k41"]
-[ext_resource type="Texture2D" uid="uid://bj3hijlfqx172" path="res://flock.png" id="6_ugr31"]
+[ext_resource type="Texture2D" uid="uid://b682hdcf1k2x4" path="res://WoT_water_1.png" id="6_ugr31"]
 
 [sub_resource type="SystemFont" id="SystemFont_0lhw3"]
 font_names = PackedStringArray("Noto Sans", "Open Sans", "Cantarell")
