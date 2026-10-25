@@ -44,5 +44,12 @@ func remove_modifier(name: String):
 	for modifier in modifiers:
 		if modifier.name == name:
 			modifiers.erase(modifier)
-			print("modifier found and removed")
+			#print("modifier found and removed")
 			break
+	update_value()
+
+func get_modifier(name: String) -> StatModifier:
+	for modifier in modifiers:
+		if modifier.name == name:
+			return modifier
+	return null

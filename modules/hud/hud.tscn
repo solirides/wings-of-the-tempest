@@ -34,6 +34,8 @@ subpixel_positioning = 0
 font = SubResource("SystemFont_sunxf")
 font_size = 30
 
+[sub_resource type="LabelSettings" id="LabelSettings_sd20g"]
+
 [node name="Hud" type="Control" unique_id=781835399]
 layout_mode = 3
 anchors_preset = 15
@@ -154,3 +156,13 @@ stretch_margin_left = 1
 stretch_margin_right = 1
 texture_under = ExtResource("2_sunxf")
 texture_progress = ExtResource("3_v6k41")
+
+[node name="DebugInfo" type="Label" parent="." unique_id=1673410553]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+label_settings = SubResource("LabelSettings_sd20g")
+vertical_alignment = 2
