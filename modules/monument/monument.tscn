@@ -8,8 +8,8 @@
 
 [sub_resource type="Resource" id="Resource_awhtn"]
 script = ExtResource("2_jq2bj")
+name = "monument_speed"
 modifier_value = 2.0
-modifier_type = 1
 metadata/_custom_type_script = "uid://bftxduhaltc0m"
 
 [sub_resource type="Resource" id="Resource_04lvu"]

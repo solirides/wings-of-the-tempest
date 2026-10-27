@@ -1,7 +1,7 @@
 extends Area3D
 
-const STORM_DIRECTION: Vector3 = Vector3(0.7071, 0.0, 0.7071) #unit vector @ 45 degrees
-const STORM_SPEED: float = 5.0 #Arbitray value for now
+const STORM_DIRECTION: Vector3 = Vector3(-0.7071, 0.0, -0.7071) #unit vector @ 45 degrees
+const STORM_SPEED: float = 0.01 #Arbitray value for now 5.0
 const STORM_DAMAGE: float = 0.001 
 #percent of MAX_HEALTH that gets taken away every frame a boid is in the storm
 

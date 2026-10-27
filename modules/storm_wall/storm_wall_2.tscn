@@ -7,6 +7,7 @@
 [sub_resource type="FogMaterial" id="FogMaterial_6lmcw"]
 density = 0.8
 albedo = Color(0.87, 0.95016664, 1, 1)
+emission = Color(0.5179933, 0.6224919, 0.7041163, 1)
 
 [node name="storm_wall_2" unique_id=479115584 node_paths=PackedStringArray("mesh") instance=ExtResource("1_ypd5o")]
 script = ExtResource("2_6rcnd")

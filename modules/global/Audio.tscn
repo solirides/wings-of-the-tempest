@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://cykvyc3xo04n8" path="res://modules/global/sound.gd" id="2_v13wf"]
 [ext_resource type="AudioStream" uid="uid://bjd6qjykxmius" path="res://assets/sounds/test_sound.mp3" id="3_a8t2j"]
 [ext_resource type="AudioStream" uid="uid://bdsjseijpet3p" path="res://assets/sounds/test_sound_2.mp3" id="4_ifptk"]
+[ext_resource type="AudioStream" uid="uid://c6re1o02q3q6x" path="res://.godot/imported/goose-flock1.mp3-f3a73c329b8d5ffbb0ccc3f5b141124c.mp3str" id="lalalal"]
+
 
 [sub_resource type="Resource" id="Resource_v13wf"]
 script = ExtResource("2_v13wf")
@@ -17,9 +19,15 @@ sound_name = "test_sound_2"
 audio_stream = ExtResource("4_ifptk")
 metadata/_custom_type_script = "uid://cykvyc3xo04n8"
 
+[sub_resource type="Resource" id="Resource_df5te"]
+script = ExtResource("2_v13wf")
+sound_name = "goose-flock1"
+audio_stream = ExtResource("lalalal")
+metadata/_custom_type_script = "uid://cykvyc3xo04n8"
+
 [node name="Audio" type="Node" unique_id=1856727547]
 script = ExtResource("1_ux4r1")
-sounds = Array[ExtResource("2_v13wf")]([SubResource("Resource_v13wf"), SubResource("Resource_ew3f2")])
+sounds = Array[ExtResource("2_v13wf")]([SubResource("Resource_v13wf"), SubResource("Resource_ew3f2"), SubResource("Resource_df5te")])
 
 [node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=940978963]
 

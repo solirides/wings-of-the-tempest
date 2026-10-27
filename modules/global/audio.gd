@@ -11,6 +11,10 @@ extends Node
 var sounds_by_name: Dictionary = {}
 var sound_stream_players: Dictionary = {}
 
+#sound properties
+const f_honk_cd_default = 31.0
+@export var flock_honk_cooldown: float = 0
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	create_sound_dictionary()
@@ -21,7 +25,17 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	# JOSHUA JEONG - Monday, Oct 26, 2026
+	# - For now, passive random chance of entire flock
+	# - making general honking sound as they're flying
+	# - there is a cooldown of 31 seconds so that the
+	# - sound cannot annoyingly overlap
+	flock_honk_cooldown -= delta;
+	if flock_honk_cooldown <= 0 and randi() % 1000 > 95:
+		flock_honk_cooldown = f_honk_cd_default;
+		play_sfx_track("goose-flock1")
+		
+
 
 func create_sound_dictionary():
 	# dynamically load and create the audio stream players for each Sound resource
