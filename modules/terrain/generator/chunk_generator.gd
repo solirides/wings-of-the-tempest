@@ -53,7 +53,7 @@ func create_chunk( state: ChunkGenState ) -> void:
 	chunk.create_terrain_mesh( terrain_data );
 	
 	# DEBUG
-	chunk.create_heightmap_mesh( chunk.heightmap_terrain, 4 );
+	#chunk.create_heightmap_mesh( chunk.heightmap_terrain, 4 );
 
 
 

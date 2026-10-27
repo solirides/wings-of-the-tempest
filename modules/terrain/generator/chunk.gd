@@ -51,16 +51,17 @@ func set_terrain_material( material: Material ) -> void:
 ## Create terrain for this chunk based on a 3D grid of scalar voxel data
 func create_terrain_mesh( scalar_field: Array3D ) -> void:
 	
-	var mesh: = MarchingCube.generate_mesh( MarchingCube.generate_vertices( scalar_field, 0.0, terrain_scale ) );	
-	mesh_instance.mesh = mesh;
+	var mesh: Mesh = await MarchingCube.generate_mesh_on_thread( MarchingCube.generate_vertices( scalar_field, 0.0, terrain_scale ) );	
+	
+	mesh_instance.set_deferred( "mesh", mesh );
 	
 	var shape: = ConcavePolygonShape3D.new();
 	shape.set_faces( mesh.get_faces() );
 	var shape_owner: = CollisionShape3D.new();
 	shape_owner.shape = shape;
 	
-	collision_instance.add_child( shape_owner, false, INTERNAL_MODE_FRONT );
 	collision_instance.collision_layer = 4; # Terrain layer
+	collision_instance.call_deferred( "add_child", shape_owner, false, INTERNAL_MODE_FRONT );
 
 ## Create heightmap for this chunk based on a 3d grid of scalar voxel data
 func create_heightmap( scalar_field: Array3D, height: int ) -> Array3D:

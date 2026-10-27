@@ -1,5 +1,43 @@
 class_name MarchingCube
 
+static var meshing_thread: Thread;
+static var meshing_mutex: Mutex;
+static var meshing_semaphore: Semaphore;
+
+static var mt_kill: bool;
+static var mt_input_vertices: PackedVector3Array;
+static var mt_output_mesh: Signal;
+
+static func _static_init() -> void:
+	
+	meshing_thread = Thread.new();
+	meshing_mutex = Mutex.new();
+	meshing_semaphore = Semaphore.new();
+	
+	( MarchingCube as Object ).add_user_signal( "mt_output_mesh", [ { "name" : "mesh", "type" : TYPE_OBJECT } ] );
+	mt_output_mesh = Signal( MarchingCube, "mt_output_mesh" );
+	
+	meshing_thread.start( run_thread );
+
+static func run_thread() -> void:
+	
+	while true:
+		
+		meshing_semaphore.wait();
+		
+		meshing_mutex.lock();
+		if mt_kill: break;
+		var vertices: PackedVector3Array = mt_input_vertices;
+		meshing_mutex.unlock();
+		
+		var mesh = generate_mesh( vertices );
+		
+		meshing_mutex.lock();
+		mt_output_mesh.emit( mesh );
+		meshing_mutex.unlock();
+
+
+
 static func generate_vertices( scalar_field: Array3D, iso: float = 0, scale: Vector3 = Vector3.ONE ) -> PackedVector3Array:
 	
 	var vertices: = PackedVector3Array();
@@ -26,6 +64,13 @@ static func generate_mesh( vertices: PackedVector3Array ) -> Mesh:
 	
 	#Return mesh
 	return surface_tool.commit();
+
+static func generate_mesh_on_thread( vertices: PackedVector3Array ) -> Mesh:
+	
+	mt_input_vertices = vertices;
+	meshing_semaphore.post();
+	
+	return await mt_output_mesh;
 
 
 
