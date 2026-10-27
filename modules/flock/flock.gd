@@ -22,6 +22,7 @@ class_name Flock
 @export var cursor: MeshInstance3D
 @export var subflocks: Array[SubFlock] = []
 
+
 @export var boid_properties: BoidProperties = BoidProperties.new()
 
 # only boids with movement controlled by the main flock, not subflocks
@@ -159,6 +160,9 @@ func _physics_process(delta: float) -> void:
 	
 	#if current_hunger > 50.0:
 		#boid_properties.speed.value = max(boid_properties.min_speed.value, boid_properties.speed.value - speed_penalty_interval * delta)
+	
+		
+	
 	
 	#in essence both of these if statements are decreasing the hunger
 	if current_hunger > 0:
