@@ -127,17 +127,23 @@ func _unhandled_input(event: InputEvent) -> void:
 func attempt_landing() -> void :
 	
 	var above_chunk: Chunk = Chunk.get_chunk_containing_global_position( global_position );
+	
+	if not above_chunk:
+		print("Attempted to land without chunk underneath")
+		global_position.y = flockMaxHeight
+		return
+	
 	var relative_position: = global_position - above_chunk.global_position;
 	var horizontal: = Vector2( relative_position.x, relative_position.z );
 	
-	if above_chunk and above_chunk.is_height_accessible( horizontal ):
-		print("found something to land on")
-		global_position.y = above_chunk.global_position.y + above_chunk.get_height( above_chunk.heightmap_accessibility, horizontal );
-		boid_properties.flockIsLanded = true
-	
-	else:
-		print("Didn't see anything, sorry!")
+	if not above_chunk.is_height_accessible( horizontal ):
+		print("Attempted to land on innacessible terrain")
 		global_position.y = flockMaxHeight
+		return;
+	
+	print("found something to land on")
+	global_position.y = above_chunk.global_position.y + above_chunk.get_height( above_chunk.heightmap_accessibility, horizontal );
+	boid_properties.flockIsLanded = true
 
 func _process(delta: float) -> void:
 	#this allows for the boid's main goal to be updated later on. Maybe for a better flock split system??????

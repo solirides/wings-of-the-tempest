@@ -9,7 +9,8 @@ static var all: Array[ Chunk ];
 static func get_chunk_containing_global_position( at_position: Vector3 ) -> Chunk:
 	
 	for chunk in all:
-		if at_position >= chunk.global_position and at_position < chunk.global_position + chunk.get_global_size():
+		var chunk_end: = chunk.global_position + chunk.get_global_size();
+		if at_position.x >= chunk.global_position.x and at_position.y >= chunk.global_position.y and at_position.z >= chunk.global_position.z and at_position.x < chunk_end.x and at_position.y < chunk_end.y and at_position.z < chunk_end.z:
 			return chunk;
 	
 	return null;
@@ -164,6 +165,7 @@ func _exit_tree() -> void:
 ## Find vertical position using a heightmap at a horizontal position
 func get_height( heightmap: Array3D, coordinates: Vector2 ) -> float:
 	coordinates /= Vector2( terrain_scale.x, terrain_scale.z );
+	assert( coordinates.x >= 0 and coordinates.y >= 0 and coordinates <= Vector2( heightmap.get_size().x, heightmap.get_size().y ), "Scaled coordinates " + str( coordinates ) + " are not within the heightmaps size of " + str( heightmap.get_size() ) );
 	var integer: Vector2i = coordinates.floor();
 	var fractional: = coordinates.posmod( 1.0 );
 	return lerp( 
