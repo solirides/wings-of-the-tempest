@@ -127,8 +127,8 @@ func flock_landed() -> void :
 	var above_chunk: Chunk = Chunk.get_chunk_containing_global_position( global_position );
 	
 	#If the above_chunk.global_position is null, throws you out by setting boid_properties.flockIsFlying == true
-	if !(is_instance_valid(Chunk.get_chunk_containing_global_position( global_position ))) :
-		print("Fuck you")
+	if !is_instance_valid(above_chunk) :
+		print("above_chunk.global_position is null")
 		global_position.y = boid_properties.flockMaxHeight
 		boid_properties.flockIsFlying = !boid_properties.flockIsFlying
 	

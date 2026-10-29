@@ -55,5 +55,5 @@ visible = false
 billboard = 1
 font_size = 70
 
-[node name="JANK" type="Node3D" parent="." unique_id=1291596451]
+[node name="Landing" type="Node3D" parent="." unique_id=1291596451]
 script = ExtResource("5_wnlco")

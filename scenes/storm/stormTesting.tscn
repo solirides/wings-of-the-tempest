@@ -53,9 +53,6 @@ curve = SubResource("Curve_gu2oc")
 
 [node name="Storm" type="Area3D" unique_id=904228582]
 script = ExtResource("1_hrl36")
-storm_direction = null
-storm_speed = null
-storm_damage = null
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=888527240]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 0)

@@ -58,9 +58,11 @@ func _input(event: InputEvent) -> void:
 		regroup_flock()
 		split_flock(split_boid_count, subflocks[0])
 	if event.is_action_pressed("swoop"):
+		print("swoop action pressed")
 		swoop(true)
 	elif event.is_action_released("swoop"):
+		print("swoop action released")
 		swoop(false)
 	if event.is_action_pressed("land"):
-		print("land")
+		print("land action pressed")
 		toggle_landing()

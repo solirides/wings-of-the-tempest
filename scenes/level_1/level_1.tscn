@@ -187,8 +187,6 @@ steering_smoothness = SubResource("Resource_ksjoe")
 rotation_smoothness = SubResource("Resource_xe581")
 steering_strength = SubResource("Resource_ghgx6")
 rotation_mode = 2
-flockMaxHeight = null
-landing_angle = null
 metadata/_custom_type_script = "uid://dstx1f47q2ki1"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
@@ -356,10 +354,7 @@ attack_range = 2.0
 [node name="Hunter" parent="." unique_id=431166771 instance=ExtResource("18_aph6o")]
 
 [node name="Storm" parent="." unique_id=904228582 instance=ExtResource("19_c2dwa")]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 47)
-storm_direction = Vector3(0, 0, -1)
-storm_speed = 4.0
-storm_damage = 0.001
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 47)
 
 [node name="ChunkGenerator" type="Node3D" parent="." unique_id=74537442 node_paths=PackedStringArray("tracked_node")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, -6, 0)

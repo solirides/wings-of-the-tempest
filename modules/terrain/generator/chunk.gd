@@ -10,7 +10,9 @@ static func get_chunk_containing_global_position( at_position: Vector3 ) -> Chun
 	
 	for chunk in all:
 		var chunk_end: = chunk.global_position + chunk.get_global_size();
-		if at_position.x >= chunk.global_position.x and at_position.y >= chunk.global_position.y and at_position.z >= chunk.global_position.z and at_position.x < chunk_end.x and at_position.y < chunk_end.y and at_position.z < chunk_end.z:
+		# only check for x and z bounds, disregard y height
+		if at_position.x >= chunk.global_position.x and at_position.z >= chunk.global_position.z and \
+				at_position.x < chunk_end.x and at_position.z < chunk_end.z:
 			return chunk;
 	
 	return null;

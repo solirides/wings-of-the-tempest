@@ -1,6 +1,6 @@
 extends Area3D
 
-@export var storm_direction: Vector3 = Vector3(-0.7071, 0.0, -0.7071) #unit vector @ 45 degrees
+@export var storm_direction: Vector3 = Vector3(0,0,-1) #unit vector @ 45 degrees
 @export var storm_speed: float = 4 #Arbitray value for now 5.0
 @export var storm_damage: float = 0.001 
 #percent of MAX_HEALTH that gets taken away every frame a boid is in the storm
