@@ -24,7 +24,8 @@ func _physics_process(delta: float) -> void:
 	#Execute logic depending on what state the boid is currently in
 	match current_state:
 		STATE.FLYING:
-			print("flying")
+			#print("flying")
+			pass
 			
 		STATE.LANDING:
 			#print("I am landing")

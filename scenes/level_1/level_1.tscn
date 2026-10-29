@@ -188,6 +188,7 @@ rotation_smoothness = SubResource("Resource_xe581")
 steering_strength = SubResource("Resource_ghgx6")
 rotation_mode = 2
 flockMaxHeight = null
+landing_angle = null
 metadata/_custom_type_script = "uid://dstx1f47q2ki1"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
@@ -255,6 +256,10 @@ num_boids = 20
 cursor = NodePath("MeshInstance3D2")
 subflocks = [NodePath("SubFlock")]
 boid_properties = SubResource("Resource_8v8ov")
+
+[node name="SubFlock" parent="Flock" index="3" unique_id=1838721350 node_paths=PackedStringArray("parent_flock", "camera_controller")]
+parent_flock = NodePath("..")
+camera_controller = NodePath("../../Camera")
 
 [node name="Camera" parent="." unique_id=1488927985 node_paths=PackedStringArray("flock") instance=ExtResource("1_7n1yb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 4.999996, 4, -1.0000019)

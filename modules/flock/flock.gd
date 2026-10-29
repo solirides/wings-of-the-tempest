@@ -51,26 +51,30 @@ func _unhandled_input(event: InputEvent) -> void:
 			boid_properties.default_state = !boid_properties.default_state
 		print("I'm chaning scatter states")
 		
-	#This detects if 
-	if event.is_action_pressed("land") :
+
+func swoop(state: bool):
+	pass
+
+
+func toggle_landing(state: bool = !boid_properties.flockIsFlying):
+	if state == boid_properties.flockIsFlying:
+		print("same landing state, returning")
+		return
+	#print(state)
+	boid_properties.flockIsFlying = state
+	#print(boid_properties.flockIsFlying)
+	#This is SUPPOSED to run when the Boid are flying in the air and you want them to land.
+	if boid_properties.flockIsFlying:
+		print("RISE FROM YOUR GRAVES!!!!! EHEHEHEHEHEH")
+		boid_properties.flockIsLanded = false
+		boid_properties.flockIsFlying = true
+	else:
+		global_position.y = boid_properties.flockMaxHeight
+		print("The boids are supposed to land now.")
+		boid_properties.scatter = false
+		boid_properties.default_state = true
 		
-		#This is SUPPOSED to run when the Boid are flying in the air and you want them to land.
-		if boid_properties.flockIsFlying:
-			print("The boids are supposed to land now.")
-			boid_properties.flockIsFlying = false
-			# do not set flockIsLanded until it actually lands
-			#boid_properties.flockIsLanded = false
-			boid_properties.scatter = false
-			boid_properties.default_state = true
-		#This is should run when the Boids are landed and you want them to get their lard asses in the air.
-		#elif boid_properties.flockIsLanded:
-		else:
-			print("RISE FROM YOUR GRAVES!!!!! EHEHEHEHEHEH")
-			boid_properties.flockIsLanded = false
-			boid_properties.flockIsFlying = true
-			
-			global_position.y = boid_properties.flockMaxHeight
-	
+
 
 #this updates the flocks global position on the ground.
 func flock_landed() -> void :

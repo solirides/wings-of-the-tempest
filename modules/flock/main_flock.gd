@@ -45,7 +45,7 @@ func split_flock(num: int, subflock:SubFlock):
 		boid.transfer_to_flock(subflock)
 	
 	# set subflock target
-	subflock.boid_goal = get_mouse_world_position(camera_controller.camera_node)
+	subflock.flock_goal = get_mouse_world_position(camera_controller.camera_node)
 	#print(subflock.boid_goal)
 	
 
@@ -57,3 +57,10 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("split_flock"):
 		regroup_flock()
 		split_flock(split_boid_count, subflocks[0])
+	if event.is_action_pressed("swoop"):
+		swoop(true)
+	elif event.is_action_released("swoop"):
+		swoop(false)
+	if event.is_action_pressed("land"):
+		print("land")
+		toggle_landing()
