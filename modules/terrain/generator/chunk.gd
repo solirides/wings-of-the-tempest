@@ -52,7 +52,8 @@ func set_terrain_material( material: Material ) -> void:
 ## Create terrain for this chunk based on a 3D grid of scalar voxel data
 func create_terrain_mesh( scalar_field: Array3D ) -> void:
 	
-	var mesh: Mesh = await MarchingCube.generate_mesh_on_thread( MarchingCube.generate_vertices( scalar_field, 0.0, terrain_scale ) );	
+	var vertices: = await MarchingCube.generate_vertices_on_thread( scalar_field, 0.0, terrain_scale );
+	var mesh: Mesh = MesherThread.generate_mesh( vertices, Mesh.PrimitiveType.PRIMITIVE_TRIANGLES );
 	
 	mesh_instance.set_deferred( "mesh", mesh );
 	
@@ -112,20 +113,16 @@ func create_heightmap_at_position( index: int, scalar_field: Array3D, height: in
 ## Create a mesh to draw the heightmap, for debugging purposes
 func create_heightmap_mesh( this_heightmap: Array3D, resolution: float ) -> void:
 	
-	#Create surface
-	var surface_tool: = SurfaceTool.new();
-	surface_tool.begin( Mesh.PRIMITIVE_POINTS );
-	surface_tool.set_smooth_group( -1 );
+	var vertices: PackedVector3Array;
 	
-	#Add vertices
 	for iter: Vector3i in Rect3iIterator.new( Vector3i.ZERO, ( this_heightmap.get_size() - Vector3i( 1, 0, 1 ) ) * resolution ):
 		var pos: = Vector3( iter ) / resolution * terrain_scale;
 		if is_height_accessible( Vector2( pos.x, pos.z ) ):
 			pos.y = get_height( this_heightmap, Vector2( pos.x, pos.z ) );
-			surface_tool.add_vertex( pos * scale );
+			vertices.append( pos * scale );
 	
-	surface_tool.index();
-	return surface_tool.commit();
+	var mesh: = await MesherThread.generate_mesh_on_thread( vertices, Mesh.PrimitiveType.PRIMITIVE_POINTS );
+	heightmap_mesh_instance.set_deferred( "mesh", mesh );
 
 ## Create objects for this chunk based on a list of objects and vectors
 func create_objects( objects: Dictionary[ ChunkObject, Vector2 ] ) -> void:

@@ -1,40 +1,69 @@
 class_name MarchingCube
 
-static var meshing_thread: Thread;
-static var meshing_mutex: Mutex;
-static var meshing_semaphore: Semaphore;
+static var thread: Thread;
+static var mutex: Mutex;
+static var semaphore: Semaphore;
 
-static var mt_kill: bool;
-static var mt_input_vertices: PackedVector3Array;
-static var mt_output_mesh: Signal;
+static var do_kill: bool;
+static var input: Array[ GeneratorInput ];
+static var output: Signal;
+
+class GeneratorInput:
+	
+	var scalar_field: Array3D;
+	var iso: float;
+	var scale: Vector3;
+	
+	@warning_ignore("shadowed_variable")
+	func _init( scalar_field: Array3D, iso: float, scale: Vector3 ) -> void:
+		self.scalar_field = scalar_field;
+		self.iso = iso;
+		self.scale = scale;
+
+
 
 static func _static_init() -> void:
 	
-	meshing_thread = Thread.new();
-	meshing_mutex = Mutex.new();
-	meshing_semaphore = Semaphore.new();
+	thread = Thread.new();
+	mutex = Mutex.new();
+	semaphore = Semaphore.new();
 	
-	( MarchingCube as Object ).add_user_signal( "mt_output_mesh", [ { "name" : "mesh", "type" : TYPE_OBJECT } ] );
-	mt_output_mesh = Signal( MarchingCube, "mt_output_mesh" );
+	( MarchingCube as Object ).add_user_signal( "output", [ { "name" : "id", "type" : TYPE_INT }, { "name" : "vertices", "type" : TYPE_PACKED_VECTOR3_ARRAY } ] );
+	output = Signal( MarchingCube, "output" );
 	
-	meshing_thread.start( run_thread );
+	thread.start( run_thread, Thread.PRIORITY_LOW );
 
 static func run_thread() -> void:
 	
 	while true:
 		
-		meshing_semaphore.wait();
+		semaphore.wait();
 		
-		meshing_mutex.lock();
-		if mt_kill: break;
-		var vertices: PackedVector3Array = mt_input_vertices;
-		meshing_mutex.unlock();
+		mutex.lock();
+		if do_kill: break;
+		var current: GeneratorInput = input.pop_front();
+		mutex.unlock();
 		
-		var mesh = generate_mesh( vertices );
+		var vertices = generate_vertices( current.scalar_field, current.iso, current.scale );
 		
-		meshing_mutex.lock();
-		mt_output_mesh.emit( mesh );
-		meshing_mutex.unlock();
+		mutex.lock();
+		output.emit( current.get_instance_id(), vertices );
+		mutex.unlock();
+
+static func generate_vertices_on_thread( scalar_field: Array3D, iso: float = 0, scale: Vector3 = Vector3.ONE ) -> PackedVector3Array:
+	
+	var new_input: = GeneratorInput.new( scalar_field, iso, scale );
+	var input_id: = new_input.get_instance_id();
+	
+	input.push_back( new_input );
+	semaphore.post();
+	
+	while true:
+		var new_output: Array = await output;
+		if new_output[0] == input_id:
+			return new_output[1];
+	
+	return [];
 
 
 
@@ -46,33 +75,6 @@ static func generate_vertices( scalar_field: Array3D, iso: float = 0, scale: Vec
 		vertices += get_triangle( scalar_field, iso, position, scale );
 	
 	return vertices;
-
-static func generate_mesh( vertices: PackedVector3Array ) -> Mesh:
-	
-	#Create surface
-	var surface_tool: = SurfaceTool.new();
-	surface_tool.begin( Mesh.PRIMITIVE_TRIANGLES );
-	surface_tool.set_smooth_group( -1 );
-	
-	#Add vertices
-	for vertex in vertices:
-		surface_tool.add_vertex( vertex );
-	
-	#Finalize surface
-	surface_tool.generate_normals();
-	surface_tool.index();
-	
-	#Return mesh
-	return surface_tool.commit();
-
-static func generate_mesh_on_thread( vertices: PackedVector3Array ) -> Mesh:
-	
-	mt_input_vertices = vertices;
-	meshing_semaphore.post();
-	
-	return await mt_output_mesh;
-
-
 
 static func get_triangulation( scalar_field: Array3D, iso: float, position: Vector3i ) -> int:
 	
