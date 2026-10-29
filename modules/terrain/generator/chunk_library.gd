@@ -10,6 +10,7 @@ const SYNCHRONIZED_PROPERTIES: PackedStringArray = [
 ];
 
 @export var terrain_material: Material;
+@export var terrain_sampler: ChunkTerrainSampler;
 
 @export_group( "Chunk Properties" )
 @export var terrain_size: Vector3i;

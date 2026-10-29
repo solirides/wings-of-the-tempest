@@ -61,7 +61,7 @@ func _ready() -> void:
 	
 	#Initialize state, with Time used as random seed
 	@warning_ignore("narrowing_conversion")
-	current_state = ChunkGenState.new( Time.get_unix_time_from_system() );
+	current_state = ChunkGenState.new( Time.get_unix_time_from_system(), library.terrain_sampler );
 
 func _tracked_node_moved( node: Node3D ) -> void:
 	

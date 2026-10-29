@@ -39,6 +39,7 @@ var heightmap_accessibility: Array3D;
 var heightmap_mesh_instance: MeshInstance3D;
 
 
+
 ## Return size of chunk in worldspace
 func get_global_size() -> Vector3:
 	return Vector3( terrain_size ) * terrain_scale;
