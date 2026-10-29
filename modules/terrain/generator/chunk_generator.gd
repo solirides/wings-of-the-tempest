@@ -63,11 +63,6 @@ func _ready() -> void:
 	@warning_ignore("narrowing_conversion")
 	current_state = ChunkGenState.new( Time.get_unix_time_from_system() );
 
-#TEST
-func _unhandled_input( event: InputEvent ) -> void:
-	if event.is_action_pressed( "ui_accept" ):
-		create_chunk( current_state );
-
 func _tracked_node_moved( node: Node3D ) -> void:
 	
 	assert( library.get_chunk_global_size() != Vector3.ZERO, "Cannot track node while chunk size is zero" );
