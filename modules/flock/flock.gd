@@ -76,10 +76,11 @@ func check_hydration_status() -> void:
 		hydration = WATER_CAPACITY
 
 #This is such a JANK way of doing this but...
-var flockMaxHeight = 5
+
 func _ready() -> void:
-	global_position.y = flockMaxHeight
+	global_position.y = boid_properties.flockMaxHeight
 	boid_properties.speed.add_modifier(hunger_modifier) 
+	
 
 #Use this to handle any button presses which would change the state of the boids... for now, I'm thinking scatter mode and landing
 func _unhandled_input(event: InputEvent) -> void:
@@ -95,55 +96,52 @@ func _unhandled_input(event: InputEvent) -> void:
 			boid_properties.default_state = !boid_properties.default_state
 		print("I'm changing scatter states")
 		
-	#This detects if 
-	if event.is_action_pressed("land") :
+
+func swoop(state: bool):
+	pass
+
+
+func toggle_landing(state: bool = !boid_properties.flockIsFlying):
+	if state == boid_properties.flockIsFlying:
+		print("same landing state, returning")
+		return
+	#print(state)
+	boid_properties.flockIsFlying = state
+	#print(boid_properties.flockIsFlying)
+	#This is SUPPOSED to run when the Boid are flying in the air and you want them to land.
+	if boid_properties.flockIsFlying:
+		print("RISE FROM YOUR GRAVES!!!!! EHEHEHEHEHEH")
+		boid_properties.flockIsLanded = false
+		boid_properties.flockIsFlying = true
+	else:
+		global_position.y = boid_properties.flockMaxHeight
+		print("The boids are supposed to land now.")
+		boid_properties.scatter = false
+		boid_properties.default_state = true
 		
-		#This is SUPPOSED to run when the Boid are flying in the air and you want them to land.
-		if boid_properties.flockIsFlying:
-			print("The boids are supposed to land now.")
-			boid_properties.flockIsFlying = false
-			# do not set flockIsLanded until it actually lands
-			#boid_properties.flockIsLanded = false
-			boid_properties.scatter = false
-			boid_properties.default_state = true
-		#This is should run when the Boids are landed and you want them to get their lard asses in the air.
-		#elif boid_properties.flockIsLanded:
-		else:
-			print("RISE FROM YOUR GRAVES!!!!! EHEHEHEHEHEH")
-			boid_properties.flockIsLanded = false
-			boid_properties.flockIsFlying = true
-			
-			global_position.y = flockMaxHeight
-	
 
-#YO WSG Caden! This is the function I need help with!!!!!
-#Right now, it casts a raycast -100(meters?) from the flocks position looking for solid ground.
-#If it hits solid ground, it sets the the flocks global_position.y position to the y-axis.
-#If it hits nothing, it just runs a print statement and was supposed to return the flock to "flockMaxHeight"
-#Essentially, while flock is meant to be "grounded" it should draw accross the terrain, updating it height as needed.
 
-#It's obviously far from done, since I intended to switch over to the functions you wrote.
-#Feel free do to whatever you want with this, I lowkey don't know what I am dong!!!! :0))))
-func attempt_landing() -> void :
+#this updates the flocks global position on the ground.
+func flock_landed() -> void :
 	
 	var above_chunk: Chunk = Chunk.get_chunk_containing_global_position( global_position );
 	
-	if not above_chunk:
-		print("Attempted to land without chunk underneath")
-		global_position.y = flockMaxHeight
-		return
+	#If the above_chunk.global_position is null, throws you out by setting boid_properties.flockIsFlying == true
+	if !is_instance_valid(above_chunk) :
+		print("above_chunk.global_position is null")
+		global_position.y = boid_properties.flockMaxHeight
+		boid_properties.flockIsFlying = !boid_properties.flockIsFlying
 	
-	var relative_position: = global_position - above_chunk.global_position;
-	var horizontal: = Vector2( relative_position.x, relative_position.z );
+	else :
+		var relative_position: = global_position - above_chunk.global_position;
+		var horizontal: = Vector2( relative_position.x, relative_position.z );
+		
+		if above_chunk and above_chunk.is_height_accessible( horizontal ):
+			global_position.y = above_chunk.global_position.y + above_chunk.get_height( above_chunk.heightmap_accessibility, horizontal );
+			boid_properties.flockIsLanded = true
+			#print(global_position.y) #PLEASE disable this, this clutters stuff up SO fast.
+
 	
-	if not above_chunk.is_height_accessible( horizontal ):
-		print("Attempted to land on innacessible terrain")
-		global_position.y = flockMaxHeight
-		return;
-	
-	print("found something to land on")
-	global_position.y = above_chunk.global_position.y + above_chunk.get_height( above_chunk.heightmap_accessibility, horizontal );
-	boid_properties.flockIsLanded = true
 
 func _process(delta: float) -> void:
 	#this allows for the boid's main goal to be updated later on. Maybe for a better flock split system??????
@@ -160,9 +158,8 @@ func _physics_process(delta: float) -> void:
 		hydration -= delta * water_depletion_rate
 	
 	# if flock is attempting to land and hasn't found a landing spot yet
-	if boid_properties.flockIsFlying == false and boid_properties.flockIsLanded == false:
-		# try to find something to land on
-		attempt_landing()
+	if boid_properties.flockIsFlying == false :
+		flock_landed()
 	
 	#if current_hunger > 50.0:
 		#boid_properties.speed.value = max(boid_properties.min_speed.value, boid_properties.speed.value - speed_penalty_interval * delta)
@@ -195,11 +192,11 @@ func _physics_process(delta: float) -> void:
 		else:
 			hunger_modifier.modifier_value = 1
 		
-		hunger_changed.emit(current_hunger)
-	else:
+		#hunger_changed.emit(current_hunger)
+	#else:
 		# there is no speed penalty because you already ran out of hunger
-		current_hunger = min(0.0, current_hunger - starve_rate * delta)
-		hunger_changed.emit(current_hunger)
+		#current_hunger = min(0.0, current_hunger - starve_rate * delta)
+		#hunger_changed.emit(current_hunger)
 	
 	#this if-statement will kill birds of starvation periodically
 	if current_hunger < -starve_death_interval:

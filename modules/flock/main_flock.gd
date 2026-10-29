@@ -22,7 +22,7 @@ func _ready() -> void:
 		var distance := randf_range(0.0, spawn_radius)
 		new_boid.position = Vector3(
 			cos(angle) * distance,
-			flockMaxHeight, #the boids spawn at the same height as the flock
+			boid_properties.flockMaxHeight, #the boids spawn at the same height as the flock
 			sin(angle) * distance
 		)
 
@@ -57,3 +57,12 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("split_flock"):
 		regroup_flock()
 		split_flock(split_boid_count, subflocks[0])
+	if event.is_action_pressed("swoop"):
+		print("swoop action pressed")
+		swoop(true)
+	elif event.is_action_released("swoop"):
+		print("swoop action released")
+		swoop(false)
+	if event.is_action_pressed("land"):
+		print("land action pressed")
+		toggle_landing()
