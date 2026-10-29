@@ -187,6 +187,8 @@ steering_smoothness = SubResource("Resource_ksjoe")
 rotation_smoothness = SubResource("Resource_xe581")
 steering_strength = SubResource("Resource_ghgx6")
 rotation_mode = 2
+flockMaxHeight = null
+landing_angle = null
 metadata/_custom_type_script = "uid://dstx1f47q2ki1"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
