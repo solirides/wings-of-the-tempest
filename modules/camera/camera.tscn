@@ -23,7 +23,7 @@ shader_parameter/gamma = 1.0
 script = ExtResource("1_pf27r")
 
 [node name="Camera" type="Camera3D" parent="." unique_id=506319422]
-transform = Transform3D(0.47715876, -0.7996896, 0.36443955, 0, 0.41469327, 0.9099613, -0.87881714, -0.434196, 0.19787452, 0, 0, 0)
+transform = Transform3D(0.34202015, -0.8830222, 0.32139382, 0, 0.34202015, 0.9396926, -0.9396926, -0.32139382, 0.11697779, 0, 0, 0)
 
 [node name="Shake" type="Node3D" parent="Camera" unique_id=1823544482]
 script = ExtResource("2_otekq")
