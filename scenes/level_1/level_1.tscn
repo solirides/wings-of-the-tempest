@@ -187,10 +187,8 @@ steering_smoothness = SubResource("Resource_ksjoe")
 rotation_smoothness = SubResource("Resource_xe581")
 steering_strength = SubResource("Resource_ghgx6")
 rotation_mode = 2
-isFlying = null
-isLanding = null
-isLanded = null
-isRising = null
+flockMaxHeight = null
+landing_angle = null
 metadata/_custom_type_script = "uid://dstx1f47q2ki1"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
@@ -239,10 +237,6 @@ size = Vector3(7, 16, 5)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6lmcw"]
 albedo_color = Color(0.59106696, 0.8964245, 0.3219582, 1)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_hjb8m"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_hjb8m"]
-
 [node name="World" type="Node3D" unique_id=1809984319]
 script = ExtResource("1_ghvtn")
 
@@ -263,8 +257,9 @@ cursor = NodePath("MeshInstance3D2")
 subflocks = [NodePath("SubFlock")]
 boid_properties = SubResource("Resource_8v8ov")
 
-[node name="SubFlock" parent="Flock" index="3" unique_id=1838721350 node_paths=PackedStringArray("parent_flock")]
+[node name="SubFlock" parent="Flock" index="3" unique_id=1838721350 node_paths=PackedStringArray("parent_flock", "camera_controller")]
 parent_flock = NodePath("..")
+camera_controller = NodePath("../../Camera")
 
 [node name="Camera" parent="." unique_id=1488927985 node_paths=PackedStringArray("flock") instance=ExtResource("1_7n1yb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 4.999996, 4, -1.0000019)
@@ -377,28 +372,6 @@ metadata/_custom_type_script = "uid://bt145qipdjfhd"
 
 [node name="Monument" parent="." unique_id=1299745215 instance=ExtResource("24_8v8ov")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 17)
-
-[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=764293437]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 1.7530136, -18.361774, -43.46116)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1301683315]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
-shape = SubResource("BoxShape3D_hjb8m")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1594190105]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
-mesh = SubResource("BoxMesh_hjb8m")
-
-[node name="StaticBody3D2" type="StaticBody3D" parent="." unique_id=1355511757]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -22.067488, -15.253859, -43.46116)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2" unique_id=840622438]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
-shape = SubResource("BoxShape3D_hjb8m")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2" unique_id=1335545565]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
-mesh = SubResource("BoxMesh_hjb8m")
 
 [connection signal="body_entered" from="Goal" to="Goal" method="_on_body_entered"]
 

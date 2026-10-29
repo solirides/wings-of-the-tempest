@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cufxowsrrv1sf" path="res://assets/models/bird.tscn" id="2_7mqqf"]
 [ext_resource type="PackedScene" uid="uid://b6gylk13xq7rl" path="res://assets/models/bird_v1.2.glb" id="2_eylny"]
 [ext_resource type="Script" uid="uid://dgjg6gb1dy4h3" path="res://assets/models/bird.gd" id="3_lqu4f"]
+[ext_resource type="Script" uid="uid://p6m5px3ayr8v" path="res://modules/flock/player_bird/landing.gd" id="5_wnlco"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eylny"]
 
@@ -53,3 +54,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4443034, 0)
 visible = false
 billboard = 1
 font_size = 70
+
+[node name="JANK" type="Node3D" parent="." unique_id=1291596451]
+script = ExtResource("5_wnlco")
