@@ -4,7 +4,7 @@ class_name SubFlock
 # this class is used for diverting some of the boids into another flock
 # while still sharing the same health, hunger, and other stats
 
-@export var parent_flock: Flock
+@export var parent_flock: MainFlock
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

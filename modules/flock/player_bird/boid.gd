@@ -1,6 +1,9 @@
 extends RigidBody3D
 class_name Boid
 
+
+var soft_collision_factor: float = 0
+
 # How to use health system
 # Currently, there are functions for registering damage (take_damage() and take_percent_damage()
 # and healing (heal() and heal_percent()). take_damage() and heal() each take a specific value to subtract or
@@ -87,6 +90,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if !death_queued:
+		apply_soft_collision(delta)
 		boid_movement(delta)
 
 func _on_food_detector_area_entered(area: Area3D) -> void:
@@ -226,6 +230,13 @@ func spinning(center: Vector3, neighbors: Array) -> Vector3:
 	return tangent * spin_direction
 
 #This is WHERE THE MAGIC BEGINS, NO MORE CALCULATING BORING ASS VECTOR SHITS!!!!!!!!!
+
+func apply_soft_collision(delta: float):
+	properties.speed.remove_modifier("soft_collision")
+	var modifier = StatModifier.new("soft_collision", 1.0 / (soft_collision_factor + 1))
+	print(soft_collision_factor)
+	properties.speed.add_modifier(modifier)
+	soft_collision_factor = 0
 
 func boid_movement(delta: float):
 	var camera_force : Vector3 = Vector3.ZERO

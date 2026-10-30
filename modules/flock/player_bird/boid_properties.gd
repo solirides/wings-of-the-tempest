@@ -54,7 +54,7 @@ enum ROTATION_MODE {
 @export var rotation_mode : ROTATION_MODE = ROTATION_MODE.LERP_TO_VELOCITY
 
 #Landing stuff! FOR THE BOIDS
-@export var flockMaxHeight : int = 10
+@export var flockMaxHeight : float = 0
 
 @export var flockIsFlying : bool = true
 @export var flockIsLanded : bool = false
