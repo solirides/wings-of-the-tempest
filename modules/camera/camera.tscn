@@ -21,6 +21,7 @@ shader_parameter/gamma = 1.0
 
 [node name="CameraAnchor" type="Node3D" unique_id=856289716]
 script = ExtResource("1_pf27r")
+max_zoom = 14.0
 
 [node name="Camera" type="Camera3D" parent="." unique_id=506319422]
 transform = Transform3D(0.34202015, -0.8830222, 0.32139382, 0, 0.34202015, 0.9396926, -0.9396926, -0.32139382, 0.11697779, 0, 0, 0)

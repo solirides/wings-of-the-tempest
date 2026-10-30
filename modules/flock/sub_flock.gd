@@ -16,6 +16,10 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
+func update_cursor():
+	if cursor:
+		cursor.global_position = flock_goal
+
 func remove_boid(boid: Boid):
 	parent_flock.remove_boid(boid)
 	super.remove_boid(boid)

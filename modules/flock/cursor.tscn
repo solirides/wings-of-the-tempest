@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://cpfyvjh4gtqre"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_owja0"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 5.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6lmcw"]
+material = SubResource("StandardMaterial3D_owja0")
+top_radius = 0.03
+bottom_radius = 0.03
+height = 50.0
+radial_segments = 6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_owja0"]
+top_radius = 0.3
+bottom_radius = 0.3
+height = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_00olh"]
+albedo_color = Color(0.078431375, 0.43529412, 1, 1)
+
+[node name="Cursor" type="Node3D" unique_id=1798828967]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2055668449]
+mesh = SubResource("CylinderMesh_6lmcw")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1802767457]
+mesh = SubResource("CylinderMesh_owja0")
+surface_material_override/0 = SubResource("StandardMaterial3D_00olh")

@@ -372,11 +372,11 @@ func boid_movement(delta: float):
 			
 	
 	# rotate node for display
+	# cancel the velocity contribution from wind
+	var own_velocity = linear_velocity - wind_force*delta
 	match properties.rotation_mode:
 		BoidProperties.ROTATION_MODE.LERP_TO_VELOCITY:
 			if linear_velocity.length_squared() > 0.001:
-				# cancel the velocity contribution from wind
-				var own_velocity = linear_velocity - wind_force*delta
 				var target_rotation = Transform3D.IDENTITY.looking_at(own_velocity, Vector3.UP).basis
 				target_rotation = target_rotation.orthonormalized()
 				global_transform.basis = global_transform.basis.slerp(target_rotation, properties.rotation_smoothness.value * delta)

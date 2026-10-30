@@ -11,19 +11,28 @@ height = 0.1
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_btmmu"]
 albedo_color = Color(0.078431375, 0.43529412, 1, 1)
 
-[node name="Flock" type="Node3D" unique_id=1876045196 node_paths=PackedStringArray("subflocks", "cursor", "subflocks")]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_owja0"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 5.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6lmcw"]
+material = SubResource("StandardMaterial3D_owja0")
+top_radius = 0.03
+bottom_radius = 0.03
+height = 50.0
+radial_segments = 6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_owja0"]
+top_radius = 0.3
+bottom_radius = 0.3
+height = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_00olh"]
+albedo_color = Color(0.078431375, 0.43529412, 1, 1)
+
+[node name="Flock" type="Node3D" unique_id=1876045196 node_paths=PackedStringArray("cursor", "subflocks")]
 script = ExtResource("1_btmmu")
-split_boid_count = null
-subflocks = [NodePath("SubFlock")]
-enable_hunger_effects = null
-max_hunger = null
-starve_rate = null
-starve_death_interval = null
-speed_penalty_interval = null
-min_hunger_speed_penalty = null
-water_depletion_rate = null
-num_boids = null
-spawn_radius = null
 cursor = NodePath("MeshInstance3D2")
 subflocks = [NodePath("SubFlock")]
 
@@ -38,8 +47,18 @@ surface_material_override/0 = SubResource("StandardMaterial3D_btmmu")
 
 [node name="groundRayDOWN" type="RayCast3D" parent="." unique_id=1801870000]
 
-[node name="SubFlock" type="Node3D" parent="." unique_id=1838721350 node_paths=PackedStringArray("parent_flock")]
+[node name="SubFlock" type="Node3D" parent="." unique_id=1838721350 node_paths=PackedStringArray("parent_flock", "cursor")]
 script = ExtResource("2_btmmu")
 parent_flock = NodePath("..")
+cursor = NodePath("Cursor")
 
 [node name="groundRayDOWN" type="RayCast3D" parent="SubFlock" unique_id=622253004]
+
+[node name="Cursor" type="Node3D" parent="SubFlock" unique_id=1798828967]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SubFlock/Cursor" unique_id=2055668449]
+mesh = SubResource("CylinderMesh_6lmcw")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="SubFlock/Cursor" unique_id=1802767457]
+mesh = SubResource("CylinderMesh_owja0")
+surface_material_override/0 = SubResource("StandardMaterial3D_00olh")

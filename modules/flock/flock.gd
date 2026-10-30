@@ -17,7 +17,7 @@ class_name Flock
 
 @export var num_boids: int = 10
 @export var spawn_radius: float = 10.0
-@export var cursor: MeshInstance3D
+@export var cursor: Node3D
 @export var subflocks: Array[Flock] = []
 
 @export var boid_properties: BoidProperties = BoidProperties.new()
@@ -25,6 +25,7 @@ class_name Flock
 # only boids with movement controlled by the main flock, not subflocks
 var boids: Array[Boid] = []
 var flock_goal : Vector3
+var land_goal : Vector3
 var boid_scene = preload("res://modules/flock/player_bird/player_bird.tscn")
 
 # all boids including ones in subflocks
@@ -99,6 +100,9 @@ func swoop(state: bool):
 
 
 func toggle_landing(state: bool = !boid_properties.flockIsFlying):
+	
+	land_goal = get_mouse_world_position(camera_controller.camera_node)
+	
 	if state == boid_properties.flockIsFlying:
 		print("same landing state, returning")
 		return
@@ -121,7 +125,7 @@ func toggle_landing(state: bool = !boid_properties.flockIsFlying):
 #this updates the flocks global position on the ground.
 func flock_landed() -> void :
 	
-	var above_chunk: Chunk = Chunk.get_chunk_containing_global_position( global_position );
+	var above_chunk: Chunk = Chunk.get_chunk_containing_global_position( land_goal );
 	
 	#If the above_chunk.global_position is null, throws you out by setting boid_properties.flockIsFlying == true
 	if !is_instance_valid(above_chunk) :
@@ -130,7 +134,7 @@ func flock_landed() -> void :
 		boid_properties.flockIsFlying = !boid_properties.flockIsFlying
 	
 	else :
-		var relative_position: = global_position - above_chunk.global_position;
+		var relative_position: = land_goal - above_chunk.global_position;
 		var horizontal: = Vector2( relative_position.x, relative_position.z );
 		
 		if above_chunk and above_chunk.is_height_accessible( horizontal ):
@@ -143,8 +147,11 @@ func flock_landed() -> void :
 func _process(delta: float) -> void:
 	#this allows for the boid's main goal to be updated later on. Maybe for a better flock split system??????
 	#This IS not perfect, if I want the boids to split into subflocks, I need to give them functionality to do so... in their OWN script!
+	update_cursor()
+
+func update_cursor():
 	flock_goal = get_cursor_pos()
-	global_position = get_cursor_pos()
+	#global_position = get_cursor_pos()
 	if cursor:
 		cursor.global_position = get_cursor_pos()
 
