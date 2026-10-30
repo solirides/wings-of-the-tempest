@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://cxboty7yf78n1" path="res://modules/hud/level_end_screen.gd" id="4_v6k41"]
 [ext_resource type="Texture2D" uid="uid://b682hdcf1k2x4" path="res://WoT_water_1.png" id="6_ugr31"]
 [ext_resource type="Texture2D" uid="uid://bdgida065gbo4" path="res://assets/textures/UI/waterbarProgress.png" id="7_ngoot"]
+[ext_resource type="Script" uid="uid://dev0witimtagw" path="res://modules/hud/score.gd" id="8_dyoe6"]
 
 [sub_resource type="SystemFont" id="SystemFont_0lhw3"]
 font_names = PackedStringArray("Noto Sans", "Open Sans", "Cantarell")
@@ -167,3 +168,13 @@ grow_horizontal = 2
 grow_vertical = 2
 label_settings = SubResource("LabelSettings_sd20g")
 vertical_alignment = 2
+
+[node name="Score" type="Label" parent="." unique_id=1801758189]
+layout_mode = 0
+offset_left = 301.0
+offset_top = 36.0
+offset_right = 503.0
+offset_bottom = 104.0
+theme_override_font_sizes/font_size = 38
+text = "Score: 0"
+script = ExtResource("8_dyoe6")
