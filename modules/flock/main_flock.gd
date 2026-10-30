@@ -2,6 +2,7 @@ extends Flock
 class_name MainFlock
 
 @export var split_boid_count: int = 5
+#@export var subflocks: Array[SubFlock] = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -41,7 +42,8 @@ func split_flock(num: int, subflock:SubFlock):
 	var b = boids.duplicate()
 	b.shuffle()
 	
-	for boid in b.slice(0, num):
+	for boid: Boid in b.slice(0, num):
+		print(boid)
 		boid.transfer_to_flock(subflock)
 	
 	# set subflock target
@@ -55,6 +57,7 @@ func regroup_flock():
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("split_flock"):
+		print("split flock action pressed")
 		regroup_flock()
 		split_flock(split_boid_count, subflocks[0])
 	if event.is_action_pressed("swoop"):

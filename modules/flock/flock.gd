@@ -1,13 +1,11 @@
 extends Node3D
 class_name Flock
 
-
-
-
 # Camera
 @export var camera_controller: Node
 
 # Hunger
+@export var enable_hunger_effects = true
 @export var max_hunger: float = 100.0
 @export var current_hunger: float = max_hunger
 @export var starve_rate: float = 2.0
@@ -20,8 +18,7 @@ class_name Flock
 @export var num_boids: int = 10
 @export var spawn_radius: float = 10.0
 @export var cursor: MeshInstance3D
-@export var subflocks: Array[SubFlock] = []
-
+@export var subflocks: Array[Flock] = []
 
 @export var boid_properties: BoidProperties = BoidProperties.new()
 
@@ -161,22 +158,13 @@ func _physics_process(delta: float) -> void:
 	if boid_properties.flockIsFlying == false :
 		flock_landed()
 	
-	#if current_hunger > 50.0:
-		#boid_properties.speed.value = max(boid_properties.min_speed.value, boid_properties.speed.value - speed_penalty_interval * delta)
-	
-		
-	
-	
+	if enable_hunger_effects:
+		process_hunger(delta)
+
+func process_hunger(delta: float):
 	#in essence both of these if statements are decreasing the hunger
 	if current_hunger > 0:
 		current_hunger = max(0.0, current_hunger - starve_rate * delta)
-		#print("hunger: " + str(current_hunger))
-		##print("hunger speed modifier: " + str(hunger_modifier.modifier_value))
-		#var mod = boid_properties.speed.get_modifier("hunger_penalty")
-		#if mod:
-			#print("hunger speed modifier: " + str(boid_properties.speed.get_modifier("hunger_penalty").modifier_value))
-		#print("speed: " + str(boid_properties.speed.value))
-		# this code block inflicts speed penalties below 50 hunger
 		if current_hunger < 90.0:
 			for boid in all_boids:
 				var new_speed_mult = lerp(min_hunger_speed_penalty, 1.0, current_hunger / max_hunger)
@@ -185,20 +173,10 @@ func _physics_process(delta: float) -> void:
 				if modifier:
 					modifier.modifier_value = new_speed_mult
 					boid_properties.speed.update_value()
-				#var modifier = StatModifier.new("hunger_penalty", new_speed_mult, StatModifier.ModifierType.MULTIPLY)
-				#boid_properties.speed.remove_modifier("hunger_penalty")
-				#boid_properties.speed.add_modifier(modifier)
-				#boid.speed = max(0.0, boid.speed - speed_penalty_interval * delta)
 		else:
 			hunger_modifier.modifier_value = 1
 		
-		#hunger_changed.emit(current_hunger)
-	#else:
-		# there is no speed penalty because you already ran out of hunger
-		#current_hunger = min(0.0, current_hunger - starve_rate * delta)
-		#hunger_changed.emit(current_hunger)
-	
-	#this if-statement will kill birds of starvation periodically
+	#kill birds of starvation periodically
 	if current_hunger < -starve_death_interval:
 		print("starved")
 		current_hunger = 0.0

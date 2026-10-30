@@ -77,11 +77,10 @@ transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, 0, 0, 0)
 visible = false
 mesh = SubResource("SphereMesh_xotop")
 
-[node name="WindHitbox" type="Area3D" parent="." unique_id=247244507 node_paths=PackedStringArray("timer", "particle_emitter", "particle_attractor")]
+[node name="WindHitbox" type="Area3D" parent="." unique_id=247244507 node_paths=PackedStringArray("particle_emitter", "particle_attractor")]
 script = ExtResource("4_frhyh")
 mode = 1
 wind_map = SubResource("NoiseTexture2D_frhyh")
-timer = NodePath("Timer")
 particle_emitter = NodePath("WindTrails")
 particle_attractor = NodePath("GPUParticlesAttractorSphere3D")
 

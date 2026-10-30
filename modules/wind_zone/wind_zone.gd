@@ -11,7 +11,7 @@ enum WindMode {
 @export var wind_strength: float = 20
 #@export var random_range_x: Vector2 = Vector2(-10,10)
 @export var random_range_z: Vector2 = Vector2(-10,10)
-@export var random_rate: float = 1
+@export var random_duration: float = 1
 @export var wind_map: Texture2D
 
 var force = Vector3.ZERO
@@ -21,12 +21,14 @@ var rng := RandomNumberGenerator.new()
 var next_wind_change = 0
 
 @export var smoothing := 1.5
-@export var timer: Timer
+@onready var timer: Timer = $Timer
 @export var particle_emitter: GPUParticles3D
 @export var particle_attractor: GPUParticlesAttractor3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	print($Timer)
+	#timer.wait_time = random_duration
 	rng.randomize()
 	pick_new_wind()
 	#timer.wait_time = random_rate
