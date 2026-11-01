@@ -1,7 +1,7 @@
 extends RigidBody3D
 class_name Boid
 
-
+@export var audio: Audio = Audio
 var soft_collision_factor: float = 0
 
 # How to use health system
@@ -32,6 +32,7 @@ func take_damage(damage: float) -> void:
 	if (damage < 0 || health <= 0):
 		print("Invalid damage argument or health has reached zero")
 		return
+	#print("took damage")
 	health -= damage
 	check_heath_status()
 
@@ -399,7 +400,8 @@ func kill_boid(death_animation: bool = true):
 		return
 	death_queued = true
 	flock.remove_boid(self)
-	
+	audio.play_sfx_track("goose_hurt")
+
 	if death_animation:
 		var instance = death_particles.instantiate()
 		add_child(instance)
