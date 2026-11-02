@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://c5uasawpupc1t"]
+
+[ext_resource type="Script" uid="uid://biw4eq3jmn6ux" path="res://modules/enemy/crab.gd" id="1_ke0mh"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_6olrb"]
+size = Vector3(1, 0.4, 0.7)
+
+[node name="Crab" type="RigidBody3D" unique_id=2042176865]
+freeze = true
+freeze_mode = 1
+script = ExtResource("1_ke0mh")
+health = 1
+attack_speed = 2.0
+attack_range = 1.2
+track_range = 6.0
+movement_speed = 1.5
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=7248259]
+mesh = SubResource("BoxMesh_6olrb")
