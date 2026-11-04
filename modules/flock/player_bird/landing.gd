@@ -11,6 +11,9 @@ var current_state : STATE = STATE.FLYING
 func _physics_process(delta: float) -> void:
 	#print("IS landing running?")
 	#print(current_state)
+	if boid == null:
+		queue_free()
+		return
 	if boid.properties.flockIsLanded:
 		if current_state == STATE.FLYING:
 			current_state = STATE.LANDING
@@ -51,8 +54,9 @@ func landing(delta: float) -> void:
 	boid.global_position += forward_dir * boid.properties.speed.value * delta
 	
 	var chunk = Chunk.get_chunk_containing_global_position(boid.global_position)
-	if boid.global_position.y < (chunk.global_position.y - 0.1):
-		current_state = STATE.LANDED
+	if is_instance_valid(chunk):
+		if boid.global_position.y < (chunk.global_position.y - 0.1):
+			current_state = STATE.LANDED
 	
 func rising(delta: float) -> void:
 	var target_pitch_rad : float = deg_to_rad(45)

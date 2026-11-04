@@ -53,7 +53,7 @@ func create_chunk( state: ChunkGenState ) -> void:
 	chunk.create_terrain_mesh( terrain_data );
 	
 	# DEBUG
-	chunk.create_heightmap_mesh( chunk.heightmap_terrain, 4 );
+	#chunk.create_heightmap_mesh( chunk.heightmap_terrain, 4 );
 
 
 
@@ -61,12 +61,7 @@ func _ready() -> void:
 	
 	#Initialize state, with Time used as random seed
 	@warning_ignore("narrowing_conversion")
-	current_state = ChunkGenState.new( Time.get_unix_time_from_system() );
-
-#TEST
-func _unhandled_input( event: InputEvent ) -> void:
-	if event.is_action_pressed( "ui_accept" ):
-		create_chunk( current_state );
+	current_state = ChunkGenState.new( Time.get_unix_time_from_system(), library.terrain_sampler );
 
 func _tracked_node_moved( node: Node3D ) -> void:
 	

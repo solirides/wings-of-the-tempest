@@ -20,8 +20,7 @@ func create_terrain_surface_at_voxel( index: int, scalar_field: Array3D, state: 
 	var world_voxel = Vector3i( chunk_position / terrain_scale ) + voxel;
 	
 	# Get decorator noise value
-	var value: float = ( state.noise.get_noise_2d( 10 * world_voxel.x, 10 * world_voxel.z ) * 0.5 + 0.5 ) \
-		* terrain_decorator_height - world_voxel.y;
+	var value: float = state.chunk_sampler.sample( world_voxel, terrain_decorator_height );
 	
 	# Set in field
 	scalar_field.set_at( voxel, value );

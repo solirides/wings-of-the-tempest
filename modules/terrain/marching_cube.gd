@@ -1,5 +1,72 @@
 class_name MarchingCube
 
+static var thread: Thread;
+static var mutex: Mutex;
+static var semaphore: Semaphore;
+
+static var do_kill: bool;
+static var input: Array[ GeneratorInput ];
+static var output: Signal;
+
+class GeneratorInput:
+	
+	var scalar_field: Array3D;
+	var iso: float;
+	var scale: Vector3;
+	
+	@warning_ignore("shadowed_variable")
+	func _init( scalar_field: Array3D, iso: float, scale: Vector3 ) -> void:
+		self.scalar_field = scalar_field;
+		self.iso = iso;
+		self.scale = scale;
+
+
+
+static func _static_init() -> void:
+	
+	thread = Thread.new();
+	mutex = Mutex.new();
+	semaphore = Semaphore.new();
+	
+	( MarchingCube as Object ).add_user_signal( "output", [ { "name" : "id", "type" : TYPE_INT }, { "name" : "vertices", "type" : TYPE_PACKED_VECTOR3_ARRAY } ] );
+	output = Signal( MarchingCube, "output" );
+	
+	thread.start( run_thread, Thread.PRIORITY_LOW );
+
+static func run_thread() -> void:
+	
+	while true:
+		
+		semaphore.wait();
+		
+		mutex.lock();
+		if do_kill: break;
+		var current: GeneratorInput = input.pop_front();
+		mutex.unlock();
+		
+		var vertices = generate_vertices( current.scalar_field, current.iso, current.scale );
+		
+		mutex.lock();
+		output.emit( current.get_instance_id(), vertices );
+		mutex.unlock();
+
+static func generate_vertices_on_thread( scalar_field: Array3D, iso: float = 0, scale: Vector3 = Vector3.ONE ) -> PackedVector3Array:
+	
+	var new_input: = GeneratorInput.new( scalar_field, iso, scale );
+	var input_id: = new_input.get_instance_id();
+	
+	input.push_back( new_input );
+	semaphore.post();
+	
+	while true:
+		var new_output: Array = await output;
+		if new_output[0] == input_id:
+			return new_output[1];
+	
+	return [];
+
+
+
 static func generate_vertices( scalar_field: Array3D, iso: float = 0, scale: Vector3 = Vector3.ONE ) -> PackedVector3Array:
 	
 	var vertices: = PackedVector3Array();
@@ -8,26 +75,6 @@ static func generate_vertices( scalar_field: Array3D, iso: float = 0, scale: Vec
 		vertices += get_triangle( scalar_field, iso, position, scale );
 	
 	return vertices;
-
-static func generate_mesh( vertices: PackedVector3Array ) -> Mesh:
-	
-	#Create surface
-	var surface_tool: = SurfaceTool.new();
-	surface_tool.begin( Mesh.PRIMITIVE_TRIANGLES );
-	surface_tool.set_smooth_group( -1 );
-	
-	#Add vertices
-	for vertex in vertices:
-		surface_tool.add_vertex( vertex );
-	
-	#Finalize surface
-	surface_tool.generate_normals();
-	surface_tool.index();
-	
-	#Return mesh
-	return surface_tool.commit();
-
-
 
 static func get_triangulation( scalar_field: Array3D, iso: float, position: Vector3i ) -> int:
 	

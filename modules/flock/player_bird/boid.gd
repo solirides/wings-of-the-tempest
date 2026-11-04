@@ -1,13 +1,16 @@
 extends RigidBody3D
 class_name Boid
 
+@export var audio: Audio = Audio
+var soft_collision_factor: float = 0
+
 # How to use health system
 # Currently, there are functions for registering damage (take_damage() and take_percent_damage()
 # and healing (heal() and heal_percent()). take_damage() and heal() each take a specific value to subtract or
 # add to the health respectively, while take_percent_damage() and heal_percent() each take a percent of the maximum health
 # (as a decimal between 0 and 1) to subtract or add to the health respectively.  
 
-# Flock Health Varibables and Signals
+# Flock Health Variables and Signals
 const MAX_HEALTH: float = 100.0
 var health = MAX_HEALTH
 
@@ -29,6 +32,7 @@ func take_damage(damage: float) -> void:
 	if (damage < 0 || health <= 0):
 		print("Invalid damage argument or health has reached zero")
 		return
+	#print("took damage")
 	health -= damage
 	check_heath_status()
 
@@ -74,6 +78,10 @@ var move_direction: Vector3:
 var death_particles = preload("res://modules/flock/death_particles.tscn")
 var death_queued = false
 
+# keep track of force applied for display
+# reset after every physics frame
+var wind_force: Vector3 = Vector3.ZERO
+
 @onready var food_detector: Area3D = $FoodDetector
 
 func _ready() -> void:
@@ -83,6 +91,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if !death_queued:
+		apply_soft_collision(delta)
 		boid_movement(delta)
 
 func _on_food_detector_area_entered(area: Area3D) -> void:
@@ -223,6 +232,13 @@ func spinning(center: Vector3, neighbors: Array) -> Vector3:
 
 #This is WHERE THE MAGIC BEGINS, NO MORE CALCULATING BORING ASS VECTOR SHITS!!!!!!!!!
 
+func apply_soft_collision(delta: float):
+	properties.speed.remove_modifier("soft_collision")
+	var modifier = StatModifier.new("soft_collision", 1.0 / (soft_collision_factor + 1))
+	print(soft_collision_factor)
+	properties.speed.add_modifier(modifier)
+	soft_collision_factor = 0
+
 func boid_movement(delta: float):
 	var camera_force : Vector3 = Vector3.ZERO
 	if cam_is_moving :
@@ -357,10 +373,12 @@ func boid_movement(delta: float):
 			
 	
 	# rotate node for display
+	# cancel the velocity contribution from wind
+	var own_velocity = linear_velocity - wind_force*delta
 	match properties.rotation_mode:
 		BoidProperties.ROTATION_MODE.LERP_TO_VELOCITY:
 			if linear_velocity.length_squared() > 0.001:
-				var target_rotation = Transform3D.IDENTITY.looking_at(linear_velocity, Vector3.UP).basis
+				var target_rotation = Transform3D.IDENTITY.looking_at(own_velocity, Vector3.UP).basis
 				target_rotation = target_rotation.orthonormalized()
 				global_transform.basis = global_transform.basis.slerp(target_rotation, properties.rotation_smoothness.value * delta)
 		BoidProperties.ROTATION_MODE.LERP_TO_GOAL:
@@ -372,6 +390,9 @@ func boid_movement(delta: float):
 			if linear_velocity.length_squared() > 0.001:
 				var target_pos = global_position + linear_velocity
 				look_at(target_pos, Vector3.UP)
+	
+	wind_force = Vector3.ZERO
+	
 
 func kill_boid(death_animation: bool = true):
 	# prevent this function from running multiple times
@@ -379,7 +400,8 @@ func kill_boid(death_animation: bool = true):
 		return
 	death_queued = true
 	flock.remove_boid(self)
-	
+	audio.play_sfx_track("goose_hurt")
+
 	if death_animation:
 		var instance = death_particles.instantiate()
 		add_child(instance)

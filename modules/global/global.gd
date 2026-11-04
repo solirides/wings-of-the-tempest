@@ -3,8 +3,15 @@ extends Node
 # This global (Singleton) script is automatically loaded at runtime along with its scene.
 # res://modules/global/global.tscn
 
-
+# Scoring system
 var score: int = 0
+const FOOD_FACTOR = 1;
+const MONUMENT_FACTOR = 1;
+ 
+
+
+
+
 # Generally try to use these variables in Global to get references to these nodes. (or use the % prefix)
 # This way we only have to make sure they exist here.
 var flock: Node
@@ -19,6 +26,9 @@ signal main_nodes_ready
 var ready_emitted = false
 
 # Health system has been moved to the flock script res://modules/flock/flock.gd
+
+# Signal that is emitted when score is updated
+signal score_modified
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -68,3 +78,6 @@ func _input(event: InputEvent) -> void:
 			#Input.MOUSE_MODE_CAPTURED:
 				#Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 	
+func AddScore(score_to_add: int) -> void:
+	score += score_to_add
+	score_modified.emit()

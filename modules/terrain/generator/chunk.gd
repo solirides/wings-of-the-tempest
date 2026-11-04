@@ -9,7 +9,10 @@ static var all: Array[ Chunk ];
 static func get_chunk_containing_global_position( at_position: Vector3 ) -> Chunk:
 	
 	for chunk in all:
-		if at_position >= chunk.global_position and at_position < chunk.global_position + chunk.get_global_size():
+		var chunk_end: = chunk.global_position + chunk.get_global_size();
+		# only check for x and z bounds, disregard y height
+		if at_position.x >= chunk.global_position.x and at_position.z >= chunk.global_position.z and \
+				at_position.x < chunk_end.x and at_position.z < chunk_end.z:
 			return chunk;
 	
 	return null;
@@ -38,6 +41,7 @@ var heightmap_accessibility: Array3D;
 var heightmap_mesh_instance: MeshInstance3D;
 
 
+
 ## Return size of chunk in worldspace
 func get_global_size() -> Vector3:
 	return Vector3( terrain_size ) * terrain_scale;
@@ -51,16 +55,18 @@ func set_terrain_material( material: Material ) -> void:
 ## Create terrain for this chunk based on a 3D grid of scalar voxel data
 func create_terrain_mesh( scalar_field: Array3D ) -> void:
 	
-	var mesh: = MarchingCube.generate_mesh( MarchingCube.generate_vertices( scalar_field, 0.0, terrain_scale ) );	
-	mesh_instance.mesh = mesh;
+	var vertices: = await MarchingCube.generate_vertices_on_thread( scalar_field, 0.0, terrain_scale );
+	var mesh: Mesh = MesherThread.generate_mesh( vertices, Mesh.PrimitiveType.PRIMITIVE_TRIANGLES );
+	
+	mesh_instance.set_deferred( "mesh", mesh );
 	
 	var shape: = ConcavePolygonShape3D.new();
 	shape.set_faces( mesh.get_faces() );
 	var shape_owner: = CollisionShape3D.new();
 	shape_owner.shape = shape;
 	
-	collision_instance.add_child( shape_owner, false, INTERNAL_MODE_FRONT );
 	collision_instance.collision_layer = 4; # Terrain layer
+	collision_instance.call_deferred( "add_child", shape_owner, false, INTERNAL_MODE_FRONT );
 
 ## Create heightmap for this chunk based on a 3d grid of scalar voxel data
 func create_heightmap( scalar_field: Array3D, height: int ) -> Array3D:
@@ -110,20 +116,16 @@ func create_heightmap_at_position( index: int, scalar_field: Array3D, height: in
 ## Create a mesh to draw the heightmap, for debugging purposes
 func create_heightmap_mesh( this_heightmap: Array3D, resolution: float ) -> void:
 	
-	#Create surface
-	var surface_tool: = SurfaceTool.new();
-	surface_tool.begin( Mesh.PRIMITIVE_POINTS );
-	surface_tool.set_smooth_group( -1 );
+	var vertices: PackedVector3Array;
 	
-	#Add vertices
 	for iter: Vector3i in Rect3iIterator.new( Vector3i.ZERO, ( this_heightmap.get_size() - Vector3i( 1, 0, 1 ) ) * resolution ):
 		var pos: = Vector3( iter ) / resolution * terrain_scale;
 		if is_height_accessible( Vector2( pos.x, pos.z ) ):
 			pos.y = get_height( this_heightmap, Vector2( pos.x, pos.z ) );
-			surface_tool.add_vertex( pos * scale );
+			vertices.append( pos * scale );
 	
-	surface_tool.index();
-	return surface_tool.commit();
+	var mesh: = await MesherThread.generate_mesh_on_thread( vertices, Mesh.PrimitiveType.PRIMITIVE_POINTS );
+	heightmap_mesh_instance.set_deferred( "mesh", mesh );
 
 ## Create objects for this chunk based on a list of objects and vectors
 func create_objects( objects: Dictionary[ ChunkObject, Vector2 ] ) -> void:
@@ -163,6 +165,7 @@ func _exit_tree() -> void:
 ## Find vertical position using a heightmap at a horizontal position
 func get_height( heightmap: Array3D, coordinates: Vector2 ) -> float:
 	coordinates /= Vector2( terrain_scale.x, terrain_scale.z );
+	assert( coordinates.x >= 0 and coordinates.y >= 0 and coordinates <= Vector2( heightmap.get_size().x, heightmap.get_size().y ), "Scaled coordinates " + str( coordinates ) + " are not within the heightmaps size of " + str( heightmap.get_size() ) );
 	var integer: Vector2i = coordinates.floor();
 	var fractional: = coordinates.posmod( 1.0 );
 	return lerp( 
