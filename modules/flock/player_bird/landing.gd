@@ -2,15 +2,15 @@ extends Node3D
 class_name Landing
 
 enum STATE {FLYING, LANDING, LANDED, RISING}
+enum landedSTATE {MOVE, STOP}
 
 var current_state : STATE = STATE.FLYING
+var groundedState : landedSTATE = landedSTATE.MOVE
 @onready var boid : Boid = get_parent()
 @onready var model = boid.get_node("bird")
 @onready var hitbox = boid.get_node("CollisionShape3D")
 
 func _physics_process(delta: float) -> void:
-	#print("IS landing running?")
-	#print(current_state)
 	if boid == null:
 		queue_free()
 		return
@@ -24,25 +24,16 @@ func _physics_process(delta: float) -> void:
 			boid.properties.min_speed.value = 5
 			current_state = STATE.RISING
 
-	#Execute logic depending on what state the boid is currently in
 	match current_state:
 		STATE.FLYING:
-			#print("flying")
 			pass
-			
 		STATE.LANDING:
-			#print("I am landing")
 			landing(delta)
-			
 		STATE.LANDED:
-			#print("I've landed")
 			landed(delta)
-			
 		STATE.RISING:
-			#print("I'm rising into the sky!!!!!!!")
 			rising(delta)
 
-# FUN FUNCTION STUFF!!!
 func landing(delta: float) -> void:
 	var target_pitch_rad : float = deg_to_rad(boid.properties.landing_angle)
 	var original_angle : Basis = boid.global_basis
@@ -53,7 +44,7 @@ func landing(delta: float) -> void:
 	var forward_dir = -boid.global_basis.z 
 	boid.global_position += forward_dir * boid.properties.speed.value * delta
 	
-	var terrain_height = touch_grass() #touch grass is a helper function because DEAR GOD!!!!!!!!!!!!
+	var terrain_height = touch_grass() 
 	if boid.global_position.y <= (terrain_height + 0.1):
 		current_state = STATE.LANDED
 	
@@ -69,44 +60,63 @@ func rising(delta: float) -> void:
 	boid.global_position.y += boid.properties.speed.value * 0.5 * delta
 	
 	if boid.global_position.y >= boid.properties.flockMaxHeight:
-		#boid.global_basis = global_basis.slerp(original_angle, boid.properties.rotation_smoothness.value * delta)
 		current_state = STATE.FLYING
 	
 func landed(delta: float) -> void:
-	
-	# Goofy funny stuff to show the boids are landed, doesn't work :(
 	model.rotation.x = deg_to_rad(90) 
 	hitbox.rotation.x = deg_to_rad(90)
 	
 	boid.global_position.y = touch_grass()
 	
-	if boid.global_position.distance_to(boid.flock.flock_goal) > 5:
-		boid.properties.speed.value = 1
-		boid.properties.min_speed.value = 0.1
-		
-	else :
-		#print("I am within 1 meter of the goal")
-		boid.properties.speed.value = 0
-		boid.properties.min_speed.value = 0
-		boid.move_direction = Vector3.ZERO
-		boid.linear_velocity = Vector3.ZERO
-		
-		#print("Speed right after setting: ", boid.properties.speed.value) #WHY THE FUCK IS THIS NOT DOING ANYTHING?
-		
-	#print(boid.properties.speed, " that was speed, this is height: ", boid.global_position.y)
+	match groundedState:
+		landedSTATE.MOVE:
+			if boid.global_position.distance_to(boid.flock.flock_goal) > 5:
+				boid.properties.speed.value = 1
+				boid.properties.min_speed.value = 0.1
+			else:
+				groundedState = landedSTATE.STOP
+		landedSTATE.STOP:
+			if not is_any_boid_near_goal() :
+				groundedState = landedSTATE.MOVE
+			elif boid.global_position.distance_to(boid.flock.flock_goal) < 5 or stopped_boid_neighbors():
+				boid.properties.speed.value = 0
+				boid.properties.min_speed.value = 0
+				boid.move_direction = Vector3.ZERO
+				boid.linear_velocity = Vector3.ZERO
+			else:
+				groundedState = landedSTATE.MOVE
 
-#Helper function which should keep the boids stuck to the ground.
+#checks if any neighboring boids are stopped and then stops the boid.
+func stopped_boid_neighbors() -> bool:
+	for neighbor in boid.flock.boids: 
+		if neighbor == boid:
+			continue 
+			
+		var neighbor_landing = neighbor.get_node_or_null("Landing")
+		if neighbor_landing and neighbor_landing.groundedState == landedSTATE.STOP:
+			if boid.global_position.distance_to(neighbor.global_position) < 10:
+				return true
+	return false
+
+# Checks if ANY boid in is within 5m of the boid_goal
+func is_any_boid_near_goal() -> bool:
+	for neighbor in boid.flock.boids:
+		if neighbor.global_position.distance_to(boid.flock.flock_goal) < 5:
+			return true
+	return false
+
+#helper function which updates the boids y-pos based on the terrain height.
 func touch_grass() -> float:
 	var above_chunk = Chunk.get_chunk_containing_global_position(boid.global_position)
-	if !is_instance_valid(above_chunk) :
-		print("Failed to land at position: ", global_position )
-		return boid.flockMaxHeight #This is not ideal since it still crashes... but uhhhh
+	if !is_instance_valid(above_chunk):
+		print("Failed to land at position: ", global_position)
+		return boid.flockMaxHeight 
 	
-	var relative_position: Vector3 = boid.global_position - above_chunk.global_position;
-	var horizontal: = Vector2( relative_position.x, relative_position.z );
+	var relative_position: Vector3 = boid.global_position - above_chunk.global_position
+	var horizontal := Vector2(relative_position.x, relative_position.z)
 	
-	if above_chunk.is_height_accessible( horizontal ):
-		var terrain_height = above_chunk.global_position.y + above_chunk.get_height( above_chunk.heightmap_accessibility, horizontal );
+	if above_chunk.is_height_accessible(horizontal):
+		var terrain_height = above_chunk.global_position.y + above_chunk.get_height(above_chunk.heightmap_accessibility, horizontal)
 		return terrain_height
 	
 	return boid.flockMaxHeight

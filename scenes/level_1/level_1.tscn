@@ -232,6 +232,7 @@ minimum_group_size = SubResource("Resource_af74n")
 steering_smoothness = SubResource("Resource_aodxh")
 rotation_smoothness = SubResource("Resource_so1i6")
 steering_strength = SubResource("Resource_i67mf")
+steering_mode = 1
 flockMaxHeight = 0.0
 metadata/_custom_type_script = "uid://dstx1f47q2ki1"
 
