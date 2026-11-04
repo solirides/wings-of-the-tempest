@@ -55,19 +55,5 @@ func regroup_flock():
 	for subflock in subflocks:
 		subflock.transfer_boids_to_flock(self)
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("split_flock"):
-		print("split flock action pressed")
-		regroup_flock()
-		# keep at least split_boid_count in the main flock
-		var count = max(0, min(split_boid_count, len(all_boids) - split_boid_count) ) 
-		split_flock(count, subflocks[0])
-	if event.is_action_pressed("swoop"):
-		print("swoop action pressed")
-		swoop(true)
-	elif event.is_action_released("swoop"):
-		print("swoop action released")
-		swoop(false)
-	if event.is_action_pressed("land"):
-		print("land action pressed")
-		toggle_landing()
+#moved all the input stuff back to flock, I feel like main_flock should only keep track of boids.
+#flock.gd should do all the actual flock stuff.

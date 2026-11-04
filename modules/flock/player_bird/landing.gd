@@ -53,10 +53,9 @@ func landing(delta: float) -> void:
 	var forward_dir = -boid.global_basis.z 
 	boid.global_position += forward_dir * boid.properties.speed.value * delta
 	
-	var chunk = Chunk.get_chunk_containing_global_position(boid.global_position)
-	if is_instance_valid(chunk):
-		if boid.global_position.y < (chunk.global_position.y - 0.1):
-			current_state = STATE.LANDED
+	var terrain_height = touch_grass() #touch grass is a helper function because DEAR GOD!!!!!!!!!!!!
+	if boid.global_position.y <= (terrain_height + 0.1):
+		current_state = STATE.LANDED
 	
 func rising(delta: float) -> void:
 	var target_pitch_rad : float = deg_to_rad(45)
@@ -74,21 +73,40 @@ func rising(delta: float) -> void:
 		current_state = STATE.FLYING
 	
 func landed(delta: float) -> void:
-	boid.properties.speed.value = 5
-	boid.properties.min_speed.value = 1
 	
-	# Goofy funny stuff to show the boids are landed
+	# Goofy funny stuff to show the boids are landed, doesn't work :(
 	model.rotation.x = deg_to_rad(90) 
 	hitbox.rotation.x = deg_to_rad(90)
 	
-	if boid.global_position.distance_to(boid.flock.flock_goal) < 1:
-		boid.properties.speed.value = 0
-		
-	print(boid.properties.speed, " that was speed, this is height: ", boid.global_position.y)
+	boid.global_position.y = touch_grass()
 	
-	#for neighbor in boid.neighbors:
-		#if neighbor and is_instance_valid(neighbor):
-			#if boid.global_position.distance_to(neighbor.global_position) < 4:
-				#if neighbor.properties.speed.value == 0:
-				#	boid.properties.speed.value = 0
-					#break
+	if boid.global_position.distance_to(boid.flock.flock_goal) > 5:
+		boid.properties.speed.value = 1
+		boid.properties.min_speed.value = 0.1
+		
+	else :
+		#print("I am within 1 meter of the goal")
+		boid.properties.speed.value = 0
+		boid.properties.min_speed.value = 0
+		boid.move_direction = Vector3.ZERO
+		boid.linear_velocity = Vector3.ZERO
+		
+		#print("Speed right after setting: ", boid.properties.speed.value) #WHY THE FUCK IS THIS NOT DOING ANYTHING?
+		
+	#print(boid.properties.speed, " that was speed, this is height: ", boid.global_position.y)
+
+#Helper function which should keep the boids stuck to the ground.
+func touch_grass() -> float:
+	var above_chunk = Chunk.get_chunk_containing_global_position(boid.global_position)
+	if !is_instance_valid(above_chunk) :
+		print("Failed to land at position: ", global_position )
+		return boid.flockMaxHeight #This is not ideal since it still crashes... but uhhhh
+	
+	var relative_position: Vector3 = boid.global_position - above_chunk.global_position;
+	var horizontal: = Vector2( relative_position.x, relative_position.z );
+	
+	if above_chunk.is_height_accessible( horizontal ):
+		var terrain_height = above_chunk.global_position.y + above_chunk.get_height( above_chunk.heightmap_accessibility, horizontal );
+		return terrain_height
+	
+	return boid.flockMaxHeight

@@ -60,5 +60,6 @@ cursor = NodePath("Cursor")
 mesh = SubResource("CylinderMesh_6lmcw")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="SubFlock/Cursor" unique_id=1802767457]
+visible = false
 mesh = SubResource("CylinderMesh_owja0")
 surface_material_override/0 = SubResource("StandardMaterial3D_00olh")

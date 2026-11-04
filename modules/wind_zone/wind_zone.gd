@@ -27,7 +27,7 @@ var next_wind_change = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	print($Timer)
+	#print($Timer)
 	#timer.wait_time = random_duration
 	rng.randomize()
 	pick_new_wind()

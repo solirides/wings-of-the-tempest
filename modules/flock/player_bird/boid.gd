@@ -235,7 +235,7 @@ func spinning(center: Vector3, neighbors: Array) -> Vector3:
 func apply_soft_collision(delta: float):
 	properties.speed.remove_modifier("soft_collision")
 	var modifier = StatModifier.new("soft_collision", 1.0 / (soft_collision_factor + 1))
-	print(soft_collision_factor)
+	#print(soft_collision_factor)
 	properties.speed.add_modifier(modifier)
 	soft_collision_factor = 0
 
@@ -392,7 +392,6 @@ func boid_movement(delta: float):
 				look_at(target_pos, Vector3.UP)
 	
 	wind_force = Vector3.ZERO
-	
 
 func kill_boid(death_animation: bool = true):
 	# prevent this function from running multiple times

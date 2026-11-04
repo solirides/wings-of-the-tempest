@@ -232,6 +232,7 @@ minimum_group_size = SubResource("Resource_af74n")
 steering_smoothness = SubResource("Resource_aodxh")
 rotation_smoothness = SubResource("Resource_so1i6")
 steering_strength = SubResource("Resource_i67mf")
+flockMaxHeight = 0.0
 metadata/_custom_type_script = "uid://dstx1f47q2ki1"
 
 [node name="World" type="Node3D" unique_id=1809984319]
@@ -339,6 +340,7 @@ attack_range = 2.0
 
 [node name="Storm" parent="." unique_id=904228582 instance=ExtResource("19_c2dwa")]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 47)
+visible = false
 
 [node name="ChunkGenerator" type="Node3D" parent="." unique_id=74537442 node_paths=PackedStringArray("tracked_node")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, -8, 0)
@@ -354,6 +356,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 17)
 
 [node name="Flock" parent="." unique_id=1876045196 node_paths=PackedStringArray("camera_controller") instance=ExtResource("2_jr17i")]
 camera_controller = NodePath("../Camera")
+enable_hunger_effects = false
 boid_properties = SubResource("Resource_otekq")
 
 [node name="tree_1" parent="." unique_id=390786271 instance=ExtResource("20_7wfhb")]
