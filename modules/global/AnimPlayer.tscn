@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dns44cx42roea"]
+
+[ext_resource type="Script" uid="uid://tgjwfd2oshcy" path="res://modules/global/anim_player.gd" id="1_aavvn"]
+
+[node name="AnimPlayer" type="Node" unique_id=507449482]
+script = ExtResource("1_aavvn")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1848910619]

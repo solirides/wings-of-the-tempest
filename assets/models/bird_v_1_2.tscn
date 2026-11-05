@@ -1,5 +1,22 @@
 [gd_scene format=3 uid="uid://ccxxydkdic7wl"]
 
 [ext_resource type="PackedScene" uid="uid://b6gylk13xq7rl" path="res://assets/models/bird_v1.2.glb" id="1_n7k1g"]
+[ext_resource type="Script" uid="uid://tgjwfd2oshcy" path="res://modules/global/anim_player.gd" id="2_4mx1r"]
 
-[node name="bird v1_2" unique_id=790560813 instance=ExtResource("1_n7k1g")]
+[node name="bird v1_2" unique_id=790560813 node_paths=PackedStringArray("anim_player") instance=ExtResource("1_n7k1g")]
+script = ExtResource("2_4mx1r")
+anim_player = NodePath("AnimationPlayer")
+anim_speed = 1.0
+anim_name = "Action"
+playing = true
+
+[node name="Skeleton3D" parent="Armature" parent_id_path=PackedInt32Array(1354231392) index="0" unique_id=1128593163]
+bones/1/rotation = Quaternion(-0.12818854, 0, 0, 0.9917499)
+bones/2/rotation = Quaternion(0.021733182, 7.1504707e-07, -1.701289e-08, 0.99976385)
+bones/3/rotation = Quaternion(0.092430875, -7.121881e-07, 6.6111106e-08, 0.9957192)
+bones/4/rotation = Quaternion(0.9999788, -4.1427978e-17, -6.4100666e-18, 0.006513105)
+bones/5/rotation = Quaternion(0.08876718, 3.2849987e-18, -1.2766594e-17, 0.99605244)
+bones/6/rotation = Quaternion(0.53983676, 0.59124637, 0.4253606, 0.42198622)
+bones/7/rotation = Quaternion(-0.19815002, 0.24990366, 0.3196095, 0.8922637)
+bones/8/rotation = Quaternion(-0.5398368, 0.5912464, 0.42536065, -0.42198622)
+bones/9/rotation = Quaternion(-0.19815002, -0.24990366, -0.3196095, 0.8922637)
