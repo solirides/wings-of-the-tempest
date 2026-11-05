@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bfccgxrtfv63w"]
+
+[ext_resource type="Script" uid="uid://cq3qfl0iporfv" path="res://modules/terrain/editors/chunk_editor.gd" id="1_2ar46"]
+
+[node name="ChunkEditor" type="Node3D" unique_id=2124110090]
+process_mode = 4
+script = ExtResource("1_2ar46")
+metadata/_custom_type_script = "uid://cq3qfl0iporfv"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2138424478]
