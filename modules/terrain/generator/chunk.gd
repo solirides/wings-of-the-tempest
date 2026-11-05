@@ -140,9 +140,28 @@ func create_objects( objects: Dictionary[ ChunkObject, Vector2 ] ) -> void:
 
 
 
-func _init( definition: ChunkDefinition ) -> void:
+func create( sampler: ChunkTerrainSampler, definition: ChunkDefinition ) -> void:
+	
 	terrain_size = definition.terrain_size;
 	terrain_scale = definition.terrain_scale;
+	
+	# Generate chunk using data from definition
+	var terrain_data: = Array3D.packedFloat32( definition.terrain_size + Vector3i.ONE );
+	
+	# Create terrain
+	definition.create_terrain_surface( terrain_data, sampler, position );
+	definition.create_terrain_objects( terrain_data );
+	
+	# Create heightmaps and objects
+	heightmap_accessibility = create_heightmap( terrain_data, definition.terrain_accessible_height );
+	heightmap_terrain = create_heightmap( terrain_data, definition.terrain_size.y );
+	create_objects( definition.get_objects() );
+	
+	# Create mesh
+	create_terrain_mesh( terrain_data );
+	
+	# DEBUG
+	#chunk.create_heightmap_mesh( chunk.heightmap_terrain, 4 );
 
 func _ready() -> void:
 	

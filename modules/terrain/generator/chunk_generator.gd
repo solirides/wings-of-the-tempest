@@ -29,31 +29,14 @@ func create_chunk( state: ChunkGenState ) -> void:
 	var chunk_def: = pick_chunk_def( state );
 	
 	# Create chunk in world
-	var chunk: = Chunk.new( chunk_def );
+	var chunk: = Chunk.new();
 	add_child( chunk );
 	chunk.set_terrain_material( library.terrain_material );
 	chunk.position = get_state_chunk_position( state );
-	
-	# Generate chunk using data from definition
-	var terrain_data: = Array3D.packedFloat32( chunk_def.terrain_size + Vector3i.ONE );
-	
-	# Create terrain
-	chunk_def.create_terrain_surface( terrain_data, state, chunk.position );
-	chunk_def.create_terrain_objects( terrain_data );
+	chunk.create( state.chunk_sampler, chunk_def );
 	
 	# Increment state ASAP
 	state._increment();
-	
-	# Create heightmaps and objects
-	chunk.heightmap_accessibility = chunk.create_heightmap( terrain_data, chunk_def.terrain_accessible_height );
-	chunk.heightmap_terrain = chunk.create_heightmap( terrain_data, chunk_def.terrain_size.y );
-	chunk.create_objects( chunk_def.get_objects() );
-	
-	# Create mesh
-	chunk.create_terrain_mesh( terrain_data );
-	
-	# DEBUG
-	#chunk.create_heightmap_mesh( chunk.heightmap_terrain, 4 );
 
 
 
