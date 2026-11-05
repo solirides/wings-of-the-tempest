@@ -1,7 +1,7 @@
 extends Node3D
 class_name Chunk
 
-static var heightmap_debug_material: StandardMaterial3D = preload( "res://modules/terrain/heightmap_debug.tres" );
+static var heightmap_debug_material: StandardMaterial3D = preload( "res://modules/terrain/test assets/heightmap_debug.tres" );
 
 static var all: Array[ Chunk ];
 
