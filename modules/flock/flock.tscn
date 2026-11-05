@@ -33,6 +33,7 @@ albedo_color = Color(0.078431375, 0.43529412, 1, 1)
 
 [node name="Flock" type="Node3D" unique_id=1876045196 node_paths=PackedStringArray("cursor", "subflocks")]
 script = ExtResource("1_btmmu")
+water_depletion_rate = 1.0
 cursor = NodePath("MeshInstance3D2")
 subflocks = [NodePath("SubFlock")]
 
@@ -60,5 +61,6 @@ cursor = NodePath("Cursor")
 mesh = SubResource("CylinderMesh_6lmcw")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="SubFlock/Cursor" unique_id=1802767457]
+visible = false
 mesh = SubResource("CylinderMesh_owja0")
 surface_material_override/0 = SubResource("StandardMaterial3D_00olh")
