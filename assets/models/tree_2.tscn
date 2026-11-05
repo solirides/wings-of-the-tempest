@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://bjgdo0t6mwpwv"]
+
+[ext_resource type="PackedScene" uid="uid://cbq0ineejoob8" path="res://assets/models/tree_2.glb" id="1_wou0u"]
+[ext_resource type="Script" uid="uid://bgtojvurc654u" path="res://modules/terrain/objects/tree.gd" id="2_he3ts"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_am3p8"]
+height = 5.0
+radius = 2.5
+
+[node name="tree_2" unique_id=1430638242 instance=ExtResource("1_wou0u")]
+
+[node name="Area3D" type="Area3D" parent="." index="1" unique_id=7988051]
+script = ExtResource("2_he3ts")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0" unique_id=878216665]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4099815, 2.3480911, 0.43261242)
+shape = SubResource("CylinderShape3D_am3p8")
+
+[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]

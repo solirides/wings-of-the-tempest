@@ -32,6 +32,7 @@ func _ready() -> void:
 	#cooldown_timer.one_shot = true 
 	# Hide the aim rod until the hunter starts aiming
 	aim_indicator.visible = false
+	is_grounded = true
 	
 func _physics_process(delta: float) -> void:
 	# If hunter is already aimming skip everything below

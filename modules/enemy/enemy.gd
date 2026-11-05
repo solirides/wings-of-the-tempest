@@ -26,6 +26,8 @@ enum EnemyState {
 
 var attack_ready = true
 
+var is_grounded = false
+
 func _physics_process(delta: float) -> void:
 	state_machine_process(delta)
 	if attack_ready:

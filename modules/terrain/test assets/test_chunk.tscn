@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dmehpm17b8ihr"]
 
 [ext_resource type="Script" uid="uid://bt145qipdjfhd" path="res://modules/terrain/generator/chunk_generator.gd" id="1_jewke"]
-[ext_resource type="Resource" uid="uid://cnhauj7okt3ps" path="res://modules/terrain/test_lib.tres" id="2_yqyt3"]
+[ext_resource type="Resource" uid="uid://cnhauj7okt3ps" path="res://modules/terrain/test assets/test_lib.tres" id="2_yqyt3"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jewke"]
 sky_top_color = Color(0.6394856, 0.76958525, 0.81879675, 1)

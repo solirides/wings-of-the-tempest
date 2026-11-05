@@ -25,6 +25,7 @@ func _ready() -> void:
 	circle_target = global_position
 	set_state(EnemyState.WANDERING)
 	print(state)
+	is_grounded = false
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)

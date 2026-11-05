@@ -1,13 +1,11 @@
 extends Node3D
 class_name Flock
 
-
-
-
 # Camera
 @export var camera_controller: Node
 
 # Hunger
+@export var enable_hunger_effects = true
 @export var max_hunger: float = 100.0
 @export var current_hunger: float = max_hunger
 @export var starve_rate: float = 2.0
@@ -19,15 +17,15 @@ class_name Flock
 
 @export var num_boids: int = 10
 @export var spawn_radius: float = 10.0
-@export var cursor: MeshInstance3D
-@export var subflocks: Array[SubFlock] = []
-
+@export var cursor: Node3D
+@export var subflocks: Array[Flock] = []
 
 @export var boid_properties: BoidProperties = BoidProperties.new()
 
 # only boids with movement controlled by the main flock, not subflocks
 var boids: Array[Boid] = []
 var flock_goal : Vector3
+var land_goal : Vector3
 var boid_scene = preload("res://modules/flock/player_bird/player_bird.tscn")
 
 # all boids including ones in subflocks
@@ -87,67 +85,73 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	#THIS changes causses the boids to repel... ALSO NO LONGER A HOLD THING!!!!
 	if event.is_action_pressed("repel") :
-		if boid_properties.flockIsLanded :
-			print("You cannot scatter while the boids are meant to be landed!")
-			boid_properties.scatter = false
-		else:
-			# toggle boid scattering mode
-			boid_properties.scatter = !boid_properties.scatter
-			boid_properties.default_state = !boid_properties.default_state
-		print("I'm changing scatter states")
+		handle_repel_request()
+	
+	if event.is_action_pressed("swoop") :
+		handle_swoop_request()
 		
 
-func swoop(state: bool):
-	pass
+func handle_repel_request():
+	if boid_properties.flockIsLanded :
+		print("You cannot scatter while the boids are meant to be landed!")
+		boid_properties.scatter = false
+	else:
+		# toggle boid scattering mode
+		boid_properties.scatter = !boid_properties.scatter
+		boid_properties.default_state = !boid_properties.default_state
+	print("I'm changing scatter states")
 
-
-func toggle_landing(state: bool = !boid_properties.flockIsFlying):
-	if state == boid_properties.flockIsFlying:
-		print("same landing state, returning")
-		return
-	#print(state)
-	boid_properties.flockIsFlying = state
-	#print(boid_properties.flockIsFlying)
-	#This is SUPPOSED to run when the Boid are flying in the air and you want them to land.
+func handle_swoop_request():
 	if boid_properties.flockIsFlying:
+		print("The boids are supposed to land now.")
+		boid_properties.scatter = false
+		
+		land_goal = flock_goal
+		
+		boid_properties.flockIsLanded = true
+		boid_properties.flockIsFlying = false
+	else : 
+		global_position.y = boid_properties.flockMaxHeight
 		print("RISE FROM YOUR GRAVES!!!!! EHEHEHEHEHEH")
 		boid_properties.flockIsLanded = false
 		boid_properties.flockIsFlying = true
-	else:
-		global_position.y = boid_properties.flockMaxHeight
-		print("The boids are supposed to land now.")
-		boid_properties.scatter = false
-		boid_properties.default_state = true
-		
 
 
 #this updates the flocks global position on the ground.
 func flock_landed() -> void :
 	
-	var above_chunk: Chunk = Chunk.get_chunk_containing_global_position( global_position );
+	var above_chunk: Chunk = Chunk.get_chunk_containing_global_position( get_cursor_pos() );
+	#print("I am constantly look for the ground.")
 	
 	#If the above_chunk.global_position is null, throws you out by setting boid_properties.flockIsFlying == true
 	if !is_instance_valid(above_chunk) :
-		print("above_chunk.global_position is null")
-		global_position.y = boid_properties.flockMaxHeight
-		boid_properties.flockIsFlying = !boid_properties.flockIsFlying
+		boid_properties.flockIsFlying = true
+		boid_properties.flockIsLanded = false
+		print("Failed to land at position: ", global_position )
+		return
 	
-	else :
-		var relative_position: = global_position - above_chunk.global_position;
-		var horizontal: = Vector2( relative_position.x, relative_position.z );
+	var relative_position: = global_position - above_chunk.global_position;
+	var horizontal: = Vector2( relative_position.x, relative_position.z );
 		
-		if above_chunk and above_chunk.is_height_accessible( horizontal ):
-			global_position.y = above_chunk.global_position.y + above_chunk.get_height( above_chunk.heightmap_accessibility, horizontal );
-			boid_properties.flockIsLanded = true
-			#print(global_position.y) #PLEASE disable this, this clutters stuff up SO fast.
+	if above_chunk.is_height_accessible( horizontal ):
+		
+		global_position.y = above_chunk.global_position.y + above_chunk.get_height( above_chunk.heightmap_accessibility, horizontal );
+		boid_properties.flockIsLanded = true
+		#print(global_position.y) #PLEASE disable this, this clutters stuff up SO fast.
+	else :
+		boid_properties.flockIsFlying = true
+		boid_properties.flockIsLanded = false
 
 	
 
 func _process(delta: float) -> void:
 	#this allows for the boid's main goal to be updated later on. Maybe for a better flock split system??????
 	#This IS not perfect, if I want the boids to split into subflocks, I need to give them functionality to do so... in their OWN script!
+	update_cursor()
+
+func update_cursor():
 	flock_goal = get_cursor_pos()
-	global_position = get_cursor_pos()
+	#global_position = get_cursor_pos()
 	if cursor:
 		cursor.global_position = get_cursor_pos()
 
@@ -161,22 +165,13 @@ func _physics_process(delta: float) -> void:
 	if boid_properties.flockIsFlying == false :
 		flock_landed()
 	
-	#if current_hunger > 50.0:
-		#boid_properties.speed.value = max(boid_properties.min_speed.value, boid_properties.speed.value - speed_penalty_interval * delta)
-	
-		
-	
-	
+	if enable_hunger_effects:
+		process_hunger(delta)
+
+func process_hunger(delta: float):
 	#in essence both of these if statements are decreasing the hunger
 	if current_hunger > 0:
 		current_hunger = max(0.0, current_hunger - starve_rate * delta)
-		#print("hunger: " + str(current_hunger))
-		##print("hunger speed modifier: " + str(hunger_modifier.modifier_value))
-		#var mod = boid_properties.speed.get_modifier("hunger_penalty")
-		#if mod:
-			#print("hunger speed modifier: " + str(boid_properties.speed.get_modifier("hunger_penalty").modifier_value))
-		#print("speed: " + str(boid_properties.speed.value))
-		# this code block inflicts speed penalties below 50 hunger
 		if current_hunger < 90.0:
 			for boid in all_boids:
 				var new_speed_mult = lerp(min_hunger_speed_penalty, 1.0, current_hunger / max_hunger)
@@ -185,20 +180,10 @@ func _physics_process(delta: float) -> void:
 				if modifier:
 					modifier.modifier_value = new_speed_mult
 					boid_properties.speed.update_value()
-				#var modifier = StatModifier.new("hunger_penalty", new_speed_mult, StatModifier.ModifierType.MULTIPLY)
-				#boid_properties.speed.remove_modifier("hunger_penalty")
-				#boid_properties.speed.add_modifier(modifier)
-				#boid.speed = max(0.0, boid.speed - speed_penalty_interval * delta)
 		else:
 			hunger_modifier.modifier_value = 1
 		
-		#hunger_changed.emit(current_hunger)
-	#else:
-		# there is no speed penalty because you already ran out of hunger
-		#current_hunger = min(0.0, current_hunger - starve_rate * delta)
-		#hunger_changed.emit(current_hunger)
-	
-	#this if-statement will kill birds of starvation periodically
+	#kill birds of starvation periodically
 	if current_hunger < -starve_death_interval:
 		print("starved")
 		current_hunger = 0.0

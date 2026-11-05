@@ -19,6 +19,12 @@ height = 1.2
 [sub_resource type="BoxShape3D" id="BoxShape3D_pe8da"]
 size = Vector3(1, 1, 1.6539917)
 
+[sub_resource type="PrismMesh" id="PrismMesh_6lmcw"]
+size = Vector3(0.3, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wnlco"]
+albedo_color = Color(1, 0.35000002, 0.35000002, 1)
+
 [node name="PlayerBird" type="RigidBody3D" unique_id=1004426464 groups=["boids"]]
 axis_lock_linear_y = true
 script = ExtResource("1_25rpd")
@@ -51,3 +57,8 @@ font_size = 70
 
 [node name="Landing" type="Node3D" parent="." unique_id=1291596451]
 script = ExtResource("5_wnlco")
+
+[node name="WindIndicator" type="MeshInstance3D" parent="." unique_id=56256316]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.76406133, 0)
+mesh = SubResource("PrismMesh_6lmcw")
+surface_material_override/0 = SubResource("StandardMaterial3D_wnlco")
