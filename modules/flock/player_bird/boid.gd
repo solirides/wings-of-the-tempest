@@ -78,7 +78,8 @@ var move_direction: Vector3:
 var death_particles = preload("res://modules/flock/death_particles.tscn")
 var death_queued = false
 
-# keep track of force applied for display
+# keep track of external force applied
+# manually added to velocity in boid_movement()
 # reset after every physics frame
 var wind_force: Vector3 = Vector3.ZERO
 
@@ -362,7 +363,7 @@ func boid_movement(delta: float):
 				#print(Vector3.UP * steering_strength * angle_to_target)
 			linear_velocity = linear_velocity.normalized() * properties.speed.value
 			#print(linear_velocity.length())
-			
+	linear_velocity = linear_velocity + wind_force
 	
 	# rotate node for display
 	# cancel the velocity contribution from wind
@@ -437,7 +438,7 @@ func debug_flock_display(flock: Flock):
 
 func debug_wind_display(wind_force: Vector3):
 	print(wind_force.length())
-	var display_scale = 40.0
+	var display_scale = 1.0
 	$WindIndicator.scale = Vector3(1,1, wind_force.length() / display_scale)
 	print($WindIndicator.scale)
 	$WindIndicator.look_at(wind_force, Vector3.UP)

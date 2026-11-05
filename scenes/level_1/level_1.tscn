@@ -22,6 +22,7 @@
 [ext_resource type="Resource" uid="uid://cnhauj7okt3ps" path="res://modules/terrain/test assets/test_lib.tres" id="21_06ebd"]
 [ext_resource type="Script" uid="uid://bv8nqa5kn647" path="res://modules/global/stat.gd" id="21_8v8ov"]
 [ext_resource type="Script" uid="uid://dstx1f47q2ki1" path="res://modules/flock/player_bird/boid_properties.gd" id="22_8m3jb"]
+[ext_resource type="PackedScene" uid="uid://c5uasawpupc1t" path="res://modules/enemy/crab.tscn" id="24_8m3jb"]
 [ext_resource type="PackedScene" uid="uid://llwk0a2c7qid" path="res://modules/monument/monument.tscn" id="24_8v8ov"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
@@ -323,7 +324,7 @@ outline_size = 80
 [node name="WindZone" parent="." unique_id=2060379650 instance=ExtResource("13_665yd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 26)
 wind_direction = Vector3(1, 0, 0)
-wind_strength = 60.0
+wind_strength = 0.3
 
 [node name="WindTrails" parent="WindZone" unique_id=1253582775 instance=ExtResource("14_3fps6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, 0)
@@ -364,6 +365,9 @@ camera_controller = NodePath("../../Camera")
 
 [node name="tree_1" parent="." unique_id=390786271 instance=ExtResource("20_7wfhb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -50)
+
+[node name="Crab" parent="." unique_id=2042176865 instance=ExtResource("24_8m3jb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -38)
 
 [connection signal="body_entered" from="Goal" to="Goal" method="_on_body_entered"]
 

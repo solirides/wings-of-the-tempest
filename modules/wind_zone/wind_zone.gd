@@ -60,8 +60,8 @@ func apply_wind(body: PhysicsBody3D, delta):
 			#force = wind_strength * wind_direction.normalized() * \
 				#wind_map.sample(Vector2(1, 0) * Time.get_ticks_msec() / 1000 * random_rate)
 	#print(force)
-	body.apply_central_force(force)
-	# keep track of force applied for display
+	#body.apply_central_force(force)
+	# keep track of force applied
 	body.wind_force += force
 
 func pick_new_wind() -> void:
