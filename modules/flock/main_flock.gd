@@ -47,13 +47,24 @@ func split_flock(num: int, subflock:SubFlock):
 		boid.transfer_to_flock(subflock)
 	
 	# set subflock target
-	subflock.flock_goal = get_mouse_world_position(camera_controller.camera_node)
+	subflock.flock_goal = get_cursor_pos()
 	subflock.update_cursor()
 	
 
 func regroup_flock():
 	for subflock in subflocks:
 		subflock.transfer_boids_to_flock(self)
+		
 
 #moved all the input stuff back to flock, I feel like main_flock should only keep track of boids.
 #flock.gd should do all the actual flock stuff.
+# flock.gd is inherited by both MainFlock and SubFlock,
+# so input for flock splitting would be more annoying to handle in flock.gd
+# Maybe move later.
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("split_flock"):
+		print("split flock action pressed")
+		regroup_flock()
+		# keep at least split_boid_count in the main flock
+		var count = max(0, min(split_boid_count, len(all_boids) - split_boid_count) ) 
+		split_flock(count, subflocks[0])

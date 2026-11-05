@@ -158,7 +158,7 @@ value = 5.0
 script = ExtResource("21_8v8ov")
 name = "rotation_smoothness"
 description = ""
-base_value = 8.0
+base_value = 24.0
 value = 8.0
 
 [sub_resource type="Resource" id="Resource_ut4nd"]
@@ -340,8 +340,7 @@ attack_range = 2.0
 [node name="Hunter" parent="." unique_id=431166771 instance=ExtResource("18_aph6o")]
 
 [node name="Storm" parent="." unique_id=904228582 instance=ExtResource("19_c2dwa")]
-transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 47)
-visible = false
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 132)
 
 [node name="ChunkGenerator" type="Node3D" parent="." unique_id=74537442 node_paths=PackedStringArray("tracked_node")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, -8, 0)
@@ -360,7 +359,12 @@ camera_controller = NodePath("../Camera")
 enable_hunger_effects = false
 boid_properties = SubResource("Resource_otekq")
 
+[node name="SubFlock" parent="Flock" index="3" unique_id=1838721350 node_paths=PackedStringArray("camera_controller")]
+camera_controller = NodePath("../../Camera")
+
 [node name="tree_1" parent="." unique_id=390786271 instance=ExtResource("20_7wfhb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -50)
 
 [connection signal="body_entered" from="Goal" to="Goal" method="_on_body_entered"]
+
+[editable path="Flock"]

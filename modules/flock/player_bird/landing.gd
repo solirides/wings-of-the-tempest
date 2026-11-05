@@ -110,7 +110,7 @@ func touch_grass() -> float:
 	var above_chunk = Chunk.get_chunk_containing_global_position(boid.global_position)
 	if !is_instance_valid(above_chunk):
 		print("Failed to land at position: ", global_position)
-		return boid.flockMaxHeight 
+		return boid.properties.flockMaxHeight 
 	
 	var relative_position: Vector3 = boid.global_position - above_chunk.global_position
 	var horizontal := Vector2(relative_position.x, relative_position.z)
@@ -119,4 +119,4 @@ func touch_grass() -> float:
 		var terrain_height = above_chunk.global_position.y + above_chunk.get_height(above_chunk.heightmap_accessibility, horizontal)
 		return terrain_height
 	
-	return boid.flockMaxHeight
+	return boid.properties.flockMaxHeight

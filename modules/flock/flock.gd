@@ -85,36 +85,42 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	#THIS changes causses the boids to repel... ALSO NO LONGER A HOLD THING!!!!
 	if event.is_action_pressed("repel") :
-		if boid_properties.flockIsLanded :
-			print("You cannot scatter while the boids are meant to be landed!")
-			boid_properties.scatter = false
-		else:
-			# toggle boid scattering mode
-			boid_properties.scatter = !boid_properties.scatter
-			boid_properties.default_state = !boid_properties.default_state
-		print("I'm changing scatter states")
+		handle_repel_request()
 	
 	if event.is_action_pressed("swoop") :
-		if boid_properties.flockIsFlying:
-			print("The boids are supposed to land now.")
-			boid_properties.scatter = false
-			
-			land_goal = flock_goal
-			
-			boid_properties.flockIsLanded = true
-			boid_properties.flockIsFlying = false
-		else : 
-			global_position.y = boid_properties.flockMaxHeight
-			print("RISE FROM YOUR GRAVES!!!!! EHEHEHEHEHEH")
-			boid_properties.flockIsLanded = false
-			boid_properties.flockIsFlying = true
+		handle_swoop_request()
 		
+
+func handle_repel_request():
+	if boid_properties.flockIsLanded :
+		print("You cannot scatter while the boids are meant to be landed!")
+		boid_properties.scatter = false
+	else:
+		# toggle boid scattering mode
+		boid_properties.scatter = !boid_properties.scatter
+		boid_properties.default_state = !boid_properties.default_state
+	print("I'm changing scatter states")
+
+func handle_swoop_request():
+	if boid_properties.flockIsFlying:
+		print("The boids are supposed to land now.")
+		boid_properties.scatter = false
+		
+		land_goal = flock_goal
+		
+		boid_properties.flockIsLanded = true
+		boid_properties.flockIsFlying = false
+	else : 
+		global_position.y = boid_properties.flockMaxHeight
+		print("RISE FROM YOUR GRAVES!!!!! EHEHEHEHEHEH")
+		boid_properties.flockIsLanded = false
+		boid_properties.flockIsFlying = true
 
 
 #this updates the flocks global position on the ground.
 func flock_landed() -> void :
 	
-	var above_chunk: Chunk = Chunk.get_chunk_containing_global_position( global_position );
+	var above_chunk: Chunk = Chunk.get_chunk_containing_global_position( get_cursor_pos() );
 	#print("I am constantly look for the ground.")
 	
 	#If the above_chunk.global_position is null, throws you out by setting boid_properties.flockIsFlying == true
@@ -145,7 +151,7 @@ func _process(delta: float) -> void:
 
 func update_cursor():
 	flock_goal = get_cursor_pos()
-	global_position = get_cursor_pos()
+	#global_position = get_cursor_pos()
 	if cursor:
 		cursor.global_position = get_cursor_pos()
 
