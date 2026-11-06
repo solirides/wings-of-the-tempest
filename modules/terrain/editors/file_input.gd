@@ -26,6 +26,12 @@ func _text_input_changed( new_text: String ) -> void:
 func get_input() -> String:
 	return %TextInput.text;
 
+func set_input( text: String ) -> void:
+	%TextInput.text = text;
+
+func is_input_valid() -> bool:
+	return verify_file_type( get_input() );
+
 
 
 func verify_file_type( file_path: String ) -> bool:

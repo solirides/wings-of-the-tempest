@@ -5,7 +5,7 @@ class_name ChunkDefinition
 @export var terrain_scale: Vector3;
 @export var terrain_decorator_height: int;
 @export var terrain_accessible_height: int;
-@export var objects: Dictionary[ ChunkObject, Vector2 ];
+@export var objects: Array[ ChunkObjectData ];
 @export var terrain_objects: Dictionary[ ChunkTerrainObject, Vector2i ];
 
 func create_terrain_surface( scalar_field: Array3D, sampler: ChunkTerrainSampler, chunk_position: Vector3 ) -> void:
@@ -40,7 +40,7 @@ func create_terrain_objects( scalar_field: Array3D ) -> void:
 			
 			scalar_field.set_at( chunk_voxel, object.transform_voxel( voxel, scalar_field.get_at( chunk_voxel ) ) );
 
-func get_objects() -> Dictionary[ ChunkObject, Vector2 ]:
+func get_objects() -> Array[ ChunkObjectData ]:
 	return objects;
 
 func get_size() -> Vector3i:

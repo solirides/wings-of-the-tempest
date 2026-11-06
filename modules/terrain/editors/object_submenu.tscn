@@ -1,0 +1,115 @@
+[gd_scene format=3 uid="uid://cdt1kbqcmehdu"]
+
+[ext_resource type="Script" uid="uid://cuas1s0bu8b0a" path="res://modules/terrain/editors/object_submenu.gd" id="1_3dlpi"]
+
+[node name="ObjectSubmenu" type="Control" unique_id=1307613531]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 880.0
+offset_bottom = -586.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3dlpi")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=406897197]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.23529412)
+
+[node name="HSeparator" type="HSeparator" parent="." unique_id=101423926]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 45.0
+offset_bottom = 49.0
+grow_horizontal = 2
+
+[node name="SpawnChanceLabel" type="Label" parent="." unique_id=2047402563]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 10.0
+offset_top = 101.0
+offset_right = 123.0
+offset_bottom = 124.0
+text = "Spawn Chance"
+
+[node name="SpawnChanceInput" type="HSlider" parent="." unique_id=834396211]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -180.0
+offset_top = 106.0
+offset_right = -10.0
+offset_bottom = 122.0
+grow_horizontal = 0
+max_value = 1.0
+step = 0.01
+
+[node name="Label" type="Label" parent="." unique_id=979597657]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 61.0
+offset_right = 73.0
+offset_bottom = 84.0
+text = "Position"
+
+[node name="PosXInput" type="LineEdit" parent="." unique_id=374374649]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -180.0
+offset_top = 61.0
+offset_right = -100.0
+offset_bottom = 92.0
+grow_horizontal = 0
+
+[node name="PosYInput" type="LineEdit" parent="." unique_id=1403087845]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -90.0
+offset_top = 61.0
+offset_right = -10.0
+offset_bottom = 92.0
+grow_horizontal = 0
+
+[node name="Name" type="Label" parent="." unique_id=1623081535]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 10.0
+offset_top = 12.0
+offset_right = -10.0
+offset_bottom = 35.0
+grow_horizontal = 2
+text = "Example"
+
+[node name="DeleteButton" type="Button" parent="." unique_id=195595020]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 330.0
+offset_top = 8.0
+offset_right = 390.0
+offset_bottom = 39.0
+text = "Delete"
+
+[connection signal="drag_ended" from="SpawnChanceInput" to="." method="_spawn_chance_submitted"]
+[connection signal="value_changed" from="SpawnChanceInput" to="." method="_spawn_chance_changed"]
+[connection signal="text_changed" from="PosXInput" to="." method="_pos_x_changed"]
+[connection signal="text_submitted" from="PosXInput" to="." method="_pos_x_submitted"]
+[connection signal="text_changed" from="PosYInput" to="." method="_pos_y_changed"]
+[connection signal="text_submitted" from="PosYInput" to="." method="_pos_y_submitted"]
+[connection signal="pressed" from="DeleteButton" to="." method="_deleted"]

@@ -1,9 +1,36 @@
 [gd_resource type="Resource" script_class="ChunkDefinition" format=3 uid="uid://cdvq6ttwg0jmp"]
 
+[ext_resource type="Script" uid="uid://bh87rke3owanb" path="res://modules/terrain/generator/chunk_object_data.gd" id="1_140yy"]
 [ext_resource type="Script" uid="uid://cks7psb1tg0ob" path="res://modules/terrain/generator/chunk_definition.gd" id="1_abwy3"]
-[ext_resource type="Script" uid="uid://obk0gl5ybof4" path="res://modules/terrain/generator/chunk_object.gd" id="1_sffh1"]
-[ext_resource type="Resource" uid="uid://c7rxv5uhw0cm1" path="res://modules/terrain/test assets/test_object_hunter.tres" id="2_8d6l8"]
+[ext_resource type="Resource" uid="uid://c7rxv5uhw0cm1" path="res://assets/data/terrain/objects/hunter.tres" id="2_140yy"]
 [ext_resource type="Script" uid="uid://hn4a0fyr272r" path="res://modules/terrain/generator/chunk_terrain_object.gd" id="2_bj22w"]
+[ext_resource type="Resource" uid="uid://bn8r5t6bf1i4y" path="res://assets/data/terrain/objects/crab.tres" id="3_wn1sa"]
+[ext_resource type="Resource" uid="uid://df2vefay57ybq" path="res://assets/data/terrain/objects/seagull.tres" id="4_vvycf"]
+[ext_resource type="Resource" uid="uid://cpopvjrd08oqc" path="res://assets/data/terrain/objects/hawk.tres" id="5_wn1sa"]
+
+[sub_resource type="Resource" id="Resource_3glkb"]
+script = ExtResource("1_140yy")
+object = ExtResource("4_vvycf")
+position = Vector2(4, 4)
+metadata/_custom_type_script = "uid://bh87rke3owanb"
+
+[sub_resource type="Resource" id="Resource_8d2mh"]
+script = ExtResource("1_140yy")
+object = ExtResource("3_wn1sa")
+position = Vector2(4, 24)
+metadata/_custom_type_script = "uid://bh87rke3owanb"
+
+[sub_resource type="Resource" id="Resource_g24jr"]
+script = ExtResource("1_140yy")
+object = ExtResource("2_140yy")
+position = Vector2(4, 40)
+metadata/_custom_type_script = "uid://bh87rke3owanb"
+
+[sub_resource type="Resource" id="Resource_wn1sa"]
+script = ExtResource("1_140yy")
+object = ExtResource("5_wn1sa")
+position = Vector2(4, 60)
+metadata/_custom_type_script = "uid://bh87rke3owanb"
 
 [resource]
 script = ExtResource("1_abwy3")
@@ -11,6 +38,4 @@ terrain_size = Vector3i(16, 16, 16)
 terrain_scale = Vector3(4, 1, 4)
 terrain_decorator_height = 6
 terrain_accessible_height = 8
-objects = Dictionary[ExtResource("1_sffh1"), Vector2]({
-ExtResource("2_8d6l8"): Vector2(2, 2)
-})
+objects = Array[ExtResource("1_140yy")]([SubResource("Resource_3glkb"), SubResource("Resource_8d2mh"), SubResource("Resource_g24jr"), SubResource("Resource_wn1sa")])

@@ -34,6 +34,7 @@ static func intersect( start: Vector3, end: Vector3, world: World3D ) -> Vector3
 
 var terrain_size: Vector3i;
 var terrain_scale: Vector3;
+var boid_height: float;
 var mesh_instance: MeshInstance3D;
 var collision_instance: StaticBody3D;
 var heightmap_terrain: Array3D;
@@ -128,15 +129,25 @@ func create_heightmap_mesh( this_heightmap: Array3D, resolution: float ) -> void
 	heightmap_mesh_instance.set_deferred( "mesh", mesh );
 
 ## Create objects for this chunk based on a list of objects and vectors
-func create_objects( objects: Dictionary[ ChunkObject, Vector2 ] ) -> void:
+func create_objects( objects: Array[ ChunkObjectData ] ) -> void:
 	
-	for object: ChunkObject in objects.keys():
-		var object_pos: = objects[ object ];
-		var object_node: Node3D = object.scene.instantiate();
+	for object_data: ChunkObjectData in objects:
+		if not object_data.object:
+			continue;
+		var object_node: Node3D = object_data.object.scene.instantiate();
 		add_child( object_node );
-		object_node.position = Vector3( object_pos.x, object.height_offset, object_pos.y );
-		if object.height_mode == ChunkObject.HeightMode.SNAP:
-			object_node.position.y += get_height( heightmap_terrain, Vector2( object_pos.x, object_pos.y ) );
+		object_node.position = Vector3( object_data.position.x, get_height_of_object( object_data ), object_data.position.y );
+
+## Get the height at which the object would be placed on this chunk
+func get_height_of_object( object_data: ChunkObjectData ) -> float:
+	
+	var height: float = object_data.object.height_offset;
+	if object_data.object.height_mode == ChunkObject.HeightMode.SNAP:
+		height += get_height( heightmap_terrain, Vector2( object_data.position.x, object_data.position.y ) );
+	if object_data.object.height_mode == ChunkObject.HeightMode.ACCESSIBLE:
+		height += boid_height;
+	return height;
+
 
 
 
@@ -144,6 +155,7 @@ func create( sampler: ChunkTerrainSampler, definition: ChunkDefinition ) -> void
 	
 	terrain_size = definition.terrain_size;
 	terrain_scale = definition.terrain_scale;
+	boid_height = definition.terrain_accessible_height;
 	
 	# Generate chunk using data from definition
 	var terrain_data: = Array3D.packedFloat32( definition.terrain_size + Vector3i.ONE );
