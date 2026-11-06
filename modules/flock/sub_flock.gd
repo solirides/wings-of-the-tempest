@@ -17,6 +17,7 @@ func _process(delta: float) -> void:
 	pass
 
 func update_cursor():
+	print("update subflock cursor")
 	if cursor:
 		cursor.global_position = flock_goal
 

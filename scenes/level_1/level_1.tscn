@@ -22,6 +22,7 @@
 [ext_resource type="Resource" uid="uid://cnhauj7okt3ps" path="res://assets/data/terrain/chunk libaries/test_lib.tres" id="21_06ebd"]
 [ext_resource type="Script" uid="uid://bv8nqa5kn647" path="res://modules/global/stat.gd" id="21_8v8ov"]
 [ext_resource type="Script" uid="uid://dstx1f47q2ki1" path="res://modules/flock/player_bird/boid_properties.gd" id="22_8m3jb"]
+[ext_resource type="PackedScene" uid="uid://c5uasawpupc1t" path="res://modules/enemy/crab.tscn" id="24_8m3jb"]
 [ext_resource type="PackedScene" uid="uid://llwk0a2c7qid" path="res://modules/monument/monument.tscn" id="24_8v8ov"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
@@ -158,7 +159,7 @@ value = 5.0
 script = ExtResource("21_8v8ov")
 name = "rotation_smoothness"
 description = ""
-base_value = 8.0
+base_value = 24.0
 value = 8.0
 
 [sub_resource type="Resource" id="Resource_ut4nd"]
@@ -232,6 +233,8 @@ minimum_group_size = SubResource("Resource_af74n")
 steering_smoothness = SubResource("Resource_aodxh")
 rotation_smoothness = SubResource("Resource_so1i6")
 steering_strength = SubResource("Resource_i67mf")
+steering_mode = 1
+flockMaxHeight = 0.0
 metadata/_custom_type_script = "uid://dstx1f47q2ki1"
 
 [node name="World" type="Node3D" unique_id=1809984319]
@@ -321,7 +324,7 @@ outline_size = 80
 [node name="WindZone" parent="." unique_id=2060379650 instance=ExtResource("13_665yd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 26)
 wind_direction = Vector3(1, 0, 0)
-wind_strength = 60.0
+wind_strength = 0.3
 
 [node name="WindTrails" parent="WindZone" unique_id=1253582775 instance=ExtResource("14_3fps6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, 0)
@@ -338,7 +341,7 @@ attack_range = 2.0
 [node name="Hunter" parent="." unique_id=431166771 instance=ExtResource("18_aph6o")]
 
 [node name="Storm" parent="." unique_id=904228582 instance=ExtResource("19_c2dwa")]
-transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 47)
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 132)
 
 [node name="ChunkGenerator" type="Node3D" parent="." unique_id=74537442 node_paths=PackedStringArray("tracked_node")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, -8, 0)
@@ -354,9 +357,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 17)
 
 [node name="Flock" parent="." unique_id=1876045196 node_paths=PackedStringArray("camera_controller") instance=ExtResource("2_jr17i")]
 camera_controller = NodePath("../Camera")
+enable_hunger_effects = false
 boid_properties = SubResource("Resource_otekq")
+
+[node name="SubFlock" parent="Flock" index="3" unique_id=1838721350 node_paths=PackedStringArray("camera_controller")]
+camera_controller = NodePath("../../Camera")
 
 [node name="tree_1" parent="." unique_id=390786271 instance=ExtResource("20_7wfhb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -50)
 
+[node name="Crab" parent="." unique_id=2042176865 instance=ExtResource("24_8m3jb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -38)
+
 [connection signal="body_entered" from="Goal" to="Goal" method="_on_body_entered"]
+
+[editable path="Flock"]

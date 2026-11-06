@@ -78,7 +78,8 @@ var move_direction: Vector3:
 var death_particles = preload("res://modules/flock/death_particles.tscn")
 var death_queued = false
 
-# keep track of force applied for display
+# keep track of external force applied
+# manually added to velocity in boid_movement()
 # reset after every physics frame
 var wind_force: Vector3 = Vector3.ZERO
 
@@ -235,7 +236,7 @@ func spinning(center: Vector3, neighbors: Array) -> Vector3:
 func apply_soft_collision(delta: float):
 	properties.speed.remove_modifier("soft_collision")
 	var modifier = StatModifier.new("soft_collision", 1.0 / (soft_collision_factor + 1))
-	print(soft_collision_factor)
+	#print(soft_collision_factor)
 	properties.speed.add_modifier(modifier)
 	soft_collision_factor = 0
 
@@ -310,18 +311,10 @@ func boid_movement(delta: float):
 				vel = vel.normalized() * properties.speed.value
 			linear_velocity = vel
 		BoidProperties.STEERING_MODE.STEERING_FORCE:
-			var speed_bias = 1.5 # Does not change min or max speeds. Higher values make boids prefer higher speeds.
+			var speed_bias = 2.5 # Does not change min or max speeds. Higher values make boids prefer higher speeds.
 			var desired_velocity = boid_direction * properties.speed.value * speed_bias
 			var steering = desired_velocity - linear_velocity
-			#var speed_scaled = speed
-			#if desired_velocity.length() != 0:
-				##speed_scaled = pow(steering.length() / desired_velocity.length(), speed_scale_exp) * desired_velocity.length()
-				#speed_scaled = speed
-			#if is_nan(speed_scaled):
-				#printerr("speed_scaled is NAN!!!!!")
-				#speed_scaled = 0
-			#steering.y = 0
-			#print("printing")
+			
 			if steering != Vector3.ZERO:
 				steering = steering.normalized() * clamp(steering.length(), properties.min_speed.value, speed_bias*properties.speed.value)
 				#print(steering.length())
@@ -370,7 +363,7 @@ func boid_movement(delta: float):
 				#print(Vector3.UP * steering_strength * angle_to_target)
 			linear_velocity = linear_velocity.normalized() * properties.speed.value
 			#print(linear_velocity.length())
-			
+	linear_velocity = linear_velocity + wind_force
 	
 	# rotate node for display
 	# cancel the velocity contribution from wind
@@ -391,8 +384,8 @@ func boid_movement(delta: float):
 				var target_pos = global_position + linear_velocity
 				look_at(target_pos, Vector3.UP)
 	
+	debug_wind_display(wind_force)
 	wind_force = Vector3.ZERO
-	
 
 func kill_boid(death_animation: bool = true):
 	# prevent this function from running multiple times
@@ -442,3 +435,11 @@ func debug_flock_display(flock: Flock):
 	$MeshInstance3D.mesh.material.albedo_color = Color.from_hsv(random.randf(), 0.5, 1.0)
 	
 	
+
+func debug_wind_display(wind_force: Vector3):
+	print(wind_force.length())
+	var display_scale = 1.0
+	$WindIndicator.scale = Vector3(1,1, wind_force.length() / display_scale)
+	print($WindIndicator.scale)
+	$WindIndicator.look_at(wind_force, Vector3.UP)
+	$WindIndicator.position = wind_force / display_scale / 2.0
