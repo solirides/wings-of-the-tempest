@@ -10,7 +10,7 @@ anim_speed = 1.0
 anim_name = "Action"
 playing = true
 
-[node name="Skeleton3D" parent="Armature" parent_id_path=PackedInt32Array(1354231392) index="0" unique_id=1128593163]
+[node name="Skeleton3D" parent="Armature" parent_id_path=PackedInt32Array(475799412) index="0" unique_id=566536489]
 bones/1/rotation = Quaternion(-0.12818854, 0, 0, 0.9917499)
 bones/2/rotation = Quaternion(0.021733182, 7.1504707e-07, -1.701289e-08, 0.99976385)
 bones/3/rotation = Quaternion(0.092430875, -7.121881e-07, 6.6111106e-08, 0.9957192)
