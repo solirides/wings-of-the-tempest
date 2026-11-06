@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ChunkObject" format=3 uid="uid://df2vefay57ybq"]
+
+[ext_resource type="PackedScene" uid="uid://r2i5ufxdudpc" path="res://modules/enemy/seagull.tscn" id="1_i7c6q"]
+[ext_resource type="Script" uid="uid://obk0gl5ybof4" path="res://modules/terrain/generator/chunk_object.gd" id="2_2d6vg"]
+
+[resource]
+script = ExtResource("2_2d6vg")
+name = "Seagull"
+scene = ExtResource("1_i7c6q")
+height_mode = 2
+metadata/_custom_type_script = "uid://uj3jsrmj1mkc"

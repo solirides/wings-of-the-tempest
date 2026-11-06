@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ChunkObject" format=3 uid="uid://bn8r5t6bf1i4y"]
+
+[ext_resource type="PackedScene" uid="uid://bhdnwxr2ghucr" path="res://assets/models/crab.glb" id="1_h61f6"]
+[ext_resource type="Script" uid="uid://obk0gl5ybof4" path="res://modules/terrain/generator/chunk_object.gd" id="2_d6i48"]
+
+[resource]
+script = ExtResource("2_d6i48")
+name = "Crab"
+scene = ExtResource("1_h61f6")
+height_mode = 1
+metadata/_custom_type_script = "uid://uj3jsrmj1mkc"
