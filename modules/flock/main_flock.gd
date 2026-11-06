@@ -56,11 +56,11 @@ func regroup_flock():
 		subflock.transfer_boids_to_flock(self)
 		
 
-#moved all the input stuff back to flock, I feel like main_flock should only keep track of boids.
-#flock.gd should do all the actual flock stuff.
+@onready var split_input_timer = get_tree().create_timer(1)
+
 # flock.gd is inherited by both MainFlock and SubFlock,
 # so input for flock splitting would be more annoying to handle in flock.gd
-# Maybe move later.
+# Maybe move to a separate input handler later.
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("split_flock"):
 		print("split flock action pressed")
