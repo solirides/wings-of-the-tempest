@@ -176,10 +176,11 @@ func process_hunger(delta: float):
 			for boid in all_boids:
 				var new_speed_mult = lerp(min_hunger_speed_penalty, 1.0, current_hunger / max_hunger)
 				#hunger_modifier.modifier_value = new_speed_mult
-				var modifier = boid_properties.speed.get_modifier("hunger_penalty")
-				if modifier:
-					modifier.modifier_value = new_speed_mult
-					boid_properties.speed.update_value()
+				#var modifier = boid_properties.speed.get_modifier("hunger_penalty")
+				#if modifier:
+					#modifier.modifier_value = new_speed_mult
+					#boid_properties.speed.update_value()
+				boid_properties.speed.change_modifier("hunger_penalty", new_speed_mult)
 		else:
 			hunger_modifier.modifier_value = 1
 		
