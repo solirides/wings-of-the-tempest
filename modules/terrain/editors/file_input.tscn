@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://blprynhglymqb"]
+
+[ext_resource type="Script" uid="uid://cf5g5in6kac2r" path="res://modules/terrain/editors/file_input.gd" id="1_hceqg"]
+
+[node name="FileInput" type="Control" unique_id=1520792573]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_hceqg")
+
+[node name="TextInput" type="LineEdit" parent="." unique_id=1996170169]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 31.0
+grow_horizontal = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=761692757]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 31.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+horizontal_scroll_mode = 0
+
+[node name="SuggestionContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=1725716652]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[connection signal="editing_toggled" from="TextInput" to="." method="_text_input_toggled"]
+[connection signal="text_changed" from="TextInput" to="." method="_text_input_changed"]
