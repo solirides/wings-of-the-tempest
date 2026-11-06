@@ -36,7 +36,7 @@ func _physics_process(delta: float) -> void:
 func try_attack() -> bool:
 	# default behavior: attacks the first boid it finds in range.
 	# subclasses can override this
-	for n in Global.flock.all_boids:
+	if Global.flock: for n in Global.flock.all_boids:
 		# Skip boids that are already dying
 		if n.death_queued:
 			continue
