@@ -7,7 +7,7 @@ func _ready() -> void:
 	
 	# randomize animation speed
 	var speed = randf_range(1.0, 1.8)
-	anim.play("Action", -1, speed)
+	#anim.play("Action", -1, speed)
 	
 	# randomize starting point of animation
 	var l = anim.get_animation("Action").length

@@ -63,8 +63,8 @@ func rising(delta: float) -> void:
 		current_state = STATE.FLYING
 	
 func landed(delta: float) -> void:
-	model.rotation.x = deg_to_rad(90) 
-	hitbox.rotation.x = deg_to_rad(90)
+	#model.rotation.x = deg_to_rad(90) 
+	#hitbox.rotation.x = deg_to_rad(90)
 	
 	boid.global_position.y = touch_grass()
 	
