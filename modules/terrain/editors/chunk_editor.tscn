@@ -1,10 +1,165 @@
 [gd_scene format=3 uid="uid://bfccgxrtfv63w"]
 
 [ext_resource type="Script" uid="uid://cq3qfl0iporfv" path="res://modules/terrain/editors/chunk_editor.gd" id="1_2ar46"]
+[ext_resource type="PackedScene" uid="uid://blprynhglymqb" path="res://modules/terrain/editors/file_input.tscn" id="2_3glkb"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3glkb"]
+sky_top_color = Color(0.6394856, 0.76958525, 0.81879675, 1)
+sky_horizon_color = Color(0.9099479, 0.9124562, 0.91746753, 1)
+ground_bottom_color = Color(0.100675784, 0.188003, 0.2258929, 1)
+
+[sub_resource type="Sky" id="Sky_8v8ov"]
+sky_material = SubResource("ProceduralSkyMaterial_3glkb")
+
+[sub_resource type="Environment" id="Environment_8d2mh"]
+background_mode = 2
+sky = SubResource("Sky_8v8ov")
+tonemap_mode = 2
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
 
 [node name="ChunkEditor" type="Node3D" unique_id=2124110090]
-process_mode = 4
 script = ExtResource("1_2ar46")
 metadata/_custom_type_script = "uid://cq3qfl0iporfv"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2138424478]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1872928557]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Bar" type="Control" parent="CanvasLayer/Control" unique_id=1460137496]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -880.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TabContainer" type="TabContainer" parent="CanvasLayer/Control/Bar" unique_id=753527006]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 0
+
+[node name="Library" type="Control" parent="CanvasLayer/Control/Bar/TabContainer" unique_id=816205694]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Bar/TabContainer/Library" unique_id=2093972272]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 65.0
+offset_bottom = 33.0
+text = "Material"
+
+[node name="MaterialInput" parent="CanvasLayer/Control/Bar/TabContainer/Library" unique_id=1520792573 instance=ExtResource("2_3glkb")]
+layout_mode = 1
+anchors_preset = 10
+anchor_bottom = 0.0
+offset_left = 10.0
+offset_top = 40.0
+offset_right = -10.0
+offset_bottom = 420.0
+grow_vertical = 1
+default_directory = "res://assets/materials"
+type = "Material"
+
+[node name="Chunk" type="Control" parent="CanvasLayer/Control/Bar/TabContainer" unique_id=1633748256]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/Bar" unique_id=1040291638]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 191.0
+grow_horizontal = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.23529412)
+
+[node name="Label2" type="Label" parent="CanvasLayer/Control/Bar/ColorRect" unique_id=1600136962]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 88.0
+offset_right = 141.0
+offset_bottom = 111.0
+text = "Chunk Definition"
+
+[node name="ChunkDefInput" parent="CanvasLayer/Control/Bar/ColorRect" unique_id=142405891 instance=ExtResource("2_3glkb")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 10.0
+offset_top = 120.0
+offset_right = -10.0
+offset_bottom = 340.0
+default_directory = "res://assets/data/terrain/chunk definitions"
+type = "ChunkDefinition"
+
+[node name="SaveDef" type="Button" parent="CanvasLayer/Control/Bar/ColorRect" unique_id=2104618525]
+layout_mode = 0
+offset_left = 310.0
+offset_top = 85.0
+offset_right = 390.0
+offset_bottom = 116.0
+text = "Save"
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Bar/ColorRect" unique_id=560008997]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 65.0
+offset_bottom = 33.0
+text = "Library"
+
+[node name="ChunkLibInput" parent="CanvasLayer/Control/Bar/ColorRect" unique_id=893681616 instance=ExtResource("2_3glkb")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 10.0
+offset_top = 40.0
+offset_right = -10.0
+offset_bottom = 260.0
+default_directory = "res://assets/data/terrain/chunk libaries"
+type = "ChunkLibrary"
+
+[node name="SaveLib" type="Button" parent="CanvasLayer/Control/Bar/ColorRect" unique_id=1900757811]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 310.0
+offset_top = 5.0
+offset_right = -10.0
+offset_bottom = -155.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Save"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1401735524]
+environment = SubResource("Environment_8d2mh")
+
+[node name="CameraPivot" type="Marker3D" parent="." unique_id=1958927067]
+unique_name_in_owner = true
+
+[node name="Camera" type="Camera3D" parent="CameraPivot" unique_id=92846606]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 0, 0)
+fov = 60.0
+
+[connection signal="chosen" from="CanvasLayer/Control/Bar/TabContainer/Library/MaterialInput" to="." method="_library_material_chosen"]
+[connection signal="chosen" from="CanvasLayer/Control/Bar/ColorRect/ChunkDefInput" to="." method="_chunk_def_chosen"]
+[connection signal="pressed" from="CanvasLayer/Control/Bar/ColorRect/SaveDef" to="." method="_save_definition"]
+[connection signal="chosen" from="CanvasLayer/Control/Bar/ColorRect/ChunkLibInput" to="." method="_chunk_lib_chosen"]
+[connection signal="pressed" from="CanvasLayer/Control/Bar/ColorRect/SaveLib" to="." method="_save_library"]
