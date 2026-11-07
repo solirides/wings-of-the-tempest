@@ -33,7 +33,7 @@ func create_chunk( state: ChunkGenState ) -> void:
 	add_child( chunk );
 	chunk.set_terrain_material( library.terrain_material );
 	chunk.position = get_state_chunk_position( state );
-	chunk.create( state.chunk_sampler, chunk_def );
+	chunk.create( chunk_def, state );
 	
 	# Increment state ASAP
 	state._increment();

@@ -129,10 +129,12 @@ func create_heightmap_mesh( this_heightmap: Array3D, resolution: float ) -> void
 	heightmap_mesh_instance.set_deferred( "mesh", mesh );
 
 ## Create objects for this chunk based on a list of objects and vectors
-func create_objects( objects: Array[ ChunkObjectData ] ) -> void:
+func create_objects( objects: Array[ ChunkObjectData ], state: ChunkGenState, do_random: bool ) -> void:
 	
 	for object_data: ChunkObjectData in objects:
 		if not object_data.object:
+			continue;
+		if do_random and state.get_seeded_float() > object_data.spawn_chance:
 			continue;
 		var object_node: Node3D = object_data.object.scene.instantiate();
 		add_child( object_node );
@@ -151,7 +153,7 @@ func get_height_of_object( object_data: ChunkObjectData ) -> float:
 
 
 
-func create( sampler: ChunkTerrainSampler, definition: ChunkDefinition ) -> void:
+func create( definition: ChunkDefinition, state: ChunkGenState, do_random_spawning: bool = true ) -> void:
 	
 	terrain_size = definition.terrain_size;
 	terrain_scale = definition.terrain_scale;
@@ -161,13 +163,13 @@ func create( sampler: ChunkTerrainSampler, definition: ChunkDefinition ) -> void
 	var terrain_data: = Array3D.packedFloat32( definition.terrain_size + Vector3i.ONE );
 	
 	# Create terrain
-	definition.create_terrain_surface( terrain_data, sampler, position );
+	definition.create_terrain_surface( terrain_data, state.chunk_sampler, position );
 	definition.create_terrain_objects( terrain_data );
 	
 	# Create heightmaps and objects
 	heightmap_accessibility = create_heightmap( terrain_data, definition.terrain_accessible_height );
 	heightmap_terrain = create_heightmap( terrain_data, definition.terrain_size.y );
-	create_objects( definition.get_objects() );
+	create_objects( definition.get_objects(), state, do_random_spawning );
 	
 	# Create mesh
 	create_terrain_mesh( terrain_data );

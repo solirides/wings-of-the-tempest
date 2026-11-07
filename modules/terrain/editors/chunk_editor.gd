@@ -35,7 +35,7 @@ func set_chunk() -> void:
 	chunk = Chunk.new();
 	add_child( chunk );
 	chunk.set_terrain_material( chunk_library.terrain_material );
-	chunk.create( chunk_library.terrain_sampler, chunk_definition );
+	chunk.create( chunk_definition, ChunkGenState.new( terrain_seed, chunk_library.terrain_sampler ), false );
 	
 	# Freeze chunk
 	chunk.process_mode = Node.PROCESS_MODE_DISABLED;
