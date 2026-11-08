@@ -3,6 +3,7 @@ extends Control
 @export_dir() var default_directory: String;
 @export var type: String;
 
+signal updated( file: String, valid: bool );
 signal chosen( file: String );
 
 func _text_input_toggled( toggled_on: bool ) -> void:
@@ -13,8 +14,8 @@ func _text_input_toggled( toggled_on: bool ) -> void:
 func _text_input_changed( new_text: String ) -> void:
 	
 	var valid: = verify_file_type( new_text );
-	chosen.emit( new_text if valid else "" );
 	
+	updated.emit( new_text, valid );
 	create_suggestion_buttons( get_suggestions( new_text ) );
 	
 	if valid:
@@ -22,6 +23,9 @@ func _text_input_changed( new_text: String ) -> void:
 	
 	else:
 		%TextInput.add_theme_color_override( "font_color", Color.PALE_VIOLET_RED );
+
+func _text_input_submitted( new_text: String ) -> void:
+	chosen.emit( new_text if verify_file_type( new_text ) else "" );
 
 func get_input() -> String:
 	return %TextInput.text;
@@ -31,6 +35,9 @@ func set_input( text: String ) -> void:
 
 func is_input_valid() -> bool:
 	return verify_file_type( get_input() );
+
+func set_text_modulate( color: Color ) -> void:
+	%TextInput.self_modulate = color;
 
 
 

@@ -45,3 +45,6 @@ func get_objects() -> Array[ ChunkObjectData ]:
 
 func get_size() -> Vector3i:
 	return terrain_size;
+
+func get_scale() -> Vector3:
+	return terrain_scale;

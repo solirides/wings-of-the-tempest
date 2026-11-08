@@ -40,13 +40,7 @@ func set_chunk() -> void:
 	# Freeze chunk
 	chunk.process_mode = Node.PROCESS_MODE_DISABLED;
 	
-	# Position objects
-	chunk.position = chunk.get_global_size() * Vector3( -0.5, 0, -0.5 );
-	%Camera.position = Vector3( 0, 1.5, 0.75 ) * chunk.get_global_size();
-	
-	# Setup
-	%ObjectSubmenu.visible = false;
-	create_chunk_object_buttons();
+	populate_editor_values();
 
 func remove_chunk() -> void:
 	
@@ -54,6 +48,43 @@ func remove_chunk() -> void:
 		chunk.queue_free();
 	
 	chunk = null;
+
+func populate_editor_values() -> void:
+	
+	# Position chunk
+	chunk.position = chunk.get_global_size() * Vector3( -0.5, 0, -0.5 );
+	
+	# Position camera
+	var chunk_size: = chunk.get_global_size();
+	%Camera.position = Vector3( 0, chunk_size.y * 1.5, max( chunk_size.x, chunk_size.z ) * 0.75 );
+	
+	# Show height planes
+	%BoidHeightPlane.visible = true;
+	%DecorHeightPlane.visible = true;
+	
+	# Scale height planes
+	%BoidHeightPlane.scale = chunk.get_global_size();
+	%DecorHeightPlane.scale = chunk.get_global_size();
+	
+	# Position height planes
+	%BoidHeightPlane.position.y = chunk.position.y + chunk_definition.terrain_accessible_height;
+	%DecorHeightPlane.position.y = chunk.position.y + chunk_definition.terrain_decorator_height;
+	
+	# Init object list
+	%ObjectSubmenu.visible = false;
+	create_chunk_object_buttons();
+	
+	# Chunk vals
+	%ChunkSizeInput.set_input( [ chunk_definition.get_size()[0], chunk_definition.get_size()[1], chunk_definition.get_size()[2] ] );
+	%ChunkScaleInput.set_input( [ chunk_definition.get_scale()[0], chunk_definition.get_scale()[1], chunk_definition.get_scale()[2] ] );
+	%ChunkHDecorInput.set_input( [ chunk_definition.terrain_decorator_height ] );
+	%ChunkHBoidInput.set_input( [ chunk_definition.terrain_accessible_height ] );
+	
+	# Lib vals
+	%LibSizeInput.set_input( [ chunk_library.terrain_size[0], chunk_library.terrain_size[1], chunk_library.terrain_size[2] ] );
+	%LibScaleInput.set_input( [ chunk_library.terrain_scale[0], chunk_library.terrain_scale[1], chunk_library.terrain_scale[2] ] );
+	%LibHDecorInput.set_input( [ chunk_library.terrain_decorator_height ] );
+	%LibHBoidInput.set_input( [ chunk_library.terrain_accessible_height ] );
 
 
 
@@ -82,6 +113,8 @@ func _ready() -> void:
 	%TabContainer.visible = false;
 	%QuickMenu.visible = false;
 	%ObjectSubmenu.visible = false;
+	%BoidHeightPlane.visible = false;
+	%DecorHeightPlane.visible = false;
 
 func _process( delta: float ) -> void:
 	
@@ -109,6 +142,16 @@ func _pause_chunk() -> void:
 
 
 
+func _new_library() -> void:
+	chunk_library = ChunkLibrary.new();
+	set_chunk();
+
+func _new_definition() -> void:
+	chunk_definition = ChunkDefinition.new();
+	if chunk_library:
+		_set_size_from_library();
+	set_chunk();
+
 func _save_library() -> void:
 	
 	var filepath: String = %ChunkLibInput.get_input();
@@ -129,13 +172,58 @@ func _save_definition() -> void:
 	ResourceSaver.save( chunk_definition, filepath );
 	%ChunkDefInput._text_input_changed( %ChunkDefInput.get_input() );
 
+func _chunk_lib_updated( _file: String, _valid: bool ) -> void:
+	%ChunkLibInput.set_text_modulate( Color.GRAY );
+
+func _chunk_def_updated( _file: String, _valid: bool ) -> void:
+	%ChunkDefInput.set_text_modulate( Color.GRAY );
+
 func _chunk_lib_chosen( file: String ) -> void:
 	if file != "":
 		chunk_library = ResourceLoader.load( file, "", ResourceLoader.CACHE_MODE_REPLACE );
+		%ChunkLibInput.set_text_modulate( Color.WHITE );
 
 func _chunk_def_chosen( file: String ) -> void:
 	if file != "":
 		chunk_definition = ResourceLoader.load( file, "", ResourceLoader.CACHE_MODE_REPLACE );
+		%ChunkDefInput.set_text_modulate( Color.WHITE );
+
+
+
+func _chunk_size_submitted( value: int, index: int ) -> void:
+	chunk_definition.terrain_size[ index ] = value;
+	set_chunk();
+
+func _chunk_scale_submitted( value: float, index: int ) -> void:
+	chunk_definition.terrain_scale[ index ] = value;
+	set_chunk();
+
+func _chunk_decor_height_submitted( value: int, _index: int ) -> void:
+	chunk_definition.terrain_decorator_height = value;
+	set_chunk();
+
+func _chunk_boid_height_submitted( value: int, _index: int ) -> void:
+	chunk_definition.terrain_accessible_height = value;
+	set_chunk();
+
+func _library_size_submitted( value: int, index: int ) -> void:
+	chunk_library.terrain_size[ index ] = value;
+
+func _library_scale_submitted( value: float, index: int ) -> void:
+	chunk_library.terrain_scale[ index ] = value;
+
+func _library_decor_height_submitted( value: int, _index: int ) -> void:
+	chunk_library.terrain_decorator_height = value;
+
+func _library_boid_height_submitted( value: int, _index: int ) -> void:
+	chunk_library.terrain_accessible_height = value;
+
+func _set_size_from_library() -> void:
+	chunk_definition.terrain_size = chunk_library.terrain_size;
+	chunk_definition.terrain_scale = chunk_library.terrain_scale;
+	chunk_definition.terrain_accessible_height = chunk_library.terrain_accessible_height;
+	chunk_definition.terrain_decorator_height = chunk_library.terrain_decorator_height;
+	set_chunk();
 
 
 
