@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ChunkObject" format=3 uid="uid://bm7udob8ckxjt"]
+
+[ext_resource type="Script" uid="uid://obk0gl5ybof4" path="res://modules/terrain/generator/chunk_object.gd" id="1_3vesn"]
+[ext_resource type="PackedScene" uid="uid://pyfvd0t0gpm3" path="res://modules/food/food.tscn" id="1_ybps4"]
+
+[resource]
+script = ExtResource("1_3vesn")
+name = "Berry Bush"
+scene = ExtResource("1_ybps4")
+height_mode = 1
+metadata/_custom_type_script = "uid://obk0gl5ybof4"
