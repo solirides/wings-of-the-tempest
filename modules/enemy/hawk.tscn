@@ -1,11 +1,7 @@
 [gd_scene format=3 uid="uid://bphsnhj7h6a70"]
 
 [ext_resource type="Script" uid="uid://kcxhpt2bsugs" path="res://modules/enemy/hawk.gd" id="1_kvbro"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_6olrb"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ewcdy"]
-albedo_color = Color(0.88581675, 0.7032674, 7.70092e-07, 1)
+[ext_resource type="PackedScene" uid="uid://cb6ulg0b8sf8g" path="res://assets/models/hawk.glb" id="2_6dflp"]
 
 [node name="Hawk" type="RigidBody3D" unique_id=40116280]
 freeze = true
@@ -15,6 +11,4 @@ enable_own_movement = false
 attack_speed = 0.5
 attack_range = 1.5
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2134505601]
-mesh = SubResource("CapsuleMesh_6olrb")
-surface_material_override/0 = SubResource("StandardMaterial3D_ewcdy")
+[node name="hawk2" parent="." unique_id=1867897076 instance=ExtResource("2_6dflp")]
