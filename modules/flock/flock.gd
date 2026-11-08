@@ -246,5 +246,9 @@ func remove_boid(boid: Boid):
 	#print("%s removed from %s" % [boid, all_boids])
 
 func transfer_boids_to_flock(flock: Flock):
-	for boid in all_boids:
+	# use a copy of the array becase the BOIDS WILL BE DELETED FROM all_boids IN THE LOOP
+	var boid_references = all_boids.duplicate()
+	#print(boid_references)
+	for boid in boid_references:
+		#print("transferring boid %s" % boid)
 		boid.transfer_to_flock(flock)
