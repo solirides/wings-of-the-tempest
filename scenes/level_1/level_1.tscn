@@ -19,7 +19,7 @@
 [ext_resource type="Script" uid="uid://bftxduhaltc0m" path="res://modules/global/stat_modifier.gd" id="20_06ebd"]
 [ext_resource type="PackedScene" uid="uid://dln0mqqkrdui7" path="res://assets/models/tree_1.tscn" id="20_7wfhb"]
 [ext_resource type="Script" uid="uid://bt145qipdjfhd" path="res://modules/terrain/generator/chunk_generator.gd" id="20_r87tm"]
-[ext_resource type="Resource" uid="uid://cnhauj7okt3ps" path="res://assets/data/terrain/chunk libaries/test_lib.tres" id="21_06ebd"]
+[ext_resource type="Resource" uid="uid://rwjorbihha5k" path="res://assets/data/terrain/chunk libaries/test_lib.tres" id="21_06ebd"]
 [ext_resource type="Script" uid="uid://bv8nqa5kn647" path="res://modules/global/stat.gd" id="21_8v8ov"]
 [ext_resource type="Script" uid="uid://dstx1f47q2ki1" path="res://modules/flock/player_bird/boid_properties.gd" id="22_8m3jb"]
 [ext_resource type="PackedScene" uid="uid://c5uasawpupc1t" path="res://modules/enemy/crab.tscn" id="24_8m3jb"]

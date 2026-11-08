@@ -437,9 +437,9 @@ func debug_flock_display(flock: Flock):
 	
 
 func debug_wind_display(wind_force: Vector3):
-	print(wind_force.length())
+	#print(wind_force.length())
 	var display_scale = 1.0
 	$WindIndicator.scale = Vector3(1,1, wind_force.length() / display_scale)
-	print($WindIndicator.scale)
+	#print($WindIndicator.scale)
 	$WindIndicator.look_at(wind_force, Vector3.UP)
 	$WindIndicator.position = wind_force / display_scale / 2.0
