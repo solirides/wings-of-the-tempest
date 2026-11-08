@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bfccgxrtfv63w"]
 
-[ext_resource type="Script" uid="uid://cq3qfl0iporfv" path="res://modules/terrain/editors/chunk_editor.gd" id="1_2ar46"]
-[ext_resource type="PackedScene" uid="uid://blprynhglymqb" path="res://modules/terrain/editors/file_input.tscn" id="2_3glkb"]
-[ext_resource type="PackedScene" uid="uid://cdt1kbqcmehdu" path="res://modules/terrain/editors/object_submenu.tscn" id="3_8d2mh"]
+[ext_resource type="Script" uid="uid://cq3qfl0iporfv" path="res://modules/terrain/editors/chunk_editor.gd" id="1_s4lti"]
+[ext_resource type="PackedScene" uid="uid://blprynhglymqb" path="res://modules/terrain/editors/file_input.tscn" id="2_f24rf"]
+[ext_resource type="PackedScene" uid="uid://cdt1kbqcmehdu" path="res://modules/terrain/editors/object_submenu.tscn" id="3_ia0ay"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3glkb"]
 sky_top_color = Color(0.6394856, 0.76958525, 0.81879675, 1)
@@ -20,7 +20,7 @@ volumetric_fog_enabled = true
 volumetric_fog_density = 0.0
 
 [node name="ChunkEditor" type="Node3D" unique_id=2124110090]
-script = ExtResource("1_2ar46")
+script = ExtResource("1_s4lti")
 metadata/_custom_type_script = "uid://cq3qfl0iporfv"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2138424478]
@@ -66,7 +66,7 @@ offset_right = 65.0
 offset_bottom = 33.0
 text = "Material"
 
-[node name="MaterialInput" parent="CanvasLayer/Control/Bar/TabContainer/Library" unique_id=1520792573 instance=ExtResource("2_3glkb")]
+[node name="MaterialInput" parent="CanvasLayer/Control/Bar/TabContainer/Library" unique_id=1520792573 instance=ExtResource("2_f24rf")]
 layout_mode = 1
 anchors_preset = 10
 anchor_bottom = 0.0
@@ -152,7 +152,7 @@ offset_bottom = 71.0
 grow_horizontal = 2
 text = "Add"
 
-[node name="ObjInput" parent="CanvasLayer/Control/Bar/TabContainer/Chunk/ObjectMenu" unique_id=39584465 instance=ExtResource("2_3glkb")]
+[node name="ObjInput" parent="CanvasLayer/Control/Bar/TabContainer/Chunk/ObjectMenu" unique_id=39584465 instance=ExtResource("2_f24rf")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 10
@@ -182,7 +182,7 @@ offset_right = 141.0
 offset_bottom = 111.0
 text = "Chunk Definition"
 
-[node name="ChunkDefInput" parent="CanvasLayer/Control/Bar/FileSelect" unique_id=142405891 instance=ExtResource("2_3glkb")]
+[node name="ChunkDefInput" parent="CanvasLayer/Control/Bar/FileSelect" unique_id=142405891 instance=ExtResource("2_f24rf")]
 unique_name_in_owner = true
 layout_mode = 1
 offset_left = 10.0
@@ -212,7 +212,7 @@ offset_right = 65.0
 offset_bottom = 33.0
 text = "Library"
 
-[node name="ChunkLibInput" parent="CanvasLayer/Control/Bar/FileSelect" unique_id=893681616 instance=ExtResource("2_3glkb")]
+[node name="ChunkLibInput" parent="CanvasLayer/Control/Bar/FileSelect" unique_id=893681616 instance=ExtResource("2_f24rf")]
 unique_name_in_owner = true
 layout_mode = 1
 offset_left = 10.0
@@ -236,7 +236,7 @@ grow_horizontal = 0
 grow_vertical = 2
 text = "Save"
 
-[node name="ObjectSubmenu" parent="CanvasLayer/Control" unique_id=1307613531 instance=ExtResource("3_8d2mh")]
+[node name="ObjectSubmenu" parent="CanvasLayer/Control" unique_id=1307613531 instance=ExtResource("3_ia0ay")]
 unique_name_in_owner = true
 layout_mode = 1
 
@@ -249,6 +249,7 @@ default_color = Color(1, 0, 0, 1)
 [node name="QuickMenu" type="Control" parent="CanvasLayer/Control" unique_id=1145774488]
 unique_name_in_owner = true
 layout_mode = 1
+anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
