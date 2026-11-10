@@ -11,13 +11,12 @@
 [ext_resource type="Script" uid="uid://ci1rc3kcvxd16" path="res://scenes/level_1/HawkPath.gd" id="9_bmd0r"]
 [ext_resource type="PackedScene" uid="uid://pyfvd0t0gpm3" path="res://modules/food/food.tscn" id="9_do3hi"]
 [ext_resource type="PackedScene" uid="uid://bphsnhj7h6a70" path="res://modules/enemy/hawk.tscn" id="9_yhawk"]
-[ext_resource type="Script" uid="uid://ddomg1qhruqyf" path="res://scenes/level_1/goal.gd" id="11_0lhw3"]
+[ext_resource type="PackedScene" uid="uid://crms1f7sqr0a1" path="res://modules/objects/goal/goal.tscn" id="10_8v8ov"]
 [ext_resource type="PackedScene" uid="uid://b3o6tsxlufhca" path="res://modules/wind_zone/wind_zone.tscn" id="13_665yd"]
 [ext_resource type="PackedScene" uid="uid://bhhy738m44d75" path="res://modules/wind_trails/wind_trails.tscn" id="14_3fps6"]
 [ext_resource type="PackedScene" uid="uid://d18u81083qnes" path="res://modules/enemy/hunter.tscn" id="18_aph6o"]
 [ext_resource type="PackedScene" uid="uid://dan4yb6n1bkxe" path="res://scenes/storm/storm.tscn" id="19_c2dwa"]
 [ext_resource type="Script" uid="uid://bftxduhaltc0m" path="res://modules/global/stat_modifier.gd" id="20_06ebd"]
-[ext_resource type="PackedScene" uid="uid://dln0mqqkrdui7" path="res://assets/models/tree_1.tscn" id="20_7wfhb"]
 [ext_resource type="Script" uid="uid://bt145qipdjfhd" path="res://modules/terrain/generator/chunk_generator.gd" id="20_r87tm"]
 [ext_resource type="Resource" uid="uid://rwjorbihha5k" path="res://assets/data/terrain/chunk libaries/test_lib.tres" id="21_06ebd"]
 [ext_resource type="Script" uid="uid://bv8nqa5kn647" path="res://modules/global/stat.gd" id="21_8v8ov"]
@@ -65,12 +64,6 @@ _data = {
 "tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0)
 }
 point_count = 7
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_6lmcw"]
-size = Vector3(7, 16, 5)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6lmcw"]
-albedo_color = Color(0.59106696, 0.8964245, 0.3219582, 1)
 
 [sub_resource type="Resource" id="Resource_1gdhe"]
 script = ExtResource("21_8v8ov")
@@ -236,8 +229,6 @@ rotation_smoothness = SubResource("Resource_so1i6")
 steering_strength = SubResource("Resource_i67mf")
 steering_mode = 1
 flockMaxHeight = 0.0
-flockIsFlying = null
-flockIsLanded = null
 metadata/_custom_type_script = "uid://dstx1f47q2ki1"
 
 [node name="World" type="Node3D" unique_id=1809984319]
@@ -297,18 +288,8 @@ transform = Transform3D(0.08866343, 0.052021038, -0.99468523, -1.8626028e-09, 0.
 transform = Transform3D(1.0000112, 0, 0, 0, 1.0000126, 0, 0, 0, 1.0000138, 0, 0, 0)
 circle_radius = 2.0
 
-[node name="Goal" type="Area3D" parent="." unique_id=1024715884]
+[node name="Goal" parent="." unique_id=1598089339 instance=ExtResource("10_8v8ov")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -172)
-script = ExtResource("11_0lhw3")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Goal" unique_id=183862571]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 0)
-shape = SubResource("BoxShape3D_6lmcw")
-
-[node name="CSGBox3D" type="CSGBox3D" parent="Goal" unique_id=1737226008]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
-size = Vector3(7, 1, 5)
-material = SubResource("StandardMaterial3D_6lmcw")
 
 [node name="Label3D" type="Label3D" parent="." unique_id=638787787]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -18)
@@ -366,15 +347,10 @@ boid_properties = SubResource("Resource_otekq")
 [node name="SubFlock" parent="Flock" index="3" unique_id=1838721350 node_paths=PackedStringArray("camera_controller")]
 camera_controller = NodePath("../../Camera")
 
-[node name="tree_1" parent="." unique_id=390786271 instance=ExtResource("20_7wfhb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -50)
-
 [node name="Crab" parent="." unique_id=2042176865 instance=ExtResource("24_8m3jb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -38)
 
 [node name="Node" type="Node" parent="." unique_id=331107314]
 script = ExtResource("25_8m3jb")
-
-[connection signal="body_entered" from="Goal" to="Goal" method="_on_body_entered"]
 
 [editable path="Flock"]

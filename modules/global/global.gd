@@ -81,3 +81,6 @@ func _input(event: InputEvent) -> void:
 func AddScore(score_to_add: int) -> void:
 	score += score_to_add
 	score_modified.emit()
+
+func end_level() -> void:
+	hud.show_end_screen();
