@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bdgida065gbo4" path="res://assets/textures/UI/waterbarProgress.png" id="7_ngoot"]
 [ext_resource type="Script" uid="uid://dev0witimtagw" path="res://modules/hud/score.gd" id="8_dyoe6"]
 [ext_resource type="Script" uid="uid://b2172yn6kueq4" path="res://modules/hud/stopwatch.gd" id="8_nvutd"]
+[ext_resource type="Script" uid="uid://btap4l2sddwwm" path="res://modules/hud/nextlvlbutton.gd" id="10_7hou3"]
 [ext_resource type="Texture2D" uid="uid://cwevcrhnsmgh" path="res://WoT_Button.png" id="10_u86fq"]
 
 [sub_resource type="SystemFont" id="SystemFont_0lhw3"]
@@ -211,14 +212,14 @@ offset_right = 126.500244
 offset_bottom = -143.75
 grow_horizontal = 2
 grow_vertical = 0
+script = ExtResource("10_7hou3")
 
-[node name="NinePatchRect" type="NinePatchRect" parent="LevelEndScreen/CenterContainer" unique_id=501540101]
-custom_minimum_size = Vector2(253, 40)
-custom_maximum_size = Vector2(400, 100)
+[node name="TextureButton" type="TextureButton" parent="LevelEndScreen/CenterContainer" unique_id=1408959253]
 layout_mode = 2
-texture = ExtResource("10_u86fq")
-region_rect = Rect2(0, 0, 405, 103.75)
+texture_normal = ExtResource("10_u86fq")
 
 [node name="Label" type="Label" parent="LevelEndScreen/CenterContainer" unique_id=860141670]
 layout_mode = 2
 text = "Click here to go to the next level!"
+
+[connection signal="pressed" from="LevelEndScreen/CenterContainer/TextureButton" to="LevelEndScreen/CenterContainer" method="_on_texture_button_pressed"]

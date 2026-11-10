@@ -4,6 +4,7 @@ extends Node3D
 @export var density: float = 3;
 @export var offset: float = 3;
 
+
 func add_tree( pos: Vector3 ) -> void:
 	
 	var chunk = Chunk.get_chunk_containing_global_position( pos );
@@ -20,7 +21,7 @@ func add_tree( pos: Vector3 ) -> void:
 
 func _ready() -> void:
 	
-	#%EditorSprite.visible = ChunkEditor.is_open;
+	#%EditorSprite.visible = %ChunkEditor.is_open;
 	
 	for xIdx in radius / density * 2: for yIdx in radius / density * 2:
 		
