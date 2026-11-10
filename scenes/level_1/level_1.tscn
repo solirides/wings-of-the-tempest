@@ -231,8 +231,9 @@ steering_mode = 1
 flockMaxHeight = 0.0
 metadata/_custom_type_script = "uid://dstx1f47q2ki1"
 
-[node name="World" type="Node3D" unique_id=1809984319]
+[node name="Level" type="Node3D" unique_id=1031030702]
 script = ExtResource("1_ghvtn")
+metadata/_custom_type_script = "uid://4kq8akwlf2yl"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1513656914]
 layer = 10
