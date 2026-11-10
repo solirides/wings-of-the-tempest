@@ -82,45 +82,48 @@ func _ready() -> void:
 
 #Use this to handle any button presses which would change the state of the boids... for now, I'm thinking scatter mode and landing
 func _unhandled_input(event: InputEvent) -> void:
-	
-	#THIS changes causses the boids to repel... ALSO NO LONGER A HOLD THING!!!!
-	if event.is_action_pressed("repel") :
-		handle_repel_request()
-	
-	if event.is_action_pressed("swoop") :
-		handle_swoop_request()
-		
+	pass
 
-func handle_repel_request():
-	if boid_properties.flockIsLanded :
+func handle_repel_request(state: bool = !boid_properties.scatter):
+	if boid_properties.flockIsLanded:
 		print("You cannot scatter while the boids are meant to be landed!")
 		boid_properties.scatter = false
 	else:
 		# toggle boid scattering mode
-		boid_properties.scatter = !boid_properties.scatter
-		boid_properties.default_state = !boid_properties.default_state
+		
+		if state == boid_properties.scatter:
+			return
+		boid_properties.scatter = state
+		boid_properties.default_state = !state
 	print("I'm changing scatter states")
 
-func handle_swoop_request():
+func handle_swoop_request(state: bool):
+	if state != boid_properties.flockIsFlying:
+		return
+	boid_properties.flockIsFlying = !state
+	
 	if boid_properties.flockIsFlying:
+		global_position.y = boid_properties.flockMaxHeight
+		print("RISE FROM YOUR GRAVES!!!!! EHEHEHEHEHEH")
+		boid_properties.flockIsLanded = false
+		#boid_properties.flockIsFlying = true
+	else : 
 		print("The boids are supposed to land now.")
-		boid_properties.scatter = false
+		handle_repel_request(false)
 		
 		land_goal = flock_goal
 		
 		boid_properties.flockIsLanded = true
-		boid_properties.flockIsFlying = false
-	else : 
-		global_position.y = boid_properties.flockMaxHeight
-		print("RISE FROM YOUR GRAVES!!!!! EHEHEHEHEHEH")
-		boid_properties.flockIsLanded = false
-		boid_properties.flockIsFlying = true
-
+		#boid_properties.flockIsFlying = false
 
 #this updates the flocks global position on the ground.
 func flock_landed() -> void :
 	
-	var above_chunk: Chunk = Chunk.get_chunk_containing_global_position( get_cursor_pos() );
+	# DONT use different coordinates for getting Chunk vs Chunk Height
+	# Otherwise you may get height (or really, fail to get height) of position that chunk does not contain
+	var query_position: = get_cursor_pos();
+	
+	var above_chunk: Chunk = Chunk.get_chunk_containing_global_position( query_position );
 	#print("I am constantly look for the ground.")
 	
 	#If the above_chunk.global_position is null, throws you out by setting boid_properties.flockIsFlying == true
@@ -130,12 +133,9 @@ func flock_landed() -> void :
 		print("Failed to land at position: ", global_position )
 		return
 	
-	var relative_position: = global_position - above_chunk.global_position;
-	var horizontal: = Vector2( relative_position.x, relative_position.z );
+	if above_chunk.is_height_accessible_global( Vector2( query_position.x, query_position.z ) ):
 		
-	if above_chunk.is_height_accessible( horizontal ):
-		
-		global_position.y = above_chunk.global_position.y + above_chunk.get_height( above_chunk.heightmap_accessibility, horizontal );
+		global_position.y = above_chunk.get_height_global( above_chunk.heightmap_accessibility, Vector2( query_position.x, query_position.z ) );
 		boid_properties.flockIsLanded = true
 		#print(global_position.y) #PLEASE disable this, this clutters stuff up SO fast.
 	else :
@@ -176,10 +176,11 @@ func process_hunger(delta: float):
 			for boid in all_boids:
 				var new_speed_mult = lerp(min_hunger_speed_penalty, 1.0, current_hunger / max_hunger)
 				#hunger_modifier.modifier_value = new_speed_mult
-				var modifier = boid_properties.speed.get_modifier("hunger_penalty")
-				if modifier:
-					modifier.modifier_value = new_speed_mult
-					boid_properties.speed.update_value()
+				#var modifier = boid_properties.speed.get_modifier("hunger_penalty")
+				#if modifier:
+					#modifier.modifier_value = new_speed_mult
+					#boid_properties.speed.update_value()
+				boid_properties.speed.change_modifier("hunger_penalty", new_speed_mult)
 		else:
 			hunger_modifier.modifier_value = 1
 		
@@ -245,5 +246,9 @@ func remove_boid(boid: Boid):
 	#print("%s removed from %s" % [boid, all_boids])
 
 func transfer_boids_to_flock(flock: Flock):
-	for boid in all_boids:
+	# use a copy of the array becase the BOIDS WILL BE DELETED FROM all_boids IN THE LOOP
+	var boid_references = all_boids.duplicate()
+	#print(boid_references)
+	for boid in boid_references:
+		#print("transferring boid %s" % boid)
 		boid.transfer_to_flock(flock)

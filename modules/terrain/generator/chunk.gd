@@ -1,7 +1,7 @@
 extends Node3D
 class_name Chunk
 
-static var heightmap_debug_material: StandardMaterial3D = preload( "res://modules/terrain/heightmap_debug.tres" );
+static var heightmap_debug_material: StandardMaterial3D = preload( "res://modules/terrain/test assets/heightmap_debug.tres" );
 
 static var all: Array[ Chunk ];
 
@@ -9,10 +9,7 @@ static var all: Array[ Chunk ];
 static func get_chunk_containing_global_position( at_position: Vector3 ) -> Chunk:
 	
 	for chunk in all:
-		var chunk_end: = chunk.global_position + chunk.get_global_size();
-		# only check for x and z bounds, disregard y height
-		if at_position.x >= chunk.global_position.x and at_position.z >= chunk.global_position.z and \
-				at_position.x < chunk_end.x and at_position.z < chunk_end.z:
+		if chunk.contains_coordinates_global( Vector2( at_position.x, at_position.z ) ):
 			return chunk;
 	
 	return null;
@@ -34,6 +31,7 @@ static func intersect( start: Vector3, end: Vector3, world: World3D ) -> Vector3
 
 var terrain_size: Vector3i;
 var terrain_scale: Vector3;
+var boid_height: float;
 var mesh_instance: MeshInstance3D;
 var collision_instance: StaticBody3D;
 var heightmap_terrain: Array3D;
@@ -128,21 +126,55 @@ func create_heightmap_mesh( this_heightmap: Array3D, resolution: float ) -> void
 	heightmap_mesh_instance.set_deferred( "mesh", mesh );
 
 ## Create objects for this chunk based on a list of objects and vectors
-func create_objects( objects: Dictionary[ ChunkObject, Vector2 ] ) -> void:
+func create_objects( objects: Array[ ChunkObjectData ], state: ChunkGenState, do_random: bool ) -> void:
 	
-	for object: ChunkObject in objects.keys():
-		var object_pos: = objects[ object ];
-		var object_node: Node3D = object.scene.instantiate();
+	for object_data: ChunkObjectData in objects:
+		if not object_data.object:
+			continue;
+		if do_random and state.get_seeded_float() > object_data.spawn_chance:
+			continue;
+		var object_node: Node3D = object_data.object.scene.instantiate();
+		for property in object_data.object.property_overrides.keys():
+			object_node.set( property, object_data.object.property_overrides[ property ] );
+		object_node.position = Vector3( object_data.position.x, get_height_of_object( object_data ), object_data.position.y );
 		add_child( object_node );
-		object_node.position = Vector3( object_pos.x, object.height_offset, object_pos.y );
-		if object.height_mode == ChunkObject.HeightMode.SNAP:
-			object_node.position.y += get_height( heightmap_terrain, Vector2( object_pos.x, object_pos.y ) );
+
+## Get the height at which the object would be placed on this chunk
+func get_height_of_object( object_data: ChunkObjectData ) -> float:
+	
+	var height: float = object_data.object.height_offset;
+	if object_data.object.height_mode == ChunkObject.HeightMode.SNAP and contains_coordinates( object_data.position ):
+		height += get_height( heightmap_terrain, Vector2( object_data.position.x, object_data.position.y ) );
+	if object_data.object.height_mode == ChunkObject.HeightMode.ACCESSIBLE:
+		height += boid_height;
+	return height;
 
 
 
-func _init( definition: ChunkDefinition ) -> void:
+
+func create( definition: ChunkDefinition, state: ChunkGenState, do_random_spawning: bool = true ) -> void:
+	
 	terrain_size = definition.terrain_size;
 	terrain_scale = definition.terrain_scale;
+	boid_height = definition.terrain_accessible_height;
+	
+	# Generate chunk using data from definition
+	var terrain_data: = Array3D.packedFloat32( definition.terrain_size + Vector3i.ONE );
+	
+	# Create terrain
+	definition.create_terrain_surface( terrain_data, state.chunk_sampler, position );
+	definition.create_terrain_objects( terrain_data );
+	
+	# Create heightmaps and objects
+	heightmap_accessibility = create_heightmap( terrain_data, definition.terrain_accessible_height );
+	heightmap_terrain = create_heightmap( terrain_data, definition.terrain_size.y );
+	create_objects( definition.get_objects(), state, do_random_spawning );
+	
+	# Create mesh
+	create_terrain_mesh( terrain_data );
+	
+	# DEBUG
+	#chunk.create_heightmap_mesh( chunk.heightmap_terrain, 4 );
 
 func _ready() -> void:
 	
@@ -162,26 +194,48 @@ func _exit_tree() -> void:
 
 
 
+## Determine if a pair of XZ coordinates relative to the chunk are within its boundaries
+func contains_coordinates( coordinates: Vector2 ) -> bool:
+	
+	return \
+		coordinates.x >= 0 and \
+		coordinates.y >= 0 and \
+		coordinates.x <= get_global_size().x and \
+		coordinates.y <= get_global_size().z;
+
+## Determine if a pair of XZ global coordinates are contained in the chunk
+func contains_coordinates_global( coordinates: Vector2 ) -> bool:
+	return contains_coordinates( coordinates - Vector2( global_position.x, global_position.z ) );
+
 ## Find vertical position using a heightmap at a horizontal position
 func get_height( heightmap: Array3D, coordinates: Vector2 ) -> float:
 	coordinates /= Vector2( terrain_scale.x, terrain_scale.z );
 	assert( coordinates.x >= 0 and coordinates.y >= 0 and coordinates <= Vector2( heightmap.get_size().x, heightmap.get_size().y ), "Scaled coordinates " + str( coordinates ) + " are not within the heightmaps size of " + str( heightmap.get_size() ) );
 	var integer: Vector2i = coordinates.floor();
 	var fractional: = coordinates.posmod( 1.0 );
+	var next: = ( integer + Vector2i.ONE ).min( Vector2i( heightmap.get_size().x, heightmap.get_size().z ) - Vector2i.ONE );
 	return lerp( 
 		lerp( 
 			heightmap.get_at( Vector3i( integer.x, 0, integer.y ) ),
-			heightmap.get_at( Vector3i( integer.x + 1, 0, integer.y ) ),
+			heightmap.get_at( Vector3i( next.x, 0, integer.y ) ),
 			fractional.x
 		),
 		lerp( 
-			heightmap.get_at( Vector3i( integer.x, 0, integer.y + 1 ) ),
-			heightmap.get_at( Vector3i( integer.x + 1, 0, integer.y + 1 ) ),
+			heightmap.get_at( Vector3i( integer.x, 0, next.y ) ),
+			heightmap.get_at( Vector3i( next.x, 0, next.y ) ),
 			fractional.x
 		),
 		fractional.y
 	);
 
+## Find vertical position using a heightmap at a horizontal position, in global coordinate space
+func get_height_global( heightmap: Array3D, coordinates: Vector2 ) -> float:
+	return get_height( heightmap, coordinates - Vector2( global_position.x, global_position.z ) ) + global_position.y;
+
 ## Check if position at accessible height is occluded by terrain
 func is_height_accessible( coordinates: Vector2 ) -> bool:
 	return get_height( heightmap_accessibility, coordinates ) >= 0;
+
+## Check if position at accessible height is occluded by terrain, in global coordinate space
+func is_height_accessible_global( coordinates: Vector2 ) -> bool:
+	return is_height_accessible( coordinates - Vector2( global_position.x, global_position.z ) );

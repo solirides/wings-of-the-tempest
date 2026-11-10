@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="ChunkLibrary" format=3 uid="uid://dxfwhramull8s"]
+
+[ext_resource type="Script" uid="uid://44koh7shycpg" path="res://modules/terrain/decision tree/chunk_dec_tree.gd" id="1_1kxt4"]
+[ext_resource type="Resource" uid="uid://c7iou5744evmq" path="res://assets/data/terrain/chunk definitions/test/test_chunkdef2.tres" id="2_kpqav"]
+[ext_resource type="Script" uid="uid://ch801uy47d3n8" path="res://modules/terrain/decision tree/chunk_dec_tree_leaf.gd" id="3_7wcye"]
+[ext_resource type="Script" uid="uid://duro13kmqsse6" path="res://modules/terrain/decision tree/chunk_dec_tree_if_periodic.gd" id="4_y8wie"]
+[ext_resource type="Resource" uid="uid://cdvq6ttwg0jmp" path="res://assets/data/terrain/chunk definitions/test/test_chunkdef.tres" id="5_qr1wh"]
+[ext_resource type="Script" uid="uid://co575tntrn7ie" path="res://modules/terrain/decision tree/chunk_dec_tree_group_priority.gd" id="6_n4xve"]
+[ext_resource type="Script" uid="uid://c2fvqmbrch2q0" path="res://modules/terrain/generator/chunk_library.gd" id="7_jgp7w"]
+[ext_resource type="Material" uid="uid://bt5nph1wxgig7" path="res://assets/materials/terrain_triplanar_map.tres" id="8_1kxt4"]
+[ext_resource type="Script" uid="uid://bs6h8f1ecjfgi" path="res://modules/terrain/generator/chunk_terrain_sampler.gd" id="9_vfrb4"]
+
+[sub_resource type="Resource" id="Resource_c8drl"]
+script = ExtResource("3_7wcye")
+chunk = ExtResource("2_kpqav")
+
+[sub_resource type="Resource" id="Resource_4q24b"]
+script = ExtResource("3_7wcye")
+chunk = ExtResource("5_qr1wh")
+
+[sub_resource type="Resource" id="Resource_v5m86"]
+script = ExtResource("4_y8wie")
+period = 2
+succeed = SubResource("Resource_4q24b")
+fail = SubResource("Resource_c8drl")
+
+[sub_resource type="Resource" id="Resource_jvfn2"]
+script = ExtResource("6_n4xve")
+children = Array[ExtResource("1_1kxt4")]([SubResource("Resource_v5m86")])
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_8v8ov"]
+frequency = 0.1
+
+[sub_resource type="Resource" id="Resource_06ebd"]
+script = ExtResource("9_vfrb4")
+noise = SubResource("FastNoiseLite_8v8ov")
+metadata/_custom_type_script = "uid://bs6h8f1ecjfgi"
+
+[resource]
+script = ExtResource("7_jgp7w")
+terrain_material = ExtResource("8_1kxt4")
+terrain_sampler = SubResource("Resource_06ebd")
+terrain_size = Vector3i(16, 16, 16)
+terrain_scale = Vector3(4, 1, 4)
+terrain_decorator_height = 6
+terrain_accessible_height = 8
+child = SubResource("Resource_jvfn2")

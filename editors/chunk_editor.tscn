@@ -1,0 +1,623 @@
+[gd_scene format=3 uid="uid://bfccgxrtfv63w"]
+
+[ext_resource type="Script" uid="uid://cq3qfl0iporfv" path="res://modules/terrain/editors/chunk_editor.gd" id="1_s4lti"]
+[ext_resource type="PackedScene" uid="uid://blprynhglymqb" path="res://modules/terrain/editors/file_input.tscn" id="2_f24rf"]
+[ext_resource type="Script" uid="uid://883u7q1fndrt" path="res://modules/terrain/editors/float_list_input.gd" id="3_f24rf"]
+[ext_resource type="PackedScene" uid="uid://cdt1kbqcmehdu" path="res://modules/terrain/editors/object_submenu.tscn" id="3_ia0ay"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3glkb"]
+sky_top_color = Color(0.6394856, 0.76958525, 0.81879675, 1)
+sky_horizon_color = Color(0.9099479, 0.9124562, 0.91746753, 1)
+ground_bottom_color = Color(0.100675784, 0.188003, 0.2258929, 1)
+
+[sub_resource type="Sky" id="Sky_8v8ov"]
+sky_material = SubResource("ProceduralSkyMaterial_3glkb")
+
+[sub_resource type="Environment" id="Environment_8d2mh"]
+background_mode = 2
+sky = SubResource("Sky_8v8ov")
+tonemap_mode = 2
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_37psj"]
+size = Vector2(1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vevjg"]
+transparency = 1
+albedo_color = Color(1, 0, 0, 0.039215688)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f24rf"]
+transparency = 1
+albedo_color = Color(0, 1, 0, 0.039215688)
+
+[sub_resource type="PrismMesh" id="PrismMesh_flb18"]
+size = Vector3(1, 1, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eeqaq"]
+transparency = 1
+albedo_color = Color(0, 0, 1, 0.19607843)
+
+[node name="ChunkEditor" type="Node3D" unique_id=2124110090]
+script = ExtResource("1_s4lti")
+metadata/_custom_type_script = "uid://cq3qfl0iporfv"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2138424478]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1872928557]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Bar" type="Control" parent="CanvasLayer/Control" unique_id=1460137496]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -880.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TabContainer" type="TabContainer" parent="CanvasLayer/Control/Bar" unique_id=753527006]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 1
+
+[node name="Library" type="Control" parent="CanvasLayer/Control/Bar/TabContainer" unique_id=816205694]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="ChunkVals" type="Control" parent="CanvasLayer/Control/Bar/TabContainer/Library" unique_id=493889228]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Bar/TabContainer/Library/ChunkVals" unique_id=737788906]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 20.0
+offset_right = 50.0
+offset_bottom = 43.0
+text = "Size"
+
+[node name="LibSizeInput" type="HBoxContainer" parent="CanvasLayer/Control/Bar/TabContainer/Library/ChunkVals" unique_id=1722239748]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -225.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 41.0
+grow_horizontal = 0
+script = ExtResource("3_f24rf")
+element_count = 3
+input_type = 2
+metadata/_custom_type_script = "uid://883u7q1fndrt"
+
+[node name="Label2" type="Label" parent="CanvasLayer/Control/Bar/TabContainer/Library/ChunkVals" unique_id=800599687]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 70.0
+offset_right = 50.0
+offset_bottom = 93.0
+text = "Scale"
+
+[node name="LibScaleInput" type="HBoxContainer" parent="CanvasLayer/Control/Bar/TabContainer/Library/ChunkVals" unique_id=1516908043]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 175.0
+offset_top = 60.0
+offset_right = 390.0
+offset_bottom = 91.0
+script = ExtResource("3_f24rf")
+element_count = 3
+input_type = 3
+metadata/_custom_type_script = "uid://883u7q1fndrt"
+
+[node name="Label3" type="Label" parent="CanvasLayer/Control/Bar/TabContainer/Library/ChunkVals" unique_id=1515386531]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 120.0
+offset_right = 50.0
+offset_bottom = 143.0
+theme_override_colors/font_color = Color(0.6666667, 1, 0.6666667, 1)
+text = "Terrain Max Height"
+
+[node name="LibHDecorInput" type="HBoxContainer" parent="CanvasLayer/Control/Bar/TabContainer/Library/ChunkVals" unique_id=706239628]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 290.0
+offset_top = 110.0
+offset_right = 390.0
+offset_bottom = 141.0
+script = ExtResource("3_f24rf")
+element_count = 1
+input_type = 2
+metadata/_custom_type_script = "uid://883u7q1fndrt"
+
+[node name="Label4" type="Label" parent="CanvasLayer/Control/Bar/TabContainer/Library/ChunkVals" unique_id=1907064445]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 170.0
+offset_right = 159.0
+offset_bottom = 193.0
+theme_override_colors/font_color = Color(1, 0.6666667, 0.6666667, 1)
+text = "Boid Height"
+
+[node name="LibHBoidInput" type="HBoxContainer" parent="CanvasLayer/Control/Bar/TabContainer/Library/ChunkVals" unique_id=1311075549]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 290.0
+offset_top = 160.0
+offset_right = 390.0
+offset_bottom = 191.0
+script = ExtResource("3_f24rf")
+element_count = 1
+input_type = 3
+metadata/_custom_type_script = "uid://883u7q1fndrt"
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/Control/Bar/TabContainer/Library" unique_id=1312562659]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 202.0
+offset_bottom = 206.0
+grow_horizontal = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Bar/TabContainer/Library" unique_id=2093972272]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 215.0
+offset_right = 75.0
+offset_bottom = 238.0
+text = "Material"
+
+[node name="MaterialInput" parent="CanvasLayer/Control/Bar/TabContainer/Library" unique_id=1520792573 instance=ExtResource("2_f24rf")]
+layout_mode = 1
+anchors_preset = 10
+anchor_bottom = 0.0
+offset_left = 10.0
+offset_top = 245.0
+offset_right = -10.0
+offset_bottom = 625.0
+grow_vertical = 1
+default_directory = "res://assets/materials"
+type = "Material"
+
+[node name="Chunk" type="Control" parent="CanvasLayer/Control/Bar/TabContainer" unique_id=1633748256]
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="ObjectMenu" type="Control" parent="CanvasLayer/Control/Bar/TabContainer/Chunk" unique_id=804191783]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 255.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label2" type="Label" parent="CanvasLayer/Control/Bar/TabContainer/Chunk/ObjectMenu" unique_id=245943157]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 10.0
+offset_top = 80.0
+offset_right = -10.0
+offset_bottom = 103.0
+grow_horizontal = 2
+text = "Objects"
+
+[node name="ObjectList" type="ColorRect" parent="CanvasLayer/Control/Bar/TabContainer/Chunk/ObjectMenu" unique_id=64870857]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 110.0
+offset_right = -10.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0.15686275)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Control/Bar/TabContainer/Chunk/ObjectMenu/ObjectList" unique_id=242851943]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="ChunkObjContainer" type="VBoxContainer" parent="CanvasLayer/Control/Bar/TabContainer/Chunk/ObjectMenu/ObjectList/ScrollContainer" unique_id=836549726]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Bar/TabContainer/Chunk/ObjectMenu" unique_id=1391680406]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 33.0
+grow_horizontal = 2
+text = "New Object"
+
+[node name="AddObjButton" type="Button" parent="CanvasLayer/Control/Bar/TabContainer/Chunk/ObjectMenu" unique_id=1260573372]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 330.0
+offset_top = 40.0
+offset_right = -10.0
+offset_bottom = 71.0
+grow_horizontal = 2
+text = "Add"
+
+[node name="ObjInput" parent="CanvasLayer/Control/Bar/TabContainer/Chunk/ObjectMenu" unique_id=39584465 instance=ExtResource("2_f24rf")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_bottom = 0.0
+offset_left = 10.0
+offset_top = 40.0
+offset_right = -80.0
+offset_bottom = 274.0
+grow_vertical = 1
+default_directory = "res://assets/data/terrain/objects"
+type = "ChunkObject"
+
+[node name="ChunkVals" type="Control" parent="CanvasLayer/Control/Bar/TabContainer/Chunk" unique_id=1237304680]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Bar/TabContainer/Chunk/ChunkVals" unique_id=933976544]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 20.0
+offset_right = 50.0
+offset_bottom = 43.0
+text = "Size"
+
+[node name="ChunkSizeInput" type="HBoxContainer" parent="CanvasLayer/Control/Bar/TabContainer/Chunk/ChunkVals" unique_id=1005791805]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -225.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 41.0
+grow_horizontal = 0
+script = ExtResource("3_f24rf")
+element_count = 3
+input_type = 2
+metadata/_custom_type_script = "uid://883u7q1fndrt"
+
+[node name="Label2" type="Label" parent="CanvasLayer/Control/Bar/TabContainer/Chunk/ChunkVals" unique_id=1575499179]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 70.0
+offset_right = 50.0
+offset_bottom = 93.0
+text = "Scale"
+
+[node name="ChunkScaleInput" type="HBoxContainer" parent="CanvasLayer/Control/Bar/TabContainer/Chunk/ChunkVals" unique_id=1570690070]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 175.0
+offset_top = 60.0
+offset_right = 390.0
+offset_bottom = 91.0
+script = ExtResource("3_f24rf")
+element_count = 3
+input_type = 3
+metadata/_custom_type_script = "uid://883u7q1fndrt"
+
+[node name="Label3" type="Label" parent="CanvasLayer/Control/Bar/TabContainer/Chunk/ChunkVals" unique_id=693116982]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 120.0
+offset_right = 50.0
+offset_bottom = 143.0
+theme_override_colors/font_color = Color(0.6666667, 1, 0.6666667, 1)
+text = "Terrain Max Height"
+
+[node name="ChunkHDecorInput" type="HBoxContainer" parent="CanvasLayer/Control/Bar/TabContainer/Chunk/ChunkVals" unique_id=1328039290]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 290.0
+offset_top = 110.0
+offset_right = 390.0
+offset_bottom = 141.0
+script = ExtResource("3_f24rf")
+element_count = 1
+input_type = 2
+metadata/_custom_type_script = "uid://883u7q1fndrt"
+
+[node name="Label4" type="Label" parent="CanvasLayer/Control/Bar/TabContainer/Chunk/ChunkVals" unique_id=172598737]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 170.0
+offset_right = 159.0
+offset_bottom = 193.0
+theme_override_colors/font_color = Color(1, 0.6666667, 0.6666667, 1)
+text = "Boid Height"
+
+[node name="ChunkHBoidInput" type="HBoxContainer" parent="CanvasLayer/Control/Bar/TabContainer/Chunk/ChunkVals" unique_id=399383687]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 290.0
+offset_top = 160.0
+offset_right = 390.0
+offset_bottom = 191.0
+script = ExtResource("3_f24rf")
+element_count = 1
+input_type = 3
+metadata/_custom_type_script = "uid://883u7q1fndrt"
+
+[node name="MatchLibraryButton" type="Button" parent="CanvasLayer/Control/Bar/TabContainer/Chunk/ChunkVals" unique_id=1348228075]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 10.0
+offset_top = 210.0
+offset_right = -10.0
+offset_bottom = 241.0
+grow_horizontal = 2
+text = "Sync Values with Library"
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/Control/Bar/TabContainer/Chunk" unique_id=1836979879]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 252.0
+offset_bottom = 256.0
+grow_horizontal = 2
+
+[node name="FileSelect" type="ColorRect" parent="CanvasLayer/Control/Bar" unique_id=1040291638]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 191.0
+grow_horizontal = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.23529412)
+
+[node name="Label2" type="Label" parent="CanvasLayer/Control/Bar/FileSelect" unique_id=1600136962]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 88.0
+offset_right = 141.0
+offset_bottom = 111.0
+text = "Chunk Definition"
+
+[node name="ChunkDefInput" parent="CanvasLayer/Control/Bar/FileSelect" unique_id=142405891 instance=ExtResource("2_f24rf")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 10.0
+offset_top = 120.0
+offset_right = -10.0
+offset_bottom = 256.0
+default_directory = "res://assets/data/terrain/chunk definitions"
+type = "ChunkDefinition"
+
+[node name="SaveDefButton" type="Button" parent="CanvasLayer/Control/Bar/FileSelect" unique_id=2104618525]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -90.0
+offset_top = 85.0
+offset_right = -10.0
+offset_bottom = -75.0
+text = "Save"
+
+[node name="NewDefButton" type="Button" parent="CanvasLayer/Control/Bar/FileSelect" unique_id=1474297640]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = 85.0
+offset_right = -100.0
+offset_bottom = -75.0
+text = "New"
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Bar/FileSelect" unique_id=560008997]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 65.0
+offset_bottom = 33.0
+text = "Library"
+
+[node name="ChunkLibInput" parent="CanvasLayer/Control/Bar/FileSelect" unique_id=893681616 instance=ExtResource("2_f24rf")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 10.0
+offset_top = 40.0
+offset_right = -10.0
+offset_bottom = 260.0
+default_directory = "res://assets/data/terrain/chunk libaries"
+type = "ChunkLibrary"
+
+[node name="SaveLibButton" type="Button" parent="CanvasLayer/Control/Bar/FileSelect" unique_id=1900757811]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -90.0
+offset_top = 5.0
+offset_right = -10.0
+offset_bottom = -155.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "Save"
+
+[node name="NewLibButton" type="Button" parent="CanvasLayer/Control/Bar/FileSelect" unique_id=886834034]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = 5.0
+offset_right = -100.0
+offset_bottom = -155.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "New"
+
+[node name="ObjectSubmenu" parent="CanvasLayer/Control" unique_id=1307613531 instance=ExtResource("3_ia0ay")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="ObjectPointer" type="Line2D" parent="CanvasLayer/Control/ObjectSubmenu" unique_id=336989916]
+unique_name_in_owner = true
+points = PackedVector2Array(0, 0, 0, 0)
+width = 3.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="QuickMenu" type="Control" parent="CanvasLayer/Control" unique_id=1145774488]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -190.0
+offset_top = -110.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/QuickMenu" unique_id=538215010]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 2
+
+[node name="DirectionHint" type="HBoxContainer" parent="CanvasLayer/Control/QuickMenu/VBoxContainer" unique_id=1593865159]
+layout_mode = 2
+
+[node name="SetDirectionHintZ-" type="Button" parent="CanvasLayer/Control/QuickMenu/VBoxContainer/DirectionHint" unique_id=141520434]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Z-"
+
+[node name="SetDirectionHintZ+" type="Button" parent="CanvasLayer/Control/QuickMenu/VBoxContainer/DirectionHint" unique_id=2071743446]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Z+"
+
+[node name="SetDirectionHintX-" type="Button" parent="CanvasLayer/Control/QuickMenu/VBoxContainer/DirectionHint" unique_id=1731919051]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "X-"
+
+[node name="SetDirectionHintX+" type="Button" parent="CanvasLayer/Control/QuickMenu/VBoxContainer/DirectionHint" unique_id=941175199]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "X+"
+
+[node name="PauseButton" type="Button" parent="CanvasLayer/Control/QuickMenu/VBoxContainer" unique_id=402257011]
+layout_mode = 2
+text = "Pause / Resume"
+
+[node name="ResetButton" type="Button" parent="CanvasLayer/Control/QuickMenu/VBoxContainer" unique_id=220528916]
+layout_mode = 2
+text = "Reset"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1401735524]
+environment = SubResource("Environment_8d2mh")
+
+[node name="CameraPivot" type="Marker3D" parent="." unique_id=1958927067]
+unique_name_in_owner = true
+
+[node name="Camera" type="Camera3D" parent="CameraPivot" unique_id=92846606]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 0, 0)
+fov = 60.0
+
+[node name="GraphicPlanes" type="Node3D" parent="." unique_id=101917172]
+unique_name_in_owner = true
+
+[node name="BoidHeightPlane" type="MeshInstance3D" parent="GraphicPlanes" unique_id=98117690]
+unique_name_in_owner = true
+mesh = SubResource("PlaneMesh_37psj")
+surface_material_override/0 = SubResource("StandardMaterial3D_vevjg")
+
+[node name="DecorHeightPlane" type="MeshInstance3D" parent="GraphicPlanes" unique_id=1955683286]
+unique_name_in_owner = true
+mesh = SubResource("PlaneMesh_37psj")
+surface_material_override/0 = SubResource("StandardMaterial3D_f24rf")
+
+[node name="DirectionHintPlane" type="MeshInstance3D" parent="GraphicPlanes" unique_id=1710839496]
+unique_name_in_owner = true
+transform = Transform3D(-1, 8.742278e-08, 0, 3.821371e-15, 4.371139e-08, -1, -8.742278e-08, -1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("PrismMesh_flb18")
+surface_material_override/0 = SubResource("StandardMaterial3D_eeqaq")
+
+[connection signal="valid_input_submitted" from="CanvasLayer/Control/Bar/TabContainer/Library/ChunkVals/LibSizeInput" to="." method="_library_size_submitted"]
+[connection signal="valid_input_submitted" from="CanvasLayer/Control/Bar/TabContainer/Library/ChunkVals/LibScaleInput" to="." method="_library_scale_submitted"]
+[connection signal="valid_input_submitted" from="CanvasLayer/Control/Bar/TabContainer/Library/ChunkVals/LibHDecorInput" to="." method="_library_decor_height_submitted"]
+[connection signal="valid_input_submitted" from="CanvasLayer/Control/Bar/TabContainer/Library/ChunkVals/LibHBoidInput" to="." method="_library_boid_height_submitted"]
+[connection signal="chosen" from="CanvasLayer/Control/Bar/TabContainer/Library/MaterialInput" to="." method="_library_material_chosen"]
+[connection signal="pressed" from="CanvasLayer/Control/Bar/TabContainer/Chunk/ObjectMenu/AddObjButton" to="." method="_chunk_object_add"]
+[connection signal="valid_input_submitted" from="CanvasLayer/Control/Bar/TabContainer/Chunk/ChunkVals/ChunkSizeInput" to="." method="_chunk_size_submitted"]
+[connection signal="valid_input_submitted" from="CanvasLayer/Control/Bar/TabContainer/Chunk/ChunkVals/ChunkScaleInput" to="." method="_chunk_scale_submitted"]
+[connection signal="valid_input_submitted" from="CanvasLayer/Control/Bar/TabContainer/Chunk/ChunkVals/ChunkHDecorInput" to="." method="_chunk_decor_height_submitted"]
+[connection signal="valid_input_submitted" from="CanvasLayer/Control/Bar/TabContainer/Chunk/ChunkVals/ChunkHBoidInput" to="." method="_chunk_boid_height_submitted"]
+[connection signal="pressed" from="CanvasLayer/Control/Bar/TabContainer/Chunk/ChunkVals/MatchLibraryButton" to="." method="_set_size_from_library"]
+[connection signal="chosen" from="CanvasLayer/Control/Bar/FileSelect/ChunkDefInput" to="." method="_chunk_def_chosen"]
+[connection signal="updated" from="CanvasLayer/Control/Bar/FileSelect/ChunkDefInput" to="." method="_chunk_def_updated"]
+[connection signal="pressed" from="CanvasLayer/Control/Bar/FileSelect/SaveDefButton" to="." method="_save_definition"]
+[connection signal="pressed" from="CanvasLayer/Control/Bar/FileSelect/NewDefButton" to="." method="_new_definition"]
+[connection signal="chosen" from="CanvasLayer/Control/Bar/FileSelect/ChunkLibInput" to="." method="_chunk_lib_chosen"]
+[connection signal="updated" from="CanvasLayer/Control/Bar/FileSelect/ChunkLibInput" to="." method="_chunk_lib_updated"]
+[connection signal="pressed" from="CanvasLayer/Control/Bar/FileSelect/SaveLibButton" to="." method="_save_library"]
+[connection signal="pressed" from="CanvasLayer/Control/Bar/FileSelect/NewLibButton" to="." method="_new_library"]
+[connection signal="object_deleted" from="CanvasLayer/Control/ObjectSubmenu" to="." method="_chunk_object_erased"]
+[connection signal="object_modified" from="CanvasLayer/Control/ObjectSubmenu" to="." method="_chunk_object_updated"]
+[connection signal="pressed" from="CanvasLayer/Control/QuickMenu/VBoxContainer/DirectionHint/SetDirectionHintZ-" to="." method="_set_direction_hint_ZN"]
+[connection signal="pressed" from="CanvasLayer/Control/QuickMenu/VBoxContainer/DirectionHint/SetDirectionHintZ+" to="." method="_set_direction_hint_ZP"]
+[connection signal="pressed" from="CanvasLayer/Control/QuickMenu/VBoxContainer/DirectionHint/SetDirectionHintX-" to="." method="_set_direction_hint_XN"]
+[connection signal="pressed" from="CanvasLayer/Control/QuickMenu/VBoxContainer/DirectionHint/SetDirectionHintX+" to="." method="_set_direction_hint_XP"]
+[connection signal="pressed" from="CanvasLayer/Control/QuickMenu/VBoxContainer/PauseButton" to="." method="_pause_chunk"]
+[connection signal="pressed" from="CanvasLayer/Control/QuickMenu/VBoxContainer/ResetButton" to="." method="set_chunk"]

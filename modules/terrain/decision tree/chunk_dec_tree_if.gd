@@ -27,10 +27,15 @@ func pick( state: ChunkGenState ) -> ChunkDefinition:
 	
 	#If condition passes, pick from succeed tree
 	if condition( state ):
-		return succeed.pick( state );
+		if succeed:
+			return succeed.pick( state );
 	
 	#Else, pick from fail tree
-	return fail.pick( state );
+	else:
+		if fail:
+			return fail.pick( state );
+	
+	return null;
 
 ## Returns whether the pass or fail branch should be picked
 @warning_ignore("unused_parameter")

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ChunkObject" format=3 uid="uid://da1t620wm2fip"]
+
+[ext_resource type="PackedScene" uid="uid://crms1f7sqr0a1" path="res://modules/objects/goal/goal.tscn" id="1_dt7iv"]
+[ext_resource type="Script" uid="uid://obk0gl5ybof4" path="res://modules/terrain/generator/chunk_object.gd" id="1_f2vb0"]
+
+[resource]
+script = ExtResource("1_f2vb0")
+name = "Goal"
+scene = ExtResource("1_dt7iv")
+metadata/_custom_type_script = "uid://obk0gl5ybof4"

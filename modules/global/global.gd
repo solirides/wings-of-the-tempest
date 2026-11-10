@@ -18,7 +18,7 @@ var flock: Node
 var camera: Node
 var hud: Node
 var world: Node
-
+var time_elapsed: float
 # Emitted when the flock, camera, and hud variables have all been set
 # Each main node sets their respective variable to themself in their ready function
 # The ready signal of these nodes are also connected to call check_ready_nodes() here
@@ -44,7 +44,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	time_elapsed += delta
 
 func check_ready_nodes():
 	var ready = true
@@ -81,3 +81,6 @@ func _input(event: InputEvent) -> void:
 func AddScore(score_to_add: int) -> void:
 	score += score_to_add
 	score_modified.emit()
+
+func end_level() -> void:
+	hud.show_end_screen();

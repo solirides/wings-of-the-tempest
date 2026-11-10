@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="ChunkDefinition" format=3 uid="uid://b70l8xx6xlksf"]
+
+[ext_resource type="Script" uid="uid://bh87rke3owanb" path="res://modules/terrain/generator/chunk_object_data.gd" id="1_vfsqu"]
+[ext_resource type="Script" uid="uid://cks7psb1tg0ob" path="res://modules/terrain/generator/chunk_definition.gd" id="2_en0bh"]
+[ext_resource type="Resource" uid="uid://da1t620wm2fip" path="res://assets/data/terrain/objects/goal.tres" id="2_q8bi7"]
+[ext_resource type="Resource" uid="uid://cugras5u8c2ht" path="res://assets/data/terrain/objects/tree_cluster_large.tres" id="3_af0so"]
+[ext_resource type="Script" uid="uid://hn4a0fyr272r" path="res://modules/terrain/generator/chunk_terrain_object.gd" id="3_q8bi7"]
+
+[sub_resource type="Resource" id="Resource_af0so"]
+script = ExtResource("1_vfsqu")
+object = ExtResource("2_q8bi7")
+
+[sub_resource type="Resource" id="Resource_8ttwu"]
+script = ExtResource("1_vfsqu")
+object = ExtResource("3_af0so")
+position = Vector2(-8, 16)
+
+[sub_resource type="Resource" id="Resource_q8bi7"]
+script = ExtResource("1_vfsqu")
+object = ExtResource("3_af0so")
+position = Vector2(-8, 48)
+
+[sub_resource type="Resource" id="Resource_gdvw2"]
+script = ExtResource("1_vfsqu")
+object = ExtResource("3_af0so")
+position = Vector2(72, 16)
+
+[sub_resource type="Resource" id="Resource_rv53s"]
+script = ExtResource("1_vfsqu")
+object = ExtResource("3_af0so")
+position = Vector2(72, 48)
+
+[resource]
+script = ExtResource("2_en0bh")
+terrain_size = Vector3i(16, 16, 16)
+terrain_scale = Vector3(4, 1, 4)
+terrain_decorator_height = 6
+terrain_accessible_height = 8
+objects = Array[ExtResource("1_vfsqu")]([SubResource("Resource_af0so"), SubResource("Resource_8ttwu"), SubResource("Resource_q8bi7"), SubResource("Resource_gdvw2"), SubResource("Resource_rv53s")])

@@ -11,30 +11,18 @@ extends Node
 var sounds_by_name: Dictionary = {}
 var sound_stream_players: Dictionary = {}
 
-#sound properties
-const f_honk_cd_default = 31.0
-@export var flock_honk_cooldown: float = 0
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	create_sound_dictionary()
 	print("global audio scene loaded!")
-	play_sfx_track("test_sound_1")
+	#play_sfx_track("test_sound_1")
 	#var audio_stream = load("res://assets/sounds/test_sound.mp3")
 	#play_music_track(audio_stream, -5)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	# JOSHUA JEONG - Monday, Oct 26, 2026
-	# - For now, passive random chance of entire flock
-	# - making general honking sound as they're flying
-	# - there is a cooldown of 31 seconds so that the
-	# - sound cannot annoyingly overlap
-	flock_honk_cooldown -= delta;
-	if flock_honk_cooldown <= 0 and randi() % 1000 > 95:
-		flock_honk_cooldown = f_honk_cd_default;
-		play_sfx_track("goose-flock1")
-		
+	# ambient sound moved to world scene
+	pass
 
 
 func create_sound_dictionary():
@@ -53,7 +41,12 @@ func play_sfx_track(sound_name: String, \
 	# Multiple sounds played in one stream will all be at the same volume.
 	# 
 	#sound_stream_players[sound_name].volume_db = volume_db
-	sound_stream_players[sound_name].play()
+	if sound_name in sound_stream_players:
+		sound_stream_players[sound_name].play()
+		#print("playing sound: %s" % sound_name)
+	else:
+		pass
+		#print("invalid sound name: %s" % sound_name)
 
 func play_music_track(audio_stream: AudioStream, volume_db: float = 0):
 	music_stream.stream = audio_stream

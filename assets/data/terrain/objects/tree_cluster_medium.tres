@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ChunkObject" format=3 uid="uid://sitgty6pf62p"]
+
+[ext_resource type="PackedScene" uid="uid://c2rjls8vj5q4s" path="res://modules/objects/tree/tree_cluster.tscn" id="1_00ba4"]
+[ext_resource type="Script" uid="uid://obk0gl5ybof4" path="res://modules/terrain/generator/chunk_object.gd" id="1_elmgj"]
+
+[resource]
+script = ExtResource("1_elmgj")
+name = "Tree Cluster (M)"
+scene = ExtResource("1_00ba4")
+height_mode = 1
+metadata/_custom_type_script = "uid://obk0gl5ybof4"

@@ -11,7 +11,7 @@ func get_seeded_int() -> int:
 	seeded_number = randi();
 	return seeded_number;
 
-## Returns a random float, consistent with the generator seed
+## Returns a random float inclusively between 0.0 and 1.0, consistent with the generator seed
 func get_seeded_float() -> float:
 	get_seeded_int();
 	return randf();

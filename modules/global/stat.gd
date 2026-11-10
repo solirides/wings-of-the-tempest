@@ -57,3 +57,10 @@ func get_modifier(name: String) -> StatModifier:
 		if modifier.name == name:
 			return modifier
 	return null
+	
+
+func change_modifier(name: String, value:float):
+	var modifier = get_modifier(name)
+	if modifier:
+		modifier.modifier_value = value
+		update_value()

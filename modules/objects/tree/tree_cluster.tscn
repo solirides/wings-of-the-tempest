@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://c2rjls8vj5q4s"]
+
+[ext_resource type="Script" uid="uid://dq1ltb2xghtai" path="res://modules/objects/tree/tree_cluster.gd" id="1_5bi1x"]
+[ext_resource type="PackedScene" uid="uid://dyp5b05rtwimy" path="res://modules/objects/tree/tree_a.tscn" id="1_028uo"]
+[ext_resource type="PackedScene" uid="uid://cvyq78nklej7f" path="res://modules/objects/tree/tree_b.tscn" id="2_5bi1x"]
+[ext_resource type="Texture2D" uid="uid://cuusvxt6uukqp" path="res://modules/objects/tree/tree_cluster_icon.png" id="4_a5t7d"]
+
+[node name="TreeCluster" type="Node3D" unique_id=411549843]
+script = ExtResource("1_5bi1x")
+
+[node name="Sample" type="Node3D" parent="." unique_id=2058565450]
+unique_name_in_owner = true
+process_mode = 4
+visible = false
+
+[node name="TreeA" parent="Sample" unique_id=465239433 instance=ExtResource("1_028uo")]
+
+[node name="TreeB" parent="Sample" unique_id=993986372 instance=ExtResource("2_5bi1x")]
+
+[node name="EditorSprite" type="Sprite3D" parent="." unique_id=1509603438]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+billboard = 2
+double_sided = false
+texture = ExtResource("4_a5t7d")

@@ -19,7 +19,12 @@ func _process(delta: float) -> void:
 func update_cursor():
 	print("update subflock cursor")
 	if cursor:
+		cursor.visible = true
 		cursor.global_position = flock_goal
+
+func hide_cursor():
+	if cursor:
+		cursor.visible = false
 
 func remove_boid(boid: Boid):
 	parent_flock.remove_boid(boid)
