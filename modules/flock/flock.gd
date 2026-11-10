@@ -119,7 +119,11 @@ func handle_swoop_request(state: bool):
 #this updates the flocks global position on the ground.
 func flock_landed() -> void :
 	
-	var above_chunk: Chunk = Chunk.get_chunk_containing_global_position( get_cursor_pos() );
+	# DONT use different coordinates for getting Chunk vs Chunk Height
+	# Otherwise you may get height (or really, fail to get height) of position that chunk does not contain
+	var query_position: = get_cursor_pos();
+	
+	var above_chunk: Chunk = Chunk.get_chunk_containing_global_position( query_position );
 	#print("I am constantly look for the ground.")
 	
 	#If the above_chunk.global_position is null, throws you out by setting boid_properties.flockIsFlying == true
@@ -129,9 +133,9 @@ func flock_landed() -> void :
 		print("Failed to land at position: ", global_position )
 		return
 	
-	if above_chunk.is_height_accessible_global( Vector2( global_position.x, global_position.z ) ):
+	if above_chunk.is_height_accessible_global( Vector2( query_position.x, query_position.z ) ):
 		
-		global_position.y = above_chunk.get_height_global( above_chunk.heightmap_accessibility, Vector2( global_position.x, global_position.z ) );
+		global_position.y = above_chunk.get_height_global( above_chunk.heightmap_accessibility, Vector2( query_position.x, query_position.z ) );
 		boid_properties.flockIsLanded = true
 		#print(global_position.y) #PLEASE disable this, this clutters stuff up SO fast.
 	else :
