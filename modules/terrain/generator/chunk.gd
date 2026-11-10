@@ -9,10 +9,7 @@ static var all: Array[ Chunk ];
 static func get_chunk_containing_global_position( at_position: Vector3 ) -> Chunk:
 	
 	for chunk in all:
-		var chunk_end: = chunk.global_position + chunk.get_global_size();
-		# only check for x and z bounds, disregard y height
-		if at_position.x >= chunk.global_position.x and at_position.z >= chunk.global_position.z and \
-				at_position.x < chunk_end.x and at_position.z < chunk_end.z:
+		if chunk.contains_coordinates_global( Vector2( at_position.x, at_position.z ) ):
 			return chunk;
 	
 	return null;
@@ -137,14 +134,16 @@ func create_objects( objects: Array[ ChunkObjectData ], state: ChunkGenState, do
 		if do_random and state.get_seeded_float() > object_data.spawn_chance:
 			continue;
 		var object_node: Node3D = object_data.object.scene.instantiate();
-		add_child( object_node );
+		for property in object_data.object.property_overrides.keys():
+			object_node.set( property, object_data.object.property_overrides[ property ] );
 		object_node.position = Vector3( object_data.position.x, get_height_of_object( object_data ), object_data.position.y );
+		add_child( object_node );
 
 ## Get the height at which the object would be placed on this chunk
 func get_height_of_object( object_data: ChunkObjectData ) -> float:
 	
 	var height: float = object_data.object.height_offset;
-	if object_data.object.height_mode == ChunkObject.HeightMode.SNAP:
+	if object_data.object.height_mode == ChunkObject.HeightMode.SNAP and contains_coordinates( object_data.position ):
 		height += get_height( heightmap_terrain, Vector2( object_data.position.x, object_data.position.y ) );
 	if object_data.object.height_mode == ChunkObject.HeightMode.ACCESSIBLE:
 		height += boid_height;
@@ -195,26 +194,48 @@ func _exit_tree() -> void:
 
 
 
+## Determine if a pair of XZ coordinates relative to the chunk are within its boundaries
+func contains_coordinates( coordinates: Vector2 ) -> bool:
+	
+	return \
+		coordinates.x >= 0 and \
+		coordinates.y >= 0 and \
+		coordinates.x <= get_global_size().x and \
+		coordinates.y <= get_global_size().z;
+
+## Determine if a pair of XZ global coordinates are contained in the chunk
+func contains_coordinates_global( coordinates: Vector2 ) -> bool:
+	return contains_coordinates( coordinates - Vector2( global_position.x, global_position.z ) );
+
 ## Find vertical position using a heightmap at a horizontal position
 func get_height( heightmap: Array3D, coordinates: Vector2 ) -> float:
 	coordinates /= Vector2( terrain_scale.x, terrain_scale.z );
 	assert( coordinates.x >= 0 and coordinates.y >= 0 and coordinates <= Vector2( heightmap.get_size().x, heightmap.get_size().y ), "Scaled coordinates " + str( coordinates ) + " are not within the heightmaps size of " + str( heightmap.get_size() ) );
 	var integer: Vector2i = coordinates.floor();
 	var fractional: = coordinates.posmod( 1.0 );
+	var next: = ( integer + Vector2i.ONE ).min( Vector2i( heightmap.get_size().x, heightmap.get_size().z ) - Vector2i.ONE );
 	return lerp( 
 		lerp( 
 			heightmap.get_at( Vector3i( integer.x, 0, integer.y ) ),
-			heightmap.get_at( Vector3i( integer.x + 1, 0, integer.y ) ),
+			heightmap.get_at( Vector3i( next.x, 0, integer.y ) ),
 			fractional.x
 		),
 		lerp( 
-			heightmap.get_at( Vector3i( integer.x, 0, integer.y + 1 ) ),
-			heightmap.get_at( Vector3i( integer.x + 1, 0, integer.y + 1 ) ),
+			heightmap.get_at( Vector3i( integer.x, 0, next.y ) ),
+			heightmap.get_at( Vector3i( next.x, 0, next.y ) ),
 			fractional.x
 		),
 		fractional.y
 	);
 
+## Find vertical position using a heightmap at a horizontal position, in global coordinate space
+func get_height_global( heightmap: Array3D, coordinates: Vector2 ) -> float:
+	return get_height( heightmap, coordinates - Vector2( global_position.x, global_position.z ) ) + global_position.y;
+
 ## Check if position at accessible height is occluded by terrain
 func is_height_accessible( coordinates: Vector2 ) -> bool:
 	return get_height( heightmap_accessibility, coordinates ) >= 0;
+
+## Check if position at accessible height is occluded by terrain, in global coordinate space
+func is_height_accessible_global( coordinates: Vector2 ) -> bool:
+	return is_height_accessible( coordinates - Vector2( global_position.x, global_position.z ) );

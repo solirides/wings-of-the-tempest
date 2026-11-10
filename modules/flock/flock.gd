@@ -129,12 +129,9 @@ func flock_landed() -> void :
 		print("Failed to land at position: ", global_position )
 		return
 	
-	var relative_position: = global_position - above_chunk.global_position;
-	var horizontal: = Vector2( relative_position.x, relative_position.z );
+	if above_chunk.is_height_accessible_global( Vector2( global_position.x, global_position.z ) ):
 		
-	if above_chunk.is_height_accessible( horizontal ):
-		
-		global_position.y = above_chunk.global_position.y + above_chunk.get_height( above_chunk.heightmap_accessibility, horizontal );
+		global_position.y = above_chunk.get_height_global( above_chunk.heightmap_accessibility, Vector2( global_position.x, global_position.z ) );
 		boid_properties.flockIsLanded = true
 		#print(global_position.y) #PLEASE disable this, this clutters stuff up SO fast.
 	else :
