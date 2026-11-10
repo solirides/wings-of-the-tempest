@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cuusvxt6uukqp"
-path.s3tc="res://.godot/imported/tree_cluster_icon.png-9b01253cc2ff204b770d1787dbca39f1.s3tc.ctex"
+path.s3tc="res://.godot/imported/tree_cluster_icon.png-fc2387f9d76e48e30dc0077c1292acf4.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://modules/obstacles/tree/tree_cluster_icon.png"
-dest_files=["res://.godot/imported/tree_cluster_icon.png-9b01253cc2ff204b770d1787dbca39f1.s3tc.ctex"]
+source_file="res://modules/objects/tree/tree_cluster_icon.png"
+dest_files=["res://.godot/imported/tree_cluster_icon.png-fc2387f9d76e48e30dc0077c1292acf4.s3tc.ctex"]
 
 [params]
 

@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://c2rjls8vj5q4s"]
 
-[ext_resource type="Script" uid="uid://dq1ltb2xghtai" path="res://modules/obstacles/tree/tree_cluster.gd" id="1_5bi1x"]
-[ext_resource type="PackedScene" uid="uid://dyp5b05rtwimy" path="res://modules/obstacles/tree/tree_a.tscn" id="1_028uo"]
-[ext_resource type="PackedScene" uid="uid://cvyq78nklej7f" path="res://modules/obstacles/tree/tree_b.tscn" id="2_5bi1x"]
-[ext_resource type="Texture2D" uid="uid://cuusvxt6uukqp" path="res://modules/obstacles/tree/tree_cluster_icon.png" id="4_a5t7d"]
+[ext_resource type="Script" uid="uid://dq1ltb2xghtai" path="res://modules/objects/tree/tree_cluster.gd" id="1_5bi1x"]
+[ext_resource type="PackedScene" uid="uid://dyp5b05rtwimy" path="res://modules/objects/tree/tree_a.tscn" id="1_028uo"]
+[ext_resource type="PackedScene" uid="uid://cvyq78nklej7f" path="res://modules/objects/tree/tree_b.tscn" id="2_5bi1x"]
+[ext_resource type="Texture2D" uid="uid://cuusvxt6uukqp" path="res://modules/objects/tree/tree_cluster_icon.png" id="4_a5t7d"]
 
 [node name="TreeCluster" type="Node3D" unique_id=411549843]
 script = ExtResource("1_5bi1x")

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dyp5b05rtwimy"]
 
 [ext_resource type="PackedScene" uid="uid://dw2ok50o8jmpy" path="res://assets/models/tree_1.glb" id="1_cssa2"]
-[ext_resource type="Script" uid="uid://bgtojvurc654u" path="res://modules/obstacles/tree/tree.gd" id="2_u4ukl"]
+[ext_resource type="Script" uid="uid://bgtojvurc654u" path="res://modules/objects/tree/tree.gd" id="2_u4ukl"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_2svt2"]
 height = 4.0
