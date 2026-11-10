@@ -11,3 +11,4 @@ enum HeightMode {
 @export var scene: PackedScene;
 @export var height_mode: HeightMode;
 @export var height_offset: float;
+@export var property_overrides: Dictionary[ String, Variant ];

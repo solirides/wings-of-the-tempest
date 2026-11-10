@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ChunkDefinition" format=3 uid="uid://ctahoj144b2la"]
+[gd_resource type="Resource" script_class="ChunkDefinition" format=3 uid="uid://3llo33vouqwo"]
 
 [ext_resource type="Script" uid="uid://bh87rke3owanb" path="res://modules/terrain/generator/chunk_object_data.gd" id="1_140yy"]
 [ext_resource type="Script" uid="uid://cks7psb1tg0ob" path="res://modules/terrain/generator/chunk_definition.gd" id="1_abwy3"]
@@ -8,6 +8,9 @@
 [ext_resource type="Resource" uid="uid://df2vefay57ybq" path="res://assets/data/terrain/objects/seagull.tres" id="4_vvycf"]
 [ext_resource type="Resource" uid="uid://cpopvjrd08oqc" path="res://assets/data/terrain/objects/hawk.tres" id="5_wn1sa"]
 [ext_resource type="Resource" uid="uid://bm7udob8ckxjt" path="res://assets/data/terrain/objects/berry_bush.tres" id="6_vvycf"]
+[ext_resource type="Resource" uid="uid://sitgty6pf62p" path="res://assets/data/terrain/objects/tree_cluster_medium.tres" id="7_m11ai"]
+[ext_resource type="Resource" uid="uid://c6da3wdxmqwcm" path="res://assets/data/terrain/objects/tree_cluster_small.tres" id="8_wf370"]
+[ext_resource type="Resource" uid="uid://cugras5u8c2ht" path="res://assets/data/terrain/objects/tree_cluster_large.tres" id="9_g4s22"]
 
 [sub_resource type="Resource" id="Resource_3glkb"]
 script = ExtResource("1_140yy")
@@ -36,7 +39,22 @@ metadata/_custom_type_script = "uid://bh87rke3owanb"
 [sub_resource type="Resource" id="Resource_m11ai"]
 script = ExtResource("1_140yy")
 object = ExtResource("6_vvycf")
-position = Vector2(32, 32)
+position = Vector2(16, 16)
+
+[sub_resource type="Resource" id="Resource_wf370"]
+script = ExtResource("1_140yy")
+object = ExtResource("7_m11ai")
+position = Vector2(40, 25)
+
+[sub_resource type="Resource" id="Resource_g4s22"]
+script = ExtResource("1_140yy")
+object = ExtResource("8_wf370")
+position = Vector2(40, 6)
+
+[sub_resource type="Resource" id="Resource_itlrj"]
+script = ExtResource("1_140yy")
+object = ExtResource("9_g4s22")
+position = Vector2(40, 64)
 
 [resource]
 script = ExtResource("1_abwy3")
@@ -44,4 +62,4 @@ terrain_size = Vector3i(16, 16, 16)
 terrain_scale = Vector3(4, 1, 4)
 terrain_decorator_height = 6
 terrain_accessible_height = 8
-objects = Array[ExtResource("1_140yy")]([SubResource("Resource_3glkb"), SubResource("Resource_8d2mh"), SubResource("Resource_g24jr"), SubResource("Resource_wn1sa"), SubResource("Resource_m11ai")])
+objects = Array[ExtResource("1_140yy")]([SubResource("Resource_3glkb"), SubResource("Resource_8d2mh"), SubResource("Resource_g24jr"), SubResource("Resource_wn1sa"), SubResource("Resource_m11ai"), SubResource("Resource_wf370"), SubResource("Resource_g4s22"), SubResource("Resource_itlrj")])

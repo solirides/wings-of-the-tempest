@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ChunkObject" format=3 uid="uid://c6da3wdxmqwcm"]
+
+[ext_resource type="PackedScene" uid="uid://c2rjls8vj5q4s" path="res://modules/obstacles/tree/tree_cluster.tscn" id="1_cbuam"]
+[ext_resource type="Script" uid="uid://obk0gl5ybof4" path="res://modules/terrain/generator/chunk_object.gd" id="2_8t2b7"]
+
+[resource]
+script = ExtResource("2_8t2b7")
+name = "Tree Cluster (S)"
+scene = ExtResource("1_cbuam")
+height_mode = 1
+property_overrides = Dictionary[String, Variant]({
+"radius": 4.0
+})
+metadata/_custom_type_script = "uid://obk0gl5ybof4"
