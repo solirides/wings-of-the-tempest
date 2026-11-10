@@ -20,7 +20,7 @@ func add_tree( pos: Vector3 ) -> void:
 
 func _ready() -> void:
 	
-	%EditorSprite.visible = ChunkEditor.is_open;
+	#%EditorSprite.visible = ChunkEditor.is_open;
 	
 	for xIdx in radius / density * 2: for yIdx in radius / density * 2:
 		
