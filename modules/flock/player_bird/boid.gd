@@ -236,9 +236,7 @@ func spinning(center: Vector3, neighbors: Array) -> Vector3:
 func apply_soft_collision(delta: float):
 	properties.speed.remove_modifier("soft_collision")
 	var modifier = StatModifier.new("soft_collision", 1.0 / (soft_collision_factor + 1))
-	#print(soft_collision_factor)
 	properties.speed.add_modifier(modifier)
-	soft_collision_factor = 0
 
 func boid_movement(delta: float):
 	var camera_force : Vector3 = Vector3.ZERO

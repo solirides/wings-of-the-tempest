@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://d0yu7irl5dcc4"]
+
+[ext_resource type="PackedScene" uid="uid://c2rjls8vj5q4s" path="res://modules/obstacles/tree/tree_cluster.tscn" id="1_a025m"]
+
+[node name="TreeClusterMedium" type="Node3D" unique_id=2000793979]
+
+[node name="TreeCluster" parent="." unique_id=411549843 instance=ExtResource("1_a025m")]

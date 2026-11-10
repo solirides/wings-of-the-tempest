@@ -1,4 +1,7 @@
 extends Node3D
+class_name ChunkEditor
+
+static var is_open: bool = false;
 
 var terrain_seed: int = 0:
 	set( value ):
@@ -110,6 +113,7 @@ func open_chunk_object_editor( object_data: ChunkObjectData ) -> void:
 
 
 func _ready() -> void:
+	is_open = true;
 	%TabContainer.visible = false;
 	%QuickMenu.visible = false;
 	%ObjectSubmenu.visible = false;
@@ -227,8 +231,9 @@ func _set_size_from_library() -> void:
 
 
 
-func _chunk_object_updated() -> void:
+func _chunk_object_updated( object_data: ChunkObjectData ) -> void:
 	set_chunk();
+	open_chunk_object_editor.call_deferred( object_data );
 
 func _chunk_object_erased( object_data: ChunkObjectData ) -> void:
 	chunk_definition.objects.erase( object_data );

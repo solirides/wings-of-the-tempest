@@ -2,7 +2,7 @@ extends Control
 
 var object_data: ChunkObjectData;
 
-signal object_modified;
+signal object_modified( object_data: ChunkObjectData );
 signal object_deleted( object_data: ChunkObjectData );
 
 @warning_ignore("shadowed_variable")
@@ -21,11 +21,10 @@ func _deleted() -> void:
 
 func _position_submitted( value: float, index: int ) -> void:
 	object_data.position[ index ] = value;
-	object_modified.emit();
+	object_modified.emit( object_data );
 
 func _spawn_chance_changed( value: float ) -> void:
 	%SpawnChanceLabel.text = "Spawn Chance: %d%%" % ( 100 * value );
 
-func _spawn_chance_submitted( value: bool ) -> void:
+func _spawn_chance_submitted( value: float ) -> void:
 	object_data.spawn_chance = value;
-	object_modified.emit();
