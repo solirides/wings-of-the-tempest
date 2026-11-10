@@ -9,6 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://bdgida065gbo4" path="res://assets/textures/UI/waterbarProgress.png" id="7_ngoot"]
 [ext_resource type="Script" uid="uid://dev0witimtagw" path="res://modules/hud/score.gd" id="8_dyoe6"]
 [ext_resource type="Script" uid="uid://b2172yn6kueq4" path="res://modules/hud/stopwatch.gd" id="8_nvutd"]
+[ext_resource type="Script" uid="uid://btap4l2sddwwm" path="res://modules/hud/nextlvlbutton.gd" id="10_7hou3"]
+[ext_resource type="Texture2D" uid="uid://cwevcrhnsmgh" path="res://WoT_Button.png" id="10_u86fq"]
 
 [sub_resource type="SystemFont" id="SystemFont_0lhw3"]
 font_names = PackedStringArray("Noto Sans", "Open Sans", "Cantarell")
@@ -18,6 +20,8 @@ subpixel_positioning = 0
 [sub_resource type="LabelSettings" id="LabelSettings_6lmcw"]
 font = SubResource("SystemFont_0lhw3")
 font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_sd20g"]
 
 [sub_resource type="SystemFont" id="SystemFont_sd20g"]
 font_names = PackedStringArray("Noto Sans", "Roboto", "Sans-Serif")
@@ -36,8 +40,6 @@ subpixel_positioning = 0
 [sub_resource type="LabelSettings" id="LabelSettings_v6k41"]
 font = SubResource("SystemFont_sunxf")
 font_size = 30
-
-[sub_resource type="LabelSettings" id="LabelSettings_sd20g"]
 
 [node name="Hud" type="Control" unique_id=781835399]
 layout_mode = 3
@@ -67,44 +69,6 @@ Swoop: left mouse
 Land: V"
 label_settings = SubResource("LabelSettings_6lmcw")
 horizontal_alignment = 2
-
-[node name="LevelEndScreen" type="ColorRect" parent="." unique_id=7232756]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.5568628)
-script = ExtResource("4_v6k41")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="LevelEndScreen" unique_id=147339816]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -219.5
-offset_top = -48.0
-offset_right = 219.5
-offset_bottom = 48.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="LevelEndScreen/VBoxContainer" unique_id=518905686]
-layout_mode = 2
-text = "Level Cleared!"
-label_settings = SubResource("LabelSettings_f24ow")
-horizontal_alignment = 1
-
-[node name="Stats" type="Label" parent="LevelEndScreen/VBoxContainer" unique_id=1273775322]
-layout_mode = 2
-text = "summary:
-+x birds
-something something
-123123"
-label_settings = SubResource("LabelSettings_v6k41")
 
 [node name="GridContainer" type="GridContainer" parent="." unique_id=2091174181]
 layout_mode = 0
@@ -193,3 +157,69 @@ offset_bottom = 104.0
 theme_override_font_sizes/font_size = 38
 text = "Score: 0"
 script = ExtResource("8_dyoe6")
+
+[node name="LevelEndScreen" type="ColorRect" parent="." unique_id=7232756]
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5568628)
+script = ExtResource("4_v6k41")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LevelEndScreen" unique_id=147339816]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -219.5
+offset_top = -48.0
+offset_right = 219.5
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="LevelEndScreen/VBoxContainer" unique_id=518905686]
+layout_mode = 2
+text = "Level Cleared!"
+label_settings = SubResource("LabelSettings_f24ow")
+horizontal_alignment = 1
+
+[node name="Stats" type="Label" parent="LevelEndScreen/VBoxContainer" unique_id=1273775322]
+layout_mode = 2
+text = "summary:
++x birds
+something something
+123123"
+label_settings = SubResource("LabelSettings_v6k41")
+
+[node name="CenterContainer" type="CenterContainer" parent="LevelEndScreen" unique_id=1277108892]
+custom_minimum_size = Vector2(183, 40)
+custom_maximum_size = Vector2(400, 100)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -126.5
+offset_top = -183.75
+offset_right = 126.500244
+offset_bottom = -143.75
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("10_7hou3")
+
+[node name="TextureButton" type="TextureButton" parent="LevelEndScreen/CenterContainer" unique_id=1408959253]
+layout_mode = 2
+texture_normal = ExtResource("10_u86fq")
+
+[node name="Label" type="Label" parent="LevelEndScreen/CenterContainer" unique_id=860141670]
+layout_mode = 2
+text = "Click here to go to the next level!"
+
+[connection signal="pressed" from="LevelEndScreen/CenterContainer/TextureButton" to="LevelEndScreen/CenterContainer" method="_on_texture_button_pressed"]
