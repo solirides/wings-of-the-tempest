@@ -24,6 +24,7 @@
 [ext_resource type="Script" uid="uid://dstx1f47q2ki1" path="res://modules/flock/player_bird/boid_properties.gd" id="22_8m3jb"]
 [ext_resource type="PackedScene" uid="uid://c5uasawpupc1t" path="res://modules/enemy/crab.tscn" id="24_8m3jb"]
 [ext_resource type="PackedScene" uid="uid://llwk0a2c7qid" path="res://modules/monument/monument.tscn" id="24_8v8ov"]
+[ext_resource type="Script" uid="uid://dix41rhkmpueh" path="res://scenes/level_1/world_sound.gd" id="25_8m3jb"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0ebjn"]
 render_priority = 0
@@ -235,6 +236,8 @@ rotation_smoothness = SubResource("Resource_so1i6")
 steering_strength = SubResource("Resource_i67mf")
 steering_mode = 1
 flockMaxHeight = 0.0
+flockIsFlying = null
+flockIsLanded = null
 metadata/_custom_type_script = "uid://dstx1f47q2ki1"
 
 [node name="World" type="Node3D" unique_id=1809984319]
@@ -368,6 +371,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -50)
 
 [node name="Crab" parent="." unique_id=2042176865 instance=ExtResource("24_8m3jb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -38)
+
+[node name="Node" type="Node" parent="." unique_id=331107314]
+script = ExtResource("25_8m3jb")
 
 [connection signal="body_entered" from="Goal" to="Goal" method="_on_body_entered"]
 

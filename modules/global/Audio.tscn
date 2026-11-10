@@ -4,6 +4,11 @@
 [ext_resource type="Script" uid="uid://cykvyc3xo04n8" path="res://modules/global/sound.gd" id="2_v13wf"]
 [ext_resource type="AudioStream" uid="uid://bjd6qjykxmius" path="res://assets/sounds/test_sound.mp3" id="3_a8t2j"]
 [ext_resource type="AudioStream" uid="uid://bdsjseijpet3p" path="res://assets/sounds/test_sound_2.mp3" id="4_ifptk"]
+[ext_resource type="AudioStream" uid="uid://cpe182vdqyntv" path="res://assets/sounds/goose_1.wav" id="7_g8yrm"]
+[ext_resource type="AudioStream" uid="uid://drlgd4a1mx4f1" path="res://assets/sounds/goose_2.wav" id="8_ogjdk"]
+[ext_resource type="AudioStream" uid="uid://cwe17rs24hhqs" path="res://assets/sounds/goose_3.wav" id="9_8fc6y"]
+[ext_resource type="AudioStream" uid="uid://1peew0h4qa7x" path="res://assets/sounds/goose_4.wav" id="10_hgf25"]
+[ext_resource type="AudioStream" uid="uid://c7ui0n8w1ri1g" path="res://assets/sounds/ambient_forest_1.wav" id="11_hpjf1"]
 [ext_resource type="AudioStream" uid="uid://cfnrrydnronu0" path="res://assets/sounds/goose_hurt.wav" id="aaaaahh"]
 [ext_resource type="AudioStream" uid="uid://c6re1o02q3q6x" path="res://assets/sounds/goose-flock1.mp3" id="lalalal"]
 
@@ -31,9 +36,39 @@ sound_name = "goose_hurt"
 audio_stream = ExtResource("aaaaahh")
 metadata/_custom_type_script = "uid://cykvyc3xo04n8"
 
+[sub_resource type="Resource" id="Resource_6dflp"]
+script = ExtResource("2_v13wf")
+sound_name = "goose_1"
+audio_stream = ExtResource("7_g8yrm")
+metadata/_custom_type_script = "uid://cykvyc3xo04n8"
+
+[sub_resource type="Resource" id="Resource_f2xw4"]
+script = ExtResource("2_v13wf")
+sound_name = "goose_2"
+audio_stream = ExtResource("8_ogjdk")
+metadata/_custom_type_script = "uid://cykvyc3xo04n8"
+
+[sub_resource type="Resource" id="Resource_jxtpj"]
+script = ExtResource("2_v13wf")
+sound_name = "goose_3"
+audio_stream = ExtResource("9_8fc6y")
+metadata/_custom_type_script = "uid://cykvyc3xo04n8"
+
+[sub_resource type="Resource" id="Resource_7oxn5"]
+script = ExtResource("2_v13wf")
+sound_name = "goose_4"
+audio_stream = ExtResource("10_hgf25")
+metadata/_custom_type_script = "uid://cykvyc3xo04n8"
+
+[sub_resource type="Resource" id="Resource_8kvkq"]
+script = ExtResource("2_v13wf")
+sound_name = "ambient_forest_1"
+audio_stream = ExtResource("11_hpjf1")
+metadata/_custom_type_script = "uid://cykvyc3xo04n8"
+
 [node name="Audio" type="Node" unique_id=1856727547]
 script = ExtResource("1_ux4r1")
-sounds = Array[ExtResource("2_v13wf")]([SubResource("Resource_v13wf"), SubResource("Resource_ew3f2"), SubResource("Resource_df5te"), SubResource("Resource_wrfeo")])
+sounds = Array[ExtResource("2_v13wf")]([SubResource("Resource_v13wf"), SubResource("Resource_ew3f2"), SubResource("Resource_df5te"), SubResource("Resource_wrfeo"), SubResource("Resource_6dflp"), SubResource("Resource_f2xw4"), SubResource("Resource_jxtpj"), SubResource("Resource_7oxn5"), SubResource("Resource_8kvkq")])
 
 [node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=940978963]
 
