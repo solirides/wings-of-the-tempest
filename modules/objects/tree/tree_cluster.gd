@@ -12,7 +12,6 @@ func add_tree( pos: Vector3 ) -> void:
 		return;
 	
 	pos.y = chunk.get_height_global( chunk.heightmap_terrain, Vector2( pos.x, pos.z ) );
-	print( pos );
 	
 	var new_tree: Node3D = %Sample.get_children().pick_random().duplicate();
 	add_child( new_tree );
@@ -21,7 +20,7 @@ func add_tree( pos: Vector3 ) -> void:
 
 func _ready() -> void:
 	
-	#%EditorSprite.visible = %ChunkEditor.is_open;
+	%EditorSprite.visible = ChunkEditor.is_open;
 	
 	for xIdx in radius / density * 2: for yIdx in radius / density * 2:
 		
