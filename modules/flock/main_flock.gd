@@ -67,7 +67,7 @@ func split_flock(num: int, subflock:SubFlock):
 func regroup_flock():
 	for subflock in subflocks:
 		subflock.transfer_boids_to_flock(self)
-		
+		subflock.hide_cursor()
 
 func _on_split_input_timer_timeout():
 	#print("split action timeout")
@@ -79,7 +79,17 @@ func _on_split_input_timer_timeout():
 func _on_swoop_input_timer_timeout():
 	print("swoop action timeout")
 	swoop_action_short = false
-	
+	handle_swoop_request(true)
+
+
+#
+#func begin_swoop():
+	#pass
+#
+#func end_swoop():
+	#pass
+
+
 
 # flock.gd is inherited by both MainFlock and SubFlock,
 # so input for flock splitting would be more annoying to handle in flock.gd
@@ -110,7 +120,7 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_released("swoop"):
 		if swoop_action_short:
 			swoop_input_timer.stop()
-			pass
+			handle_repel_request()
 		else:
-			pass
+			handle_swoop_request(false)
 		

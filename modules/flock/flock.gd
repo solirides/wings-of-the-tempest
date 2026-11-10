@@ -82,40 +82,39 @@ func _ready() -> void:
 
 #Use this to handle any button presses which would change the state of the boids... for now, I'm thinking scatter mode and landing
 func _unhandled_input(event: InputEvent) -> void:
-	
-	#THIS changes causses the boids to repel... ALSO NO LONGER A HOLD THING!!!!
-	if event.is_action_pressed("repel") :
-		handle_repel_request()
-	
-	if event.is_action_pressed("swoop") :
-		handle_swoop_request()
-		
+	pass
 
-func handle_repel_request():
-	if boid_properties.flockIsLanded :
+func handle_repel_request(state: bool = !boid_properties.scatter):
+	if boid_properties.flockIsLanded:
 		print("You cannot scatter while the boids are meant to be landed!")
 		boid_properties.scatter = false
 	else:
 		# toggle boid scattering mode
-		boid_properties.scatter = !boid_properties.scatter
-		boid_properties.default_state = !boid_properties.default_state
+		
+		if state == boid_properties.scatter:
+			return
+		boid_properties.scatter = state
+		boid_properties.default_state = !state
 	print("I'm changing scatter states")
 
-func handle_swoop_request():
+func handle_swoop_request(state: bool):
+	if state != boid_properties.flockIsFlying:
+		return
+	boid_properties.flockIsFlying = !state
+	
 	if boid_properties.flockIsFlying:
+		global_position.y = boid_properties.flockMaxHeight
+		print("RISE FROM YOUR GRAVES!!!!! EHEHEHEHEHEH")
+		boid_properties.flockIsLanded = false
+		#boid_properties.flockIsFlying = true
+	else : 
 		print("The boids are supposed to land now.")
-		boid_properties.scatter = false
+		handle_repel_request(false)
 		
 		land_goal = flock_goal
 		
 		boid_properties.flockIsLanded = true
-		boid_properties.flockIsFlying = false
-	else : 
-		global_position.y = boid_properties.flockMaxHeight
-		print("RISE FROM YOUR GRAVES!!!!! EHEHEHEHEHEH")
-		boid_properties.flockIsLanded = false
-		boid_properties.flockIsFlying = true
-
+		#boid_properties.flockIsFlying = false
 
 #this updates the flocks global position on the ground.
 func flock_landed() -> void :
