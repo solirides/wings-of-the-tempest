@@ -7,7 +7,7 @@
 [ext_resource type="Material" uid="uid://du74kmr3sjb4l" path="res://assets/materials/placeholder_checker_2.tres" id="5_n5hmq"]
 [ext_resource type="Shader" uid="uid://ca2i5qj33kbir" path="res://assets/materials/water.gdshader" id="6_h85i6"]
 [ext_resource type="PackedScene" uid="uid://pyfvd0t0gpm3" path="res://modules/food/food.tscn" id="7_4puhe"]
-[ext_resource type="Script" uid="uid://ci1rc3kcvxd16" path="res://scenes/level_1/HawkPath.gd" id="8_0epvk"]
+[ext_resource type="Script" uid="uid://ci1rc3kcvxd16" path="res://modules/enemy/hawk_path.gd" id="8_0epvk"]
 [ext_resource type="PackedScene" uid="uid://bphsnhj7h6a70" path="res://modules/enemy/hawk.tscn" id="9_v7c1d"]
 [ext_resource type="PackedScene" uid="uid://crms1f7sqr0a1" path="res://modules/objects/goal/goal.tscn" id="10_j2k7a"]
 [ext_resource type="PackedScene" uid="uid://b3o6tsxlufhca" path="res://modules/wind_zone/wind_zone.tscn" id="11_c1aci"]

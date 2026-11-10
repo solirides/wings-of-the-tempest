@@ -1,21 +1,29 @@
 [gd_scene format=3 uid="uid://bphsnhj7h6a70"]
 
+[ext_resource type="Script" uid="uid://ci1rc3kcvxd16" path="res://modules/enemy/hawk_path.gd" id="1_f2xw4"]
 [ext_resource type="Script" uid="uid://kcxhpt2bsugs" path="res://modules/enemy/hawk.gd" id="1_kvbro"]
 [ext_resource type="PackedScene" uid="uid://cb6ulg0b8sf8g" path="res://assets/models/hawk.glb" id="2_6dflp"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6lmcw"]
 radius = 1.0
 
-[node name="Hawk" type="RigidBody3D" unique_id=40116280]
+[node name="HawkPath" type="Path3D" unique_id=1512761779]
+script = ExtResource("1_f2xw4")
+flight_speed = 0.15
+
+[node name="HawkPathFollower" type="PathFollow3D" parent="." unique_id=2069769829]
+unique_name_in_owner = true
+transform = Transform3D(-0.95533586, -0.29552, -8.351817e-08, -0.29552, 0.95533586, -2.5835194e-08, 8.742272e-08, 0, -0.9999999, 8, 0, 0)
+
+[node name="Hawk" type="RigidBody3D" parent="HawkPathFollower" unique_id=40116280]
 freeze = true
 freeze_mode = 1
 script = ExtResource("1_kvbro")
-enable_own_movement = false
 attack_speed = 0.5
 attack_range = 1.5
 
-[node name="hawk2" parent="." unique_id=1867897076 instance=ExtResource("2_6dflp")]
+[node name="Model" parent="HawkPathFollower/Hawk" unique_id=1867897076 instance=ExtResource("2_6dflp")]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=793776675]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HawkPathFollower/Hawk" unique_id=793776675]
 shape = SubResource("SphereShape3D_6lmcw")

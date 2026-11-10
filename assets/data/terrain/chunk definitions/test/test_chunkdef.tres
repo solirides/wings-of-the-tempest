@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://hn4a0fyr272r" path="res://modules/terrain/generator/chunk_terrain_object.gd" id="2_bj22w"]
 [ext_resource type="Resource" uid="uid://bn8r5t6bf1i4y" path="res://assets/data/terrain/objects/crab.tres" id="3_wn1sa"]
 [ext_resource type="Resource" uid="uid://df2vefay57ybq" path="res://assets/data/terrain/objects/seagull.tres" id="4_vvycf"]
-[ext_resource type="Resource" uid="uid://cpopvjrd08oqc" path="res://assets/data/terrain/objects/hawk.tres" id="5_wn1sa"]
+[ext_resource type="Resource" uid="uid://cpopvjrd08oqc" path="res://assets/data/terrain/objects/hawk_circle.tres" id="5_wn1sa"]
 [ext_resource type="Resource" uid="uid://bm7udob8ckxjt" path="res://assets/data/terrain/objects/berry_bush.tres" id="6_vvycf"]
 [ext_resource type="Resource" uid="uid://sitgty6pf62p" path="res://assets/data/terrain/objects/tree_cluster_medium.tres" id="7_m11ai"]
 [ext_resource type="Resource" uid="uid://c6da3wdxmqwcm" path="res://assets/data/terrain/objects/tree_cluster_small.tres" id="8_wf370"]
