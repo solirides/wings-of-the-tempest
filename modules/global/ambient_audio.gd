@@ -1,4 +1,5 @@
 extends Node
+class_name AmbientAudio
 
 @export var sounds: PackedStringArray = [
 	"goose-flock1",
