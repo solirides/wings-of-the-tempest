@@ -14,7 +14,7 @@ func create( object_data: ChunkObjectData ) -> void:
 
 func _deleted() -> void:
 	object_deleted.emit( object_data );
-	object_modified.emit();
+	object_modified.emit( object_data );
 	visible = false;
 
 

@@ -36,6 +36,7 @@ func set_chunk() -> void:
 	
 	# Create chunk
 	chunk = Chunk.new();
+	chunk.position = chunk_library.get_chunk_global_size() * Vector3( -0.5, 0, -0.5 );
 	add_child( chunk );
 	chunk.set_terrain_material( chunk_library.terrain_material );
 	chunk.create( chunk_definition, ChunkGenState.new( terrain_seed, chunk_library.terrain_sampler ), false );
@@ -54,24 +55,22 @@ func remove_chunk() -> void:
 
 func populate_editor_values() -> void:
 	
-	# Position chunk
-	chunk.position = chunk.get_global_size() * Vector3( -0.5, 0, -0.5 );
-	
 	# Position camera
 	var chunk_size: = chunk.get_global_size();
 	%Camera.position = Vector3( 0, chunk_size.y * 1.5, max( chunk_size.x, chunk_size.z ) * 0.75 );
 	
 	# Show height planes
-	%BoidHeightPlane.visible = true;
-	%DecorHeightPlane.visible = true;
+	%GraphicPlanes.visible = true;
 	
 	# Scale height planes
 	%BoidHeightPlane.scale = chunk.get_global_size();
 	%DecorHeightPlane.scale = chunk.get_global_size();
+	%DirectionHintPlane.scale = chunk.get_global_size();
 	
 	# Position height planes
 	%BoidHeightPlane.position.y = chunk.position.y + chunk_definition.terrain_accessible_height;
 	%DecorHeightPlane.position.y = chunk.position.y + chunk_definition.terrain_decorator_height;
+	%DirectionHintPlane.position.y = chunk.position.y + chunk_definition.terrain_accessible_height + 0.5;
 	
 	# Init object list
 	%ObjectSubmenu.visible = false;
@@ -117,8 +116,7 @@ func _ready() -> void:
 	%TabContainer.visible = false;
 	%QuickMenu.visible = false;
 	%ObjectSubmenu.visible = false;
-	%BoidHeightPlane.visible = false;
-	%DecorHeightPlane.visible = false;
+	#%GraphicPlanes.visible = false;
 
 func _process( delta: float ) -> void:
 	
@@ -143,6 +141,20 @@ func _pause_chunk() -> void:
 		chunk.process_mode = ProcessMode.PROCESS_MODE_ALWAYS;
 	else:
 		chunk.process_mode = ProcessMode.PROCESS_MODE_DISABLED;
+
+
+
+func _set_direction_hint_ZP() -> void:
+	%DirectionHintPlane.rotation.y = 0;
+
+func _set_direction_hint_ZN() -> void:
+	%DirectionHintPlane.rotation.y = PI;
+
+func _set_direction_hint_XP() -> void:
+	%DirectionHintPlane.rotation.y = -PI/2;
+
+func _set_direction_hint_XN() -> void:
+	%DirectionHintPlane.rotation.y = PI/2;
 
 
 

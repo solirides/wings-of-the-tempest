@@ -31,6 +31,13 @@ albedo_color = Color(1, 0, 0, 0.039215688)
 transparency = 1
 albedo_color = Color(0, 1, 0, 0.039215688)
 
+[sub_resource type="PrismMesh" id="PrismMesh_flb18"]
+size = Vector3(1, 1, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eeqaq"]
+transparency = 1
+albedo_color = Color(0, 0, 1, 0.19607843)
+
 [node name="ChunkEditor" type="Node3D" unique_id=2124110090]
 script = ExtResource("1_s4lti")
 metadata/_custom_type_script = "uid://cq3qfl0iporfv"
@@ -526,6 +533,29 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 2
 
+[node name="DirectionHint" type="HBoxContainer" parent="CanvasLayer/Control/QuickMenu/VBoxContainer" unique_id=1593865159]
+layout_mode = 2
+
+[node name="SetDirectionHintZ-" type="Button" parent="CanvasLayer/Control/QuickMenu/VBoxContainer/DirectionHint" unique_id=141520434]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Z-"
+
+[node name="SetDirectionHintZ+" type="Button" parent="CanvasLayer/Control/QuickMenu/VBoxContainer/DirectionHint" unique_id=2071743446]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Z+"
+
+[node name="SetDirectionHintX-" type="Button" parent="CanvasLayer/Control/QuickMenu/VBoxContainer/DirectionHint" unique_id=1731919051]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "X-"
+
+[node name="SetDirectionHintX+" type="Button" parent="CanvasLayer/Control/QuickMenu/VBoxContainer/DirectionHint" unique_id=941175199]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "X+"
+
 [node name="PauseButton" type="Button" parent="CanvasLayer/Control/QuickMenu/VBoxContainer" unique_id=402257011]
 layout_mode = 2
 text = "Pause / Resume"
@@ -545,15 +575,24 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 0, 0)
 fov = 60.0
 
-[node name="BoidHeightPlane" type="MeshInstance3D" parent="." unique_id=98117690]
+[node name="GraphicPlanes" type="Node3D" parent="." unique_id=101917172]
+unique_name_in_owner = true
+
+[node name="BoidHeightPlane" type="MeshInstance3D" parent="GraphicPlanes" unique_id=98117690]
 unique_name_in_owner = true
 mesh = SubResource("PlaneMesh_37psj")
 surface_material_override/0 = SubResource("StandardMaterial3D_vevjg")
 
-[node name="DecorHeightPlane" type="MeshInstance3D" parent="." unique_id=1955683286]
+[node name="DecorHeightPlane" type="MeshInstance3D" parent="GraphicPlanes" unique_id=1955683286]
 unique_name_in_owner = true
 mesh = SubResource("PlaneMesh_37psj")
 surface_material_override/0 = SubResource("StandardMaterial3D_f24rf")
+
+[node name="DirectionHintPlane" type="MeshInstance3D" parent="GraphicPlanes" unique_id=1710839496]
+unique_name_in_owner = true
+transform = Transform3D(-1, 8.742278e-08, 0, 3.821371e-15, 4.371139e-08, -1, -8.742278e-08, -1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("PrismMesh_flb18")
+surface_material_override/0 = SubResource("StandardMaterial3D_eeqaq")
 
 [connection signal="valid_input_submitted" from="CanvasLayer/Control/Bar/TabContainer/Library/ChunkVals/LibSizeInput" to="." method="_library_size_submitted"]
 [connection signal="valid_input_submitted" from="CanvasLayer/Control/Bar/TabContainer/Library/ChunkVals/LibScaleInput" to="." method="_library_scale_submitted"]
@@ -576,5 +615,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_f24rf")
 [connection signal="pressed" from="CanvasLayer/Control/Bar/FileSelect/NewLibButton" to="." method="_new_library"]
 [connection signal="object_deleted" from="CanvasLayer/Control/ObjectSubmenu" to="." method="_chunk_object_erased"]
 [connection signal="object_modified" from="CanvasLayer/Control/ObjectSubmenu" to="." method="_chunk_object_updated"]
+[connection signal="pressed" from="CanvasLayer/Control/QuickMenu/VBoxContainer/DirectionHint/SetDirectionHintZ-" to="." method="_set_direction_hint_ZN"]
+[connection signal="pressed" from="CanvasLayer/Control/QuickMenu/VBoxContainer/DirectionHint/SetDirectionHintZ+" to="." method="_set_direction_hint_ZP"]
+[connection signal="pressed" from="CanvasLayer/Control/QuickMenu/VBoxContainer/DirectionHint/SetDirectionHintX-" to="." method="_set_direction_hint_XN"]
+[connection signal="pressed" from="CanvasLayer/Control/QuickMenu/VBoxContainer/DirectionHint/SetDirectionHintX+" to="." method="_set_direction_hint_XP"]
 [connection signal="pressed" from="CanvasLayer/Control/QuickMenu/VBoxContainer/PauseButton" to="." method="_pause_chunk"]
 [connection signal="pressed" from="CanvasLayer/Control/QuickMenu/VBoxContainer/ResetButton" to="." method="set_chunk"]
