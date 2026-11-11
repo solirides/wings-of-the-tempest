@@ -109,6 +109,7 @@ texture_under = ExtResource("2_sunxf")
 texture_progress = ExtResource("3_v6k41")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Bars" unique_id=673885322]
+visible = false
 layout_mode = 2
 
 [node name="NinePatchRect" type="NinePatchRect" parent="Bars/HBoxContainer2" unique_id=1794107377]
