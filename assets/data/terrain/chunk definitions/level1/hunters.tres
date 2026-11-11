@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="ChunkDefinition" format=3]
+[gd_resource type="Resource" script_class="ChunkDefinition" format=3 uid="uid://cidh14pdwosxt"]
 
-[ext_resource type="Script" path="res://modules/terrain/generator/chunk_object_data.gd" id="1_furmu"]
-[ext_resource type="Resource" path="res://assets/data/terrain/objects/tree_cluster_large.tres" id="2_gidat"]
-[ext_resource type="Resource" path="res://assets/data/terrain/objects/hunter.tres" id="3_dqkq4"]
-[ext_resource type="Script" path="res://modules/terrain/generator/chunk_definition.gd" id="4_8enc6"]
-[ext_resource type="Resource" path="res://assets/data/terrain/objects/tree_cluster_medium.tres" id="4_gidat"]
-[ext_resource type="Script" path="res://modules/terrain/generator/chunk_terrain_object.gd" id="5_th262"]
+[ext_resource type="Script" uid="uid://bh87rke3owanb" path="res://modules/terrain/generator/chunk_object_data.gd" id="1_furmu"]
+[ext_resource type="Resource" uid="uid://cugras5u8c2ht" path="res://assets/data/terrain/objects/tree_cluster_large.tres" id="2_gidat"]
+[ext_resource type="Resource" uid="uid://c7rxv5uhw0cm1" path="res://assets/data/terrain/objects/hunter.tres" id="3_dqkq4"]
+[ext_resource type="Script" uid="uid://cks7psb1tg0ob" path="res://modules/terrain/generator/chunk_definition.gd" id="4_8enc6"]
+[ext_resource type="Resource" uid="uid://sitgty6pf62p" path="res://assets/data/terrain/objects/tree_cluster_medium.tres" id="4_gidat"]
+[ext_resource type="Script" uid="uid://hn4a0fyr272r" path="res://modules/terrain/generator/chunk_terrain_object.gd" id="5_th262"]
 
 [sub_resource type="Resource" id="Resource_8ttwu"]
 script = ExtResource("1_furmu")
