@@ -249,6 +249,7 @@ func _chunk_object_updated( object_data: ChunkObjectData ) -> void:
 
 func _chunk_object_erased( object_data: ChunkObjectData ) -> void:
 	chunk_definition.objects.erase( object_data );
+	set_chunk();
 
 func _chunk_object_add() -> void:
 	if %ObjInput.is_input_valid():

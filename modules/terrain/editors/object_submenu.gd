@@ -14,7 +14,6 @@ func create( object_data: ChunkObjectData ) -> void:
 
 func _deleted() -> void:
 	object_deleted.emit( object_data );
-	object_modified.emit( object_data );
 	visible = false;
 
 
@@ -26,5 +25,5 @@ func _position_submitted( value: float, index: int ) -> void:
 func _spawn_chance_changed( value: float ) -> void:
 	%SpawnChanceLabel.text = "Spawn Chance: %d%%" % ( 100 * value );
 
-func _spawn_chance_submitted( value: float ) -> void:
-	object_data.spawn_chance = value;
+func _spawn_chance_submitted( _is_changed: bool ) -> void:
+	object_data.spawn_chance = %SpawnChanceInput.value;
