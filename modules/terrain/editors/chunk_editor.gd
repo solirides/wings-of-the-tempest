@@ -39,7 +39,7 @@ func set_chunk() -> void:
 	chunk.position = chunk_library.get_chunk_global_size() * Vector3( -0.5, 0, -0.5 );
 	add_child( chunk );
 	chunk.set_terrain_material( chunk_library.terrain_material );
-	chunk.create( chunk_definition, ChunkGenState.new( terrain_seed, chunk_library.terrain_sampler ), false );
+	chunk.create( chunk_definition, ChunkGenState.new( terrain_seed, chunk_library.terrain_sampler ), true );
 	
 	# Freeze chunk
 	chunk.process_mode = Node.PROCESS_MODE_DISABLED;
@@ -81,6 +81,9 @@ func populate_editor_values() -> void:
 	%ChunkScaleInput.set_input( [ chunk_definition.get_scale()[0], chunk_definition.get_scale()[1], chunk_definition.get_scale()[2] ] );
 	%ChunkHDecorInput.set_input( [ chunk_definition.terrain_decorator_height ] );
 	%ChunkHBoidInput.set_input( [ chunk_definition.terrain_accessible_height ] );
+	
+	%AllowMirrorXInput.set_pressed_no_signal( chunk_definition.can_mirror_x );
+	%AllowMirrorZInput.set_pressed_no_signal( chunk_definition.can_mirror_z );
 	
 	# Lib vals
 	%LibSizeInput.set_input( [ chunk_library.terrain_size[0], chunk_library.terrain_size[1], chunk_library.terrain_size[2] ] );
@@ -126,7 +129,7 @@ func _process( delta: float ) -> void:
 	# Point to selected object
 	if %ObjectSubmenu.object_data:
 		var object_data = %ObjectSubmenu.object_data;
-		var object_position = chunk.global_position + Vector3( object_data.position.x, chunk.get_height_of_object( object_data ), object_data.position.y );
+		var object_position = chunk.global_position + chunk.get_position_of_object( object_data, false, false );
 		var screen_position = %Camera.unproject_position( object_position );
 		%ObjectPointer.set_point_position( 0, screen_position - %ObjectPointer.get_parent().global_position );
 		%ObjectPointer.visible = not %Camera.is_position_behind( object_position );
@@ -242,6 +245,12 @@ func _set_size_from_library() -> void:
 	set_chunk();
 
 
+
+func _chunk_allow_mirror_x_submitted( state: bool ) -> void:
+	chunk_definition.can_mirror_x = state;
+
+func _chunk_allow_mirror_z_submitted( state: bool ) -> void:
+	chunk_definition.can_mirror_z = state;
 
 func _chunk_object_updated( object_data: ChunkObjectData ) -> void:
 	set_chunk();

@@ -317,6 +317,44 @@ offset_top = 252.0
 offset_bottom = 256.0
 grow_horizontal = 2
 
+[node name="Label" type="Label" parent="CanvasLayer/Control/Bar/TabContainer/Chunk" unique_id=128825237]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 10.0
+offset_top = 270.0
+offset_right = -230.0
+offset_bottom = 293.0
+grow_horizontal = 2
+text = "Allow Mirror X"
+
+[node name="AllowMirrorXInput" type="CheckBox" parent="CanvasLayer/Control/Bar/TabContainer/Chunk" unique_id=1612013713]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 130.0
+offset_top = 270.0
+offset_right = 154.0
+offset_bottom = 294.0
+
+[node name="Label2" type="Label" parent="CanvasLayer/Control/Bar/TabContainer/Chunk" unique_id=1132801479]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 10.0
+offset_top = 300.0
+offset_right = -230.0
+offset_bottom = 323.0
+grow_horizontal = 2
+text = "Allow Mirror Z"
+
+[node name="AllowMirrorZInput" type="CheckBox" parent="CanvasLayer/Control/Bar/TabContainer/Chunk" unique_id=58050194]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 130.0
+offset_top = 300.0
+offset_right = 154.0
+offset_bottom = 324.0
+
 [node name="Objects" type="Control" parent="CanvasLayer/Control/Bar/TabContainer" unique_id=804191783]
 visible = false
 layout_mode = 2
@@ -600,6 +638,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_eeqaq")
 [connection signal="valid_input_submitted" from="CanvasLayer/Control/Bar/TabContainer/Chunk/ChunkVals/ChunkHDecorInput" to="." method="_chunk_decor_height_submitted"]
 [connection signal="valid_input_submitted" from="CanvasLayer/Control/Bar/TabContainer/Chunk/ChunkVals/ChunkHBoidInput" to="." method="_chunk_boid_height_submitted"]
 [connection signal="pressed" from="CanvasLayer/Control/Bar/TabContainer/Chunk/ChunkVals/MatchLibraryButton" to="." method="_set_size_from_library"]
+[connection signal="toggled" from="CanvasLayer/Control/Bar/TabContainer/Chunk/AllowMirrorXInput" to="." method="_chunk_allow_mirror_x_submitted"]
+[connection signal="toggled" from="CanvasLayer/Control/Bar/TabContainer/Chunk/AllowMirrorZInput" to="." method="_chunk_allow_mirror_z_submitted"]
 [connection signal="pressed" from="CanvasLayer/Control/Bar/TabContainer/Objects/AddObjButton" to="." method="_chunk_object_add"]
 [connection signal="chosen" from="CanvasLayer/Control/Bar/FileSelect/ChunkDefInput" to="." method="_chunk_def_chosen"]
 [connection signal="updated" from="CanvasLayer/Control/Bar/FileSelect/ChunkDefInput" to="." method="_chunk_def_updated"]

@@ -126,37 +126,70 @@ func create_heightmap_mesh( this_heightmap: Array3D, resolution: float ) -> void
 	heightmap_mesh_instance.set_deferred( "mesh", mesh );
 
 ## Create objects for this chunk based on a list of objects and vectors
-func create_objects( objects: Array[ ChunkObjectData ], state: ChunkGenState, do_random: bool ) -> void:
+func create_objects( objects: Array[ ChunkObjectData ], mirror_x: bool, mirror_z: bool ) -> void:
 	
 	for object_data: ChunkObjectData in objects:
+		
+		# If no scene provided, skip
 		if not object_data.object:
 			continue;
-		if do_random and state.get_seeded_float() > object_data.spawn_chance:
-			continue;
+		
+		# Instantiate scene
 		var object_node: Node3D = object_data.object.scene.instantiate();
+		
+		# Overwrite any specified properties of the scene
 		for property in object_data.object.property_overrides.keys():
 			object_node.set( property, object_data.object.property_overrides[ property ] );
-		object_node.position = Vector3( object_data.position.x, get_height_of_object( object_data ), object_data.position.y );
+		
+		# Set scene position
+		object_node.position = get_position_of_object( object_data, mirror_x, mirror_z );
+		
+		# Add to chunk
 		add_child( object_node );
 
-## Get the height at which the object would be placed on this chunk
-func get_height_of_object( object_data: ChunkObjectData ) -> float:
+## Randomly exclude some objects based on their spawn chance
+func randomize_objects( objects: Array[ ChunkObjectData ], state: ChunkGenState ) -> Array[ ChunkObjectData ]:
+	return objects.filter( func( object_data ): return state.get_seeded_float() <= object_data.spawn_chance );
+
+## Get the position at which the object would be placed on this chunk
+func get_position_of_object( object_data: ChunkObjectData, mirror_x: bool, mirror_z: bool ) -> Vector3:
 	
+	# Initial coords
+	var object_pos: = object_data.position;
+	
+	# Flip x axis if necessary
+	if mirror_x:
+		object_pos.x = get_global_size().x - object_pos.x;
+	
+	# Flip z axis if necessary
+	if mirror_z:
+		object_pos.y = get_global_size().z - object_pos.y;
+	
+	# Initial height
 	var height: float = object_data.object.height_offset;
+	
+	# Snap offset
 	if object_data.object.height_mode == ChunkObject.HeightMode.SNAP and contains_coordinates( object_data.position ):
-		height += get_height( heightmap_terrain, Vector2( object_data.position.x, object_data.position.y ) );
+		height += get_height( heightmap_terrain, object_pos );
+	
+	# Boid offset
 	if object_data.object.height_mode == ChunkObject.HeightMode.ACCESSIBLE:
 		height += boid_height;
-	return height;
+	
+	# Construct position
+	return Vector3( object_pos.x, height, object_pos.y );
 
 
 
 
-func create( definition: ChunkDefinition, state: ChunkGenState, do_random_spawning: bool = true ) -> void:
+func create( definition: ChunkDefinition, state: ChunkGenState, consistency_mode: bool = false ) -> void:
 	
 	terrain_size = definition.terrain_size;
 	terrain_scale = definition.terrain_scale;
 	boid_height = definition.terrain_accessible_height;
+	
+	var mirror_x = not consistency_mode and definition.can_mirror_x and state.get_seeded_int() % 2;
+	var mirror_z = not consistency_mode and definition.can_mirror_z and state.get_seeded_int() % 2;
 	
 	# Generate chunk using data from definition
 	var terrain_data: = Array3D.packedFloat32( definition.terrain_size + Vector3i.ONE );
@@ -165,10 +198,13 @@ func create( definition: ChunkDefinition, state: ChunkGenState, do_random_spawni
 	definition.create_terrain_surface( terrain_data, state.chunk_sampler, position );
 	definition.create_terrain_objects( terrain_data );
 	
-	# Create heightmaps and objects
+	# Create heightmaps
 	heightmap_accessibility = create_heightmap( terrain_data, definition.terrain_accessible_height );
 	heightmap_terrain = create_heightmap( terrain_data, definition.terrain_size.y );
-	create_objects( definition.get_objects(), state, do_random_spawning );
+	
+	# Create objects
+	var objects: = definition.get_objects();
+	create_objects( objects if consistency_mode else randomize_objects( objects, state ), mirror_x, mirror_z );
 	
 	# Create mesh
 	create_terrain_mesh( terrain_data );

@@ -8,6 +8,9 @@ class_name ChunkDefinition
 @export var objects: Array[ ChunkObjectData ];
 @export var terrain_objects: Dictionary[ ChunkTerrainObject, Vector2i ];
 
+@export var can_mirror_x: bool = false;
+@export var can_mirror_z: bool = false;
+
 func create_terrain_surface( scalar_field: Array3D, sampler: ChunkTerrainSampler, chunk_position: Vector3 ) -> void:
 	
 	var group: = WorkerThreadPool.add_group_task( create_terrain_surface_at_voxel.bind( scalar_field, sampler, chunk_position ), scalar_field.get_length(), -1, false, "Chunk Generation thread" );
