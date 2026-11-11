@@ -516,6 +516,7 @@ offset_right = -10.0
 offset_bottom = -155.0
 grow_horizontal = 0
 grow_vertical = 2
+disabled = true
 text = "Save"
 
 [node name="NewLibButton" type="Button" parent="CanvasLayer/Control/Bar/FileSelect" unique_id=886834034]
@@ -531,6 +532,7 @@ offset_right = -100.0
 offset_bottom = -155.0
 grow_horizontal = 0
 grow_vertical = 2
+disabled = true
 text = "New"
 
 [node name="ObjectSubmenu" parent="CanvasLayer/Control" unique_id=1307613531 instance=ExtResource("3_ia0ay")]
