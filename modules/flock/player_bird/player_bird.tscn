@@ -27,6 +27,9 @@ albedo_color = Color(1, 0.35000002, 0.35000002, 1)
 
 [node name="PlayerBird" type="RigidBody3D" unique_id=1004426464 groups=["boids"]]
 axis_lock_linear_y = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
 script = ExtResource("1_25rpd")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=801781277]
