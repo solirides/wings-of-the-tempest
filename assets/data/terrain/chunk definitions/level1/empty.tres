@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ChunkDefinition" format=3 uid="uid://b70hwwrtoug0r"]
+[gd_resource type="Resource" script_class="ChunkDefinition" format=3 uid="uid://tj46hb2yjhw3"]
 
 [ext_resource type="Script" uid="uid://bh87rke3owanb" path="res://modules/terrain/generator/chunk_object_data.gd" id="1_88b74"]
 [ext_resource type="Resource" uid="uid://cugras5u8c2ht" path="res://assets/data/terrain/objects/tree_cluster_large.tres" id="3_55cya"]

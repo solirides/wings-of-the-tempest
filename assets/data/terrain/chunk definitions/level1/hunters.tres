@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="ChunkDefinition" format=3 uid="uid://tr802s0u8t3g"]
+
+[ext_resource type="Script" uid="uid://bh87rke3owanb" path="res://modules/terrain/generator/chunk_object_data.gd" id="1_furmu"]
+[ext_resource type="Resource" uid="uid://cugras5u8c2ht" path="res://assets/data/terrain/objects/tree_cluster_large.tres" id="2_gidat"]
+[ext_resource type="Resource" uid="uid://c7rxv5uhw0cm1" path="res://assets/data/terrain/objects/hunter.tres" id="3_dqkq4"]
+[ext_resource type="Script" uid="uid://cks7psb1tg0ob" path="res://modules/terrain/generator/chunk_definition.gd" id="4_8enc6"]
+[ext_resource type="Script" uid="uid://hn4a0fyr272r" path="res://modules/terrain/generator/chunk_terrain_object.gd" id="5_th262"]
+
+[sub_resource type="Resource" id="Resource_8ttwu"]
+script = ExtResource("1_furmu")
+object = ExtResource("2_gidat")
+position = Vector2(4, 16)
+
+[sub_resource type="Resource" id="Resource_q8bi7"]
+script = ExtResource("1_furmu")
+object = ExtResource("2_gidat")
+position = Vector2(-8, 48)
+
+[sub_resource type="Resource" id="Resource_gdvw2"]
+script = ExtResource("1_furmu")
+object = ExtResource("2_gidat")
+position = Vector2(72, 16)
+
+[sub_resource type="Resource" id="Resource_rv53s"]
+script = ExtResource("1_furmu")
+object = ExtResource("2_gidat")
+position = Vector2(60, 48)
+
+[sub_resource type="Resource" id="Resource_wa0ji"]
+script = ExtResource("1_furmu")
+object = ExtResource("3_dqkq4")
+position = Vector2(40, 16)
+spawn_chance = 0.5
+
+[sub_resource type="Resource" id="Resource_4xv68"]
+script = ExtResource("1_furmu")
+object = ExtResource("3_dqkq4")
+position = Vector2(24, 48)
+
+[resource]
+script = ExtResource("4_8enc6")
+terrain_size = Vector3i(16, 16, 16)
+terrain_scale = Vector3(4, 1, 4)
+terrain_decorator_height = 6
+terrain_accessible_height = 8
+objects = Array[ExtResource("1_furmu")]([SubResource("Resource_8ttwu"), SubResource("Resource_q8bi7"), SubResource("Resource_gdvw2"), SubResource("Resource_rv53s"), SubResource("Resource_wa0ji"), SubResource("Resource_4xv68")])

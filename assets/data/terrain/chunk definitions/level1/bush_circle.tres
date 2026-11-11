@@ -1,0 +1,89 @@
+[gd_resource type="Resource" script_class="ChunkDefinition" format=3 uid="uid://bw7p2fplepmg6"]
+
+[ext_resource type="Script" uid="uid://bh87rke3owanb" path="res://modules/terrain/generator/chunk_object_data.gd" id="1_cmrpb"]
+[ext_resource type="Resource" uid="uid://cugras5u8c2ht" path="res://assets/data/terrain/objects/tree_cluster_large.tres" id="2_kkdwr"]
+[ext_resource type="Resource" uid="uid://sitgty6pf62p" path="res://assets/data/terrain/objects/tree_cluster_medium.tres" id="3_f8eyw"]
+[ext_resource type="Resource" uid="uid://bm7udob8ckxjt" path="res://assets/data/terrain/objects/berry_bush.tres" id="4_61eec"]
+[ext_resource type="Script" uid="uid://cks7psb1tg0ob" path="res://modules/terrain/generator/chunk_definition.gd" id="5_awkx2"]
+[ext_resource type="Script" uid="uid://hn4a0fyr272r" path="res://modules/terrain/generator/chunk_terrain_object.gd" id="6_1i062"]
+
+[sub_resource type="Resource" id="Resource_8ttwu"]
+script = ExtResource("1_cmrpb")
+object = ExtResource("2_kkdwr")
+position = Vector2(-12, 16)
+
+[sub_resource type="Resource" id="Resource_q8bi7"]
+script = ExtResource("1_cmrpb")
+object = ExtResource("2_kkdwr")
+position = Vector2(-12, 48)
+
+[sub_resource type="Resource" id="Resource_gdvw2"]
+script = ExtResource("1_cmrpb")
+object = ExtResource("2_kkdwr")
+position = Vector2(76, 16)
+
+[sub_resource type="Resource" id="Resource_rv53s"]
+script = ExtResource("1_cmrpb")
+object = ExtResource("2_kkdwr")
+position = Vector2(76, 48)
+
+[sub_resource type="Resource" id="Resource_yubcy"]
+script = ExtResource("1_cmrpb")
+object = ExtResource("3_f8eyw")
+position = Vector2(32, 32)
+
+[sub_resource type="Resource" id="Resource_xdlst"]
+script = ExtResource("1_cmrpb")
+object = ExtResource("4_61eec")
+position = Vector2(14.5, 34)
+spawn_chance = 0.35
+
+[sub_resource type="Resource" id="Resource_n4sf4"]
+script = ExtResource("1_cmrpb")
+object = ExtResource("4_61eec")
+position = Vector2(12, 15)
+spawn_chance = 0.35
+
+[sub_resource type="Resource" id="Resource_bl4bu"]
+script = ExtResource("1_cmrpb")
+object = ExtResource("4_61eec")
+position = Vector2(17.8, 26)
+spawn_chance = 0.35
+
+[sub_resource type="Resource" id="Resource_dq5c7"]
+script = ExtResource("1_cmrpb")
+object = ExtResource("4_61eec")
+position = Vector2(19, 45)
+spawn_chance = 0.35
+
+[sub_resource type="Resource" id="Resource_a4lf8"]
+script = ExtResource("1_cmrpb")
+object = ExtResource("4_61eec")
+position = Vector2(45, 20)
+spawn_chance = 0.35
+
+[sub_resource type="Resource" id="Resource_i80uy"]
+script = ExtResource("1_cmrpb")
+object = ExtResource("4_61eec")
+position = Vector2(45, 40)
+spawn_chance = 0.35
+
+[sub_resource type="Resource" id="Resource_gj7g6"]
+script = ExtResource("1_cmrpb")
+object = ExtResource("4_61eec")
+position = Vector2(30, 53)
+spawn_chance = 0.35
+
+[sub_resource type="Resource" id="Resource_t01qq"]
+script = ExtResource("1_cmrpb")
+object = ExtResource("4_61eec")
+position = Vector2(50, 36)
+spawn_chance = 0.35
+
+[resource]
+script = ExtResource("5_awkx2")
+terrain_size = Vector3i(16, 16, 16)
+terrain_scale = Vector3(4, 1, 4)
+terrain_decorator_height = 6
+terrain_accessible_height = 8
+objects = Array[ExtResource("1_cmrpb")]([SubResource("Resource_8ttwu"), SubResource("Resource_q8bi7"), SubResource("Resource_gdvw2"), SubResource("Resource_rv53s"), SubResource("Resource_yubcy"), SubResource("Resource_xdlst"), SubResource("Resource_n4sf4"), SubResource("Resource_bl4bu"), SubResource("Resource_dq5c7"), SubResource("Resource_a4lf8"), SubResource("Resource_i80uy"), SubResource("Resource_gj7g6"), SubResource("Resource_t01qq")])
