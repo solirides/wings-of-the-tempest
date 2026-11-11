@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ChunkLibrary" format=3 uid="uid://bf47rhejytpg7"]
+[gd_resource type="Resource" script_class="ChunkLibrary" format=3 uid="uid://mlgjjc1jn4gr"]
 
 [ext_resource type="Script" uid="uid://c2fvqmbrch2q0" path="res://modules/terrain/generator/chunk_library.gd" id="1_7gi83"]
 [ext_resource type="Script" uid="uid://xavbwey3mu0d" path="res://modules/terrain/decision tree/chunk_dec_tree.gd" id="1_so3pr"]
@@ -12,8 +12,9 @@
 [ext_resource type="Script" uid="uid://bs34yubkm0w8i" path="res://modules/terrain/decision tree/chunk_dec_tree_if_periodic.gd" id="6_jtd2x"]
 [ext_resource type="Resource" uid="uid://bw7p2fplepmg6" path="res://assets/data/terrain/chunk definitions/level1/bush_circle.tres" id="7_q578r"]
 [ext_resource type="Script" uid="uid://q24m030qxhax" path="res://modules/terrain/decision tree/chunk_dec_tree_group_random.gd" id="8_1ajgl"]
-[ext_resource type="Resource" uid="uid://cp4qvb1tnnfls" path="res://assets/data/terrain/chunk definitions/level1/hunters.tres" id="9_42qex"]
-[ext_resource type="Resource" path="res://assets/data/terrain/chunk definitions/level1/spotty_trees.tres" id="10_1ajgl"]
+[ext_resource type="Resource" uid="uid://cidh14pdwosxt" path="res://assets/data/terrain/chunk definitions/level1/hunters.tres" id="9_42qex"]
+[ext_resource type="Resource" uid="uid://30g7cjpbh4l2" path="res://assets/data/terrain/chunk definitions/level1/spotty_trees.tres" id="10_1ajgl"]
+[ext_resource type="Resource" path="res://assets/data/terrain/chunk definitions/level1/scatter.tres" id="11_42qex"]
 
 [sub_resource type="Resource" id="Resource_f24rf"]
 script = ExtResource("4_jtd2x")
@@ -63,9 +64,13 @@ chunk = ExtResource("9_42qex")
 script = ExtResource("4_jtd2x")
 chunk = ExtResource("10_1ajgl")
 
+[sub_resource type="Resource" id="Resource_x8u01"]
+script = ExtResource("4_jtd2x")
+chunk = ExtResource("11_42qex")
+
 [sub_resource type="Resource" id="Resource_kkjly"]
 script = ExtResource("8_1ajgl")
-children = Array[ExtResource("1_so3pr")]([SubResource("Resource_a7go1"), SubResource("Resource_g8elg"), SubResource("Resource_3pco3")])
+children = Array[ExtResource("1_so3pr")]([SubResource("Resource_a7go1"), SubResource("Resource_g8elg"), SubResource("Resource_3pco3"), SubResource("Resource_x8u01")])
 metadata/_custom_type_script = "uid://q24m030qxhax"
 
 [sub_resource type="Resource" id="Resource_otp6g"]
