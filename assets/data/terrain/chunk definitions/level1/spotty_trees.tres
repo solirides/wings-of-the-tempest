@@ -64,3 +64,5 @@ terrain_scale = Vector3(4, 1, 4)
 terrain_decorator_height = 6
 terrain_accessible_height = 8
 objects = Array[ExtResource("1_q2xb2")]([SubResource("Resource_8ttwu"), SubResource("Resource_q8bi7"), SubResource("Resource_gdvw2"), SubResource("Resource_rv53s"), SubResource("Resource_h35pt"), SubResource("Resource_a37xy"), SubResource("Resource_wykt2"), SubResource("Resource_xbptk"), SubResource("Resource_4a2qr")])
+can_mirror_x = true
+can_mirror_z = true
