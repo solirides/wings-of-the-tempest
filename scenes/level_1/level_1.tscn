@@ -220,7 +220,7 @@ metadata/_custom_type_script = "uid://dix41rhkmpueh"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, -8, 0)
 script = ExtResource("20_r87tm")
 tracked_node = NodePath("../Camera")
-tracking_buffer = 256.0
+tracking_buffer = 192.0
 library = ExtResource("5_0lhw3")
 direction = Vector3(0, 0, -1)
 metadata/_custom_type_script = "uid://bt145qipdjfhd"
@@ -239,5 +239,6 @@ camera_controller = NodePath("../../Camera")
 [node name="Camera" parent="." unique_id=1488927985 instance=ExtResource("1_7n1yb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 4.999996, 4, -1.0000019)
 min_zoom = 1.0
+max_zoom = 30.0
 
 [editable path="Flock"]

@@ -10,6 +10,8 @@ class_name ChunkGenerator
 		tracked_node = value;
 @export var tracking_buffer: float;
 
+@export var max_chunks: int = 6;
+
 @export var library: ChunkLibrary;
 @export var direction: Vector3;
 
@@ -37,6 +39,10 @@ func create_chunk( state: ChunkGenState ) -> void:
 	
 	# Increment state ASAP
 	state._increment();
+	
+	# Remove old chunks
+	if Chunk.all.size() > max_chunks:
+		Chunk.all.pop_front().queue_free();
 
 
 
