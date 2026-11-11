@@ -238,6 +238,8 @@ camera_controller = NodePath("../../Camera")
 
 [node name="Camera" parent="." unique_id=1488927985 instance=ExtResource("1_7n1yb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 4.999996, 4, -1.0000019)
+edge_margin = 100.0
+cam_speed = 25.0
 min_zoom = 1.0
 max_zoom = 30.0
 
