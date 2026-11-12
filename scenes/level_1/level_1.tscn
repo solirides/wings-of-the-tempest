@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://p7nyl4088ndh" path="res://modules/flock/flock.tscn" id="2_jr17i"]
 [ext_resource type="Resource" uid="uid://mlgjjc1jn4gr" path="res://assets/data/terrain/chunk libaries/level_1.tres" id="5_0lhw3"]
 [ext_resource type="PackedScene" uid="uid://geh1ds7gqhgf" path="res://modules/hud/hud.tscn" id="7_fxajv"]
-[ext_resource type="PackedScene" uid="uid://crms1f7sqr0a1" path="res://modules/objects/goal/goal.tscn" id="12_do3hi"]
 [ext_resource type="PackedScene" uid="uid://dan4yb6n1bkxe" path="res://scenes/storm/storm.tscn" id="19_c2dwa"]
 [ext_resource type="Script" uid="uid://bftxduhaltc0m" path="res://modules/global/stat_modifier.gd" id="20_06ebd"]
 [ext_resource type="Script" uid="uid://bt145qipdjfhd" path="res://modules/terrain/generator/chunk_generator.gd" id="20_r87tm"]
@@ -241,12 +240,9 @@ camera_controller = NodePath("../../Camera")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 4.999996, 4, -1.0000019)
 edge_margin = 100.0
 cam_speed = 25.0
+cam_zoom = 20.0
 min_zoom = 1.0
 max_zoom = 30.0
-
-[node name="Goal" parent="." unique_id=1598089339 instance=ExtResource("12_do3hi")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -625)
-collision_mask = 16
 
 [node name="TutorialPrompts" type="Node3D" parent="." unique_id=2000486383]
 
@@ -287,6 +283,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -109.70211)
 billboard = 1
 text = "Tap left click:
 scatter the flock"
+font_size = 200
+outline_size = 40
+
+[node name="Zoom" type="Label3D" parent="TutorialPrompts" unique_id=1201826041]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -169.702)
+billboard = 1
+text = "'[' and ']' or scroll wheel:
+zoom camera"
 font_size = 200
 outline_size = 40
 
