@@ -1,0 +1,72 @@
+[gd_resource type="Theme" format=3 uid="uid://b3yv5rd5ssq75"]
+
+[ext_resource type="FontFile" uid="uid://drsthoauf0pcs" path="res://assets/fonts/Overlock/Overlock-Bold.ttf" id="1_tf8oi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tf8oi"]
+bg_color = Color(0.2016, 0.25728, 0.48, 0.28235295)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.50980395, 0.59607846, 0.6784314, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hqjoi"]
+bg_color = Color(0.2016, 0.25728, 0.48, 0.28235295)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.50980395, 0.59607846, 0.6784314, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m72v5"]
+bg_color = Color(0.2016, 0.25728, 0.48, 0.28235295)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.8392157, 0.9254902, 0.9137255, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vw0k4"]
+bg_color = Color(0.2016, 0.25728, 0.48, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.5087868, 0.59737337, 0.6796086, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hcgci"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.83725613, 0.92666703, 0.9123395, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[resource]
+Button/font_sizes/font_size = 48
+Button/fonts/font = ExtResource("1_tf8oi")
+Button/styles/focus = SubResource("StyleBoxFlat_tf8oi")
+Button/styles/hover = SubResource("StyleBoxFlat_hqjoi")
+Button/styles/hover_pressed = SubResource("StyleBoxFlat_m72v5")
+Button/styles/normal = SubResource("StyleBoxFlat_vw0k4")
+Button/styles/pressed = SubResource("StyleBoxFlat_hcgci")

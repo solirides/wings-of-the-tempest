@@ -1,14 +1,15 @@
 extends Node
 
 @export var anim_player: AnimationPlayer
-@export var anim_speed: float
+@export var anim_speed: float = -1
 @export var anim_name: String
 @export var playing: bool
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	playing = true
-	anim_speed = randf_range(1.0, 1.8)
+	if anim_speed < 0:
+		anim_speed = randf_range(1.0, 1.8)
 	# look for AnimationPlayer on each boid
 	if anim_player == null:
 		var found := find_children("*", "AnimationPlayer", true, false)

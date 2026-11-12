@@ -88,3 +88,8 @@ func end_level() -> void:
 func start_scene_change(scene:String):
 	ResourceLoader.load_threaded_request(scene)
 	$TransitionScreen.await_scene_change(scene)
+
+func quit_game():
+	$TransitionScreen.fade_animation(true, 0.5)
+	await get_tree().create_timer(0.5).timeout
+	get_tree().quit()

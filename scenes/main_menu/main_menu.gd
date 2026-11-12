@@ -17,4 +17,6 @@ func _on_start_pressed() -> void:
 
 
 func _on_quit_pressed() -> void:
-	get_tree().quit()
+	Global.quit_game()
+	#get_tree().quit()
+	

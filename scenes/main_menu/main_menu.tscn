@@ -2,6 +2,97 @@
 
 [ext_resource type="Script" uid="uid://04gpso8shhdi" path="res://scenes/main_menu/main_menu.gd" id="1_fsom3"]
 [ext_resource type="Texture2D" uid="uid://bj3hijlfqx172" path="res://flock.png" id="2_0ebjn"]
+[ext_resource type="PackedScene" uid="uid://ccxxydkdic7wl" path="res://assets/models/bird_v_1_2.tscn" id="2_ob46e"]
+[ext_resource type="Script" uid="uid://du0obbdc11psj" path="res://scenes/main_menu/main_menu_camera.gd" id="2_uqeha"]
+[ext_resource type="PackedScene" uid="uid://bhhy738m44d75" path="res://modules/wind_trails/wind_trails.tscn" id="4_3ovsr"]
+[ext_resource type="Material" uid="uid://dlt7l1ak5marx" path="res://assets/materials/wind_trail_material.tres" id="5_5seab"]
+[ext_resource type="Theme" uid="uid://b3yv5rd5ssq75" path="res://assets/menu_theme.tres" id="5_wem23"]
+[ext_resource type="PackedScene" uid="uid://dp2pii0qjqgy2" path="res://modules/storm_wall/storm_wall_2.tscn" id="6_4xg86"]
+[ext_resource type="Material" uid="uid://bwk34dp17uyri" path="res://assets/materials/wind_impact_material.tres" id="7_x2yjq"]
+[ext_resource type="ArrayMesh" uid="uid://cjucgvg0qjxq4" path="res://assets/models/wind_impact_particle.obj" id="8_lqpn7"]
+[ext_resource type="PackedScene" uid="uid://bhdnwxr2ghucr" path="res://assets/models/crab.glb" id="9_qel0l"]
+[ext_resource type="PackedScene" uid="uid://llwk0a2c7qid" path="res://modules/monument/monument.tscn" id="10_rrgl4"]
+[ext_resource type="PackedScene" uid="uid://cb6ulg0b8sf8g" path="res://assets/models/hawk.glb" id="11_dn3lk"]
+[ext_resource type="Script" uid="uid://dj2e77eb1bmrp" path="res://scenes/main_menu/bobbing_animation.gd" id="12_4ujhu"]
+
+[sub_resource type="Environment" id="Environment_6lmcw"]
+background_mode = 1
+background_color = Color(0.7915715, 0.794513, 0.7560056, 1)
+glow_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.4690116, 0.566751, 0.6232158, 1)
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.01
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5seab"]
+emission_shape = 1
+emission_sphere_radius = 2.0
+inherit_velocity_ratio = 1.0
+spread = 15.0
+initial_velocity_min = 3.0
+initial_velocity_max = 7.0
+gravity = Vector3(0, 0, 0)
+turbulence_noise_scale = 5.0
+turbulence_noise_speed_random = 2.0
+turbulence_influence_min = 0.0
+turbulence_influence_max = 0.020000001
+
+[sub_resource type="Curve" id="Curve_gu2oc"]
+_data = [Vector2(0, 0), 0.0, 1.1385543, 0, 0, Vector2(0.63703704, 0.49397588), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.8332696, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_4xg86"]
+material = ExtResource("5_5seab")
+radius = 0.2
+sections = 6
+curve = SubResource("Curve_gu2oc")
+
+[sub_resource type="Curve" id="Curve_qel0l"]
+_data = [Vector2(0, 0.21764714), 0.0, 0.0, 0, 0, Vector2(0.5942029, 0.66470593), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ufnct"]
+texture_mode = 1
+curve = SubResource("Curve_qel0l")
+
+[sub_resource type="Gradient" id="Gradient_rrgl4"]
+offsets = PackedFloat32Array(0.025210084, 0.25210086, 0.84033614)
+colors = PackedColorArray(0.19546562, 0.40467104, 0.654092, 1, 0.5202958, 0.72045916, 0.854057, 1, 0.8460439, 0.84604394, 0.8460439, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_dipdn"]
+gradient = SubResource("Gradient_rrgl4")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_x2yjq"]
+particle_flag_rotate_y = true
+angle_min = -179.99998
+angle_max = 180.00002
+direction = Vector3(0, 1, 0)
+spread = 50.0
+initial_velocity_max = 5.0
+angular_velocity_min = 287.99997
+angular_velocity_max = 345.59998
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_dipdn")
+alpha_curve = SubResource("CurveTexture_ufnct")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dn3lk"]
+particle_flag_rotate_y = true
+angle_min = -179.99998
+angle_max = 180.00002
+direction = Vector3(0, 1, 0)
+spread = 50.0
+initial_velocity_max = 5.0
+angular_velocity_min = 287.99997
+angular_velocity_max = 345.59998
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_dipdn")
+alpha_curve = SubResource("CurveTexture_ufnct")
+
+[sub_resource type="Gradient" id="Gradient_uqeha"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6lmcw"]
+gradient = SubResource("Gradient_uqeha")
 
 [node name="MainMenu" type="Control" unique_id=2135731621]
 layout_mode = 3
@@ -12,8 +103,131 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_fsom3")
 
+[node name="Node3D" type="Node3D" parent="." unique_id=1566467872]
+
+[node name="Camera3D" type="Camera3D" parent="Node3D" unique_id=2128534824]
+transform = Transform3D(0.91773856, -0.11943594, 0.37880206, 0, 0.9537169, 0.30070606, -0.39718503, -0.27596954, 0.87526274, 0.9, 0.80529785, 3.003)
+script = ExtResource("2_uqeha")
+rotation_speed = 0.1
+
+[node name="Bird" parent="Node3D" unique_id=790560813 instance=ExtResource("2_ob46e")]
+transform = Transform3D(0.99771243, 0.06760132, 0, -0.06760132, 0.99771243, 0, 0, 0, 1, 0, 0, 0.6896391)
+anim_speed = 0.2
+
+[node name="Bird2" parent="Node3D" unique_id=334278700 instance=ExtResource("2_ob46e")]
+transform = Transform3D(0.9756007, 0, 0.21955234, 0, 1, 0, -0.21955234, 0, 0.9756007, -0.9227269, 0.20341063, -0.6817243)
+anim_speed = 0.2
+
+[node name="Bird3" parent="Node3D" unique_id=334751612 instance=ExtResource("2_ob46e")]
+transform = Transform3D(0.97945905, -0.1676403, -0.112056725, 0.16655385, 0.98584825, -0.019054886, 0.11366529, 0, 0.99351907, 1, -0.15833306, -0.19276738)
+anim_speed = 0.2
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Node3D" unique_id=1742569048]
+environment = SubResource("Environment_6lmcw")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Node3D" unique_id=1346211613]
+transform = Transform3D(0.83093476, 0.47199872, -0.29455838, 0, 0.5294291, 0.8483542, 0.55636984, -0.704927, 0.43992102, -2.5389, 4.333976, 3.0983286)
+light_color = Color(0.9307337, 0.9024409, 0.85273504, 1)
+light_energy = 100.0
+light_size = 1.0
+shadow_enabled = true
+spot_range = 12.525179
+
+[node name="WindTrails" parent="Node3D" unique_id=1253582775 instance=ExtResource("4_3ovsr")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 10)
+amount = 6
+preprocess = 2.0
+speed_scale = 0.4
+visibility_aabb = AABB(-4, -4, -4, 22.695, 8, 8)
+trail_lifetime = 0.2
+process_material = SubResource("ParticleProcessMaterial_5seab")
+draw_pass_1 = SubResource("TubeTrailMesh_4xg86")
+
+[node name="GPUParticlesAttractorSphere3D" type="GPUParticlesAttractorSphere3D" parent="Node3D" unique_id=1497366073]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11)
+strength = 6.0
+radius = 30.0
+
+[node name="storm_wall_2" parent="Node3D" unique_id=479115584 instance=ExtResource("6_4xg86")]
+transform = Transform3D(-1.3113416e-07, 0, 3, 0, 3, 0, -3, 0, -1.3113416e-07, 0, 0, 0)
+visible = false
+
+[node name="WindImpact" type="GPUParticles3D" parent="Node3D" unique_id=582996742]
+transform = Transform3D(1, 0, 0, 0, 0.8095043, -0.58711404, 0, 0.58711404, 0.8095043, 0, -2, -2.6902897)
+material_override = ExtResource("7_x2yjq")
+cast_shadow = 0
+lifetime = 0.5
+speed_scale = 0.3
+fixed_fps = 120
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_x2yjq")
+draw_pass_1 = ExtResource("8_lqpn7")
+
+[node name="WindImpact2" type="GPUParticles3D" parent="Node3D" unique_id=434621782]
+transform = Transform3D(-0.26419723, -0.17632964, -0.2431207, 1.0945594e-08, 0.32380167, -0.23484564, 0.30033287, -0.15511394, -0.21386877, 3.6885123, 0.00315547, 0.98979187)
+visible = false
+material_override = ExtResource("7_x2yjq")
+cast_shadow = 0
+lifetime = 0.5
+speed_scale = 0.4
+fixed_fps = 120
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_dn3lk")
+draw_pass_1 = ExtResource("8_lqpn7")
+
+[node name="WindImpact3" type="GPUParticles3D" parent="Node3D" unique_id=554333031]
+transform = Transform3D(0.11160684, 0.44588447, -0.5279497, -0.13568853, 0.53852, 0.42612767, 0.6775931, 0.03439711, 0.17229125, -3.65027, -2.55409, 0.98979187)
+visible = false
+material_override = ExtResource("7_x2yjq")
+cast_shadow = 0
+lifetime = 0.5
+speed_scale = 0.2
+fixed_fps = 180
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_dn3lk")
+draw_pass_1 = ExtResource("8_lqpn7")
+
+[node name="WindImpact4" type="GPUParticles3D" parent="Node3D" unique_id=198940344]
+transform = Transform3D(0.78907126, 0.1256246, -0.039813366, -0.0853972, 0.67151564, 0.42634973, 0.10036917, -0.4162755, 0.67575216, -0.23403335, -1.831253, 4.931136)
+visible = false
+material_override = ExtResource("7_x2yjq")
+cast_shadow = 0
+lifetime = 0.5
+speed_scale = 0.1
+fixed_fps = 300
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_dn3lk")
+draw_pass_1 = ExtResource("8_lqpn7")
+
+[node name="WindImpact5" type="GPUParticles3D" parent="Node3D" unique_id=629380747]
+transform = Transform3D(1.7754102, 0.28265536, -0.089580104, -0.27743465, 1.7754679, 0.103652485, 0.10463586, -0.08842947, 1.794779, -0.23403335, -3.8912673, 2.1188536)
+visible = false
+material_override = ExtResource("7_x2yjq")
+cast_shadow = 0
+lifetime = 0.5
+speed_scale = 0.1
+fixed_fps = 500
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_dn3lk")
+draw_pass_1 = ExtResource("8_lqpn7")
+
+[node name="crab" parent="Node3D" unique_id=1566727593 instance=ExtResource("9_qel0l")]
+transform = Transform3D(-0.70710677, 0, 0.70710677, 0.12655926, 0.9838524, 0.12655926, -0.69568866, 0.17898183, -0.69568866, -3.26929, -1.2160499, 4.429919)
+script = ExtResource("12_4ujhu")
+amplitude = 0.6
+time_scale = 0.8
+
+[node name="Monument" parent="Node3D" unique_id=1299745215 instance=ExtResource("10_rrgl4")]
+transform = Transform3D(0.8247288, 0.156559, 0.5434259, -0.08011054, 0.9835693, -0.16178313, -0.55982566, 0.08989306, 0.8237199, 3.5267658, -1.473795, 3.6915307)
+
+[node name="hawk2" parent="Node3D" unique_id=2049691815 instance=ExtResource("11_dn3lk")]
+transform = Transform3D(2.5879934, 0.9748335, -1.162751, -1.057493, 2.8074381, 0, 1.0881171, 0.409867, 2.7655036, -0.35036087, -2.6042702, 5.9503036)
+script = ExtResource("12_4ujhu")
+amplitude = 1.3
+time_scale = 0.4
+
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1734297215]
-modulate = Color(0.27752772, 0.27752772, 0.27752772, 1)
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,31 +238,42 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_0ebjn")
 
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=580613902]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_6lmcw")
+
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1373126165]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
+anchors_preset = -1
+anchor_left = 0.16875
 anchor_top = 0.5
-anchor_right = 0.5
+anchor_right = 0.16875
 anchor_bottom = 0.5
-offset_left = -41.5
-offset_top = -55.0
-offset_right = 41.5
-offset_bottom = 55.0
+offset_left = -100.0
+offset_top = -58.0
+offset_right = 100.0
+offset_bottom = 58.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
+metadata/_edit_use_anchors_ = true
 
 [node name="Start" type="Button" parent="VBoxContainer" unique_id=458778596]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
+theme = ExtResource("5_wem23")
 text = "Start"
 
 [node name="Quit" type="Button" parent="VBoxContainer" unique_id=1360772920]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
+theme = ExtResource("5_wem23")
 text = "Quit"
 
 [connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]

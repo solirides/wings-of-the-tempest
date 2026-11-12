@@ -13,7 +13,7 @@ func _process(delta: float) -> void:
 		ResourceLoader.load_threaded_get_status(scene, progress)
 		if progress[0] == 1:
 			scene_change_queued = false
-			self.visible = true
+			#self.visible = true
 			fade_animation(false, 0.4)
 			get_tree().change_scene_to_packed.bind(ResourceLoader.load_threaded_get(scene)).call_deferred()
 		
@@ -21,11 +21,12 @@ func _process(delta: float) -> void:
 func await_scene_change(scene:String):
 	scene_change_queued = true
 	self.scene = scene
-	self.visible = true
+	#self.visible = true
 	fade_animation(true, 0.4)
 
 var fade_tween:Tween
 func fade_animation(state:bool, time:float):
+	self.visible = true
 	if fade_tween:
 		fade_tween.kill()
 	fade_tween = create_tween()
