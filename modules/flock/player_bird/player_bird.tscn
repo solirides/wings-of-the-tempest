@@ -41,7 +41,7 @@ mesh = SubResource("SphereMesh_lqu4f")
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_ppj06")
 
-[node name="bird v1_2" parent="." unique_id=790560813 instance=ExtResource("2_eylny")]
+[node name="BirdModel" parent="." unique_id=790560813 instance=ExtResource("2_eylny")]
 transform = Transform3D(-1.5, 0, -1.3113416e-07, 0, 1.5, 0, 1.3113416e-07, 0, -1.5, 0, 0, 0)
 script = ExtResource("3_wnlco")
 

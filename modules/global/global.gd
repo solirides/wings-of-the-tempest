@@ -84,3 +84,7 @@ func AddScore(score_to_add: int) -> void:
 
 func end_level() -> void:
 	hud.show_end_screen();
+
+func start_scene_change(scene:String):
+	ResourceLoader.load_threaded_request(scene)
+	$TransitionScreen.await_scene_change(scene)

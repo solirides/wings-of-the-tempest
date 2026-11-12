@@ -27,7 +27,7 @@ class_name Flock
 var boids: Array[Boid] = []
 var flock_goal: Vector3
 var land_goal: Vector3
-var boid_scene = preload("res://modules/flock/player_bird/player_bird.tscn")
+var boid_scene = load("res://modules/flock/player_bird/player_bird.tscn")
 
 # all boids including ones in subflocks
 var all_boids: Array[Boid] = []

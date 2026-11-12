@@ -29,7 +29,7 @@ func _ready() -> void:
 	connect("ready", Global.check_ready_nodes)
 	
 	for i in range(num_boids):
-		var new_boid: Boid = boid_scene.instantiate()
+		var new_boid:Boid = boid_scene.instantiate()
 		add_child(new_boid)
 		
 		# make boid position independent of parent node (flock node)
