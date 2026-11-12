@@ -1,25 +1,26 @@
 [gd_scene format=3 uid="uid://crms1f7sqr0a1"]
 
 [ext_resource type="Script" uid="uid://ddomg1qhruqyf" path="res://modules/objects/goal/goal.gd" id="1_fbgwn"]
+[ext_resource type="Material" uid="uid://p01pmrbd4wr6" path="res://assets/materials/goal.tres" id="2_qv7rk"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_m61be"]
 plane = Plane(0, 0, 1, 0)
 
-[sub_resource type="BoxMesh" id="BoxMesh_6lmcw"]
-size = Vector3(41, 15, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f24ow"]
-transparency = 1
-albedo_color = Color(0.6366402, 0.83841556, 0.79951173, 0.554)
+[sub_resource type="PlaneMesh" id="PlaneMesh_665yd"]
+size = Vector2(64, 64)
+orientation = 2
 
 [node name="Goal" type="Area3D" unique_id=1598089339]
+collision_layer = 0
+collision_mask = 16
 script = ExtResource("1_fbgwn")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1910245781]
 shape = SubResource("WorldBoundaryShape3D_m61be")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=423629209]
-mesh = SubResource("BoxMesh_6lmcw")
-surface_material_override/0 = SubResource("StandardMaterial3D_f24ow")
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=423629209]
+unique_name_in_owner = true
+mesh = SubResource("PlaneMesh_665yd")
+surface_material_override/0 = ExtResource("2_qv7rk")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://p01pmrbd4wr6"]
+
+[ext_resource type="Shader" uid="uid://xrmvsg8oo8sr" path="res://assets/materials/goal.gdshader" id="1_cqxtd"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_cqxtd")
+shader_parameter/checker_size = Vector2(3, 3)
+shader_parameter/scroll_speed = Vector2(1, 1)
+shader_parameter/checker_color_a = Color(1, 1, 1, 0.78431374)
+shader_parameter/checker_color_b = Color(0, 0, 0, 0.39215687)
