@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://cks7psb1tg0ob" path="res://modules/terrain/generator/chunk_definition.gd" id="3_ma8dy"]
 [ext_resource type="Script" uid="uid://hn4a0fyr272r" path="res://modules/terrain/generator/chunk_terrain_object.gd" id="4_bt572"]
 [ext_resource type="Resource" uid="uid://c6da3wdxmqwcm" path="res://assets/data/terrain/objects/tree_cluster_small.tres" id="4_fff08"]
-[ext_resource type="Resource" uid="uid://cpopvjrd08oqc" path="res://assets/data/terrain/objects/hawk_circle.tres" id="5_bt572"]
+[ext_resource type="Resource" uid="uid://cp7yt8k7j22ga" path="res://assets/data/terrain/objects/hawk_figure8.tres" id="5_fig8"]
 [ext_resource type="Resource" uid="uid://b1rnhgbbism7" path="res://assets/data/terrain/objects/hawk_oval.tres" id="6_oval"]
 
 [sub_resource type="Resource" id="Resource_8ttwu"]
@@ -67,7 +67,7 @@ spawn_chance = 0.5
 
 [sub_resource type="Resource" id="Resource_um0e5"]
 script = ExtResource("1_q2xb2")
-object = ExtResource("5_bt572")
+object = ExtResource("5_fig8")
 position = Vector2(32, 50)
 
 [resource]
