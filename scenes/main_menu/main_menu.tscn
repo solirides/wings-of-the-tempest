@@ -99,6 +99,8 @@ gradient = SubResource("Gradient_uqeha")
 font = ExtResource("15_4ujhu")
 font_size = 100
 
+[sub_resource type="LabelSettings" id="LabelSettings_f24ow"]
+
 [node name="MainMenu" type="Control" unique_id=2135731621]
 layout_mode = 3
 anchors_preset = 15
@@ -281,7 +283,7 @@ layout_mode = 2
 theme = ExtResource("5_wem23")
 text = "Quit"
 
-[node name="Label" type="Label" parent="." unique_id=621752122]
+[node name="Title" type="Label" parent="." unique_id=621752122]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -291,6 +293,19 @@ grow_horizontal = 2
 text = "Wings of the Tempest"
 label_settings = SubResource("LabelSettings_6lmcw")
 horizontal_alignment = 1
+
+[node name="Verison" type="Label" parent="." unique_id=162730126]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = -29.0
+offset_right = 134.0
+offset_bottom = -6.0
+grow_vertical = 0
+text = "MVP showcase!"
+label_settings = SubResource("LabelSettings_f24ow")
 
 [connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]

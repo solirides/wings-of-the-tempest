@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://djuyymnymg6xj" path="res://modules/camera/camera.gd" id="1_pf27r"]
 [ext_resource type="Shader" uid="uid://dopya06kwga34" path="res://modules/camera/posterize.gdshader" id="2_ogeh7"]
 [ext_resource type="Script" uid="uid://cifv7bgmpaick" path="res://modules/camera/shake.gd" id="2_otekq"]
+[ext_resource type="Script" uid="uid://bww2gjowddc66" path="res://modules/camera/shaders.gd" id="3_6rkpd"]
+[ext_resource type="Shader" uid="uid://c1ogvq3ts6ir8" path="res://modules/camera/vignette.gdshader" id="4_dowve"]
 
 [sub_resource type="Gradient" id="Gradient_ogeh7"]
 interpolation_mode = 1
@@ -19,10 +21,16 @@ shader_parameter/use_gradient = false
 shader_parameter/steps = 12
 shader_parameter/gamma = 1.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6rkpd"]
+shader = ExtResource("4_dowve")
+shader_parameter/alpha = 0.1
+shader_parameter/inner_radius = 0.825
+shader_parameter/outer_radius = 1.0
+shader_parameter/color = Color(0, 0, 0, 1)
+
 [node name="CameraAnchor" type="Node3D" unique_id=856289716]
 script = ExtResource("1_pf27r")
 max_zoom = 14.0
-enable_post_processing = false
 
 [node name="Camera" type="Camera3D" parent="." unique_id=506319422]
 transform = Transform3D(0.34202015, -0.8830222, 0.32139382, 0, 0.34202015, 0.9396926, -0.9396926, -0.32139382, 0.11697779, 0, 0, 0)
@@ -42,9 +50,20 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("3_6rkpd")
 
 [node name="PosterizeShader" type="ColorRect" parent="Camera/Shaders" unique_id=1648680280]
+visible = false
 material = SubResource("ShaderMaterial_6lmcw")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Vignette" type="ColorRect" parent="Camera/Shaders" unique_id=553206651]
+material = SubResource("ShaderMaterial_6rkpd")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
