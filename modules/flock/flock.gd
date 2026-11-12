@@ -108,6 +108,7 @@ func handle_swoop_request(should_swoop: bool) -> void:
 		if !is_flying:
 			return
 		print("The boids are supposed to land now.")
+		Audio.play_sfx_track("swoop")
 		boid_properties.flock_state = BoidProperties.FLOCK_STATE.SWOOPING
 		land_goal = flock_goal
 	else:
