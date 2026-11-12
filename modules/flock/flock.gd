@@ -14,6 +14,7 @@ class_name Flock
 @export var min_hunger_speed_penalty: float = 0.7
 
 @export var water_depletion_rate: float = 4.0
+@export var swooping_water_muliplier: float = 5.0
 
 @export var num_boids: int = 10
 @export var spawn_radius: float = 10.0
@@ -24,14 +25,14 @@ class_name Flock
 
 # only boids with movement controlled by the main flock, not subflocks
 var boids: Array[Boid] = []
-var flock_goal : Vector3
-var land_goal : Vector3
+var flock_goal: Vector3
+var land_goal: Vector3
 var boid_scene = preload("res://modules/flock/player_bird/player_bird.tscn")
 
 # all boids including ones in subflocks
 var all_boids: Array[Boid] = []
 
-signal hunger_changed(current_hunger:float)
+signal hunger_changed(current_hunger: float)
 
 #hydrate or die-drate
 #Water is a whole flock resource
@@ -44,6 +45,7 @@ var hunger_modifier: StatModifier = StatModifier.new("hunger_penalty", 1, StatMo
 # retrieves the percent of the water capacity the flock is currently at
 func get_hydration() -> float:
 	return hydration
+
 func get_hydration_percent() -> float:
 	return hydration / WATER_CAPACITY
 
@@ -60,7 +62,6 @@ func give_percent_hydration(give_percent: float) -> void:
 		return
 	hydration += give_percent * WATER_CAPACITY
 	check_hydration_status()
-
 
 func give_proportional_hydration(boids_num: int, proportion: float) -> void:
 	hydration += proportion * WATER_CAPACITY * boids_num / len(all_boids)
@@ -84,45 +85,41 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	pass
 
-func handle_repel_request(state: bool = !boid_properties.scatter):
-	if boid_properties.flockIsLanded:
-		print("You cannot scatter while the boids are meant to be landed!")
-		boid_properties.scatter = false
-	else:
-		# toggle boid scattering mode
-		
-		if state == boid_properties.scatter:
+func handle_repel_request(state: bool = (boid_properties.flock_state != BoidProperties.FLOCK_STATE.SCATTERING)) -> void:
+	if boid_properties.flock_state == BoidProperties.FLOCK_STATE.SWOOPING:
+		print("You cannot scatter while the boids are swooping/landed!")
+		return
+
+	if state:
+		if boid_properties.flock_state == BoidProperties.FLOCK_STATE.SCATTERING:
 			return
-		boid_properties.scatter = state
-		boid_properties.default_state = !state
+		boid_properties.flock_state = BoidProperties.FLOCK_STATE.SCATTERING
+	else:
+		if boid_properties.flock_state != BoidProperties.FLOCK_STATE.SCATTERING:
+			return
+		boid_properties.flock_state = BoidProperties.FLOCK_STATE.FLYING
+
 	print("I'm changing scatter states")
 
-func handle_swoop_request(state: bool):
-	if state != boid_properties.flockIsFlying:
-		return
-	boid_properties.flockIsFlying = !state
+func handle_swoop_request(should_swoop: bool) -> void:
+	var is_flying: bool = (boid_properties.flock_state == BoidProperties.FLOCK_STATE.FLYING)
 	
-	if boid_properties.flockIsFlying:
+	if should_swoop:
+		if !is_flying:
+			return
+		print("The boids are supposed to land now.")
+		boid_properties.flock_state = BoidProperties.FLOCK_STATE.SWOOPING
+		land_goal = flock_goal
+	else:
+		if is_flying:
+			return
 		global_position.y = boid_properties.flockMaxHeight
 		print("RISE FROM YOUR GRAVES!!!!! EHEHEHEHEHEH")
-		boid_properties.flockIsLanded = false
-		#boid_properties.flockIsFlying = true
-	else : 
-		print("The boids are supposed to land now.")
-		handle_repel_request(false)
-		
-		land_goal = flock_goal
-		
-		boid_properties.flockIsLanded = true
-		#boid_properties.flockIsFlying = false
+		boid_properties.flock_state = BoidProperties.FLOCK_STATE.FLYING
 
-#this updates the flocks global position on the ground.
-func flock_landed() -> void :
-	
-	# DONT use different coordinates for getting Chunk vs Chunk Height
-	# Otherwise you may get height (or really, fail to get height) of position that chunk does not contain
-	var query_position: = get_cursor_pos();
-	
+
+func flock_landed() -> void:
+	var query_position := get_cursor_pos()
 	var above_chunk: Chunk = Chunk.get_chunk_containing_global_position( query_position );
 	#print("I am constantly look for the ground.")
 	
@@ -133,16 +130,10 @@ func flock_landed() -> void :
 		print("Failed to land at position: ", global_position )
 		return
 	
-	if above_chunk.is_height_accessible_global( Vector2( query_position.x, query_position.z ) ):
-		
-		global_position.y = above_chunk.get_height_global( above_chunk.heightmap_accessibility, Vector2( query_position.x, query_position.z ) );
-		boid_properties.flockIsLanded = true
-		#print(global_position.y) #PLEASE disable this, this clutters stuff up SO fast.
-	else :
-		boid_properties.flockIsFlying = true
-		boid_properties.flockIsLanded = false
-
-	
+	if above_chunk.is_height_accessible_global(Vector2(query_position.x, query_position.z)):
+		global_position.y = above_chunk.get_height_global(above_chunk.heightmap_accessibility, Vector2(query_position.x, query_position.z))
+	else:
+		boid_properties.flock_state = BoidProperties.FLOCK_STATE.FLYING
 
 func _process(delta: float) -> void:
 	#this allows for the boid's main goal to be updated later on. Maybe for a better flock split system??????
@@ -156,14 +147,12 @@ func update_cursor():
 		cursor.global_position = get_cursor_pos()
 
 func _physics_process(delta: float) -> void:
-	#print(Global.flock.hydration)
-	
-	if boid_properties.flockIsFlying:
-		hydration -= delta * water_depletion_rate
-	
-	# if flock is attempting to land and hasn't found a landing spot yet
-	if boid_properties.flockIsFlying == false :
-		flock_landed()
+	match boid_properties.flock_state:
+		BoidProperties.FLOCK_STATE.SWOOPING:
+			hydration -= delta * water_depletion_rate * swooping_water_muliplier
+			flock_landed()
+		BoidProperties.FLOCK_STATE.FLYING, BoidProperties.FLOCK_STATE.SCATTERING:
+			hydration -= delta * water_depletion_rate
 	
 	if enable_hunger_effects:
 		process_hunger(delta)

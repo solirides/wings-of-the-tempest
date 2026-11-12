@@ -16,6 +16,12 @@ enum ROTATION_MODE {
 	LERP_TO_GOAL
 }
 
+enum FLOCK_STATE {
+	FLYING, 
+	SCATTERING,
+	SWOOPING,
+}
+
 @export var speed : Stat                 = Stat.new("speed",                 "", 15)
 @export var min_speed : Stat             = Stat.new("min_speed",             "", 5)
 @export var speed_scale_exp : Stat       = Stat.new("speed_scale_exp",       "", 0.3)
@@ -33,7 +39,7 @@ enum ROTATION_MODE {
 @export var repel_weight : Stat          = Stat.new("repel_weight",          "", 5.0)
 
 #This means that they are in the air following the cursor normally. I should probably make this name clearer.
-@export var default_state : bool = true
+#@export var default_state : bool = true
 
 # coward shit
 @export var flee_weight : Stat           = Stat.new("flee_weight",           "", 2.1)
@@ -45,7 +51,7 @@ enum ROTATION_MODE {
 # split up sub group stuff
 @export var spin_weight : Stat           = Stat.new("spin_weight",           "", 1)
 @export var minimum_group_size : Stat    = Stat.new("minimum_group_size",    "", 5)
-@export var scatter : bool = false
+#@export var scatter : bool = false
 
 @export var steering_smoothness : Stat   = Stat.new("steering_smoothness",   "", 8.0)
 @export var rotation_smoothness : Stat   = Stat.new("rotation_smoothness",   "", 8.0)
@@ -56,7 +62,10 @@ enum ROTATION_MODE {
 #Landing stuff! FOR THE BOIDS
 @export var flockMaxHeight : float = 5
 
-@export var flockIsFlying : bool = true
-@export var flockIsLanded : bool = false
+# replace these vars with an enum
+#@export var flockIsFlying : bool = true
+#@export var flockIsLanded : bool = false
+#@export var flockIsSwooping : bool = false
+@export var flock_state: FLOCK_STATE = FLOCK_STATE.FLYING
 
 @export var landing_angle : float = 45

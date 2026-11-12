@@ -5,7 +5,9 @@ class_name MainFlock
 #@export var subflocks: Array[SubFlock] = []
 @onready var split_input_timer = Timer.new()
 @onready var swoop_input_timer = Timer.new()
-var split_action_short = false
+
+# internal variables for keeping track of input
+var split_action_short = true
 var swoop_action_short = true
 
 # Called when the node enters the scene tree for the first time.
@@ -30,6 +32,7 @@ func _ready() -> void:
 		var new_boid: Boid = boid_scene.instantiate()
 		add_child(new_boid)
 		
+		# make boid position independent of parent node (flock node)
 		new_boid.top_level = true
 		
 		var angle := randf_range(0.0, TAU)
@@ -50,7 +53,6 @@ func _ready() -> void:
 
 #I moved _process boid goal stuff into flocks own _process function!
 
-#this is completely borked RN.
 func split_flock(num: int, subflock:SubFlock):
 	var b = boids.duplicate()
 	b.shuffle()
@@ -106,7 +108,7 @@ func _input(event: InputEvent) -> void:
 			print("split flock short action")
 			split_input_timer.stop()
 			# keep at least split_boid_count in the main flock
-			var count = max(0, min(split_boid_count, len(all_boids) - split_boid_count) ) 
+			var count = max(0, min(split_boid_count, len(boids) - split_boid_count) ) 
 			split_flock(count, subflocks[0])
 		else:
 			pass

@@ -33,6 +33,7 @@ albedo_color = Color(0.078431375, 0.43529412, 1, 1)
 
 [node name="Flock" type="Node3D" unique_id=1876045196 node_paths=PackedStringArray("cursor", "subflocks")]
 script = ExtResource("1_btmmu")
+split_boid_count = 3
 water_depletion_rate = 1.0
 cursor = NodePath("MeshInstance3D2")
 subflocks = [NodePath("SubFlock")]

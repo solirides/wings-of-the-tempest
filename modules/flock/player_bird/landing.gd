@@ -10,19 +10,32 @@ var groundedState : landedSTATE = landedSTATE.MOVE
 @onready var model = boid.get_node("bird")
 @onready var hitbox = boid.get_node("CollisionShape3D")
 
+var last_flock_state = BoidProperties.FLOCK_STATE.FLYING
+
 func _physics_process(delta: float) -> void:
 	if boid == null:
 		queue_free()
 		return
-	if boid.properties.flockIsLanded:
-		if current_state == STATE.FLYING:
-			current_state = STATE.LANDING
-			
-	if boid.properties.flockIsFlying:
-		if current_state == STATE.LANDED or current_state == STATE.LANDING:
-			boid.properties.speed.value = 15
-			boid.properties.min_speed.value = 5
-			current_state = STATE.RISING
+	match boid.properties.flock_state:
+		BoidProperties.FLOCK_STATE.FLYING:
+			if last_flock_state == BoidProperties.FLOCK_STATE.SWOOPING:
+				# TODO: replace with StatModifier
+				boid.properties.speed.value = 15
+				boid.properties.min_speed.value = 5
+				current_state = STATE.RISING
+		BoidProperties.FLOCK_STATE.SWOOPING:
+			if last_flock_state == BoidProperties.FLOCK_STATE.FLYING:
+				current_state = STATE.LANDING
+	last_flock_state = boid.properties.flock_state
+	#if boid.properties.flockIsLanded:
+		#if current_state == STATE.FLYING:
+			#current_state = STATE.LANDING
+			#
+	#if boid.properties.flockIsFlying:
+		#if current_state == STATE.LANDED or current_state == STATE.LANDING:
+			#boid.properties.speed.value = 15
+			#boid.properties.min_speed.value = 5
+			#current_state = STATE.RISING
 
 	match current_state:
 		STATE.FLYING:

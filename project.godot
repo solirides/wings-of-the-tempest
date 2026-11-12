@@ -126,6 +126,7 @@ swoop={
 
 3d_physics/layer_2="food"
 3d_physics/layer_3="terrain"
+3d_physics/layer_5="player_boid"
 
 [physics]
 
