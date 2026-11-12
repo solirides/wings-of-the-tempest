@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bdgida065gbo4" path="res://assets/textures/UI/waterbarProgress.png" id="7_ngoot"]
 [ext_resource type="Script" uid="uid://dev0witimtagw" path="res://modules/hud/score.gd" id="8_dyoe6"]
 [ext_resource type="Script" uid="uid://b2172yn6kueq4" path="res://modules/hud/stopwatch.gd" id="8_nvutd"]
+[ext_resource type="FontFile" uid="uid://drsthoauf0pcs" path="res://assets/fonts/Overlock/Overlock-Bold.ttf" id="9_jqmsc"]
 [ext_resource type="Script" uid="uid://btap4l2sddwwm" path="res://modules/hud/nextlvlbutton.gd" id="10_7hou3"]
 [ext_resource type="Texture2D" uid="uid://cwevcrhnsmgh" path="res://WoT_Button.png" id="10_u86fq"]
 [ext_resource type="FontFile" uid="uid://cx7w8xbogumup" path="res://assets/fonts/Overlock/Overlock-BoldItalic.ttf" id="12_15qhp"]
@@ -22,7 +23,15 @@ subpixel_positioning = 0
 font = SubResource("SystemFont_0lhw3")
 font_size = 24
 
+[sub_resource type="LabelSettings" id="LabelSettings_jjd2n"]
+font = ExtResource("12_15qhp")
+font_size = 44
+
 [sub_resource type="LabelSettings" id="LabelSettings_sd20g"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_as7wb"]
+font = ExtResource("9_jqmsc")
+font_size = 36
 
 [sub_resource type="SystemFont" id="SystemFont_sd20g"]
 font_names = PackedStringArray("Noto Sans", "Roboto", "Sans-Serif")
@@ -55,7 +64,8 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_lqyyi")
 
-[node name="Label" type="Label" parent="." unique_id=452652156]
+[node name="Controls" type="Label" parent="." unique_id=452652156]
+visible = false
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -114,7 +124,6 @@ texture_under = ExtResource("2_sunxf")
 texture_progress = ExtResource("3_v6k41")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Bars" unique_id=673885322]
-visible = false
 layout_mode = 2
 
 [node name="NinePatchRect" type="NinePatchRect" parent="Bars/HBoxContainer2" unique_id=1794107377]
@@ -136,12 +145,13 @@ texture_progress = ExtResource("7_ngoot")
 
 [node name="Stopwatch" type="Label" parent="." unique_id=713772242]
 layout_mode = 0
-offset_left = 1034.0
-offset_top = 570.0
-offset_right = 1197.0
-offset_bottom = 647.0
+offset_left = 1075.0
+offset_top = 619.0
+offset_right = 1238.0
+offset_bottom = 696.0
 theme_override_font_sizes/font_size = 45
 text = "0.00 s"
+label_settings = SubResource("LabelSettings_jjd2n")
 script = ExtResource("8_nvutd")
 
 [node name="DebugInfo" type="Label" parent="." unique_id=1673410553]
@@ -151,17 +161,23 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+text = "debug info
+debug info
+debug info
+debug info
+debug info"
 label_settings = SubResource("LabelSettings_sd20g")
 vertical_alignment = 2
 
 [node name="Score" type="Label" parent="." unique_id=1801758189]
 layout_mode = 0
-offset_left = 301.0
-offset_top = 36.0
-offset_right = 503.0
-offset_bottom = 104.0
+offset_left = 280.0
+offset_top = 16.0
+offset_right = 482.0
+offset_bottom = 84.0
 theme_override_font_sizes/font_size = 38
 text = "Score: 0"
+label_settings = SubResource("LabelSettings_as7wb")
 script = ExtResource("8_dyoe6")
 
 [node name="LevelEndScreen" type="ColorRect" parent="." unique_id=7232756]

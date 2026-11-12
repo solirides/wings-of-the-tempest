@@ -1,5 +1,7 @@
 extends Control
 
+@export var show_debug_text = false
+
 @onready var hunger_bar: TextureProgressBar = %HungerBar
 @onready var water_bar: TextureProgressBar = %WaterBar
 @onready var end_screen = $LevelEndScreen
@@ -13,6 +15,9 @@ func _ready() -> void:
 	Global.connect("main_nodes_ready", self._on_main_nodes_ready)
 	
 	end_screen.visible = false
+	
+	$DebugInfo.visible = show_debug_text
+	
 
 func _on_main_nodes_ready():
 	#print("on main nodes ready")

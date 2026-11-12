@@ -67,7 +67,7 @@ func _input(event: InputEvent) -> void:
 	# press esc to cycle through mouse capture modes
 	#Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 	if event.is_action_pressed("escape"):
-		print("fdggdf")
+		print("escape pressed")
 		match Input.mouse_mode:
 			Input.MOUSE_MODE_CONFINED:
 				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -77,6 +77,9 @@ func _input(event: InputEvent) -> void:
 				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 			#Input.MOUSE_MODE_CAPTURED:
 				#Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
+	if event.is_action_pressed("debug_restart"):
+		print("debug restart")
+		start_scene_change("res://scenes/main_menu/main_menu.tscn")
 	
 func AddScore(score_to_add: int) -> void:
 	score += score_to_add

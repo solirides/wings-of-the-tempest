@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://llwk0a2c7qid" path="res://modules/monument/monument.tscn" id="10_rrgl4"]
 [ext_resource type="PackedScene" uid="uid://cb6ulg0b8sf8g" path="res://assets/models/hawk.glb" id="11_dn3lk"]
 [ext_resource type="Script" uid="uid://dj2e77eb1bmrp" path="res://scenes/main_menu/bobbing_animation.gd" id="12_4ujhu"]
+[ext_resource type="FontFile" uid="uid://dty6ddeqe5y2d" path="res://assets/fonts/Ephesis-Regular.ttf" id="15_4ujhu"]
 
 [sub_resource type="Environment" id="Environment_6lmcw"]
 background_mode = 1
@@ -93,6 +94,10 @@ colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_6lmcw"]
 gradient = SubResource("Gradient_uqeha")
+
+[sub_resource type="LabelSettings" id="LabelSettings_6lmcw"]
+font = ExtResource("15_4ujhu")
+font_size = 100
 
 [node name="MainMenu" type="Control" unique_id=2135731621]
 layout_mode = 3
@@ -275,6 +280,17 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme = ExtResource("5_wem23")
 text = "Quit"
+
+[node name="Label" type="Label" parent="." unique_id=621752122]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 40.0
+offset_bottom = 170.0
+grow_horizontal = 2
+text = "Wings of the Tempest"
+label_settings = SubResource("LabelSettings_6lmcw")
+horizontal_alignment = 1
 
 [connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
