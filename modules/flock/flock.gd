@@ -135,7 +135,9 @@ func flock_landed() -> void:
 	if above_chunk.is_height_accessible_global(Vector2(query_position.x, query_position.z)):
 		global_position.y = above_chunk.get_height_global(above_chunk.heightmap_accessibility, Vector2(query_position.x, query_position.z))
 	else:
-		boid_properties.flock_state = BoidProperties.FLOCK_STATE.FLYING
+		# set flock state to flying via function so no logic is skipped
+		handle_swoop_request(false)
+		#boid_properties.flock_state = BoidProperties.FLOCK_STATE.FLYING
 
 func _process(delta: float) -> void:
 	#this allows for the boid's main goal to be updated later on. Maybe for a better flock split system??????

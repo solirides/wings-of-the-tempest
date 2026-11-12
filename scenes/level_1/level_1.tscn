@@ -191,7 +191,6 @@ rotation_smoothness = SubResource("Resource_so1i6")
 steering_strength = SubResource("Resource_i67mf")
 steering_mode = 1
 flockMaxHeight = 0.0
-flock_state = null
 metadata/_custom_type_script = "uid://dstx1f47q2ki1"
 
 [node name="Level" type="Node3D" unique_id=1031030702]

@@ -3,6 +3,10 @@ class_name MainFlock
 
 @export var split_boid_count: int = 5
 #@export var subflocks: Array[SubFlock] = []
+@export var swoop_max_duration: float = 0.5
+@export var swoop_cooldown: float = 1.0
+@onready var swoop_duration_timer = Timer.new()
+@onready var swoop_cooldown_timer = Timer.new()
 @onready var split_input_timer = Timer.new()
 @onready var swoop_input_timer = Timer.new()
 
@@ -19,6 +23,11 @@ func _ready() -> void:
 	swoop_input_timer.one_shot = true
 	self.add_child(split_input_timer)
 	self.add_child(swoop_input_timer)
+	swoop_duration_timer.one_shot = true
+	swoop_cooldown_timer.one_shot = true
+	add_child(swoop_duration_timer)
+	add_child(swoop_cooldown_timer)
+	swoop_duration_timer.timeout.connect(_on_swoop_duration_timeout)
 	
 	split_input_timer.timeout.connect(_on_split_input_timer_timeout)
 	swoop_input_timer.timeout.connect(_on_swoop_input_timer_timeout)
@@ -53,7 +62,7 @@ func _ready() -> void:
 
 #I moved _process boid goal stuff into flocks own _process function!
 
-func split_flock(num: int, subflock:SubFlock):
+func split_flock(num: int, subflock: SubFlock):
 	var b = boids.duplicate()
 	b.shuffle()
 	
@@ -65,6 +74,21 @@ func split_flock(num: int, subflock:SubFlock):
 	subflock.flock_goal = get_cursor_pos()
 	subflock.update_cursor()
 	
+# thank golly goodness I found out how to override functions in godot
+func handle_swoop_request(should_swoop: bool):
+	if should_swoop and not swoop_cooldown_timer.is_stopped():
+		print("still on cooldown")
+		return
+	
+	var was_swooping: bool = (boid_properties.flock_state == BoidProperties.FLOCK_STATE.SWOOPING)
+	super(should_swoop)
+	var is_swooping: bool = (boid_properties.flock_state == BoidProperties.FLOCK_STATE.SWOOPING)
+	if is_swooping and not was_swooping:
+		# perhaps add option to cancel swoop later on
+		swoop_duration_timer.start(swoop_max_duration)
+	elif was_swooping and not is_swooping:
+		swoop_duration_timer.stop()
+		swoop_cooldown_timer.start(swoop_cooldown)
 
 func regroup_flock():
 	for subflock in subflocks:
@@ -82,6 +106,10 @@ func _on_swoop_input_timer_timeout():
 	print("swoop action timeout")
 	swoop_action_short = false
 	handle_swoop_request(true)
+	
+func _on_swoop_duration_timeout():
+	print("swoop duration ended")
+	handle_swoop_request(false)
 
 
 #
