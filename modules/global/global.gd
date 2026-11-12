@@ -9,6 +9,7 @@ const FOOD_FACTOR = 1;
 const MONUMENT_FACTOR = 1;
  
 var game_is_paused = false
+var reached_end = false
 
 # Generally try to use these variables in Global to get references to these nodes. (or use the % prefix)
 # This way we only have to make sure they exist here.
@@ -89,8 +90,10 @@ func AddScore(score_to_add: int) -> void:
 	score_modified.emit()
 
 func end_level() -> void:
-	Audio.play_sfx_track("level complete")
-	hud.show_end_screen()
+	if (!reached_end):
+		Audio.play_sfx_track("level complete")
+		hud.show_end_screen()
+		reached_end = true
 
 func start_scene_change(scene:String):
 	ResourceLoader.load_threaded_request(scene)
