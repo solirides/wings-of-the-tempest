@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://bhdnwxr2ghucr" path="res://assets/models/crab.glb" id="9_qel0l"]
 [ext_resource type="PackedScene" uid="uid://llwk0a2c7qid" path="res://modules/monument/monument.tscn" id="10_rrgl4"]
 [ext_resource type="PackedScene" uid="uid://cb6ulg0b8sf8g" path="res://assets/models/hawk.glb" id="11_dn3lk"]
+[ext_resource type="FontFile" uid="uid://cmchjctewv1kf" path="res://assets/fonts/Overlock/Overlock-Regular.ttf" id="11_vnpsp"]
 [ext_resource type="Script" uid="uid://dj2e77eb1bmrp" path="res://scenes/main_menu/bobbing_animation.gd" id="12_4ujhu"]
 [ext_resource type="FontFile" uid="uid://dty6ddeqe5y2d" path="res://assets/fonts/Ephesis-Regular.ttf" id="15_4ujhu"]
 
@@ -224,8 +225,26 @@ script = ExtResource("12_4ujhu")
 amplitude = 0.6
 time_scale = 0.8
 
+[node name="Label3D" type="Label3D" parent="Node3D/crab" unique_id=1225249164]
+transform = Transform3D(1, 7.450581e-09, 2.9802322e-08, 7.450581e-09, 1.0000001, 7.450581e-09, 2.9802322e-08, 7.450581e-09, 1, 0.106518745, 0.8280611, 0.106518745)
+billboard = 1
+text = "The crab has no eyes :P"
+font = ExtResource("11_vnpsp")
+font_size = 48
+outline_size = 24
+
 [node name="Monument" parent="Node3D" unique_id=1299745215 instance=ExtResource("10_rrgl4")]
 transform = Transform3D(0.8247288, 0.156559, 0.5434259, -0.08011054, 0.9835693, -0.16178313, -0.55982566, 0.08989306, 0.8237199, 3.5267658, -1.473795, 3.6915307)
+
+[node name="Label3D2" type="Label3D" parent="Node3D/Monument" unique_id=456964385]
+transform = Transform3D(0.9999998, -7.450581e-09, -8.940697e-08, -1.4901161e-08, 1, 0, 1.1920929e-07, 1.4901161e-08, 0.9999997, -0.22198534, 2.7254603, -0.44829893)
+billboard = 1
+text = "The holy tomato shrine
+of unlimited tomatoes
+and games
+(but no games)"
+font = ExtResource("11_vnpsp")
+outline_size = 24
 
 [node name="hawk2" parent="Node3D" unique_id=2049691815 instance=ExtResource("11_dn3lk")]
 transform = Transform3D(2.5879934, 0.9748335, -1.162751, -1.057493, 2.8074381, 0, 1.0881171, 0.409867, 2.7655036, -0.35036087, -2.6042702, 5.9503036)
