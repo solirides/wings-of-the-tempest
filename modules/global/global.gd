@@ -42,7 +42,8 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	time_elapsed += delta
+	if game_is_paused == false:
+		time_elapsed += delta
 
 func check_ready_nodes():
 	var ready = true
@@ -65,16 +66,18 @@ func _input(event: InputEvent) -> void:
 	# press esc to cycle through mouse capture modes
 	#Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 	if event.is_action_pressed("escape"):
-		print("escape pressed")
-		match Input.mouse_mode:
-			Input.MOUSE_MODE_CONFINED:
-				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-			Input.MOUSE_MODE_VISIBLE:
-				Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
-			_:
-				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-			#Input.MOUSE_MODE_CAPTURED:
+		Global.pause_gameplay()
+	#if event.is_action_pressed("escape"):
+		#print("escape pressed")
+		#match Input.mouse_mode:
+			#Input.MOUSE_MODE_CONFINED:
+				#Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+			#Input.MOUSE_MODE_VISIBLE:
 				#Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
+			#_:
+				#Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+			##Input.MOUSE_MODE_CAPTURED:
+				##Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 	if event.is_action_pressed("debug_restart"):
 		print("debug restart")
 		start_scene_change("res://scenes/main_menu/main_menu.tscn")
@@ -91,6 +94,7 @@ func end_level() -> void:
 func start_scene_change(scene:String):
 	ResourceLoader.load_threaded_request(scene)
 	$TransitionScreen.await_scene_change(scene)
+	#pause_gameplay(false)
 
 func quit_game():
 	$TransitionScreen.fade_animation(true, 0.5)
@@ -105,6 +109,11 @@ func pause_gameplay(state: bool = !game_is_paused):
 	if state == game_is_paused:
 		return
 	game_is_paused = state
+	
+	if game_is_paused:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	else:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 	
 	if world:
 		# pause the world node

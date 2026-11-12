@@ -8,6 +8,7 @@ class_name SubFlock
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	# TODO: fix hunger effects with subflock
 	# override the _ready() function from Flock
 	pass # Replace with function body.
 	

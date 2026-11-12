@@ -3,7 +3,8 @@ extends ColorRect
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	self.visible = Global.game_is_paused
+	self.visible = false
+	#self.visible = Global.game_is_paused
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

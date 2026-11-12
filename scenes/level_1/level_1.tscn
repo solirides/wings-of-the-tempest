@@ -231,7 +231,7 @@ transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 132)
 
 [node name="Flock" parent="." unique_id=1876045196 node_paths=PackedStringArray("camera_controller") instance=ExtResource("2_jr17i")]
 camera_controller = NodePath("../Camera")
-enable_hunger_effects = false
+starve_rate = 0.04
 boid_properties = SubResource("Resource_otekq")
 
 [node name="SubFlock" parent="Flock" index="3" unique_id=1838721350 node_paths=PackedStringArray("camera_controller")]
@@ -245,7 +245,7 @@ min_zoom = 1.0
 max_zoom = 30.0
 
 [node name="Goal" parent="." unique_id=1598089339 instance=ExtResource("12_do3hi")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -193)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -625)
 collision_mask = 16
 
 [node name="TutorialPrompts" type="Node3D" parent="." unique_id=2000486383]

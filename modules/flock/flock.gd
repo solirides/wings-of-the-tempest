@@ -163,8 +163,9 @@ func _physics_process(delta: float) -> void:
 		process_hunger(delta)
 
 func process_hunger(delta: float):
+	#print("process hunger")
 	# note to others: allow hunger to go negative to allow death by starvation effects
-	current_hunger = current_hunger - starve_rate * delta
+	current_hunger = current_hunger - starve_rate * all_boids.size() * delta
 	if current_hunger > 0:
 		if current_hunger < 90.0:
 			for boid in all_boids:

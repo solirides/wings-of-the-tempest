@@ -26,9 +26,13 @@ func _on_main_nodes_ready():
 
 func _physics_process(delta: float) -> void:
 	if Global.flock:
+		#print(Global.flock.current_hunger)
 		hunger_bar.value = Global.flock.current_hunger
 		water_bar.value = Global.flock.hydration
 	update_debug_info()
+
+func _input(event: InputEvent) -> void:
+	pass
 
 func connect_to_player(player: Node3D) -> void:
 	player.hunger_changed.connect(_on_hunger_changed)
