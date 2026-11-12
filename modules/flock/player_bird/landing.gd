@@ -7,7 +7,7 @@ enum landedSTATE {MOVE, STOP}
 var current_state : STATE = STATE.FLYING
 var groundedState : landedSTATE = landedSTATE.MOVE
 @onready var boid : Boid = get_parent()
-@onready var model = boid.get_node("bird")
+@onready var model = boid.get_node("BirdModel")
 @onready var hitbox = boid.get_node("CollisionShape3D")
 
 var last_flock_state = BoidProperties.FLOCK_STATE.FLYING

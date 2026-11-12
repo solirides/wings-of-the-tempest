@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://d3mpcfi2m2o0v" path="res://modules/camera/camera.tscn" id="1_7n1yb"]
 [ext_resource type="Script" uid="uid://4kq8akwlf2yl" path="res://modules/global/level.gd" id="1_ghvtn"]
 [ext_resource type="PackedScene" uid="uid://p7nyl4088ndh" path="res://modules/flock/flock.tscn" id="2_jr17i"]
-[ext_resource type="Resource" uid="uid://bf47rhejytpg7" path="res://assets/data/terrain/chunk libaries/level_1.tres" id="5_0lhw3"]
+[ext_resource type="Resource" uid="uid://mlgjjc1jn4gr" path="res://assets/data/terrain/chunk libaries/level_1.tres" id="5_0lhw3"]
 [ext_resource type="PackedScene" uid="uid://geh1ds7gqhgf" path="res://modules/hud/hud.tscn" id="7_fxajv"]
 [ext_resource type="PackedScene" uid="uid://dan4yb6n1bkxe" path="res://scenes/storm/storm.tscn" id="19_c2dwa"]
 [ext_resource type="Script" uid="uid://bftxduhaltc0m" path="res://modules/global/stat_modifier.gd" id="20_06ebd"]
@@ -191,6 +191,7 @@ rotation_smoothness = SubResource("Resource_so1i6")
 steering_strength = SubResource("Resource_i67mf")
 steering_mode = 1
 flockMaxHeight = 0.0
+flock_state = null
 metadata/_custom_type_script = "uid://dstx1f47q2ki1"
 
 [node name="Level" type="Node3D" unique_id=1031030702]

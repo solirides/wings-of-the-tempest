@@ -3,13 +3,14 @@ extends Node
 @export var master_volume: float = 1.0
 @export var music_volume: float = 1.0
 @export var sfx_volume: float = 1.0
-@onready var music_stream = $MusicStreamPlayer
+@onready var music_player = $MusicStreamPlayer
 @onready var sfx_node = $SFX
 @onready var music_node = $Music
 
 @export var musics: Array[Sound] = []
 var musics_by_name: Dictionary = {}
 var current_music_track = ""
+var loop_music: bool = true
 
 @export var sounds: Array[Sound] = []
 var sounds_by_name: Dictionary = {}
@@ -59,15 +60,16 @@ func play_sfx_track(
 		#print("invalid sound name: %s" % sound_name)
 
 func play_music_track(
-		music_name: String, 
+		music_name: String, loop: bool = true, 
 		volume_db: float = musics_by_name[music_name].default_volume
 	):
 	var sound: Sound = musics_by_name[music_name]
-	music_stream = $MusicStreamPlayer
-	music_stream.stream = sound.audio_stream
-	music_stream.volume_db = volume_db
-	music_stream.play()
+	#var music_player = $MusicStreamPlayer
+	music_player.stream = sound.audio_stream
+	music_player.volume_db = volume_db
+	music_player.play()
 	current_music_track = music_name
+	loop_music = loop
 
 func set_bus_volume(bus_name:String = "Master", volume_db:float = 0):
 	var bus_idx = AudioServer.get_bus_index(bus_name)
@@ -75,4 +77,7 @@ func set_bus_volume(bus_name:String = "Master", volume_db:float = 0):
 
 
 func _on_music_stream_player_finished() -> void:
-	current_music_track = ""
+	if loop_music:
+		music_player.play()
+	else:
+		current_music_track = ""

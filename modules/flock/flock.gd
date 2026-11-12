@@ -125,8 +125,10 @@ func flock_landed() -> void:
 	
 	#If the above_chunk.global_position is null, throws you out by setting boid_properties.flockIsFlying == true
 	if !is_instance_valid(above_chunk) :
-		boid_properties.flockIsFlying = true
-		boid_properties.flockIsLanded = false
+		# abort swooping
+		handle_swoop_request(false)
+		#boid_properties.flockIsFlying = true
+		#boid_properties.flockIsLanded = false
 		print("Failed to land at position: ", global_position )
 		return
 	

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bnaefaeythsex"
+path="res://.godot/imported/Lo-fi Beats To Migrate South To.mp3-8a37f83324fa0e6b2d51919bac745f4e.mp3str"
+
+[deps]
+
+source_file="res://assets/music/Lo-fi Beats To Migrate South To.mp3"
+dest_files=["res://.godot/imported/Lo-fi Beats To Migrate South To.mp3-8a37f83324fa0e6b2d51919bac745f4e.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

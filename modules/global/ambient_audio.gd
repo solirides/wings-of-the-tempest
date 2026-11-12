@@ -43,17 +43,19 @@ class_name AmbientAudio
 	"goose_honks": 3.0,
 }
 
-
+var play_ambience:bool = true
 var last_played: Dictionary = {}
 var last_category_played: Dictionary = {}
 var last_loop_call = 0
 var loop_delta = 0.1
 
 func _ready() -> void:
+	print("ambient audio script ready!")
 	randomize()
 
 func _process(delta: float) -> void:
-	_play_ambient_loop()
+	if play_ambience:
+		_play_ambient_loop()
 
 func _play_ambient_loop():
 	
