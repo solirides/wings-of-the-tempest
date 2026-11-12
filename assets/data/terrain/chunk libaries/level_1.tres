@@ -22,20 +22,30 @@ chunk = ExtResource("3_gs034")
 
 [sub_resource type="Resource" id="Resource_0lhw3"]
 script = ExtResource("2_0km5h")
-operation = "Greater or Equal"
 operand = 15
 succeed = SubResource("Resource_f24rf")
 metadata/_custom_type_script = "uid://bvb2f7upy448u"
 
-[sub_resource type="Resource" id="Resource_ayy2h"]
+[sub_resource type="Resource" id="Resource_kmbuj"]
 script = ExtResource("4_jtd2x")
 chunk = ExtResource("5_mxnqw")
 
-[sub_resource type="Resource" id="Resource_3dlpi"]
+[sub_resource type="Resource" id="Resource_bch8y"]
 script = ExtResource("2_0km5h")
-operation = "Less Than"
-operand = 2
-succeed = SubResource("Resource_ayy2h")
+operation = "Greater Than"
+operand = 15
+succeed = SubResource("Resource_kmbuj")
+metadata/_custom_type_script = "uid://bvb2f7upy448u"
+
+[sub_resource type="Resource" id="Resource_41qse"]
+script = ExtResource("4_jtd2x")
+chunk = ExtResource("5_mxnqw")
+
+[sub_resource type="Resource" id="Resource_hnewp"]
+script = ExtResource("2_0km5h")
+operation = "Less or Equal"
+operand = 3
+succeed = SubResource("Resource_41qse")
 metadata/_custom_type_script = "uid://bvb2f7upy448u"
 
 [sub_resource type="Resource" id="Resource_7knvl"]
@@ -51,6 +61,28 @@ metadata/_custom_type_script = "uid://q24m030qxhax"
 script = ExtResource("6_jtd2x")
 period = 5
 succeed = SubResource("Resource_8phk4")
+
+[sub_resource type="Resource" id="Resource_42qex"]
+script = ExtResource("4_jtd2x")
+chunk = ExtResource("9_42qex")
+
+[sub_resource type="Resource" id="Resource_et76a"]
+script = ExtResource("4_jtd2x")
+chunk = ExtResource("11_42qex")
+
+[sub_resource type="Resource" id="Resource_pat6u"]
+script = ExtResource("4_jtd2x")
+chunk = ExtResource("10_1ajgl")
+
+[sub_resource type="Resource" id="Resource_8bpn7"]
+script = ExtResource("8_1ajgl")
+children = Array[ExtResource("1_so3pr")]([SubResource("Resource_42qex"), SubResource("Resource_et76a"), SubResource("Resource_pat6u")])
+metadata/_custom_type_script = "uid://q24m030qxhax"
+
+[sub_resource type="Resource" id="Resource_pg3t3"]
+script = ExtResource("6_jtd2x")
+period = 2
+succeed = SubResource("Resource_8bpn7")
 
 [sub_resource type="Resource" id="Resource_a7go1"]
 script = ExtResource("4_jtd2x")
@@ -75,7 +107,7 @@ metadata/_custom_type_script = "uid://q24m030qxhax"
 
 [sub_resource type="Resource" id="Resource_otp6g"]
 script = ExtResource("2_otp6g")
-children = Array[ExtResource("1_so3pr")]([SubResource("Resource_0lhw3"), SubResource("Resource_3dlpi"), SubResource("Resource_mxnqw"), SubResource("Resource_kkjly")])
+children = Array[ExtResource("1_so3pr")]([SubResource("Resource_0lhw3"), SubResource("Resource_bch8y"), SubResource("Resource_hnewp"), SubResource("Resource_mxnqw"), SubResource("Resource_pg3t3"), SubResource("Resource_kkjly")])
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_8v8ov"]
 frequency = 0.1
