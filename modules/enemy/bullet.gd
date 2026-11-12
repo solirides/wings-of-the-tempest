@@ -12,6 +12,7 @@ extends Area3D # Controls bullet.tscn
 
 # The bullet's mesh, hidden while the hunter is charging
 @onready var bullet_mesh: MeshInstance3D = $MeshInstance3D
+@export var dot_material: StandardMaterial3D
 
 # Tracks the bullet's flight from launch to landing
 var start_pos: Vector3
@@ -38,6 +39,7 @@ func make_trail() -> void:
 	for i in trail_dots:
 		var dot := MeshInstance3D.new()
 		dot.mesh = dot_mesh
+		dot.material_override = dot_material
 		# Keep the dot in the world instead of moving with the bullet
 		dot.top_level = true
 		add_child(dot)

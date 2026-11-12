@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dfnojmsp7p67"]
 
 [ext_resource type="Script" uid="uid://b55ur2ltrwn7p" path="res://modules/enemy/bullet.gd" id="1_hl25f"]
+[ext_resource type="Material" uid="uid://blkfbsxnk1p84" path="res://assets/materials/bright_white.tres" id="2_0b2cy"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_07510"]
 top_radius = 0.0
@@ -15,11 +16,14 @@ height = 0.5
 [sub_resource type="SphereShape3D" id="SphereShape3D_6lmcw"]
 
 [node name="Bullet" type="Area3D" unique_id=660157548]
+collision_mask = 17
 script = ExtResource("1_hl25f")
+dot_material = ExtResource("2_0b2cy")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1295787968]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
 mesh = SubResource("CylinderMesh_07510")
+surface_material_override/0 = ExtResource("2_0b2cy")
 
 [node name="Shaft" type="MeshInstance3D" parent="MeshInstance3D" unique_id=522836261]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0)

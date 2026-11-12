@@ -93,3 +93,7 @@ func quit_game():
 	$TransitionScreen.fade_animation(true, 0.5)
 	await get_tree().create_timer(0.5).timeout
 	get_tree().quit()
+
+func game_over():
+	pass
+	

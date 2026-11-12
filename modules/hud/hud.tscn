@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://b2172yn6kueq4" path="res://modules/hud/stopwatch.gd" id="8_nvutd"]
 [ext_resource type="Script" uid="uid://btap4l2sddwwm" path="res://modules/hud/nextlvlbutton.gd" id="10_7hou3"]
 [ext_resource type="Texture2D" uid="uid://cwevcrhnsmgh" path="res://WoT_Button.png" id="10_u86fq"]
+[ext_resource type="FontFile" uid="uid://cx7w8xbogumup" path="res://assets/fonts/Overlock/Overlock-BoldItalic.ttf" id="12_15qhp"]
 
 [sub_resource type="SystemFont" id="SystemFont_0lhw3"]
 font_names = PackedStringArray("Noto Sans", "Open Sans", "Cantarell")
@@ -40,6 +41,10 @@ subpixel_positioning = 0
 [sub_resource type="LabelSettings" id="LabelSettings_v6k41"]
 font = SubResource("SystemFont_sunxf")
 font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_mkjpr"]
+font = ExtResource("12_15qhp")
+font_size = 26
 
 [node name="Hud" type="Control" unique_id=781835399]
 layout_mode = 3
@@ -222,5 +227,6 @@ texture_normal = ExtResource("10_u86fq")
 [node name="Label" type="Label" parent="LevelEndScreen/CenterContainer" unique_id=860141670]
 layout_mode = 2
 text = "Click here to go to the next level!"
+label_settings = SubResource("LabelSettings_mkjpr")
 
 [connection signal="pressed" from="LevelEndScreen/CenterContainer/TextureButton" to="LevelEndScreen/CenterContainer" method="_on_texture_button_pressed"]

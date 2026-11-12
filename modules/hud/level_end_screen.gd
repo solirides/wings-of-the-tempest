@@ -14,4 +14,4 @@ func update_stats():
 	label.text = "summary:\n"
 	label.text += "score: %s\n" % Global.score
 	label.text += "flock size: %s\n" % len(Global.flock.boids)
-	label.text += "something something"
+	#label.text += "something something"

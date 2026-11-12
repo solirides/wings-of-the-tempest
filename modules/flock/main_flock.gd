@@ -51,7 +51,6 @@ func _ready() -> void:
 			boid_properties.flockMaxHeight, #the boids spawn at the same height as the flock
 			sin(angle) * distance
 		)
-
 		boids.append(new_boid)
 		new_boid.debug_flock_display(self)
 		new_boid.boid_died.connect(_on_boid_death)
@@ -59,6 +58,13 @@ func _ready() -> void:
 	all_boids = boids.duplicate()
 	#print(all_boids)
 	
+
+func _physics_process(delta: float) -> void:
+	super(delta)
+	
+	if all_boids.size() == 0:
+		print("game over")
+		Global.game_over()
 
 #I moved _process boid goal stuff into flocks own _process function!
 
@@ -99,6 +105,9 @@ func _on_split_input_timer_timeout():
 	#print("split action timeout")
 	split_action_short = false
 	print("split flock long action")
+	# disable scattering
+	handle_repel_request(false)
+	
 	regroup_flock()
 	
 
@@ -135,6 +144,8 @@ func _input(event: InputEvent) -> void:
 		if split_action_short:
 			print("split flock short action")
 			split_input_timer.stop()
+			# disable scattering
+			handle_repel_request(false)
 			# keep at least split_boid_count in the main flock
 			var count = max(0, min(split_boid_count, len(boids) - split_boid_count) ) 
 			split_flock(count, subflocks[0])
