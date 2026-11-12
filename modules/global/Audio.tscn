@@ -14,6 +14,8 @@
 [ext_resource type="AudioStream" uid="uid://cfnrrydnronu0" path="res://assets/sounds/goose_hurt.wav" id="aaaaahh"]
 [ext_resource type="AudioStream" uid="uid://c6re1o02q3q6x" path="res://assets/sounds/goose-flock1.mp3" id="lalalal"]
 [ext_resource type="AudioStream" uid="uid://b1om0gtil4vxb" path="res://assets/sounds/swoop.wav" id="swooshy"]
+[ext_resource type="AudioStream" uid="uid://ca1cdmdqp367i" path="res://assets/sounds/item jingle.mp3" id="lvlwin1"]
+
 
 [sub_resource type="Resource" id="Resource_g8yrm"]
 script = ExtResource("2_v13wf")
@@ -94,11 +96,17 @@ sound_name = "swoop"
 audio_stream = ExtResource("swooshy")
 metadata/_custom_type_script = "uid://cykvyc3xo04n8"
 
+[sub_resource type="Resource" id="Resource_winlv"]
+script = ExtResource("2_v13wf")
+sound_name = "level complete"
+audio_stream = ExtResource("lvlwin1")
+metadata/_custom_type_script = "uid://cykvyc3xo04n8"
+
 [node name="Audio" type="Node" unique_id=1856727547]
 process_mode = 3
 script = ExtResource("1_ux4r1")
 musics = Array[ExtResource("2_v13wf")]([SubResource("Resource_g8yrm"), SubResource("Resource_5a4ko"), SubResource("Resource_0lhw3")])
-sounds = Array[ExtResource("2_v13wf")]([SubResource("Resource_v13wf"), SubResource("Resource_ew3f2"), SubResource("Resource_df5te"), SubResource("Resource_wrfeo"), SubResource("Resource_6dflp"), SubResource("Resource_f2xw4"), SubResource("Resource_jxtpj"), SubResource("Resource_7oxn5"), SubResource("Resource_8kvkq"), SubResource("Resource_sw00p")])
+sounds = Array[ExtResource("2_v13wf")]([SubResource("Resource_v13wf"), SubResource("Resource_ew3f2"), SubResource("Resource_df5te"), SubResource("Resource_wrfeo"), SubResource("Resource_6dflp"), SubResource("Resource_f2xw4"), SubResource("Resource_jxtpj"), SubResource("Resource_7oxn5"), SubResource("Resource_8kvkq"), SubResource("Resource_sw00p"), SubResource("Resource_winlv")])
 
 [node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=940978963]
 

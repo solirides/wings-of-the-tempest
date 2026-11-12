@@ -89,6 +89,7 @@ func AddScore(score_to_add: int) -> void:
 	score_modified.emit()
 
 func end_level() -> void:
+	Audio.play_sfx_track("level complete")
 	hud.show_end_screen()
 
 func start_scene_change(scene:String):
