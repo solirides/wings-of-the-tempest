@@ -53,6 +53,9 @@ func _ready() -> void:
 	else:
 		zoom = self.global_position.distance_to(camera_node.global_position)
 	
+	# Just use the exported variable, for goodness sake!
+	zoom = cam_zoom;
+	
 	$Camera/Shaders.visible = enable_post_processing
 	
 	set_notify_transform( true );
