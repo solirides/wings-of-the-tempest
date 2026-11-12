@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ChunkObject" format=3 uid="uid://cp7yt8k7j22ga"]
+
+[ext_resource type="PackedScene" uid="uid://bphsnhj7h6a70" path="res://modules/enemy/hawk.tscn" id="1_df338"]
+[ext_resource type="Script" uid="uid://obk0gl5ybof4" path="res://modules/terrain/generator/chunk_object.gd" id="2_30vv2"]
+
+[sub_resource type="Curve3D" id="Curve3D_fig8"]
+closed = true
+_data = {
+"points": PackedVector3Array(0, 0, -3.91, 0, 0, 3.91, 14, 0, 0, 2.15, 0, -0.626, -2.15, 0, 0.626, 9.699, 0, 7.76, 1.555, 0, 1.596, -1.555, 0, -1.596, 4, 0, 5.543, 1.222, 0, 1.955, -1.222, 0, -1.955, 0, 0, 0, 1.555, 0, 1.596, -1.555, 0, -1.596, -4, 0, -5.543, 2.15, 0, -0.626, -2.15, 0, 0.626, -9.699, 0, -7.76, 0, 0, -3.91, 0, 0, 3.91, -14, 0, 0, -2.15, 0, -0.626, 2.15, 0, 0.626, -9.699, 0, 7.76, -1.555, 0, 1.596, 1.555, 0, -1.596, -4, 0, 5.543, -1.222, 0, 1.955, 1.222, 0, -1.955, 0, 0, 0, -1.555, 0, 1.596, 1.555, 0, -1.596, 4, 0, -5.543, -2.15, 0, -0.626, 2.15, 0, 0.626, 9.699, 0, -7.76),
+"tilts": PackedFloat32Array(0.2, 0.5, 0.18, 0, -0.18, -0.5, -0.2, -0.5, -0.18, 0, 0.18, 0.5)
+}
+point_count = 12
+
+[resource]
+script = ExtResource("2_30vv2")
+name = "Hawk (Figure 8)"
+scene = ExtResource("1_df338")
+height_mode = 2
+property_overrides = Dictionary[String, Variant]({
+"curve": SubResource("Curve3D_fig8"),
+"flight_speed": 0.082
+})
+metadata/_custom_type_script = "uid://obk0gl5ybof4"
