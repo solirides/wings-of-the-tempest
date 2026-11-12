@@ -23,7 +23,7 @@ size = Vector3(1, 1, 1.6539917)
 size = Vector3(0.3, 0.3, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wnlco"]
-albedo_color = Color(1, 0.35000002, 0.35000002, 1)
+shading_mode = 0
 
 [node name="PlayerBird" type="RigidBody3D" unique_id=1004426464 groups=["boids"]]
 collision_layer = 16

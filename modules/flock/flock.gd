@@ -84,21 +84,25 @@ func _ready() -> void:
 
 #Use this to handle any button presses which would change the state of the boids... for now, I'm thinking scatter mode and landing
 func _unhandled_input(event: InputEvent) -> void:
+	# TODO: move input stuff here, make it not conflict with UI input
 	pass
 
 func handle_repel_request(state: bool = (boid_properties.flock_state != BoidProperties.FLOCK_STATE.SCATTERING)) -> void:
 	if boid_properties.flock_state == BoidProperties.FLOCK_STATE.SWOOPING:
 		print("You cannot scatter while the boids are swooping/landed!")
 		return
-
+	
 	if state:
 		if boid_properties.flock_state == BoidProperties.FLOCK_STATE.SCATTERING:
 			return
 		boid_properties.flock_state = BoidProperties.FLOCK_STATE.SCATTERING
+		Global.camera.shaders.change_vignette_color(Color(1,1,1,1))
+		Global.camera.shaders.enable_vignette(true)
 	else:
 		if boid_properties.flock_state != BoidProperties.FLOCK_STATE.SCATTERING:
 			return
 		boid_properties.flock_state = BoidProperties.FLOCK_STATE.FLYING
+		Global.camera.shaders.enable_vignette(false)
 
 	print("I'm changing scatter states")
 
@@ -110,12 +114,16 @@ func handle_swoop_request(should_swoop: bool) -> void:
 			return
 		print("The boids are supposed to land now.")
 		Audio.play_sfx_track("swoop")
+		Global.camera.shaders.change_vignette_color(Color(0,0,0,1))
+		Global.camera.shaders.enable_vignette(true)
+		
 		boid_properties.flock_state = BoidProperties.FLOCK_STATE.SWOOPING
 		land_goal = flock_goal
 	else:
 		if is_flying:
 			return
 		global_position.y = boid_properties.flockMaxHeight
+		Global.camera.shaders.enable_vignette(false)
 		print("RISE FROM YOUR GRAVES!!!!! EHEHEHEHEHEH")
 		boid_properties.flock_state = BoidProperties.FLOCK_STATE.FLYING
 

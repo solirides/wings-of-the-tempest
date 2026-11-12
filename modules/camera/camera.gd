@@ -40,6 +40,7 @@ var zoom : float = 64
 @onready var target_rotation: Vector3 = camera_node.rotation
 
 @onready var shake = $Camera/Shake
+@onready var shaders = $Camera/Shaders
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -62,7 +63,8 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("free_cam"):
-		toggle_free_cam()
+		#toggle_free_cam()
+		print("free cam disabled for now")
 	if free_cam_mode == true and event is InputEventMouseMotion:
 		# yaw
 		target_rotation.y += deg_to_rad(-event.screen_relative.x * mouse_sensitivity)

@@ -72,6 +72,7 @@ mesh = SubResource("CylinderMesh_6lmcw")
 [node name="storm_wall_2" parent="." unique_id=479115584 instance=ExtResource("2_i225i")]
 
 [node name="Rain_Hitbox" type="Area3D" parent="." unique_id=1861455761]
+collision_mask = 17
 script = ExtResource("3_d4m54")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Rain_Hitbox" unique_id=1798419822]
@@ -84,6 +85,7 @@ visible = false
 mesh = SubResource("SphereMesh_xotop")
 
 [node name="WindHitbox" type="Area3D" parent="." unique_id=247244507 node_paths=PackedStringArray("particle_emitter", "particle_attractor")]
+collision_mask = 17
 script = ExtResource("4_frhyh")
 mode = 1
 wind_strength = 0.3

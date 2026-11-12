@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://cugras5u8c2ht" path="res://assets/data/terrain/objects/tree_cluster_large.tres" id="2_h4ac6"]
 [ext_resource type="Resource" uid="uid://c6da3wdxmqwcm" path="res://assets/data/terrain/objects/tree_cluster_small.tres" id="3_h4ac6"]
 [ext_resource type="Script" uid="uid://cks7psb1tg0ob" path="res://modules/terrain/generator/chunk_definition.gd" id="3_l7p5k"]
-[ext_resource type="Resource" uid="uid://cpopvjrd08oqc" path="res://assets/data/terrain/objects/hawk_circle.tres" id="4_l7p5k"]
+[ext_resource type="Resource" uid="uid://moiqstiw75da" path="res://assets/data/terrain/objects/hawk_clover.tres" id="4_l7p5k"]
 [ext_resource type="Script" uid="uid://hn4a0fyr272r" path="res://modules/terrain/generator/chunk_terrain_object.gd" id="4_yqb07"]
 [ext_resource type="Resource" uid="uid://c7rxv5uhw0cm1" path="res://assets/data/terrain/objects/hunter.tres" id="5_yqb07"]
 
