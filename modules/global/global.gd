@@ -8,9 +8,7 @@ var score: int = 0
 const FOOD_FACTOR = 1;
 const MONUMENT_FACTOR = 1;
  
-
-
-
+var game_is_paused = false
 
 # Generally try to use these variables in Global to get references to these nodes. (or use the % prefix)
 # This way we only have to make sure they exist here.
@@ -80,13 +78,15 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("debug_restart"):
 		print("debug restart")
 		start_scene_change("res://scenes/main_menu/main_menu.tscn")
+	if event.is_action_pressed("debug_pause"):
+		pause_gameplay()
 	
 func AddScore(score_to_add: int) -> void:
 	score += score_to_add
 	score_modified.emit()
 
 func end_level() -> void:
-	hud.show_end_screen();
+	hud.show_end_screen()
 
 func start_scene_change(scene:String):
 	ResourceLoader.load_threaded_request(scene)
@@ -99,4 +99,21 @@ func quit_game():
 
 func game_over():
 	pass
+	
+
+func pause_gameplay(state: bool = !game_is_paused):
+	if state == game_is_paused:
+		return
+	game_is_paused = state
+	
+	if world:
+		# pause the world node
+		if state:
+			world.process_mode = Node.PROCESS_MODE_DISABLED
+		else:
+			world.process_mode = Node.PROCESS_MODE_INHERIT
+	
+	if hud:
+		hud.pause_menu.visible = state
+	
 	

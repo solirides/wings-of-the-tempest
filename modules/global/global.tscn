@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://1cpd5qs628vj" path="res://modules/global/transition_screen.gd" id="2_7x2kt"]
 
 [node name="Global" type="Node" unique_id=1006725444]
+process_mode = 3
 script = ExtResource("1_dm7yc")
 
 [node name="TransitionScreen" type="CanvasLayer" parent="." unique_id=1481331185]

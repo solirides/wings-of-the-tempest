@@ -5,6 +5,7 @@ extends Control
 @onready var hunger_bar: TextureProgressBar = %HungerBar
 @onready var water_bar: TextureProgressBar = %WaterBar
 @onready var end_screen = $LevelEndScreen
+@onready var pause_menu = $PauseMenu
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

@@ -12,7 +12,10 @@
 [ext_resource type="FontFile" uid="uid://drsthoauf0pcs" path="res://assets/fonts/Overlock/Overlock-Bold.ttf" id="9_jqmsc"]
 [ext_resource type="Script" uid="uid://btap4l2sddwwm" path="res://modules/hud/nextlvlbutton.gd" id="10_7hou3"]
 [ext_resource type="Texture2D" uid="uid://cwevcrhnsmgh" path="res://WoT_Button.png" id="10_u86fq"]
+[ext_resource type="FontFile" uid="uid://cbf3l8sl1bb0m" path="res://assets/fonts/NotoSans-Light.ttf" id="12_4dm2m"]
 [ext_resource type="FontFile" uid="uid://cx7w8xbogumup" path="res://assets/fonts/Overlock/Overlock-BoldItalic.ttf" id="12_15qhp"]
+[ext_resource type="Script" uid="uid://h6asfbdr11f4" path="res://modules/hud/pause_menu.gd" id="15_onxet"]
+[ext_resource type="Theme" uid="uid://b3yv5rd5ssq75" path="res://assets/menu_theme.tres" id="16_jlwft"]
 
 [sub_resource type="SystemFont" id="SystemFont_0lhw3"]
 font_names = PackedStringArray("Noto Sans", "Open Sans", "Cantarell")
@@ -33,29 +36,24 @@ font_size = 44
 font = ExtResource("9_jqmsc")
 font_size = 36
 
-[sub_resource type="SystemFont" id="SystemFont_sd20g"]
-font_names = PackedStringArray("Noto Sans", "Roboto", "Sans-Serif")
-font_weight = 300
-subpixel_positioning = 0
-
 [sub_resource type="LabelSettings" id="LabelSettings_f24ow"]
-font = SubResource("SystemFont_sd20g")
+font = ExtResource("12_4dm2m")
 font_size = 70
 
-[sub_resource type="SystemFont" id="SystemFont_sunxf"]
-font_names = PackedStringArray("Noto Sans", "Roboto", "Sans-Serif")
-font_weight = 300
-subpixel_positioning = 0
-
 [sub_resource type="LabelSettings" id="LabelSettings_v6k41"]
-font = SubResource("SystemFont_sunxf")
+font = ExtResource("12_4dm2m")
 font_size = 30
 
 [sub_resource type="LabelSettings" id="LabelSettings_mkjpr"]
 font = ExtResource("12_15qhp")
 font_size = 26
 
+[sub_resource type="LabelSettings" id="LabelSettings_3srgw"]
+font = ExtResource("12_4dm2m")
+font_size = 48
+
 [node name="Hud" type="Control" unique_id=781835399]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -181,6 +179,7 @@ label_settings = SubResource("LabelSettings_as7wb")
 script = ExtResource("8_dyoe6")
 
 [node name="LevelEndScreen" type="ColorRect" parent="." unique_id=7232756]
+visible = false
 z_index = 2
 layout_mode = 1
 anchors_preset = 15
@@ -245,4 +244,63 @@ layout_mode = 2
 text = "Click here to go to the next level!"
 label_settings = SubResource("LabelSettings_mkjpr")
 
+[node name="PauseMenu" type="ColorRect" parent="." unique_id=1937866786]
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5568628)
+script = ExtResource("15_onxet")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu" unique_id=670198653]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -219.0
+offset_top = -180.0
+offset_right = 220.0
+offset_bottom = 143.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="PauseMenu/VBoxContainer" unique_id=394540500]
+layout_mode = 2
+text = "Game Paused"
+label_settings = SubResource("LabelSettings_3srgw")
+horizontal_alignment = 1
+
+[node name="Stats" type="Label" parent="PauseMenu/VBoxContainer" unique_id=741498911]
+layout_mode = 2
+text = "honk honk honk"
+label_settings = SubResource("LabelSettings_v6k41")
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="PauseMenu/VBoxContainer" unique_id=1645815276]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/VBoxContainer" unique_id=133863301]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Resume" type="Button" parent="PauseMenu/VBoxContainer/VBoxContainer" unique_id=2120134957]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme = ExtResource("16_jlwft")
+text = "Resume"
+
+[node name="Quit" type="Button" parent="PauseMenu/VBoxContainer/VBoxContainer" unique_id=1810999606]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme = ExtResource("16_jlwft")
+text = "Quit"
+
 [connection signal="pressed" from="LevelEndScreen/CenterContainer/TextureButton" to="LevelEndScreen/CenterContainer" method="_on_texture_button_pressed"]
+[connection signal="pressed" from="PauseMenu/VBoxContainer/VBoxContainer/Resume" to="PauseMenu" method="_on_resume_pressed"]
+[connection signal="pressed" from="PauseMenu/VBoxContainer/VBoxContainer/Quit" to="PauseMenu" method="_on_quit_pressed"]
