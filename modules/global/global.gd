@@ -9,6 +9,7 @@ const FOOD_FACTOR = 1;
 const MONUMENT_FACTOR = 1;
  
 var game_is_paused = false
+var end_screen_triggered = false
 
 # Generally try to use these variables in Global to get references to these nodes. (or use the % prefix)
 # This way we only have to make sure they exist here.
@@ -89,6 +90,9 @@ func AddScore(score_to_add: int) -> void:
 	score_modified.emit()
 
 func end_level() -> void:
+	if end_screen_triggered == true:
+		return
+	end_screen_triggered = true
 	Audio.play_sfx_track("level complete")
 	hud.show_end_screen()
 
@@ -102,8 +106,12 @@ func quit_game():
 	await get_tree().create_timer(0.5).timeout
 	get_tree().quit()
 
-func game_over():
-	pass
+func game_over() -> void:
+	if end_screen_triggered == true:
+		return
+	end_screen_triggered = true
+	Audio.play_sfx_track("test_sound_2")
+	hud.show_game_over_screen()
 	
 
 func pause_gameplay(state: bool = !game_is_paused):

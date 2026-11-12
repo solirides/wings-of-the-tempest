@@ -13,6 +13,7 @@ func _process(delta: float) -> void:
 
 
 func _on_start_pressed() -> void:
+	Audio.play_sfx_track("test_sound_1")
 	Global.start_scene_change("res://scenes/level_1/level_1.tscn")
 
 

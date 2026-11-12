@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://cwevcrhnsmgh" path="res://WoT_Button.png" id="10_u86fq"]
 [ext_resource type="FontFile" uid="uid://cbf3l8sl1bb0m" path="res://assets/fonts/NotoSans-Light.ttf" id="12_4dm2m"]
 [ext_resource type="FontFile" uid="uid://cx7w8xbogumup" path="res://assets/fonts/Overlock/Overlock-BoldItalic.ttf" id="12_15qhp"]
+[ext_resource type="Script" uid="uid://dpjedue23mtpt" path="res://modules/hud/game_over_screen.gd" id="15_jlwft"]
 [ext_resource type="Script" uid="uid://h6asfbdr11f4" path="res://modules/hud/pause_menu.gd" id="15_onxet"]
 [ext_resource type="Theme" uid="uid://b3yv5rd5ssq75" path="res://assets/menu_theme.tres" id="16_jlwft"]
 
@@ -244,7 +245,54 @@ layout_mode = 2
 text = "Click here to go to the next level!"
 label_settings = SubResource("LabelSettings_mkjpr")
 
+[node name="GameOverScreen" type="ColorRect" parent="." unique_id=1700893039]
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5568628)
+script = ExtResource("15_jlwft")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOverScreen" unique_id=1302354317]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -219.5
+offset_top = -48.0
+offset_right = 219.5
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="GameOverScreen/VBoxContainer" unique_id=382427115]
+layout_mode = 2
+text = "Game Over"
+label_settings = SubResource("LabelSettings_f24ow")
+horizontal_alignment = 1
+
+[node name="Stats" type="Label" parent="GameOverScreen/VBoxContainer" unique_id=1685234026]
+layout_mode = 2
+text = "Ya done messed up :("
+label_settings = SubResource("LabelSettings_v6k41")
+
+[node name="Control" type="Control" parent="GameOverScreen/VBoxContainer" unique_id=402517562]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+
+[node name="Quit" type="Button" parent="GameOverScreen/VBoxContainer" unique_id=938300668]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme = ExtResource("16_jlwft")
+text = "To Main Menu"
+
 [node name="PauseMenu" type="ColorRect" parent="." unique_id=1937866786]
+visible = false
 z_index = 2
 layout_mode = 1
 anchors_preset = 15
@@ -302,5 +350,6 @@ theme = ExtResource("16_jlwft")
 text = "Quit"
 
 [connection signal="pressed" from="LevelEndScreen/CenterContainer/TextureButton" to="LevelEndScreen/CenterContainer" method="_on_texture_button_pressed"]
+[connection signal="pressed" from="GameOverScreen/VBoxContainer/Quit" to="GameOverScreen" method="_on_quit_pressed"]
 [connection signal="pressed" from="PauseMenu/VBoxContainer/VBoxContainer/Resume" to="PauseMenu" method="_on_resume_pressed"]
 [connection signal="pressed" from="PauseMenu/VBoxContainer/VBoxContainer/Quit" to="PauseMenu" method="_on_quit_pressed"]

@@ -5,6 +5,7 @@ extends Control
 @onready var hunger_bar: TextureProgressBar = %HungerBar
 @onready var water_bar: TextureProgressBar = %WaterBar
 @onready var end_screen = $LevelEndScreen
+@onready var game_over_screen = $GameOverScreen
 @onready var pause_menu = $PauseMenu
 
 # Called when the node enters the scene tree for the first time.
@@ -45,6 +46,10 @@ func _on_hunger_changed(current: float) -> void:
 func show_end_screen():
 	end_screen.update_stats()
 	end_screen.visible = true
+
+func show_game_over_screen():
+	# TODO: ADD STATS TO THE SCREEN
+	game_over_screen.visible = true
 
 func update_debug_info():
 	$DebugInfo.text = ""
