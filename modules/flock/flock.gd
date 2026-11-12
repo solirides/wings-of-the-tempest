@@ -163,9 +163,9 @@ func _physics_process(delta: float) -> void:
 		process_hunger(delta)
 
 func process_hunger(delta: float):
-	#in essence both of these if statements are decreasing the hunger
+	# note to others: allow hunger to go negative to allow death by starvation effects
+	current_hunger = current_hunger - starve_rate * delta
 	if current_hunger > 0:
-		current_hunger = max(0.0, current_hunger - starve_rate * delta)
 		if current_hunger < 90.0:
 			for boid in all_boids:
 				var new_speed_mult = lerp(min_hunger_speed_penalty, 1.0, current_hunger / max_hunger)
