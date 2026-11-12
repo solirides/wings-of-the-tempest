@@ -22,6 +22,7 @@ class_name Flock
 @export var subflocks: Array[Flock] = []
 
 @export var boid_properties: BoidProperties = BoidProperties.new()
+@export var cursor_edge_margin: float = 12.0
 
 # only boids with movement controlled by the main flock, not subflocks
 var boids: Array[Boid] = []
@@ -214,9 +215,18 @@ func get_mouse_world_position(camera: Camera3D) -> Vector3:
 	var t = (flock_y - ray_origin.y) / ray_direction.y
 	return ray_origin + ray_direction * t
 	
+func clamp_cursor_to_terrain(pos: Vector3) -> Vector3:
+	if Chunk.all.is_empty():
+		return pos
+	var chunk: Chunk = Chunk.all[0]
+	var min_x: float = chunk.global_position.x + cursor_edge_margin
+	var max_x: float = chunk.global_position.x + chunk.get_global_size().x - cursor_edge_margin
+	pos.x = clampf(pos.x, min_x, max_x)
+	return pos
+
 #This should send the position of the mouse to anything that needs it, without having to send for the camera.
 func get_cursor_pos() -> Vector3 :
-	return get_mouse_world_position(camera_controller.camera_node)
+	return clamp_cursor_to_terrain(get_mouse_world_position(camera_controller.camera_node))
 
 func get_center_of_mass(nodes: Array = boids) -> Vector3:
 	if nodes.is_empty():
