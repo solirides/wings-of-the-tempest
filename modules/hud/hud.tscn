@@ -219,7 +219,14 @@ something something
 123123"
 label_settings = SubResource("LabelSettings_v6k41")
 
+[node name="Quit" type="Button" parent="LevelEndScreen/VBoxContainer" unique_id=1376487646]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme = ExtResource("16_jlwft")
+text = "To Main Menu"
+
 [node name="CenterContainer" type="CenterContainer" parent="LevelEndScreen" unique_id=1277108892]
+visible = false
 custom_minimum_size = Vector2(183, 40)
 custom_maximum_size = Vector2(400, 100)
 layout_mode = 1
@@ -349,6 +356,7 @@ layout_mode = 2
 theme = ExtResource("16_jlwft")
 text = "Quit"
 
+[connection signal="pressed" from="LevelEndScreen/VBoxContainer/Quit" to="GameOverScreen" method="_on_quit_pressed"]
 [connection signal="pressed" from="LevelEndScreen/CenterContainer/TextureButton" to="LevelEndScreen/CenterContainer" method="_on_texture_button_pressed"]
 [connection signal="pressed" from="GameOverScreen/VBoxContainer/Quit" to="GameOverScreen" method="_on_quit_pressed"]
 [connection signal="pressed" from="PauseMenu/VBoxContainer/VBoxContainer/Resume" to="PauseMenu" method="_on_resume_pressed"]
