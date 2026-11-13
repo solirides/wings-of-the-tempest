@@ -23,6 +23,7 @@ extends Node3D
 @export var lock_to_axis: bool = true
 @export var axis: Vector3 = Vector3(0,0,-1)
 @export var mouse_sensitivity: float = 0.1
+@export var hide_cursor: bool = false
 
 @onready var camera_node:Camera3D = $Camera
 
@@ -53,6 +54,11 @@ func _ready() -> void:
 		zoom = camera_node.size
 	else:
 		zoom = self.global_position.distance_to(camera_node.global_position)
+		
+	if hide_cursor:
+		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	else:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
 	# Just use the exported variable, for goodness sake!
 	zoom = cam_zoom;
