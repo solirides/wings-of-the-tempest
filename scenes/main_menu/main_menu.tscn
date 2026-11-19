@@ -16,6 +16,7 @@
 [ext_resource type="FontFile" uid="uid://cmchjctewv1kf" path="res://assets/fonts/Overlock/Overlock-Regular.ttf" id="11_vnpsp"]
 [ext_resource type="Script" uid="uid://dj2e77eb1bmrp" path="res://scenes/main_menu/bobbing_animation.gd" id="12_4ujhu"]
 [ext_resource type="FontFile" uid="uid://dty6ddeqe5y2d" path="res://assets/fonts/Ephesis-Regular.ttf" id="15_4ujhu"]
+[ext_resource type="PackedScene" uid="uid://3awdp2johxrd" path="res://modules/hud/options_menu.tscn" id="17_a1gy5"]
 
 [sub_resource type="Environment" id="Environment_6lmcw"]
 background_mode = 1
@@ -296,6 +297,12 @@ layout_mode = 2
 theme = ExtResource("5_wem23")
 text = "Start"
 
+[node name="Options" type="Button" parent="VBoxContainer" unique_id=2122003374]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme = ExtResource("5_wem23")
+text = "Options"
+
 [node name="Quit" type="Button" parent="VBoxContainer" unique_id=1360772920]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
@@ -326,5 +333,22 @@ grow_vertical = 0
 text = "Version 123"
 label_settings = SubResource("LabelSettings_f24ow")
 
+[node name="BackDrop" type="ColorRect" parent="." unique_id=863941702]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.100317664, 0.14562792, 0.16560552, 0.56078434)
+
+[node name="OptionsMenu" parent="." unique_id=756516751 instance=ExtResource("17_a1gy5")]
+layout_mode = 1
+
 [connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="VBoxContainer/Options" to="." method="_on_options_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="OptionsMenu/Back" to="." method="_on_options_back_pressed"]
+
+[editable path="OptionsMenu"]

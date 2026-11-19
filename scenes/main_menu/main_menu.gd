@@ -5,6 +5,7 @@ extends Control
 func _ready() -> void:
 	Audio.play_music_track("a_honk_in_the_park", true)
 	#Audio.play_music_track("not_music", true)
+	$BackDrop.visible = false
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -20,4 +21,11 @@ func _on_start_pressed() -> void:
 func _on_quit_pressed() -> void:
 	Global.quit_game()
 	#get_tree().quit()
-	
+
+func _on_options_pressed() -> void:
+	$BackDrop.visible = true
+	$OptionsMenu.visible = true
+
+func _on_options_back_pressed() -> void:
+	$BackDrop.visible = false
+	$OptionsMenu.visible = false

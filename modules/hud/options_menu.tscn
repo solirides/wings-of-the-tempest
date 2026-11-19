@@ -74,6 +74,7 @@ horizontal_alignment = 1
 [node name="MusicSlider" type="HSlider" parent="ScrollContainer/VBoxContainer/VBoxContainer" unique_id=2044735357]
 layout_mode = 2
 theme = ExtResource("4_qiwav")
+value = 100.0
 
 [node name="SFX" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainer" unique_id=200355502]
 layout_mode = 2
@@ -85,6 +86,7 @@ horizontal_alignment = 1
 [node name="SFXSlider" type="HSlider" parent="ScrollContainer/VBoxContainer/VBoxContainer" unique_id=1828721567]
 layout_mode = 2
 theme = ExtResource("4_qiwav")
+value = 100.0
 
 [node name="Camera" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainer" unique_id=578592941]
 layout_mode = 2
@@ -105,4 +107,6 @@ popup/item_1/id = 0
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
+[connection signal="value_changed" from="ScrollContainer/VBoxContainer/VBoxContainer/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="ScrollContainer/VBoxContainer/VBoxContainer/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
 [connection signal="item_selected" from="ScrollContainer/VBoxContainer/VBoxContainer/CameraModeOption" to="." method="_on_camera_mode_option_item_selected"]
