@@ -72,8 +72,8 @@ var spin_direction: float = 1.0 if randf() > 0.5 else -1.0
 var cam_is_moving: bool:
 	get: return Global.camera.cam_is_moving if (Global.camera and is_instance_valid(Global.camera)) else false
 
-var move_direction: Vector3:
-	get: return Global.camera.move_direction if (Global.camera and is_instance_valid(Global.camera)) else Vector3.ZERO
+var camera_velocity: Vector3:
+	get: return Global.camera.camera_velocity if (Global.camera and is_instance_valid(Global.camera)) else Vector3.ZERO
 
 var death_particles = preload("res://modules/flock/death_particles.tscn")
 var death_queued = false
@@ -239,9 +239,10 @@ func apply_soft_collision(delta: float):
 	properties.speed.add_modifier(modifier)
 
 func boid_movement(delta: float):
-	var camera_force : Vector3 = Vector3.ZERO
-	if cam_is_moving :
-		camera_force = move_direction * properties.cam_moving_weight.value
+	# Disable this for now. Ideally we can make the boids stay on screen by changing the camera behavior instead of the boid behavior.
+	#var camera_force : Vector3 = Vector3.ZERO
+	#if cam_is_moving :
+		#camera_force = camera_velocity * properties.cam_moving_weight.value
 	
 	var boids: Array[Boid] = flock.boids
 	var neighbors : Array = []
@@ -287,7 +288,8 @@ func boid_movement(delta: float):
 		if cam_is_moving == false :
 			boid_subflock_spin_force = spinning(local_center(neighbors), neighbors) * properties.spin_weight.value
 		var spin_alignment = alignment_force * 0.2
-		boid_direction += spin_alignment + camera_force + boid_subflock_spin_force + repel_force
+		# camera force would go here
+		boid_direction += spin_alignment + boid_subflock_spin_force + repel_force
 	else :
 		# goal force is normalized and scaled by the goal weight earlier in this function
 		boid_direction += goal_force + alignment_force

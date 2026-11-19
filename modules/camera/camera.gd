@@ -21,6 +21,8 @@ extends Node3D
 
 @export var enable_post_processing: bool = true
 @export var lock_to_axis: bool = true
+@export var use_key_movement: bool = true
+@export var use_mouse_movement: bool = true
 @export var axis: Vector3 = Vector3(0,0,-1)
 @export var mouse_sensitivity: float = 0.1
 @export var hide_cursor: bool = false
@@ -28,7 +30,7 @@ extends Node3D
 @onready var camera_node:Camera3D = $Camera
 
 var cam_is_moving: bool = false
-var move_direction: Vector3 = Vector3.ZERO
+#var move_direction: Vector3 = Vector3.ZERO
 var camera_velocity: Vector3 = Vector3.ZERO
 
 var free_cam_mode: bool = false
@@ -119,45 +121,15 @@ func _free_cam_movement(delta: float) -> void:
 	#camera_node.global_position += velocity
 	
 
-#this feels jank as shit.... sorry. My tutorials way of doing cam movement didn't work.
 func _cam_movement(delta: float) -> void :
-	var mouse_pos := get_viewport().get_mouse_position()
-	var window_size = get_viewport().get_visible_rect().size
-	var move_dir = Vector3.ZERO
+	var move_dir: Vector3 = Vector3.ZERO
+	if use_mouse_movement:
+		move_dir += get_cam_dir_from_mouse()
+	if use_key_movement:
+		move_dir += get_cam_dir_from_keys()
+	move_dir = move_dir.limit_length(1.0)
 	
-	#screen boundaries, for x
-	if mouse_pos.x <= edge_margin:
-		move_dir.x = -1.0 #moves left
-		#print("I should be moving")
-	elif mouse_pos.x >= window_size.x - edge_margin:
-		move_dir.x = 1.0  #moves Right
-		#print("I should be moving")
-	
-	#screen boundaries, for y
-	if mouse_pos.y <= edge_margin:
-		move_dir.z = 1.0 #Up or forward
-		#print("I should be moving")
-	elif mouse_pos.y >= window_size.y - edge_margin:
-		move_dir.z = -1.0  #Down or fackward
-		#print("I should be moving")
-	
-	# get the vectors of the screen's forward and right in 3d space
-	var forward = -camera_node.global_transform.basis.z
-	var right = camera_node.global_transform.basis.x
-	if lock_to_axis:
-		# project movement vectors to the fixed axis
-		forward = forward.normalized()
-		right = right.normalized()
-		move_direction = (right * move_dir.x + forward * move_dir.z).normalized().project(axis)
-	else:
-		# project the movement vectors to the ground plane
-		forward.y = 0
-		right.y = 0
-		forward = forward.normalized()
-		right = right.normalized()
-		move_direction = (right * move_dir.x + forward * move_dir.z).normalized()
-	
-	camera_velocity = lerp(camera_velocity, move_direction, delta * accel_speed)
+	camera_velocity = lerp(camera_velocity, move_dir, delta * accel_speed)
 	# change position of the anchor (this node)
 	global_position += camera_velocity * cam_speed * delta
 	
@@ -166,7 +138,61 @@ func _cam_movement(delta: float) -> void :
 	
 	else:
 		cam_is_moving = false
-		move_direction = Vector3.ZERO
+
+func get_cam_dir_from_keys() -> Vector3:
+	var input_vec = Input.get_vector("free_cam_left","free_cam_right","free_cam_forward","free_cam_backward")
+	
+	var forward = -camera_node.global_transform.basis.z.normalized()
+	var right = camera_node.global_transform.basis.x.normalized()
+	
+	var move_direction: Vector3 = camera_node.global_transform.basis * Vector3(input_vec.x, 0, input_vec.y).normalized()
+	if lock_to_axis:
+		# project movement vectors to the fixed axis
+		# normalize so it moves at full speed
+		move_direction = move_direction.project(axis).normalized()
+	else:
+		# project the movement vectors to the ground plane
+		move_direction = move_direction.project(Vector3.FORWARD)
+	
+	return move_direction
+	
+
+
+func get_cam_dir_from_mouse() -> Vector3 :
+	var mouse_pos := get_viewport().get_mouse_position()
+	var window_size = get_viewport().get_visible_rect().size
+	var input_vec = Vector3.ZERO
+	
+	#screen boundaries, for x
+	if mouse_pos.x <= edge_margin:
+		input_vec.x = -1.0 #moves left
+		#print("I should be moving")
+	elif mouse_pos.x >= window_size.x - edge_margin:
+		input_vec.x = 1.0  #moves Right
+		#print("I should be moving")
+	
+	#screen boundaries, for y
+	if mouse_pos.y <= edge_margin:
+		input_vec.z = 1.0 #Up or forward
+		#print("I should be moving")
+	elif mouse_pos.y >= window_size.y - edge_margin:
+		input_vec.z = -1.0  #Down or fackward
+		#print("I should be moving")
+	
+	# get the vectors of the screen's forward and right in 3d space
+	var forward = -camera_node.global_transform.basis.z.normalized()
+	var right = camera_node.global_transform.basis.x.normalized()
+	var move_direction: Vector3 = (right * input_vec.x + forward * input_vec.z).normalized()
+	if lock_to_axis:
+		# project movement vectors to the fixed axis
+		move_direction = move_direction.project(axis).normalized()
+	else:
+		# project the movement vectors to the ground plane
+		move_direction = move_direction.project(Vector3.FORWARD)
+		#print(move_direction)
+	
+	return move_direction
+
 
 #camera zoom. Right now it's tied to the scroll wheel, BUT it should be tied to how many boids are in your flock. I.G. for every 10 boids you have, the zoom get +10 or -10 (when you lose them)
 #THIS SHIT IS BROKEN LMAO... I cant seem to get it to move in both the y and z direction at the same time... :(
