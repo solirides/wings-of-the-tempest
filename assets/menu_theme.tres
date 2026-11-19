@@ -62,6 +62,13 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_typg0"]
+bg_color = Color(0.7877979, 0.89961135, 0.9187382, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_tf8oi"]
+color = Color(0.1138579, 0.123883374, 0.14415342, 1)
+thickness = 6
+
 [resource]
 Button/font_sizes/font_size = 48
 Button/fonts/font = ExtResource("1_tf8oi")
@@ -70,3 +77,6 @@ Button/styles/hover = SubResource("StyleBoxFlat_hqjoi")
 Button/styles/hover_pressed = SubResource("StyleBoxFlat_m72v5")
 Button/styles/normal = SubResource("StyleBoxFlat_vw0k4")
 Button/styles/pressed = SubResource("StyleBoxFlat_hcgci")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_typg0")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_typg0")
+HSlider/styles/slider = SubResource("StyleBoxLine_tf8oi")

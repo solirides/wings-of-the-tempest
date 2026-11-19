@@ -1,0 +1,104 @@
+[gd_scene format=3 uid="uid://3awdp2johxrd"]
+
+[ext_resource type="Script" uid="uid://dvjj3cof7ohks" path="res://modules/hud/options_menu.gd" id="1_biacy"]
+[ext_resource type="Theme" uid="uid://b3yv5rd5ssq75" path="res://assets/menu_theme.tres" id="2_qiwav"]
+[ext_resource type="FontFile" uid="uid://cbf3l8sl1bb0m" path="res://assets/fonts/NotoSans-Light.ttf" id="3_s3khg"]
+[ext_resource type="Theme" uid="uid://ce17ku1d215yv" path="res://assets/options_theme.tres" id="4_qiwav"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_6cmvc"]
+font = ExtResource("3_s3khg")
+font_size = 48
+
+[sub_resource type="LabelSettings" id="LabelSettings_qcueh"]
+font = ExtResource("3_s3khg")
+font_size = 30
+
+[node name="OptionsMenu" type="Control" unique_id=756516751]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_biacy")
+
+[node name="Back" type="Button" parent="." unique_id=344657712]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 1
+offset_left = 38.0
+offset_top = 32.0
+offset_right = 238.0
+offset_bottom = 98.0
+theme = ExtResource("2_qiwav")
+text = "Back"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=98984162]
+custom_minimum_size = Vector2(400, 600)
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = 32.0
+offset_right = 200.0
+offset_bottom = -35.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=522225679]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer" unique_id=325093534]
+layout_mode = 2
+text = "Options"
+label_settings = SubResource("LabelSettings_6cmvc")
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="ScrollContainer/VBoxContainer" unique_id=1419890326]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/VBoxContainer" unique_id=428783626]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Quit" type="Button" parent="ScrollContainer/VBoxContainer/VBoxContainer" unique_id=67198974]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme = ExtResource("4_qiwav")
+text = "Quit"
+
+[node name="Music" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainer" unique_id=1463561977]
+layout_mode = 2
+theme = ExtResource("4_qiwav")
+text = "Music Volume"
+label_settings = SubResource("LabelSettings_qcueh")
+horizontal_alignment = 1
+
+[node name="MusicSlider" type="HSlider" parent="ScrollContainer/VBoxContainer/VBoxContainer" unique_id=2044735357]
+layout_mode = 2
+theme = ExtResource("4_qiwav")
+
+[node name="SFX" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainer" unique_id=200355502]
+layout_mode = 2
+theme = ExtResource("4_qiwav")
+text = "SFX Volume"
+label_settings = SubResource("LabelSettings_qcueh")
+horizontal_alignment = 1
+
+[node name="SFXSlider" type="HSlider" parent="ScrollContainer/VBoxContainer/VBoxContainer" unique_id=1828721567]
+layout_mode = 2
+theme = ExtResource("4_qiwav")
+
+[node name="OptionButton" type="OptionButton" parent="ScrollContainer/VBoxContainer/VBoxContainer" unique_id=964790461]
+layout_mode = 2
+theme = ExtResource("4_qiwav")
+item_count = 2
+popup/item_0/text = "Lock To Axis"
+popup/item_0/id = 0
+popup/item_1/text = "Unlocked"
+popup/item_1/id = 1
+
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
