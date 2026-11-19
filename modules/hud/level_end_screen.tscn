@@ -1,0 +1,93 @@
+[gd_scene format=3 uid="uid://dxrvc1r50brce"]
+
+[ext_resource type="Script" uid="uid://cxboty7yf78n1" path="res://modules/hud/level_end_screen.gd" id="1_25toc"]
+[ext_resource type="FontFile" uid="uid://cbf3l8sl1bb0m" path="res://assets/fonts/NotoSans-Light.ttf" id="2_k0wkm"]
+[ext_resource type="Theme" uid="uid://b3yv5rd5ssq75" path="res://assets/menu_theme.tres" id="3_hkjrm"]
+[ext_resource type="Script" uid="uid://btap4l2sddwwm" path="res://modules/hud/nextlvlbutton.gd" id="4_02vg7"]
+[ext_resource type="Texture2D" uid="uid://cwevcrhnsmgh" path="res://WoT_Button.png" id="5_lixoy"]
+[ext_resource type="FontFile" uid="uid://cx7w8xbogumup" path="res://assets/fonts/Overlock/Overlock-BoldItalic.ttf" id="6_uxnfl"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_f24ow"]
+font = ExtResource("2_k0wkm")
+font_size = 70
+
+[sub_resource type="LabelSettings" id="LabelSettings_v6k41"]
+font = ExtResource("2_k0wkm")
+font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_mkjpr"]
+font = ExtResource("6_uxnfl")
+font_size = 26
+
+[node name="LevelEndScreen" type="Control" unique_id=835580239]
+z_index = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_25toc")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1421288915]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -219.5
+offset_top = -48.0
+offset_right = 219.5
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=1696688166]
+layout_mode = 2
+text = "Level Cleared!"
+label_settings = SubResource("LabelSettings_f24ow")
+horizontal_alignment = 1
+
+[node name="Stats" type="Label" parent="VBoxContainer" unique_id=1661353712]
+layout_mode = 2
+text = "summary:
++x birds
+something something
+123123"
+label_settings = SubResource("LabelSettings_v6k41")
+
+[node name="Quit" type="Button" parent="VBoxContainer" unique_id=890742775]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme = ExtResource("3_hkjrm")
+text = "To Main Menu"
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=444133455]
+visible = false
+custom_minimum_size = Vector2(183, 40)
+custom_maximum_size = Vector2(400, 100)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -126.5
+offset_top = -183.75
+offset_right = 126.500244
+offset_bottom = -143.75
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("4_02vg7")
+
+[node name="TextureButton" type="TextureButton" parent="CenterContainer" unique_id=1316967345]
+layout_mode = 2
+texture_normal = ExtResource("5_lixoy")
+
+[node name="Label" type="Label" parent="CenterContainer" unique_id=932245127]
+layout_mode = 2
+text = "Click here to go to the next level!"
+label_settings = SubResource("LabelSettings_mkjpr")
+
+[connection signal="pressed" from="CenterContainer/TextureButton" to="CenterContainer" method="_on_texture_button_pressed"]

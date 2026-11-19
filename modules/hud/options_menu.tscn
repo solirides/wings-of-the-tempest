@@ -64,13 +64,6 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Quit" type="Button" parent="ScrollContainer/VBoxContainer/VBoxContainer" unique_id=67198974]
-visible = false
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-theme = ExtResource("4_qiwav")
-text = "Quit"
-
 [node name="Music" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainer" unique_id=1463561977]
 layout_mode = 2
 theme = ExtResource("4_qiwav")
@@ -100,13 +93,16 @@ text = "Camera Mode"
 label_settings = SubResource("LabelSettings_qcueh")
 horizontal_alignment = 1
 
-[node name="OptionButton" type="OptionButton" parent="ScrollContainer/VBoxContainer/VBoxContainer" unique_id=964790461]
+[node name="CameraModeOption" type="OptionButton" parent="ScrollContainer/VBoxContainer/VBoxContainer" unique_id=964790461]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("4_qiwav")
 item_count = 2
 popup/item_0/text = "Lock To Axis"
-popup/item_0/id = 0
+popup/item_0/id = 1
 popup/item_1/text = "Unlocked"
-popup/item_1/id = 1
+popup/item_1/id = 0
 
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
+[connection signal="item_selected" from="ScrollContainer/VBoxContainer/VBoxContainer/CameraModeOption" to="." method="_on_camera_mode_option_item_selected"]

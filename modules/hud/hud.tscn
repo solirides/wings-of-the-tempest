@@ -4,19 +4,16 @@
 [ext_resource type="Texture2D" uid="uid://cw2nmsb2q5ynn" path="res://assets/textures/UI/healthbarUnder.png" id="2_sunxf"]
 [ext_resource type="Texture2D" uid="uid://oi42l00xp8p1" path="res://WoT_tomato_big.png" id="3_fib5d"]
 [ext_resource type="Texture2D" uid="uid://d0cvmckaqaoa7" path="res://assets/textures/UI/healthbarProgress.png" id="3_v6k41"]
-[ext_resource type="Script" uid="uid://cxboty7yf78n1" path="res://modules/hud/level_end_screen.gd" id="4_v6k41"]
 [ext_resource type="Texture2D" uid="uid://b682hdcf1k2x4" path="res://WoT_water_1.png" id="6_ugr31"]
 [ext_resource type="Texture2D" uid="uid://bdgida065gbo4" path="res://assets/textures/UI/waterbarProgress.png" id="7_ngoot"]
 [ext_resource type="Script" uid="uid://dev0witimtagw" path="res://modules/hud/score.gd" id="8_dyoe6"]
 [ext_resource type="Script" uid="uid://b2172yn6kueq4" path="res://modules/hud/stopwatch.gd" id="8_nvutd"]
 [ext_resource type="FontFile" uid="uid://drsthoauf0pcs" path="res://assets/fonts/Overlock/Overlock-Bold.ttf" id="9_jqmsc"]
-[ext_resource type="Script" uid="uid://btap4l2sddwwm" path="res://modules/hud/nextlvlbutton.gd" id="10_7hou3"]
-[ext_resource type="Texture2D" uid="uid://cwevcrhnsmgh" path="res://WoT_Button.png" id="10_u86fq"]
-[ext_resource type="FontFile" uid="uid://cbf3l8sl1bb0m" path="res://assets/fonts/NotoSans-Light.ttf" id="12_4dm2m"]
+[ext_resource type="PackedScene" uid="uid://dxrvc1r50brce" path="res://modules/hud/level_end_screen.tscn" id="11_jqmsc"]
 [ext_resource type="FontFile" uid="uid://cx7w8xbogumup" path="res://assets/fonts/Overlock/Overlock-BoldItalic.ttf" id="12_15qhp"]
-[ext_resource type="Script" uid="uid://dpjedue23mtpt" path="res://modules/hud/game_over_screen.gd" id="15_jlwft"]
-[ext_resource type="Script" uid="uid://h6asfbdr11f4" path="res://modules/hud/pause_menu.gd" id="15_onxet"]
-[ext_resource type="Theme" uid="uid://b3yv5rd5ssq75" path="res://assets/menu_theme.tres" id="16_jlwft"]
+[ext_resource type="PackedScene" uid="uid://egqxi4q3xxo" path="res://modules/hud/game_over_screen.tscn" id="12_jn86t"]
+[ext_resource type="PackedScene" uid="uid://c0o1icwfp1kiw" path="res://modules/hud/pause_menu.tscn" id="13_66fwg"]
+[ext_resource type="PackedScene" uid="uid://3awdp2johxrd" path="res://modules/hud/options_menu.tscn" id="14_jn86t"]
 
 [sub_resource type="SystemFont" id="SystemFont_0lhw3"]
 font_names = PackedStringArray("Noto Sans", "Open Sans", "Cantarell")
@@ -37,22 +34,6 @@ font_size = 44
 font = ExtResource("9_jqmsc")
 font_size = 36
 
-[sub_resource type="LabelSettings" id="LabelSettings_f24ow"]
-font = ExtResource("12_4dm2m")
-font_size = 70
-
-[sub_resource type="LabelSettings" id="LabelSettings_v6k41"]
-font = ExtResource("12_4dm2m")
-font_size = 30
-
-[sub_resource type="LabelSettings" id="LabelSettings_mkjpr"]
-font = ExtResource("12_15qhp")
-font_size = 26
-
-[sub_resource type="LabelSettings" id="LabelSettings_3srgw"]
-font = ExtResource("12_4dm2m")
-font_size = 48
-
 [node name="Hud" type="Control" unique_id=781835399]
 process_mode = 3
 layout_mode = 3
@@ -62,6 +43,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_lqyyi")
+show_debug_text = true
 
 [node name="Controls" type="Label" parent="." unique_id=452652156]
 visible = false
@@ -179,9 +161,8 @@ text = "Score: 0"
 label_settings = SubResource("LabelSettings_as7wb")
 script = ExtResource("8_dyoe6")
 
-[node name="LevelEndScreen" type="ColorRect" parent="." unique_id=7232756]
+[node name="MenuBackdrop" type="ColorRect" parent="." unique_id=760649412]
 visible = false
-z_index = 2
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -189,175 +170,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.5568628)
-script = ExtResource("4_v6k41")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="LevelEndScreen" unique_id=147339816]
+[node name="LevelEndScreen" parent="." unique_id=828425942 instance=ExtResource("11_jqmsc")]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -219.5
-offset_top = -48.0
-offset_right = 219.5
-offset_bottom = 48.0
-grow_horizontal = 2
-grow_vertical = 2
 
-[node name="Label" type="Label" parent="LevelEndScreen/VBoxContainer" unique_id=518905686]
-layout_mode = 2
-text = "Level Cleared!"
-label_settings = SubResource("LabelSettings_f24ow")
-horizontal_alignment = 1
-
-[node name="Stats" type="Label" parent="LevelEndScreen/VBoxContainer" unique_id=1273775322]
-layout_mode = 2
-text = "summary:
-+x birds
-something something
-123123"
-label_settings = SubResource("LabelSettings_v6k41")
-
-[node name="Quit" type="Button" parent="LevelEndScreen/VBoxContainer" unique_id=1376487646]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-theme = ExtResource("16_jlwft")
-text = "To Main Menu"
-
-[node name="CenterContainer" type="CenterContainer" parent="LevelEndScreen" unique_id=1277108892]
-visible = false
-custom_minimum_size = Vector2(183, 40)
-custom_maximum_size = Vector2(400, 100)
+[node name="GameOverScreen" parent="." unique_id=2128871407 instance=ExtResource("12_jn86t")]
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -126.5
-offset_top = -183.75
-offset_right = 126.500244
-offset_bottom = -143.75
-grow_horizontal = 2
-grow_vertical = 0
-script = ExtResource("10_7hou3")
 
-[node name="TextureButton" type="TextureButton" parent="LevelEndScreen/CenterContainer" unique_id=1408959253]
-layout_mode = 2
-texture_normal = ExtResource("10_u86fq")
-
-[node name="Label" type="Label" parent="LevelEndScreen/CenterContainer" unique_id=860141670]
-layout_mode = 2
-text = "Click here to go to the next level!"
-label_settings = SubResource("LabelSettings_mkjpr")
-
-[node name="GameOverScreen" type="ColorRect" parent="." unique_id=1700893039]
-z_index = 2
+[node name="PauseMenu" parent="." unique_id=47267459 instance=ExtResource("13_66fwg")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.5568628)
-script = ExtResource("15_jlwft")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="GameOverScreen" unique_id=1302354317]
+[node name="OptionsMenu" parent="." unique_id=756516751 instance=ExtResource("14_jn86t")]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -219.5
-offset_top = -48.0
-offset_right = 219.5
-offset_bottom = 48.0
-grow_horizontal = 2
-grow_vertical = 2
 
-[node name="Label" type="Label" parent="GameOverScreen/VBoxContainer" unique_id=382427115]
-layout_mode = 2
-text = "Game Over"
-label_settings = SubResource("LabelSettings_f24ow")
-horizontal_alignment = 1
+[connection signal="pressed" from="PauseMenu/VBoxContainer/VBoxContainer/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="OptionsMenu/Back" to="." method="_on_back_pressed"]
 
-[node name="Stats" type="Label" parent="GameOverScreen/VBoxContainer" unique_id=1685234026]
-layout_mode = 2
-text = "Ya done messed up :("
-label_settings = SubResource("LabelSettings_v6k41")
-
-[node name="Control" type="Control" parent="GameOverScreen/VBoxContainer" unique_id=402517562]
-custom_minimum_size = Vector2(0, 60)
-layout_mode = 2
-
-[node name="Quit" type="Button" parent="GameOverScreen/VBoxContainer" unique_id=938300668]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-theme = ExtResource("16_jlwft")
-text = "To Main Menu"
-
-[node name="PauseMenu" type="ColorRect" parent="." unique_id=1937866786]
-visible = false
-z_index = 2
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.5568628)
-script = ExtResource("15_onxet")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu" unique_id=670198653]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -219.0
-offset_top = -180.0
-offset_right = 220.0
-offset_bottom = 143.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="PauseMenu/VBoxContainer" unique_id=394540500]
-layout_mode = 2
-text = "Game Paused"
-label_settings = SubResource("LabelSettings_3srgw")
-horizontal_alignment = 1
-
-[node name="Stats" type="Label" parent="PauseMenu/VBoxContainer" unique_id=741498911]
-layout_mode = 2
-text = "honk honk honk"
-label_settings = SubResource("LabelSettings_v6k41")
-horizontal_alignment = 1
-
-[node name="Control" type="Control" parent="PauseMenu/VBoxContainer" unique_id=1645815276]
-custom_minimum_size = Vector2(0, 60)
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/VBoxContainer" unique_id=133863301]
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="Resume" type="Button" parent="PauseMenu/VBoxContainer/VBoxContainer" unique_id=2120134957]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-theme = ExtResource("16_jlwft")
-text = "Resume"
-
-[node name="Quit" type="Button" parent="PauseMenu/VBoxContainer/VBoxContainer" unique_id=1810999606]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-theme = ExtResource("16_jlwft")
-text = "Quit"
-
-[connection signal="pressed" from="LevelEndScreen/VBoxContainer/Quit" to="GameOverScreen" method="_on_quit_pressed"]
-[connection signal="pressed" from="LevelEndScreen/CenterContainer/TextureButton" to="LevelEndScreen/CenterContainer" method="_on_texture_button_pressed"]
-[connection signal="pressed" from="GameOverScreen/VBoxContainer/Quit" to="GameOverScreen" method="_on_quit_pressed"]
-[connection signal="pressed" from="PauseMenu/VBoxContainer/VBoxContainer/Resume" to="PauseMenu" method="_on_resume_pressed"]
-[connection signal="pressed" from="PauseMenu/VBoxContainer/VBoxContainer/Quit" to="PauseMenu" method="_on_quit_pressed"]
+[editable path="PauseMenu"]
+[editable path="OptionsMenu"]

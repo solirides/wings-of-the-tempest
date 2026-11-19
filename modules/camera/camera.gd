@@ -74,8 +74,9 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("free_cam"):
-		#toggle_free_cam()
-		print("free cam disabled for now")
+		if Global.dev_mode:
+			toggle_free_cam()
+		#print("free cam disabled for now")
 	if free_cam_mode == true and event is InputEventMouseMotion:
 		# yaw
 		target_rotation.y += deg_to_rad(-event.screen_relative.x * mouse_sensitivity)
@@ -144,7 +145,7 @@ func _cam_movement(delta: float) -> void :
 		var flock_pos = Global.flock.get_center_of_mass()
 		var distance_factor = (flock_pos - view_center) / max_distance_to_flock 
 		if distance_factor.length() > 1:
-			print("applying force to camera to keep boids on screen")
+			#print("applying force to camera to keep boids on screen")
 			var force_scale = 0.1
 			# apply a force that scales linearly with distance, starting from zero at max_distance_to_flock
 			var force = (distance_factor.length() - 1) * distance_factor.normalized() * force_scale
@@ -214,7 +215,7 @@ func get_cam_dir_from_mouse() -> Vector3 :
 		move_direction = move_direction.project(axis).normalized()
 	else:
 		# project the movement vectors to the ground plane
-		move_direction = move_direction.project(Vector3.FORWARD)
+		move_direction = Plane.PLANE_XZ.project(move_direction).normalized()
 		#print(move_direction)
 	
 	return move_direction

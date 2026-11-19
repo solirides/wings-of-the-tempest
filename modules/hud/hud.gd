@@ -7,6 +7,9 @@ extends Control
 @onready var end_screen = $LevelEndScreen
 @onready var game_over_screen = $GameOverScreen
 @onready var pause_menu = $PauseMenu
+@onready var options_menu = $OptionsMenu
+@onready var menu_backdrop = $MenuBackdrop
+var active_menu: Control = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -16,9 +19,11 @@ func _ready() -> void:
 	# call _on_main_nodes_ready() when Global emits the signal
 	Global.connect("main_nodes_ready", self._on_main_nodes_ready)
 	
+	Global.connect("game_paused", self._on_game_paused)
+	
 	end_screen.visible = false
 	
-	$DebugInfo.visible = show_debug_text
+	$DebugInfo.visible = show_debug_text && Global.dev_mode
 	
 
 func _on_main_nodes_ready():
@@ -43,6 +48,12 @@ func _on_hunger_changed(current: float) -> void:
 	pass
 	#hunger_bar.value = current
 
+func _on_game_paused(paused: bool) -> void:
+	menu_backdrop.visible = paused
+	pause_menu.visible = paused
+	for n in [options_menu]:
+		n.visible = false
+
 func show_end_screen():
 	end_screen.update_stats()
 	end_screen.visible = true
@@ -64,3 +75,13 @@ func update_debug_info():
 		lines.append("hydration: " + str(Global.flock.hydration))
 		lines.append("scattering: " + str(Global.flock.boid_properties.flock_state == BoidProperties.FLOCK_STATE.SCATTERING))
 	$DebugInfo.text = "\n".join(lines)
+
+
+func _on_options_pressed() -> void:
+	options_menu.visible = true
+	pause_menu.visible = false
+
+
+func _on_back_pressed() -> void:
+	options_menu.visible = false
+	pause_menu.visible = true

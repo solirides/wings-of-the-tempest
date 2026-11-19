@@ -3,6 +3,9 @@ extends Node
 # This global (Singleton) script is automatically loaded at runtime along with its scene.
 # res://modules/global/global.tscn
 
+# enable dev_mode in editor
+var dev_mode = OS.is_debug_build()
+
 # Scoring system
 var score: int = 0
 const FOOD_FACTOR = 1;
@@ -28,6 +31,8 @@ var ready_emitted = false
 
 # Signal that is emitted when score is updated
 signal score_modified
+
+signal game_paused(paused: bool)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -131,7 +136,8 @@ func pause_gameplay(state: bool = !game_is_paused):
 		else:
 			world.process_mode = Node.PROCESS_MODE_INHERIT
 	
-	if hud:
-		hud.pause_menu.visible = state
+	game_paused.emit(state)
+	#if hud:
+		#hud.pause_menu.visible = state
 	
 	
