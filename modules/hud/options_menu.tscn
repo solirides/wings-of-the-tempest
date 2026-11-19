@@ -65,6 +65,7 @@ layout_mode = 2
 theme_override_constants/separation = 10
 
 [node name="Quit" type="Button" parent="ScrollContainer/VBoxContainer/VBoxContainer" unique_id=67198974]
+visible = false
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme = ExtResource("4_qiwav")
@@ -91,6 +92,13 @@ horizontal_alignment = 1
 [node name="SFXSlider" type="HSlider" parent="ScrollContainer/VBoxContainer/VBoxContainer" unique_id=1828721567]
 layout_mode = 2
 theme = ExtResource("4_qiwav")
+
+[node name="Camera" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainer" unique_id=578592941]
+layout_mode = 2
+theme = ExtResource("4_qiwav")
+text = "Camera Mode"
+label_settings = SubResource("LabelSettings_qcueh")
+horizontal_alignment = 1
 
 [node name="OptionButton" type="OptionButton" parent="ScrollContainer/VBoxContainer/VBoxContainer" unique_id=964790461]
 layout_mode = 2

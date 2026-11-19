@@ -323,7 +323,7 @@ offset_top = -29.0
 offset_right = 134.0
 offset_bottom = -6.0
 grow_vertical = 0
-text = "MVP showcase!"
+text = "Version 123"
 label_settings = SubResource("LabelSettings_f24ow")
 
 [connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]

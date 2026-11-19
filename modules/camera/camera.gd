@@ -5,7 +5,10 @@ extends Node3D
 # Avoid rotating the camera anchor. Rotate the Camera node instead.
 
 @export var flock: Node3D
+# for keeping boids on screen
+@export var max_distance_to_flock = 20
 #THX, https://gameidea.org/2024/12/13/how-to-make-an-rts-camera-system-in-godot/ I stole your shit
+# for moving the camera with the screen edges
 @export var edge_margin : float = 50
 @export var cam_speed : float = 20
 @export var accel_speed : float = 8
@@ -129,13 +132,36 @@ func _cam_movement(delta: float) -> void :
 		move_dir += get_cam_dir_from_keys()
 	move_dir = move_dir.limit_length(1.0)
 	
+	# keep boids on screen
+	if Global.flock:
+		# project center of screen to a point on the flock flying height
+		var screen_center := get_viewport().get_visible_rect().size / 2.0
+		var ray_origin := camera_node.project_ray_origin(screen_center)
+		var ray_direction := camera_node.project_ray_normal(screen_center)
+		var t = (Global.flock.global_position.y - ray_origin.y) / ray_direction.y
+		var view_center = ray_origin + ray_direction * t
+		
+		var flock_pos = Global.flock.get_center_of_mass()
+		var distance_factor = (flock_pos - view_center) / max_distance_to_flock 
+		if distance_factor.length() > 1:
+			print("applying force to camera to keep boids on screen")
+			var force_scale = 0.1
+			# apply a force that scales linearly with distance, starting from zero at max_distance_to_flock
+			var force = (distance_factor.length() - 1) * distance_factor.normalized() * force_scale
+			# respect the lock_to_axis parameter
+			if lock_to_axis:
+				force = force.project(axis)
+			self.camera_velocity += force
+			
+	var forward = -camera_node.global_transform.basis.z.normalized()
+	
+	
 	camera_velocity = lerp(camera_velocity, move_dir, delta * accel_speed)
 	# change position of the anchor (this node)
 	global_position += camera_velocity * cam_speed * delta
 	
-	if move_dir != Vector3.ZERO :
+	if move_dir != Vector3.ZERO:
 		cam_is_moving = true
-	
 	else:
 		cam_is_moving = false
 
