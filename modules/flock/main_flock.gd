@@ -110,15 +110,21 @@ func _on_split_input_timer_timeout():
 	
 	regroup_flock()
 	
+	Global.camera.fov_effect.zoom_pulse(3, 0.6)
 
 func _on_swoop_input_timer_timeout():
 	print("swoop action timeout")
+	# LONG INPUT DOWN
 	swoop_action_short = false
 	handle_swoop_request(true)
+	
+	Global.camera.fov_effect.zoom_pulse(-2, 0.3, 2)
 	
 func _on_swoop_duration_timeout():
 	print("swoop duration ended")
 	handle_swoop_request(false)
+	
+	Global.camera.fov_effect.zoom_pulse(-2, 0.6, 1.6)
 
 
 #
@@ -144,12 +150,14 @@ func _input(event: InputEvent) -> void:
 		if split_action_short:
 			print("split flock short action")
 			split_input_timer.stop()
+			# SHORT INPUT UP
 			# disable scattering
 			handle_repel_request(false)
 			# keep at least split_boid_count in the main flock
 			var count = max(0, min(split_boid_count, len(boids) - split_boid_count) ) 
 			split_flock(count, subflocks[0])
 		else:
+			# LONG INPUT UP
 			pass
 	
 	if event.is_action_pressed("swoop"):
@@ -161,7 +169,11 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_released("swoop"):
 		if swoop_action_short:
 			swoop_input_timer.stop()
+			# SHORT INPUT UP
 			handle_repel_request()
 		else:
+			# LONG INPUT UP
 			handle_swoop_request(false)
+			
+			Global.camera.fov_effect.zoom_pulse(-1.5, 0.4, 2)
 		

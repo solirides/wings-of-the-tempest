@@ -47,6 +47,7 @@ var zoom : float = 64
 @onready var target_rotation: Vector3 = camera_node.rotation
 
 @onready var shake = $Camera/Shake
+@onready var fov_effect = $Camera/FovEffect
 @onready var shaders = $Camera/Shaders
 
 # Called when the node enters the scene tree for the first time.
