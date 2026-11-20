@@ -12,6 +12,7 @@ extends Node3D
 @export var edge_margin : float = 50
 @export var cam_speed : float = 20
 @export var accel_speed : float = 8
+
 #@export_range(0, 1000) cam_zoom : float = 1
 @export_range(0, 1000) var cam_zoom : float = 1
 @export_range(0, 1000, 0.1) var zoom_speed: float = 4

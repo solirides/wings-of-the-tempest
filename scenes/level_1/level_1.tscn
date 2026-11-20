@@ -193,6 +193,12 @@ steering_mode = 1
 flockMaxHeight = 0.0
 metadata/_custom_type_script = "uid://dstx1f47q2ki1"
 
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_f24ow"]
+plane = Plane(1, 0, 0, 0)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_do3hi"]
+plane = Plane(-1, 0, 0, 0)
+
 [node name="Level" type="Node3D" unique_id=1031030702]
 script = ExtResource("1_ghvtn")
 metadata/_custom_type_script = "uid://4kq8akwlf2yl"
@@ -243,6 +249,16 @@ cam_speed = 25.0
 cam_zoom = 20.0
 min_zoom = 1.0
 max_zoom = 30.0
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=113438209]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=2050048815]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29, 0, 0)
+shape = SubResource("WorldBoundaryShape3D_f24ow")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D" unique_id=203284591]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29, 0, 0)
+shape = SubResource("WorldBoundaryShape3D_do3hi")
 
 [node name="TutorialPrompts" type="Node3D" parent="." unique_id=2000486383]
 

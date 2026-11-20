@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://d3mpcfi2m2o0v"]
 
 [ext_resource type="Script" uid="uid://djuyymnymg6xj" path="res://modules/camera/camera.gd" id="1_pf27r"]
+[ext_resource type="Script" uid="uid://hftfo774yif6" path="res://modules/camera/zoom.gd" id="2_i1f3o"]
 [ext_resource type="Shader" uid="uid://dopya06kwga34" path="res://modules/camera/posterize.gdshader" id="2_ogeh7"]
 [ext_resource type="Script" uid="uid://cifv7bgmpaick" path="res://modules/camera/shake.gd" id="2_otekq"]
 [ext_resource type="Script" uid="uid://bww2gjowddc66" path="res://modules/camera/shaders.gd" id="3_6rkpd"]
@@ -34,6 +35,10 @@ max_zoom = 14.0
 
 [node name="Camera" type="Camera3D" parent="." unique_id=506319422]
 transform = Transform3D(0.34202015, -0.8830222, 0.32139382, 0, 0.34202015, 0.9396926, -0.9396926, -0.32139382, 0.11697779, 0, 0, 0)
+
+[node name="Zoom" type="Node3D" parent="Camera" unique_id=1352054708]
+transform = Transform3D(1, 2.9802322e-08, 7.450581e-09, 2.9802322e-08, 1, 1.8626451e-08, 7.450581e-09, -1.1175871e-08, 1.0000001, 0, 0, 0)
+script = ExtResource("2_i1f3o")
 
 [node name="Shake" type="Node3D" parent="Camera" unique_id=1823544482]
 script = ExtResource("2_otekq")
