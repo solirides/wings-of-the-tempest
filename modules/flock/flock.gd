@@ -206,6 +206,7 @@ func eat(value: float) -> void:
 	#be corrected in the _process function
 	current_hunger = min(current_hunger + value, max_hunger)
 	hunger_changed.emit(current_hunger)
+	Global.AddScore(200)
 	
 func get_mouse_world_position(camera: Camera3D) -> Vector3:
 	var mouse_pos := get_viewport().get_mouse_position()

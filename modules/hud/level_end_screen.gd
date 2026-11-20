@@ -12,6 +12,6 @@ func _process(delta: float) -> void:
 func update_stats():
 	var label = $VBoxContainer/Stats
 	label.text = "summary:\n"
-	label.text += "score: %s\n" % Global.score
+	label.text += "score: %s\n" % Global.score_calc()
 	label.text += "flock size: %s\n" % len(Global.flock.boids)
 	#label.text += "something something"

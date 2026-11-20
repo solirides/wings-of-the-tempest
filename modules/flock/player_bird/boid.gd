@@ -393,6 +393,7 @@ func kill_boid(death_animation: bool = true):
 	death_queued = true
 	flock.remove_boid(self)
 	audio.play_sfx_track("goose_hurt")
+	Global.AddScore(-100)
 
 	if death_animation:
 		var instance = death_particles.instantiate()

@@ -62,6 +62,7 @@ func attack_function(target: Node3D) -> bool:
 func take_damage(amount: int):
 	health -= amount
 	if health <= 0:
+		Global.AddScore(100)
 		queue_free()
 
 # a function for the state machine that is run in physics_process
