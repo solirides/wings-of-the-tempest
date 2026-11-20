@@ -36,6 +36,7 @@ func create_sound_dictionary():
 	for sound in sounds:
 		sounds_by_name[sound.sound_name] = sound
 		var player = AudioStreamPlayer.new()
+		player.set_bus("Sfx")
 		player.stream = sound.audio_stream
 		player.volume_db = sound.default_volume
 		sfx_node.add_child(player)

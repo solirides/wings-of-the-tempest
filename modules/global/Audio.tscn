@@ -108,6 +108,7 @@ musics = Array[ExtResource("2_v13wf")]([SubResource("Resource_g8yrm"), SubResour
 sounds = Array[ExtResource("2_v13wf")]([SubResource("Resource_v13wf"), SubResource("Resource_ew3f2"), SubResource("Resource_df5te"), SubResource("Resource_wrfeo"), SubResource("Resource_6dflp"), SubResource("Resource_f2xw4"), SubResource("Resource_jxtpj"), SubResource("Resource_7oxn5"), SubResource("Resource_8kvkq"), SubResource("Resource_sw00p"), SubResource("Resource_winlv")])
 
 [node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=940978963]
+bus = &"Music"
 
 [node name="SFX" type="Node" parent="." unique_id=1587058588]
 

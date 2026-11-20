@@ -172,20 +172,20 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.5568628)
 
 [node name="LevelEndScreen" parent="." unique_id=828425942 instance=ExtResource("11_jqmsc")]
+visible = false
 layout_mode = 1
 
 [node name="GameOverScreen" parent="." unique_id=2128871407 instance=ExtResource("12_jn86t")]
+visible = false
 layout_mode = 1
 
 [node name="PauseMenu" parent="." unique_id=47267459 instance=ExtResource("13_66fwg")]
+visible = false
 layout_mode = 1
 
 [node name="OptionsMenu" parent="." unique_id=756516751 instance=ExtResource("14_jn86t")]
+visible = false
 layout_mode = 1
-
-[node name="SFXSlider" parent="OptionsMenu/ScrollContainer/VBoxContainer/VBoxContainer" parent_id_path=PackedInt32Array(756516751, 428783626) index="3" unique_id=1828721567]
-min_value = 0.0
-max_value = 100.0
 
 [connection signal="pressed" from="PauseMenu/VBoxContainer/VBoxContainer/Options" to="." method="_on_options_pressed"]
 [connection signal="pressed" from="OptionsMenu/Back" to="." method="_on_back_pressed"]
